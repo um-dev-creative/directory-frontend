@@ -1,0 +1,28 @@
+{
+  "menu_header": {
+    "title1": "Directory",
+    "title2": "Site",
+    "user_icon": {
+      "title": "User",
+      "tooltip": "User",
+      "menu": {
+        "profile": {
+          "title": "Perfil",
+          "tooltip": "Ajustes para perfil de usuario"
+        },
+        "logout": {
+          "title": "Salir",
+          "tooltip": "Cerrar sesión"
+        }
+      }
+    },
+    "signing_button": {
+      "title": "UNETE YA",
+      "tooltip": "UNETE YA"
+    },
+    "search": {
+      "title": "Buscar",
+      "placeholder": "Buscar"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "menu_header": {
+    "title1": "Directory",
+    "title2": "Site",
+    "user_icon": {
+      "title": "User",
+      "tooltip": "User",
+      "menu": {
+        "profile": {
+          "title": "Profile",
+          "tooltip": "Profile settings"
+        },
+        "logout": {
+          "title": "Logout",
+          "tooltip": "Session logout"
+        }
+      }
+    },
+    "signing_button": {
+      "title": "JOIN NOW",
+      "tooltip": "JOIN NOW"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search"
+    }
+  }
+}
