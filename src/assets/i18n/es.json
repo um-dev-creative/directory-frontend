@@ -6,9 +6,21 @@
       "title": "User",
       "tooltip": "User",
       "menu": {
+        "saved": {
+          "title": "Guardado",
+          "tooltip": "Sitios guardados"
+        },
         "profile": {
           "title": "Perfil",
           "tooltip": "Ajustes para perfil de usuario"
+        },
+        "business": {
+          "title": "Mi negocio",
+          "tooltip": "Mis negocios administrados"
+        },
+        "support": {
+          "title": "Soporte",
+          "tooltip": "Soporte y contactos"
         },
         "logout": {
           "title": "Salir",

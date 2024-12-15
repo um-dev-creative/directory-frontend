@@ -17,13 +17,25 @@
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
-          <mat-icon>badge</mat-icon>
-          <span>Perfil</span>
+          <mat-icon>bookmark</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.saved.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings_account_box</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.profile.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>store</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.business.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>help</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.support.title' | translate }}</span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">
           <mat-icon>power_settings_new</mat-icon>
-          <span>{{ 'menu_header.menu.logout.title' | translate }}</span>
+          <span>{{ 'menu_header.user_icon.menu.logout.title' | translate }}</span>
         </button>
       </mat-menu>
     } @else {
