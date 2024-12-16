@@ -1,0 +1,31 @@
+.container{
+    padding: 10px 50px 60px;
+}
+
+.panel-search {
+    margin-left: 20px;
+}
+
+.inactive-option {
+    float: right;
+    align-self: center;
+    align-content: center;
+    padding-top: 1.5rem;
+}
+
+.mat-slide-toggle {
+    height: 3.75rem;
+}
+
+.panel-buttons {
+    margin-top: 1rem;
+    margin-bottom: 0.0625rem;
+}
+
+mat-progress-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}

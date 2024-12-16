@@ -2,6 +2,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 process.env.NODE_CONFIG_DIR = __dirname + "/server/config";
 
 const httpContext = require('express-http-context');
+const RateLimit = require('express-rate-limit');
 const express = require('express');
 const path = require('path');
 const https = require('https');
@@ -11,7 +12,6 @@ const compression = require('compression');
 const app = express();
 const cors = require('cors');
 const fs = require('fs');
-const RateLimit = require('express-rate-limit');
 
 const options = {
   key: fs.readFileSync('./ssl/manager-front.key'),

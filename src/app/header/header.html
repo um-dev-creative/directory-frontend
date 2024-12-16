@@ -1,0 +1,50 @@
+<form>
+  <body>
+  <mat-toolbar>
+    <span class="directory-title">{{ 'menu_header.title1' | translate }}</span>
+    <span class="site-title">{{ 'menu_header.title2' | translate }}</span>
+    <span class="spacer"></span>
+    <div id="searchComponent">
+      <span class="icon">
+      <mat-icon class="icon">search</mat-icon>
+      </span>
+      <input id="search" matInput placeholder="{{ 'menu_header.search.placeholder' | translate }}">
+    </div>
+    <span class="spacer"></span>
+    @if (this.isLogged) {
+      <button mat-fab [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>bookmark</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.saved.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings_account_box</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.profile.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>store</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.business.title' | translate }}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>help</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.support.title' | translate }}</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>
+          <span>{{ 'menu_header.user_icon.menu.logout.title' | translate }}</span>
+        </button>
+      </mat-menu>
+    } @else {
+      <button mat-flat-button class="button" (click)="logout()">{{ 'menu_header.signing_button.title' | translate }}
+      </button>
+      <button mat-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+  </mat-toolbar>
+  </body>
+</form>
