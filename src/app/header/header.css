@@ -1,3 +1,9 @@
+.logo {
+  height: 30px; /* Adjust the height as needed */
+  width: auto; /* Maintain aspect ratio */
+  margin-right: 16px;
+}
+
 body {
   box-shadow: 0 5px 15px -5px #171717;
 }
