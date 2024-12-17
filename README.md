@@ -5,6 +5,9 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ## Quality Gate Status
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=lanmata_directory-frontend)](https://sonarcloud.io/summary/new_code?id=lanmata_directory-frontend)
 
+## Knowledge Base
+[Official Documentation](https://prx.myjetbrains.com/articles/DS-A-1/Directory-Frontend)
+
 ## Development server
 
 To start a local development server, run:
