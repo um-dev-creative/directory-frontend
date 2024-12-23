@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  width: 100%; /* Asegúrate de que el componente ocupe el espacio necesario */
+}
+
+div {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  width: calc(100% - 40px); /* Ajusta dinámicamente el espacio con base en el padding */
+}

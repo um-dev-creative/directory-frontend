@@ -1,68 +1,7 @@
 .logo {
-  height: 30px; /* Adjust the height as needed */
-  width: auto; /* Maintain aspect ratio */
-  margin-right: 16px;
+  @apply tw-flex tw-items-center;
 }
 
-body {
-  box-shadow: 0 5px 15px -5px #171717;
+.logo img {
+  @apply tw-h-8 tw-w-auto;
 }
-.spacer {
-  flex: 1 1 auto;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.button {
-  box-shadow: 0 5px 15px 3px #ffc3c3;
-}
-
-.directory-title {
-  color: #171717;
-  margin-right: 5px;
-}
-.site-title {
-  color: #c51668;
-  text-decoration: underline;
-}
-
-#search {
-  border: 0;
-  height: 35px;
-  font-size: 18px;
-  color: #606060;
-  background: #fff8f8;
-  box-sizing: border-box;
-
-  width: 660px;
-  min-width: 60px;
-  max-width: 660px;
-
-}
-
-#search:active {
-  border: 0;
-  outline: none;
-}
-
-#search:focus {
-  border: 0;
-  outline: none;
-}
-
-#searchComponent {
-  max-width: 700px;
-  left: 50%;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 15px;
-  flex: 1 1 auto;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.icon {
-  color: #606060;
-}
-
-

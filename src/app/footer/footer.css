@@ -1,12 +1,3 @@
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  height: 25px;
-  width: 100%;
-  text-align: center;
-  padding-bottom: 15px;
-  background-color: #fff8f8;
-  box-shadow: 0 0 5px 0 #999595;
-  color: #c51668;
+  @apply tw-fixed tw-left-0 tw-bottom-0 tw-h-6 tw-w-full tw-text-center tw-pb-4 tw-bg-[#fff8f8] tw-border-t tw-border-gray-300 tw-shadow tw-text-[#c51668];
 }

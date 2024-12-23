@@ -1,0 +1,67 @@
+<mat-toolbar class="tw-shadow-sm">
+  <!-- Logo -->
+  <img class="logo"  src="assets/images/latin_hub_logo_v1.svg" alt="Latin Hub Logo"/>
+  <!-- Espaciador para separar elementos -->
+  <span class="spacer"></span>
+  <!-- Componente de búsqueda -->
+  <div class="search">
+    <mat-icon class="tw-text-gray-400 tw-text-lg">search</mat-icon>
+    <input
+      matInput
+      type="text"
+      placeholder="{{ 'menu_header.search.placeholder' | translate }}"
+      class="search-input"
+    />
+  </div>
+  <span class="spacer"></span>
+  <!-- Contenido condicional basado en el estado de inicio de sesión -->
+  <ng-container *ngIf="isLogged; else loggedOut">
+    <!-- Botón para el menú del usuario -->
+    <button mat-fab [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <!-- Menú desplegable -->
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>bookmark</mat-icon>
+        <span>{{ 'menu_header.user_icon.menu.saved.title' | translate }}</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings_account_box</mat-icon>
+        <span>{{ 'menu_header.user_icon.menu.profile.title' | translate }}</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>store</mat-icon>
+        <span>{{ 'menu_header.user_icon.menu.business.title' | translate }}</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>help</mat-icon>
+        <span>{{ 'menu_header.user_icon.menu.support.title' | translate }}</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>{{ 'menu_header.user_icon.menu.logout.title' | translate }}</span>
+      </button>
+    </mat-menu>
+  </ng-container>
+
+  <!-- Plantilla para usuarios no autenticados -->
+  <ng-template #loggedOut>
+    <div>
+      <button mat-flat-button class="button" (click)="logout()">
+        {{ 'menu_header.signing_button.title' | translate }}
+      </button>
+    </div>
+    <div class="tw-px-2">
+      <div class="tw-px-2 hover:tw-bg-gray-200 hover:tw-cursor-pointer">
+        <a href="#" class="tw-flex tw-items-center tw-justify-between tw-px-4 sm:tw-px-6 md:tw-px-8 tw-text-black tw-no-underline focus:tw-outline-none">
+          <mat-icon>menu</mat-icon>
+        </a>
+      </div>
+    </div>
+
+  </ng-template>
+</mat-toolbar>
+
