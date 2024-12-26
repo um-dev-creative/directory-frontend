@@ -1,7 +1,10 @@
-.logo {
-  @apply tw-flex tw-items-center;
-}
-
 .logo img {
   @apply tw-h-8 tw-w-auto;
+}
+
+/* Versión más pequeña en pantallas móviles */
+@media (max-width: 640px) { /* Breakpoint móvil */
+  .logo img {
+    @apply tw-h-4; /* Altura mínima para legibilidad */
+  }
 }

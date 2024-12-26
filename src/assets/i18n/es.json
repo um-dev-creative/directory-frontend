@@ -1,5 +1,6 @@
 {
   "menu_header": {
+    "title": "Menú",
     "title1": "Directory",
     "title2": "Site",
     "user_icon": {
@@ -46,9 +47,13 @@
         }
       }
     },
-    "signing_button": {
-      "title": "UNETE YA",
-      "tooltip": "UNETE YA"
+    "login_button": {
+      "title": "Iniciar sesión",
+      "tooltip": "Iniciar sesión"
+    },
+    "join_now_button": {
+      "title": "¡Únete ya!",
+      "tooltip": "¡Únete ya!"
     },
     "search": {
       "title": "Buscar",
