@@ -19,10 +19,10 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
  */
 @Component({
     selector: 'app-main',
-  imports: [
-    Header,
-    RouterOutlet
-  ],
+    imports: [
+      Header,
+      RouterOutlet,
+    ],
     templateUrl: './stage.html',
     styleUrl: './stage.css',
     animations: [routeTransitionAnimations]

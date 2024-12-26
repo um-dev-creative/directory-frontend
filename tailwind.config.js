@@ -9,6 +9,7 @@ module.exports = {
   },
   theme: {
     screens: {
+      'custom-md': '990px', // Breakpoint personalizado para 981px aplicado a los botones de header
       sm: '640px',
       'demo-sm': '720px',
       md: '768px',
