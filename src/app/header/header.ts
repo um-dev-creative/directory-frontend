@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, NgModule } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -29,16 +29,16 @@ import { Search } from '@app/search/search';
 })
 export class Header implements OnInit, OnDestroy {
   isMobile = false;
-  private isMenuOpen = false; // Estado para controlar la apertura/cierre del menú
   // Simulación de autenticación
   private authState = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.authState.asObservable();
   private destroy$ = new Subject<void>();
 
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
-  isMobileMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
+  isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef) {}
+
 
   ngOnInit(): void {
     this.setupBreakpointObserver();
@@ -53,14 +53,16 @@ export class Header implements OnInit, OnDestroy {
    */
   private setupBreakpointObserver(): void {
     this.breakpointObserver
-      .observe([Breakpoints.XSmall, Breakpoints.Small]) // Detecta tamaños de pantalla pequeños.
-      .pipe(takeUntil(this.destroy$)) // Limpia automáticamente la subscripción cuando el componente se destruye.
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
-        console.log('BreakpointObserver result:', result); // Muestra el resultado del BreakpointObserver.
-        this.isMobile = result.matches; // Actualiza el estado `isMobile` según el tamaño de pantalla.
-        if (!this.isMobile) {
-          this.isMenuOpen = false; // Cierra el menú si no es móvil.
-          console.log('The screen is not mobile, closing the menu.'); // Mensaje adicional.
+        console.log('BreakpointObserver result:', result);
+        this.isMobile = result.matches;
+
+        if (!this.isMobile && this.isMenuOpen) {
+          this.isMenuOpen = false;
+          console.log('The screen is not mobile, closing the menu.');
+          this.cdr.detectChanges(); // Forzar detección de cambios
         }
       });
   }
@@ -68,8 +70,8 @@ export class Header implements OnInit, OnDestroy {
    * Alternar visibilidad del menú móvil
    */
   openMenu() {
-    console.log('User clicked the mobile menu');
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    console.log('User clicked the menu');
+    this.isMenuOpen = !this.isMenuOpen;
   }
   /**
    * Alternar visibilidad del submenú de soporte
@@ -87,7 +89,8 @@ export class Header implements OnInit, OnDestroy {
     }
   }
 
-  logout(): void {
+  logout(event: Event): void {
+    event.preventDefault();
     console.log('User logged out');
     this.authState.next(false); // Actualiza el estado de autenticación a no autenticado.
   }
