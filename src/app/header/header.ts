@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -28,6 +28,7 @@ import { Search } from '@app/search/search';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Header implements OnInit, OnDestroy {
+  @Input() isSimple: boolean = false;
   isMobile = false;
   // Simulación de autenticación
   private authState = new BehaviorSubject<boolean>(false);
@@ -109,5 +110,6 @@ export class Header implements OnInit, OnDestroy {
    */
   get isAuthenticated(): boolean {
     return this.authState.value; // Accede al valor actual de `authState`.
+    // return true;
   }
 }

@@ -29,10 +29,8 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/rose-red.css",
-              "src/styles/base.css",                            // Tailwind base y resets
-              "src/styles/components.css",                      // Estilos personalizados para componentes
-              "src/styles/utilities.css"                       // Clases utilitarias adicionales
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
