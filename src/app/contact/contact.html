@@ -1,0 +1,215 @@
+<app-header [isSimple]="true"></app-header>
+<div class="tw-isolate tw-bg-white tw-px-6 tw-py-24 sm:tw-py-32 lg:tw-px-8">
+  <div class="tw-absolute tw-inset-x-0 tw--top-[10rem] tw--z-10 tw-transform-gpu tw-overflow-hidden tw-blur-3xl sm:tw--top-[20rem]" aria-hidden="true">
+    <div class="tw-relative tw-left-1/2 tw--z-10 tw-aspect-[1155/678] tw-w-[36.125rem] tw-max-w-none tw--translate-x-1/2 tw-rotate-[30deg] tw-bg-gradient-to-tr tw-from-[#ff80b5] tw-to-[#9089fc] tw-opacity-30 sm:tw-left-[calc(50%-40rem)] sm:tw-w-[72.1875rem]"
+         style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+    </div>
+  </div>
+  <div class="tw-mx-auto tw-max-w-2xl tw-text-center">
+    <h2 class="tw-text-balance tw-text-4xl tw-font-semibold tw-tracking-tight tw-text-gray-900 sm:tw-text-5xl">Contactanos</h2>
+    <p class="tw-mt-2 tw-text-lg/8 tw-text-gray-600">¡Hablemos de tu Negocio!</p>
+  </div>
+  <form (submit)="onSubmit()" #contactForm="ngForm" class="tw-mx-auto tw-mt-16 tw-max-w-xl sm:tw-mt-20">
+    <div class="tw-grid tw-grid-cols-1 tw-gap-x-8 tw-gap-y-6 sm:tw-grid-cols-2">
+      <div>
+        <label for="first-name" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Nombre</label>
+        <div class="tw-mt-2.5">
+          <input
+            type="text"
+            id="first-name"
+            name="first-name"
+            required
+            autocomplete="given-name"
+            class="tw-block tw-w-full tw-rounded-md tw-bg-white tw-px-3.5 tw-py-2 tw-text-base tw-text-gray-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-gray-300 tw-placeholder:text-gray-400 focus:tw-outline focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-indigo-600"
+            [(ngModel)]="contactData.firstName"
+            (ngModelChange)="validateContactForm()"
+          >
+        </div>
+      </div>
+      <div>
+        <label for="last-name" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Apellido</label>
+        <div class="tw-mt-2.5">
+          <input
+            type="text"
+            name="last-name"
+            required id="last-name"
+            autocomplete="family-name"
+            class="tw-block tw-w-full tw-rounded-md tw-bg-white tw-px-3.5 tw-py-2 tw-text-base tw-text-gray-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-gray-300 tw-placeholder:text-gray-400 focus:tw-outline focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-indigo-600"
+            [(ngModel)]="contactData.lastName"
+            (ngModelChange)="validateContactForm() "
+          >
+        </div>
+      </div>
+      <!-- Correo electrónico -->
+      <div>
+        <label for="email" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Correo electrónico</label>
+        <div class="tw-mt-2.5">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="tw-block tw-w-full tw-rounded-md tw-bg-white tw-px-3.5 tw-py-2 tw-text-base tw-text-gray-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-gray-300 tw-placeholder:text-gray-400 focus:tw-outline focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-indigo-600"
+            [placeholder]="placeholders['email']"
+            (focus)="onFocus('email')"
+            (blur)="onBlur('email')"
+            [(ngModel)]="contactData.email"
+            (ngModelChange)="validateEmail(); validateContactForm() "
+          />
+        </div>
+        <!-- Error Message -->
+        <div *ngIf="!isEmailValid" class="tw-text-red-500 tw-text-sm tw-mt-1">
+          Correo Electrónico inválido.
+        </div>
+      </div>
+      <!-- Teléfono -->
+      <div>
+        <label for="mobile-number" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Teléfono (opcional)</label>
+        <div class="tw-mt-2.5">
+          <div class="
+          tw-relative
+          tw-flex
+          tw-w-full
+          tw-h-[42px]
+          tw-rounded-md
+          tw-border
+          tw-border-gray-300
+          hover:tw-border-gray-400
+          focus-within:tw-border-indigo-600
+          focus-within:tw-ring-1
+          focus-within:tw-ring-indigo-600
+          focus-within:hover:tw-border-indigo-600"
+            >
+              <div class="tw-relative">
+                <button
+                  type="button"
+                  class="tw-h-full tw-rounded-l-md tw-border-0 tw-bg-transparent tw-pl-3 tw-pr-8 tw-text-gray-900 focus:tw-ring-0 focus:tw-outline-none"
+                  aria-haspopup="listbox"
+                  [attr.aria-expanded]="dropdownState.country"
+                  aria-labelledby="country-label"
+                  (click)="toggleDropdown('country')"
+                >
+                <span class="tw-flex tw-items-center tw-gap-3 tw-pr tw-truncate tw-text-gray-400">
+                  <span>{{ selectedCountry?.flag }}</span>
+                </span>
+                  <svg
+                    class="tw-absolute tw-right-2 tw-top-1/2 tw--translate-y-1/2 tw-size-5 tw-text-gray-500 sm:tw-size-4"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    data-slot="icon"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Dropdown menu -->
+                <ul
+                  *ngIf="dropdownState.country"
+                  class="tw-absolute tw-z-10 tw-mt-1 tw-max-h-56 tw-w-[200px] tw-w-full tw-overflow-auto tw-rounded-md tw-bg-white tw-py-1 tw-text-base tw-shadow-lg tw-ring-1 tw-ring-black/5 focus:tw-outline-none sm:tw-text-sm"
+                  tabindex="-1"
+                  role="listbox"
+                  aria-labelledby="listbox-label"
+                >
+                  <li
+                    *ngFor="let country of countries; let i = index"
+                    [id]="'listbox-option-' + i"
+                    class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-9 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
+                    role="option"
+                    (click)="selectCountry(country)"
+                  >
+                    <div class="tw-flex tw-items-center">
+                      <span>{{ country.flag }}</span>
+                      <span class="tw-ml-3 tw-block tw-truncate">{{ country.name }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <!-- Divider -->
+              <div class="tw-w-px tw-h-full tw-bg-gray-300"></div>
+              <!-- Phone Input -->
+              <input
+                type="tel"
+                id="mobile-number"
+                name="mobile-number"
+                class="tw-block tw-flex-1 tw-border-0  tw-rounded-r-md tw-bg-transparent tw-px-3 tw-text-gray-900 tw-placeholder-gray-400 focus:tw-ring-0 focus:tw-outline-none"
+                [placeholder]="placeholders['phone']"
+                (focus)="onFocus('phone')"
+                (blur)="onBlur('phone')"
+                [(ngModel)]="contactData.phoneNumber"
+                (ngModelChange)="validatePhoneNumber(); validateContactForm()"
+              />
+            </div>
+            <!-- Error Message -->
+            <div *ngIf="!isValidPhoneNumber" class="tw-text-red-500 tw-text-sm tw-mt-1">
+              Número de teléfono inválido para {{ selectedCountry?.name }}.
+            </div>
+        </div>
+      </div>
+      <!-- Asunto -->
+      <div class="sm:tw-col-span-2">
+        <label for="subject" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Asunto</label>
+        <div class="tw-mt-2.5">
+          <input
+            type="text"
+            name="subject"
+            required id="subject"
+            class="tw-block tw-w-full tw-rounded-md tw-bg-white tw-px-3.5 tw-py-2 tw-text-base tw-text-gray-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-gray-300 tw-placeholder:text-gray-400 focus:tw-outline focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-indigo-600"
+            [(ngModel)]="contactData.subject"
+            (ngModelChange)="validateContactForm()"
+          >
+        </div>
+      </div>
+      <!-- Mensaje -->
+      <div class="sm:tw-col-span-2">
+        <label for="message" class="tw-block tw-text-sm/6 tw-font-semibold tw-text-gray-900">Mensaje</label>
+        <div class="tw-mt-2.5">
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            required
+            class="tw-block tw-w-full tw-rounded-md tw-bg-white tw-px-3.5 tw-py-2 tw-text-base tw-text-gray-900 tw-outline tw-outline-1 tw--outline-offset-1 tw-outline-gray-300 tw-placeholder:text-gray-400 focus:tw-outline focus:tw-outline-2 focus:tw--outline-offset-2 focus:tw-outline-indigo-600"
+            placeholder="Escribe tu mensaje aquí"
+            [(ngModel)]="contactData.message"
+            (ngModelChange)="validateContactForm()"
+          ></textarea>
+        </div>
+        <div class="tw-text-xs">Por favor, ingresa los detalles de tu solicitud. Un miembro de nuestro equipo de soporte responderá lo antes posible.</div>
+      </div>
+    </div>
+    <div class="tw-mt-10">
+      <button
+        type="submit"type="submit"
+        [disabled]="!isContactFormValid"
+        [ngClass]="{
+              'tw-bg-blue-500 hover:tw-bg-blue-600 tw-shadow-sm tw-shadow-indigo-500/40': isContactFormValid,
+              'tw-bg-gray-400 hover:tw-bg-gray-400': !isContactFormValid
+            }"
+        class="tw-h-[42px] tw-flex tw-items-center tw-justify-center tw-w-full tw-rounded-md tw-bg-blue-500 tw-px-3.5 tw-py-2.5 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-600 focus-visible:tw-outline focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
+      >
+        <svg
+          class="tw-w-5 tw-h-5 tw-mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M9.59877 13.3843L1.39209 9.03979C7.35503 5.76386 13.8335 3.53007 20.5483 2.43471C19.4531 9.14923 17.2196 15.6275 13.9439 21.5902L9.59877 13.3843ZM9.59877 13.3843L14.9021 8.08096"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Enviar Mensaje
+      </button>
+    </div>
+  </form>
+</div>
