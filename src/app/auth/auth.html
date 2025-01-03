@@ -247,7 +247,11 @@
                 (click)="toggleDropdown('country')"
               >
                 <span class="tw-flex tw-items-center tw-gap-3 tw-pr tw-truncate tw-text-gray-400">
-                  <span>{{ selectedCountry?.flag }}</span>
+                  <img
+                    [src]="selectedCountry.flag"
+                    [alt]="selectedCountry.name"
+                    class="tw-inline tw-h-5 tw-w-5"
+                  />
                 </span>
                 <svg
                   class="tw-absolute tw-right-2 tw-top-1/2 tw--translate-y-1/2 tw-size-5 tw-text-gray-500 sm:tw-size-4"
@@ -267,7 +271,7 @@
               <!-- Dropdown menu -->
               <ul
                 *ngIf="dropdownState.country"
-                class="tw-absolute tw-z-10 tw-mt-1 tw-max-h-56 tw-w-[200px] tw-w-full tw-overflow-auto tw-rounded-md tw-bg-white tw-py-1 tw-text-base tw-shadow-lg tw-ring-1 tw-ring-black/5 focus:tw-outline-none sm:tw-text-sm"
+                class="tw-absolute tw-z-10 tw-mt-1 tw-max-h-56 tw-w-max tw-w-full tw-overflow-auto tw-rounded-md tw-bg-white tw-py-1 tw-text-base tw-shadow-lg tw-ring-1 tw-ring-black/5 focus:tw-outline-none sm:tw-text-sm"
                 tabindex="-1"
                 role="listbox"
                 aria-labelledby="listbox-label"
@@ -275,12 +279,16 @@
                 <li
                   *ngFor="let country of countries; let i = index"
                   [id]="'listbox-option-' + i"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-9 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
+                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
                   role="option"
                   (click)="selectCountry(country)"
                 >
                   <div class="tw-flex tw-items-center">
-                    <span>{{ country.flag }}</span>
+                    <img
+                      [src]="country.flag"
+                      [alt]="country.name"
+                      class="tw-inline tw-h-5 tw-w-5 tw-mr"
+                    />
                     <span class="tw-ml-3 tw-block tw-truncate">{{ country.name }}</span>
                   </div>
                 </li>
@@ -303,7 +311,7 @@
           </div>
           <!-- Error Message -->
           <div *ngIf="!isValidPhoneNumber" class="tw-text-red-500 tw-text-sm tw-mt-1">
-            Número de teléfono inválido para {{ selectedCountry?.name }}.
+            Número de teléfono inválido para {{ selectedCountry.name }}.
           </div>
         </div>
         <!-- Fecha de Nacimiento -->
@@ -349,7 +357,7 @@
               >
                 <li
                   *ngFor="let month of months"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-9 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
+                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
                   role="option"
                   (click)="selectMonth(month)"
                 >

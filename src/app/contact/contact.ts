@@ -1,8 +1,9 @@
-import {Component, HostListener} from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Header } from '@app/header/header';
 import { Country, countries } from '@shared/commonData';
 import { FormsModule } from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 @Component({
   selector: 'app-contact',
@@ -84,14 +85,14 @@ export class Contact {
     this.isEmailValid = emailRegex.test(email);
   }
   validatePhoneNumber(): void {
-    const selectedCountry = this.selectedCountry;
-    const phoneNumber = this.contactData.phoneNumber;
+    const selectedCountry: Country = this.selectedCountry;
+    const phoneNumber: string = this.contactData.phoneNumber;
     if (!phoneNumber) {
       this.isValidPhoneNumber = true;
       return;
     }
     this.isValidPhoneNumber = selectedCountry
-      ? selectedCountry.regex.test(phoneNumber)
+      ? parsePhoneNumberFromString(phoneNumber, selectedCountry.code)?.isValid() ?? false
       : false;
   }
 

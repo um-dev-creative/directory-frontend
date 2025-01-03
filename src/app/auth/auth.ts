@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Header } from '@app/header/header';
 import { Country, countries, Month, months } from '@shared/commonData';
 import { isValidDate } from '@shared/utils';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 @Component({
   selector: 'app-auth',
@@ -144,14 +145,14 @@ export class Auth {
     this.isPasswordValid = passwordRegex.test(password);
   }
   validatePhoneNumber(): void {
-    const selectedCountry = this.selectedCountry;
-    const phoneNumber = this.registerData.phoneNumber;
+    const selectedCountry: Country = this.selectedCountry;
+    const phoneNumber: string = this.registerData.phoneNumber;
     if (!phoneNumber) {
       this.isValidPhoneNumber = true;
       return;
     }
     this.isValidPhoneNumber = selectedCountry
-      ? selectedCountry.regex.test(phoneNumber)
+      ? parsePhoneNumberFromString(phoneNumber, selectedCountry.code)?.isValid() ?? false
       : false;
   }
 
