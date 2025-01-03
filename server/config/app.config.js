@@ -2,7 +2,7 @@
  * Module for bootstrapping application configuration and handling secrets from Vault.
  */
 
-let jobsProxyConfig = {};
+let directoryProxyConfig = {};
 const fs = require('fs');
 const {format} = require('logform');
 const winston = require('winston');
@@ -100,8 +100,8 @@ module.exports.getLoggerApp = function () {
 module.exports.createDirectoryProxyConfig = function () {
     const configJson = fs.readFileSync('server/config/config.json', 'utf8');
     const config = JSON.parse(configJson);
-    jobsProxyConfig = config['directoryBackendProxyConfig'];
-    logger.info("[DS] - Proxy Config: " + JSON.stringify(jobsProxyConfig));
+    directoryProxyConfig = config['directoryBackendProxyConfig'];
+    logger.info("[DS] - Proxy Config: " + JSON.stringify(directoryProxyConfig));
 };
 
 /**
@@ -109,8 +109,8 @@ module.exports.createDirectoryProxyConfig = function () {
  *
  * @returns {Object} - The jobs proxy configuration.
  */
-module.exports.getJobsProxyConfig = function () {
-    return jobsProxyConfig;
+module.exports.getDirectoryProxyConfig = function () {
+    return directoryProxyConfig;
 };
 
 let printVaultValues = function (vaultValues) {

@@ -1,9 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { Header } from '@app/header/header';
-import { Country, countries } from '@shared/commonData';
+import { Country, countries } from '@shared/data/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import {parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples} from 'libphonenumber-js';
+import examples from 'libphonenumber-js/examples.mobile.json';
 
 @Component({
   selector: 'app-contact',
@@ -47,7 +48,8 @@ export class Contact {
     if (field === 'email') {
       this.placeholders[field] = 'example@domain.com';
     } else if (field === 'phone') {
-      this.placeholders[field] = '123-456-7890';
+      const focusPhoneNumber: PhoneNumber | undefined = getExampleNumber(this.selectedCountry.code, examples as Examples);
+      this.placeholders[field] = focusPhoneNumber ? focusPhoneNumber.formatNational() : this.selectedCountry.nationalTemplate;
     }
   }
   onBlur(field: string): void {
@@ -72,6 +74,8 @@ export class Contact {
   }
   selectCountry(country: Country): void {
     this.selectedCountry = country;
+    this.contactData.phoneNumber = '';
+    this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
     console.log('Country selected:', country);
   }

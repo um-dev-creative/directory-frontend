@@ -5,6 +5,6 @@ proxy:
   service:
     map: API_SERVICE_MAP
     requestTimeout: API_SERVICE_REQUEST_TIMEOUT
-    jobs:
-      url: API_SERVICE_JOBS_MAP
+    directory:
+      url: API_SERVICE_DIRECTORY_MAP
       requestTimeout: API_SERVICE_REQUEST_TIMEOUT
