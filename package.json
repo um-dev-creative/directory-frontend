@@ -26,6 +26,7 @@
     "@angular/ssr": "^19.0.5",
     "@ngx-translate/core": "^16.0.3",
     "@ngx-translate/http-loader": "^16.0.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "agentkeepalive": "^4.5.0",
     "ajv": "^8.17.1",
     "axios": "^1.7.9",
