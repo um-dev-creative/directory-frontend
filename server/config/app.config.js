@@ -69,10 +69,10 @@ let loadSecretsIntoEnv = function (vaultUrl, vaultToken, vaultPath, isDebugMode)
                 resolve(config);
                 if (isDebugMode) printVaultValues(vaultValues);
             }
-        }).catch(e => {
+        }).catch(error => {
             logger.error("Unable to load secrets from vault", error);
             reject("Unable to load secrets from vault", error);
-            console.error(e)
+            console.error(error)
         });
     });
 };
