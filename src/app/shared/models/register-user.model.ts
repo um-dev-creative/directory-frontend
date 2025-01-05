@@ -31,6 +31,7 @@ export class User {
       .padStart(2, '0')}`;
   }
 
+  // Método para validar la fecha de nacimiento 15-110 años
   isValidDate(day: number, month: number, year: number): Date | false {
     if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900) {
       return false;

@@ -51,6 +51,7 @@ export class Auth {
   protected isValidPhoneNumber: boolean = true;
   protected isEmailValid: boolean = true;
   protected isFullDateValid: boolean = true;
+  protected showFullDateError: boolean = false;
   protected isRegistrationFormValid: boolean = false;
   protected showPassword: boolean = false;
   protected isPasswordValid: boolean = true;
@@ -113,13 +114,21 @@ export class Auth {
       });
 
       if (userToRegister.isValid()) {
+        const formattedPhoneNumber = userToRegister.phoneNumber
+          ? parsePhoneNumberFromString(userToRegister.phoneNumber, this.selectedCountry.code)?.formatInternational()
+          : null;
         const apiPayload = {
           ...userToRegister.toApiFormat(),
           dateOfBirth: userToRegister.getFormattedDateOfBirth(),
+          phoneNumber: formattedPhoneNumber || userToRegister.phoneNumber,
         };
-        this.userClient.createUser(apiPayload).subscribe({
-          next: (response) => { console.log('User created:', response) },
-          error: (error) => { console.error('Error creating user:', error) },
+        this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
+          next: (response: any) => {
+            console.log('User created:', response);
+          },
+          error: (error: any) => {
+            console.error('Error creating user:', error);
+          },
         });
       } else {
         console.error('Invalid user data:', userToRegister);
@@ -162,10 +171,10 @@ export class Auth {
       this.isEmailValid = true;
       return;
     }
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.isEmailValid = emailRegex.test(email);
   }
-  validatePassword() {
+  validatePassword(): void {
     const password: string = this.registerData.password;
     if (!password || password.length >= 8) {
       this.isPasswordValid = true;
@@ -187,19 +196,17 @@ export class Auth {
   }
 
   private validateDateOfBirth(user: User): void {
-    if (this.registerData.birthDay && this.registerData.birthMonth && this.registerData.birthYear) {
-      const validDate: Date | false = user.isValidDate(
-        this.registerData.birthDay,
-        this.registerData.birthMonth,
-        this.registerData.birthYear
-      );
-
+    const { birthDay: day, birthMonth: month, birthYear: year } = this.registerData;
+    if (day && month && year) {
+      const validDate: Date | false = user.isValidDate(day, month, year);
       if (validDate) {
         this.registerData.birthdayFull = validDate;
         this.isFullDateValid = true;
+        this.showFullDateError = false
       } else {
         console.error("Invalid date of birth.");
         this.isFullDateValid = false;
+        this.showFullDateError = true;
         this.registerData.birthdayFull = null;
       }
     } else {
