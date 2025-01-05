@@ -4,6 +4,7 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
+import rateLimit from 'express-rate-limit';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -12,6 +13,13 @@ const indexHtml = join(serverDistFolder, 'index.html');
 const app = express();
 const commonEngine = new CommonEngine();
 
+// Set up rate limiter: maximum of 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // max 100 requests per windowMs
+});
+
+app.use(limiter);
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -60,6 +68,6 @@ app.get('**', (req, res, next) => {
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] ?? 4000;
   app.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Node Express server listening on https://localhost:${port}`);
   });
 }
