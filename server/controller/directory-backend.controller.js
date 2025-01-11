@@ -4,10 +4,11 @@
  */
 let backboneClient = null;
 
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
 const axios = require('axios');
-const jobsProxyConfig = appConfig.getJobsProxyConfig();
+const jobsProxyConfig = appConfig.getDirectoryProxyConfig();
 const oauthclient = require('../proxy/oauth-client');
 const backboneclient = require('../proxy/backbone-client');
 const logger = appConfig.getLoggerApp();
@@ -35,10 +36,11 @@ const BACKBONE_OAUTH_USER_ALIAS = process.env.BACKBONE_AUTH_USER_ALIAS;
 const BACKBONE_OAUTH_USER_PASSWORD = process.env.BACKBONE_AUTH_USER_PASSWORD;
 
 const schemesList = ["http:", "https:"];
-const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst"];
+const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 
 const HttpsAgent = require('agentkeepalive').HttpsAgent;
 const ajv = new Ajv();
+ajv.addFormat('uuid', uuidRegex)
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
 const Agent = require('agentkeepalive');
 const {
@@ -181,12 +183,12 @@ const backboneSessionToken = async (req) => {
  */
 const proxyApi = async (req, res, next) => {
   let response = null;
+  const apiURL = getApiEndpoint(req.url);
   if (schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname)) {
     try {
-      const apiURL = getApiEndpoint(req.url);
-      let jobsToken = await getOauthClient(jobsOauthClientConfig).getBearerToken();
+      let directoryToken = await getOauthClient(jobsOauthClientConfig).getBearerToken();
       let backboneSession = await backboneSessionToken(req);
-      let headers = getRequestHeader(req, jobsToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      let headers = getRequestHeader(req, directoryToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       // Trace
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
@@ -210,11 +212,7 @@ const proxyApi = async (req, res, next) => {
         res.status(500);
       }
     }
-    if (!ajv.validate('schema', req.body)) {
-      res.send({error: ajv.errorsText()});
-    } else {
-      res.send(response);
-    }
+    res.send(response);
   } else {
     res.send(API_INVALID_URL_REQUEST_TITLE);
   }
@@ -283,8 +281,6 @@ const getBasicHeader = function (req, jobsToken, backboneSession, defaultAccept)
 
   return headers;
 };
-
-const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function isValidUUID(uuid) {
   return uuidRegex.test(uuid);

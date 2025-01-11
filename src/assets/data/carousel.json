@@ -1,0 +1,48 @@
+{
+  "carousel": [
+    {
+      "src": "https://storage.spccard.ca/HomepageBanner_W_TimHortons_01062025_EN.webp",
+      "alt": "Save 20% after 2pm at Tim Hortons",
+      "title": "Save 20% after 2pm at Tim Hortons"
+    },
+    {
+      "src": "https://storage.spccard.ca/W_WebBanner_FrostWeek_12202024_EN.png",
+      "alt": "SPC's Winter Campus Tour",
+      "title": "SPC's Winter Campus Tour"
+    },
+    {
+      "src": "https://storage.spccard.ca/HomepageBanner_W_StudentSnapshots_Generic_EN.png",
+      "alt": "Capture your SPC moment",
+      "title": "Capture your SPC moment"
+    },
+    {
+      "src": "https://storage.spccard.ca/HomepageBanner_W_GenericRebrand_2024_EN_v3.png",
+      "alt": "Buy SPC in store at these partners",
+      "title": "Buy SPC in store at these partners"
+    },
+    {
+      "src": "https://storage.spccard.ca/HomepageBanner_W_GenericRebrand_2024_EN_v5.webp",
+      "alt": "Get SPC+ for FREE",
+      "title": "Get SPC+ for FREE"
+    },
+    {
+      "src": "https://storage.spccard.ca/HomepageBanner_W_01-2025_JanCollections_EN.webp",
+      "alt": "start 2025 with savings from SPC",
+      "title": "start 2025 with savings from SPC"
+    }
+  ],
+  "secondaryBanners": [
+    {
+      "src": "https://storage.spccard.ca/SecondaryBanner_SPC%2B_GenericRebrand_2024_EN.png",
+      "alt": "866180957709675"
+    },
+    {
+      "src": "https://storage.spccard.ca/SecondaryBanner_Blog_GenericRebrand_2024_EN.png",
+      "alt": "8825176200287947"
+    },
+    {
+      "src": "https://storage.spccard.ca/SecondaryBanner_GenericRebrand_2024_EN.png",
+      "alt": "2728040930271169"
+    }
+  ]
+}

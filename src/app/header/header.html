@@ -1,13 +1,26 @@
-<header class="tw-sticky tw-top-0 tw-z-40 tw-flex tw-items-center tw-bg-white/60 tw-shadow-md tw-backdrop-blur-sm tw-border-b tw-border-slate-200"
-        [class]="isSimple ? 'tw-justify-center tw-py-2 tw-px-2' : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3'">
+<!-- Imagen adicional con absolute positioning -->
+<div class="tw-absolute tw-z-20 tw-top-0 tw-inset-x-0 tw-flex tw-justify-center tw-overflow-hidden tw-pointer-events-none">
+  <div class="tw-w-[108rem] tw-flex-none tw-flex tw-justify-end">
+    <picture>
+      <source srcset="/assets/images/media.avif" type="image/avif">
+      <img src="/assets/images/media.png" class="tw-w-[71.75rem] tw-flex-none tw-max-w-none" decoding="async">
+    </picture>
+  </div>
+</div>
+<header
+  class="tw-sticky tw-top-0 tw-z-40 tw-flex tw-items-center tw-shadow-md tw-backdrop-blur-sm tw-border-b tw-border-slate-200"
+  [ngClass]="[dynamicClasses, layoutClasses]"
+>
   <!-- Logo -->
   <div class="logo">
-    <img
-      src="/assets/images/latin_hub_logo_v1.svg"
-      alt="Latin Hub Logo"
-      class="tw-w-auto"
-      [class]="isSimple ? 'tw-h-6 sm:tw-h-5' : 'tw-h-8 sm:tw-h-6'"
-    >
+    <a routerLink="/">
+      <img
+        src="/assets/images/latin_hub_logo_v1.svg"
+        alt="Latin Hub Logo"
+        class="tw-w-auto"
+        [class]="isSimple ? 'tw-h-6 sm:tw-h-5' : 'tw-h-8 sm:tw-h-6'"
+      >
+    </a>
   </div>
   @if (!isSimple) {
     <!-- EJEMPLO: Buscador visible en pantallas grandes -->
@@ -130,13 +143,11 @@
     - La clase 'tw-translate-x-full' lo coloca fuera de la pantalla.
     - Con [ngClass], aplicamos 'tw-translate-x-0' si isMobileMenuOpen es true.
 -->
-<div
-  class="tw-fixed tw-inset-y-0 tw-right-0 tw-z-50 tw-w-80 tw-max-w-full tw-bg-white tw-shadow-lg tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out tw-flex tw-flex-col"
-  [class]="{
-    'tw-translate-x-0': isMenuOpen,
-    'tw-translate-x-full': !isMenuOpen
-  }"
->
+<div class="tw-fixed tw-inset-y-0 tw-right-0 tw-z-50 tw-w-80 tw-max-w-full tw-bg-white tw-shadow-lg tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out tw-flex tw-flex-col tw-translate-x-full"
+     [class]="{
+      'tw-translate-x-0': isMenuOpen,
+      'tw-translate-x-full': !isMenuOpen
+    }">
   <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-border-b tw-border-slate-200">
     <h2 class="tw-text-lg tw-font-semibold tw-text-slate-900">
       Menú

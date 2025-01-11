@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start-dev": "ng serve --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt",
+    "start-dev": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken  hvs.CAESIJN7Ag-PBgD2dOUo13XDkCMldrAp51QJGrpbtOikZt7nGh4KHGh2cy5pd1pRWTZKRnZSTFNOcUFYZk5tSnRqamw  --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode DEBUG_MODE",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
@@ -26,6 +26,7 @@
     "@angular/ssr": "^19.0.5",
     "@ngx-translate/core": "^16.0.3",
     "@ngx-translate/http-loader": "^16.0.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "agentkeepalive": "^4.5.0",
     "ajv": "^8.17.1",
     "axios": "^1.7.9",

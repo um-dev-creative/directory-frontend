@@ -1,4 +1,3 @@
-<app-header [isSimple]="true"></app-header>
 <div class="tw-isolate tw-bg-white tw-px-6">
   <div class="tw-absolute tw-inset-x-0 tw--top-[10rem] tw--z-10 tw-transform-gpu tw-overflow-hidden tw-blur-3xl sm:tw--top-[20rem]" aria-hidden="true">
     <div class="tw-relative tw-left-1/2 tw--z-10 tw-aspect-[1155/678] tw-w-[36.125rem] tw-max-w-none tw--translate-x-1/2 tw-rotate-[30deg] tw-bg-gradient-to-tr tw-from-[#ff80b5] tw-to-[#9089fc] tw-opacity-30 sm:tw-left-[calc(50%-40rem)] sm:tw-w-[72.1875rem]"
@@ -166,9 +165,11 @@
             />
           </div>
           <!-- Error Message -->
-          <div *ngIf="!isEmailValid" class="tw-text-red-500 tw-text-sm tw-mt-1">
-            Correo Electrónico inválido.
-          </div>
+          @if (!isEmailValid) {
+            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+              Invalid Email Address.
+            </div>
+          }
         </div>
         <!-- Contraseña -->
         <div>
@@ -216,9 +217,11 @@
               }
             </button>
           </div>
-          <div *ngIf="!isPasswordValid" class="tw-text-red-500 tw-text-sm tw-mt-1">
-            La contraseña debe tener al menos 8 caracteres.
-          </div>
+          @if (!isPasswordValid) {
+            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+              Password must be at least 8 characters.
+            </div>
+          }
         </div>
         <!-- Numero de Telefono -->
         <div>
@@ -402,9 +405,11 @@
             </div>
           </div>
           <!-- Error Message -->
-          <div *ngIf="!isFullDateValid" class="tw-text-red-500 tw-text-sm tw-mt-1">
-            Fecha Invalida
-          </div>
+          @if (showFullDateError) {
+            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+              Fecha Invalida
+            </div>
+          }
         </div>
         <!-- Términos y Condiciones -->
         <div class="tw-mt-4 tw-text-xs tw-text-gray-600">

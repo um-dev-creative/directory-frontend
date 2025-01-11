@@ -1,15 +1,17 @@
-import { Component, HostListener} from '@angular/core';
+import {Component, HostListener, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Header } from '@app/header/header';
-import { Country, countries, Month, months } from '@shared/commonData';
-import { isValidDate } from '@shared/utils';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { Country, countries, Month, months } from '@shared/data/common';
+import { parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples } from 'libphonenumber-js';
+import examples from 'libphonenumber-js/examples.mobile.json';
+import { UserClient } from '@app/user/user.client';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { User } from '@shared/models/register-user.model';
 
 @Component({
   selector: 'app-auth',
   imports: [
-    Header,
     CommonModule,
     FormsModule
   ],
@@ -17,10 +19,13 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
   styleUrl: './auth.css'
 })
 export class Auth {
+  private readonly userClient: UserClient = inject(UserClient);
+  private subject$ = new Subject<void>();
+
   isRegistering: boolean = true;
   countries: Country[] = countries.filter(country => country.active);
   months: Month[] = months;
-  selectedCountry: Country = countries.find((country) => country.code === 'CA')!; // Establece Canadá como país por defecto
+  selectedCountry: Country = countries.find((country: Country):boolean => country.code === 'CA')!; // Establece Canadá como país por defecto
   selectedMonth: string | null = null;
   // Valores del formulario de registro
   registerData = {
@@ -33,7 +38,7 @@ export class Auth {
     birthMonth: null as number | null,
     birthDay: null as number | null,
     birthYear: null as number | null,
-    birthday: null as Date | null,
+    birthdayFull: null as Date | null,
   };
   // Valores del formulario de inicio de sesión
   loginData: { email:string, password:string } = {
@@ -44,6 +49,7 @@ export class Auth {
   protected isValidPhoneNumber: boolean = true;
   protected isEmailValid: boolean = true;
   protected isFullDateValid: boolean = true;
+  protected showFullDateError: boolean = false;
   protected isRegistrationFormValid: boolean = false;
   protected showPassword: boolean = false;
   protected isPasswordValid: boolean = true;
@@ -68,6 +74,8 @@ export class Auth {
   selectCountry(country: Country): void {
     this.selectedCountry = country;
     this.registerData.country = country.code;
+    this.registerData.phoneNumber = '';
+    this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
     console.log('Country selected:', country);
   }
@@ -94,7 +102,35 @@ export class Auth {
   }
   onSubmit() {
     if (this.isRegistering) {
-      console.log('Register Data:', this.registerData);
+      const userToRegister: User = new User({
+        password: this.registerData.password,
+        email: this.registerData.email,
+        firstname: this.registerData.firstName,
+        lastname: this.registerData.lastName,
+        dateOfBirth: this.registerData.birthdayFull,
+        phoneNumber: this.registerData.phoneNumber,
+      });
+
+      if (userToRegister.isValid()) {
+        const formattedPhoneNumber = userToRegister.phoneNumber
+          ? parsePhoneNumberFromString(userToRegister.phoneNumber, this.selectedCountry.code)?.formatInternational()
+          : null;
+        const apiPayload = {
+          ...userToRegister.toApiFormat(),
+          dateOfBirth: userToRegister.getFormattedDateOfBirth(),
+          phoneNumber: formattedPhoneNumber || userToRegister.phoneNumber,
+        };
+        this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
+          next: (response: any) => {
+            console.log('User created:', response);
+          },
+          error: (error: any) => {
+            console.error('Error creating user:', error);
+          },
+        });
+      } else {
+        console.error('Invalid user data:', userToRegister);
+      }
     } else {
       console.log('Login Data:', this.loginData);
     }
@@ -111,7 +147,8 @@ export class Auth {
     } else if (field === 'email') {
       this.placeholders[field] = 'example@domain.com';
     } else if (field === 'mobile') {
-      this.placeholders[field] = '123-456-7890';
+      const focusPhoneNumber: PhoneNumber | undefined = getExampleNumber(this.selectedCountry.code, examples as Examples);
+      this.placeholders[field] = focusPhoneNumber ? focusPhoneNumber.formatNational() : this.selectedCountry.nationalTemplate;
     }
   }
   onBlur(field: string): void {
@@ -132,10 +169,10 @@ export class Auth {
       this.isEmailValid = true;
       return;
     }
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.isEmailValid = emailRegex.test(email);
   }
-  validatePassword() {
+  validatePassword(): void {
     const password: string = this.registerData.password;
     if (!password || password.length >= 8) {
       this.isPasswordValid = true;
@@ -156,54 +193,41 @@ export class Auth {
       : false;
   }
 
-  validateRegistrationForm(): void {
-    // Log inicial para depuración
-    console.log("Validating Registration Form...");
-    console.log({
-      FirstName: this.registerData.firstName,
-      LastName: this.registerData.lastName,
-      Email: this.registerData.email,
-      Password: this.registerData.password,
-      Birthday: this.registerData.birthday,
-      BirthMonth: this.registerData.birthMonth,
-      BirthDay: this.registerData.birthDay,
-      BirthYear: this.registerData.birthYear,
-      IsPhoneNumberValid: this.isValidPhoneNumber,
-    });
-
-    // Validar la fecha de nacimiento
-    if (
-      this.registerData.birthDay &&
-      this.registerData.birthMonth &&
-      this.registerData.birthYear
-    ) {
-      const validDate = isValidDate(
-        this.registerData.birthDay,
-        this.registerData.birthMonth,
-        this.registerData.birthYear
-      );
-
+  private validateDateOfBirth(user: User): void {
+    const { birthDay: day, birthMonth: month, birthYear: year } = this.registerData;
+    if (day && month && year) {
+      const validDate: Date | false = user.isValidDate(day, month, year);
       if (validDate) {
-        this.registerData.birthday = validDate;
+        this.registerData.birthdayFull = validDate;
         this.isFullDateValid = true;
+        this.showFullDateError = false
       } else {
         console.error("Invalid date of birth.");
         this.isFullDateValid = false;
-        this.registerData.birthday = null; // Limpia el valor si no es válido
+        this.showFullDateError = true;
+        this.registerData.birthdayFull = null;
       }
+    } else {
+      console.error("Date of birth fields are incomplete.");
+      this.isFullDateValid = false;
+      this.registerData.birthdayFull = null;
     }
+  }
 
-    // Validar campos requeridos y actualizar el estado de validación del formulario
-    this.isRegistrationFormValid =
-      !!this.registerData.firstName &&
-      !!this.registerData.lastName &&
-      !!this.registerData.email &&
-      !!this.registerData.password &&
-      !!this.registerData.birthday &&
-      this.isValidPhoneNumber;
+  validateRegistrationForm(): void {
+    const userToValidate: User = new User({
+      password: this.registerData.password,
+      email: this.registerData.email,
+      firstname: this.registerData.firstName,
+      lastname: this.registerData.lastName,
+      dateOfBirth: this.registerData.birthdayFull,
+      phoneNumber: this.registerData.phoneNumber,
+    });
 
-    // Log final para depuración
-    console.log("Is Registration Form Valid:", this.isRegistrationFormValid);
+    this.validateDateOfBirth(userToValidate);
+
+    this.isRegistrationFormValid = userToValidate.isValid() && this.isFullDateValid && this.isEmailValid && this.isPasswordValid && this.isValidPhoneNumber;
+
+    console.log('Is Registration Form Valid:', this.isRegistrationFormValid);
   }
 }
-

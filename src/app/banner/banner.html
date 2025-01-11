@@ -1,0 +1,45 @@
+<!--section class="tw-bg-[#faf8f8] tw-w-full tw-max-w-[1200px] tw-mx-auto tw-rounded-[15px] tw-overflow-hidden tw-shadow-sm">
+  <div class="tw-container tw-mx-auto">
+    <h2 class="tw-text-2xl tw-font-bold tw-text-left tw-mb-3">{{ title }}</h2>
+
+    <div class="tw-flex tw-overflow-x-auto tw-gap-6 tw-py-8 tw-scrollbar-hide">
+      @for (product of categories; track product) {
+        <div class="tw-flex-shrink-0 tw-flex tw-flex-col tw-items-center">
+
+          <div class="tw-w-24 tw-h-24 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden tw-shadow-md">
+            <img
+              [src]="product.image"
+              [alt]="product.name"
+              class="tw-w-full tw-h-full tw-object-cover"
+            />
+          </div>
+
+          <span class="tw-mt-2 tw-text-sm tw-font-medium">{{ product.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section-->
+
+<div class="tw-py-4 tw-bg-gray-50 tw-flex tw-justify-center">
+  <div>
+    <!-- Desktop -->
+    <img
+      class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
+      src="https://storage.spccard.ca/W_OfferBanner_FrostWeek_12202024_EN.png"
+      alt="SPC's Winter Campus Tour"
+    >
+    <!-- Tablet -->
+    <img
+      class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
+      src="https://storage.spccard.ca/T_OfferBanner_FrostWeek_12202024_EN.png"
+      alt="SPC's Winter Campus Tour"
+    >
+    <!-- Mobile -->
+    <img
+      class="tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
+      src="https://storage.spccard.ca/M_OfferBanner_FrostWeek_12202024_EN.png"
+      alt="SPC's Winter Campus Tour"
+    >
+  </div>
+</div>

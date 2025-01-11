@@ -7,7 +7,7 @@
       },
       "urlRewrite": {
         "from": "/api/v1",
-        "to": "/directory/api/v1"
+        "to": "/directory-backend/api/v1"
       }
     }
   ],

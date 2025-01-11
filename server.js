@@ -14,8 +14,8 @@ const cors = require('cors');
 const fs = require('fs');
 
 const options = {
-  key: fs.readFileSync('./ssl/manager-front.key'),
-  cert: fs.readFileSync('./ssl/manager-front.crt')
+  key: fs.readFileSync('./ssl/backbone.key'),
+  cert: fs.readFileSync('./ssl/backbone.crt')
 }
 
 // set up rate limiter: maximum of 100 requests per 15 minutes

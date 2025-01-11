@@ -86,5 +86,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'), // Mejora estilos de formularios
     require('@tailwindcss/typography'), // Para mejorar el diseño de texto
+    require('@tailwindcss/aspect-ratio'), // Para mejorar el diseño de aspecto
+
   ],
 }

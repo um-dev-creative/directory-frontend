@@ -6,6 +6,7 @@ export interface Country {
   dialCode: string;
   flag: string;
   active: boolean;
+  nationalTemplate: string;
 }
 export interface Month {
   number: number;
@@ -13,10 +14,10 @@ export interface Month {
   abbr: string;
 }
 export const countries: Country[] = [
-  { name: 'Canada', code: 'CA', dialCode: '+1', flag: '/assets/images/flags/ca.svg', active: true },
-  { name: 'United States', code: 'US', dialCode: '+1', flag: '/assets/images/flags/us.svg', active: true},
-  { name: 'España', code: 'ES', dialCode: '+34', flag: '/assets/images/flags/es.svg', active: true },
-  { name: 'Chile', code: 'CL', dialCode: '+56', flag: '/assets/images/flags/cl.svg', active: true },
+  { name: 'Canada', code: 'CA', dialCode: '+1', flag: '/assets/images/flags/ca.svg', active: true, nationalTemplate: 'XXX-XXX-XXXX' },
+  { name: 'United States', code: 'US', dialCode: '+1', flag: '/assets/images/flags/us.svg', active: true, nationalTemplate: 'XXX-XXX-XXXX' },
+  { name: 'España', code: 'ES', dialCode: '+34', flag: '/assets/images/flags/es.svg', active: false, nationalTemplate: 'XXX-XX-XX-XX' },
+  { name: 'Chile', code: 'CL', dialCode: '+56', flag: '/assets/images/flags/cl.svg', active: false, nationalTemplate: 'XX-XXXX-XXXX' },
 ];
 export const months: Month[] = [
   { number: 1, name: 'Enero', abbr: 'Ene' },
