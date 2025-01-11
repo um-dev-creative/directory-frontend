@@ -1,14 +1,5 @@
-<div class="tw-relative tw-w-full tw-h-screen">
-  <!-- Imagen adicional con absolute positioning -->
-  <div class="tw-absolute tw-z-20 tw-top-0 tw-inset-x-0 tw-flex tw-justify-center tw-overflow-hidden tw-pointer-events-none">
-    <div class="tw-w-[108rem] tw-flex-none tw-flex tw-justify-end">
-      <picture>
-        <source srcset="/assets/images/media.avif" type="image/avif">
-        <img src="/assets/images/media.png" class="tw-w-[71.75rem] tw-flex-none tw-max-w-none" decoding="async">
-      </picture>
-    </div>
+<app-header></app-header>
+  <div [@routeAnimations]="getRouteAnimationData(outlet)" class="tw-relative tw-w-full tw-h-screen">
+    <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <!-- Contenido dinámico y footer -->
-  <router-outlet></router-outlet>
-  <app-footer></app-footer>
-</div>
+<app-footer></app-footer>

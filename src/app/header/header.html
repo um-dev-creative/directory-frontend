@@ -1,5 +1,16 @@
-<header class="tw-sticky tw-top-0 tw-z-40 tw-flex tw-items-center tw-bg-white/60 tw-shadow-md tw-backdrop-blur-sm tw-border-b tw-border-slate-200"
-        [class]="isSimple ? 'tw-justify-center tw-py-2 tw-px-2' : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3'">
+<!-- Imagen adicional con absolute positioning -->
+<div class="tw-absolute tw-z-20 tw-top-0 tw-inset-x-0 tw-flex tw-justify-center tw-overflow-hidden tw-pointer-events-none">
+  <div class="tw-w-[108rem] tw-flex-none tw-flex tw-justify-end">
+    <picture>
+      <source srcset="/assets/images/media.avif" type="image/avif">
+      <img src="/assets/images/media.png" class="tw-w-[71.75rem] tw-flex-none tw-max-w-none" decoding="async">
+    </picture>
+  </div>
+</div>
+<header
+  class="tw-sticky tw-top-0 tw-z-40 tw-flex tw-items-center tw-shadow-md tw-backdrop-blur-sm tw-border-b tw-border-slate-200"
+  [ngClass]="[dynamicClasses, layoutClasses]"
+>
   <!-- Logo -->
   <div class="logo">
     <a routerLink="/">

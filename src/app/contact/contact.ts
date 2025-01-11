@@ -1,5 +1,4 @@
 import { Component, HostListener } from '@angular/core';
-import { Header } from '@app/header/header';
 import { Country, countries } from '@shared/data/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -9,7 +8,6 @@ import examples from 'libphonenumber-js/examples.mobile.json';
 @Component({
   selector: 'app-contact',
   imports: [
-    Header,
     CommonModule,
     FormsModule
   ],

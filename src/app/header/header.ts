@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input, Renderer2 } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateModule } from '@ngx-translate/core';
-import { MaterialModule } from '@shared/material/material.module';
 import { Search } from '@app/search/search';
 /**
  * Header component
@@ -18,7 +17,6 @@ import { Search } from '@app/search/search';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    MaterialModule,
     FormsModule,
     TranslateModule,
     Search,
@@ -29,23 +27,42 @@ import { Search } from '@app/search/search';
 })
 export class Header implements OnInit, OnDestroy {
   @Input() isSimple: boolean = false;
+  isOpaque = false; // Controla si el header es opaco
+  offset = 50;
   isMobile = false;
   // Simulación de autenticación
   private authState = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.authState.asObservable();
   private destroy$ = new Subject<void>();
+  private scrollListener!: () => void;
 
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
 
-  constructor(private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef
+  ) {}
 
 
   ngOnInit(): void {
+    // Configura el evento scroll
+    this.scrollListener = this.renderer.listen('window', 'scroll', () => {
+      const scrollY = window.scrollY;
+      const shouldBeOpaque = scrollY > this.offset;
+      if (this.isOpaque !== shouldBeOpaque) {
+        this.isOpaque = shouldBeOpaque;
+        this.cdr.markForCheck(); // Optimiza la detección de cambios
+      }
+    });
     this.setupBreakpointObserver();
   }
 
   ngOnDestroy(): void {
+    if (this.scrollListener) {
+      this.scrollListener();
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -111,5 +128,15 @@ export class Header implements OnInit, OnDestroy {
   get isAuthenticated(): boolean {
     return this.authState.value; // Accede al valor actual de `authState`.
     // return true;
+  }
+
+  get dynamicClasses(): string {
+    return this.isOpaque ? 'tw-bg-white' : 'tw-bg-white/60';
+  }
+
+  get layoutClasses(): string {
+    return this.isSimple
+      ? 'tw-justify-center tw-py-2 tw-px-2'
+      : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3';
   }
 }

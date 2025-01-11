@@ -51,9 +51,6 @@ import {MatNativeDateModule} from "@angular/material/core";
         MatSelectModule,
         MatCardModule,
         MatGridListModule,
-        MatDatepickerModule,
-        MatTableModule,
-        MatPaginatorModule,
         MatNativeDateModule
     ]
 })

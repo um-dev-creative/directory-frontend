@@ -1,7 +1,6 @@
 import {Component, HostListener, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Header } from '@app/header/header';
 import { Country, countries, Month, months } from '@shared/data/common';
 import { parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples } from 'libphonenumber-js';
 import examples from 'libphonenumber-js/examples.mobile.json';
@@ -13,7 +12,6 @@ import { User } from '@shared/models/register-user.model';
 @Component({
   selector: 'app-auth',
   imports: [
-    Header,
     CommonModule,
     FormsModule
   ],

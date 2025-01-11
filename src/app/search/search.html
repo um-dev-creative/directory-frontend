@@ -20,20 +20,20 @@
     class="tw-flex-grow tw-bg-transparent tw-border-none tw-outline-none tw-pl-4 tw-text-gray-700 tw-placeholder-gray-400 focus:tw-ring-0 focus:tw-border-transparent"
   />
   <!-- Clear Button (X) -->
-  <button
-    *ngIf="searchText"
-    (click)="clearSearch()"
-    class="tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-rounded-full tw-p-2 hover:tw-bg-indigo-950"
-  >
-    <svg
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      class="tw-w-2 tw-h-2 tw-text-white"
+  @if (searchText) {
+    <button
+      (click)="clearSearch()"
+      class="tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-rounded-full tw-p-2 hover:tw-bg-indigo-950"
     >
-      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-    </svg>
-
-  </button>
+      <svg
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="tw-w-2 tw-h-2 tw-text-white"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  }
 </div>
