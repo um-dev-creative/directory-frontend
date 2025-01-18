@@ -2,8 +2,8 @@ import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angu
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
 import {App} from '@app/app';
-import {SIMPLE_HEADER_DISABLED} from '@shared/app.const';
 import {JwtPipe} from '@shared/services/jwt.pipe';
+import {DirectoryFrontendConst} from '@shared/app.const';
 
 /**
  * Main stage component
@@ -18,6 +18,7 @@ import {JwtPipe} from '@shared/services/jwt.pipe';
   providers: [JwtPipe]
 })
 export class Stage implements OnInit, AfterViewInit {
+  private readonly directoryFrontendConst = DirectoryFrontendConst;
 
   /**
    * Change detector reference
@@ -29,7 +30,7 @@ export class Stage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.appComponent.changeHeaderSimple(SIMPLE_HEADER_DISABLED);
+    this.appComponent.changeHeaderSimple(this.directoryFrontendConst.HeaderOption.SIMPLE_HEADER_DISABLED);
   }
 
   ngAfterViewInit(): void {

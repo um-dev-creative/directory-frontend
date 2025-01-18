@@ -1,12 +1,27 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input, Renderer2 } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TranslateModule } from '@ngx-translate/core';
-import { Search } from '@app/search/search';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2
+} from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {CommonModule} from '@angular/common';
+import {Router, RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {TranslateModule} from '@ngx-translate/core';
+import {Search} from '@app/search/search';
+import {SessionStoreService} from '@shared/store/session-store.service';
+import {JwtPipe} from '@shared/services/jwt.pipe';
+import {SessionData} from '@shared/state/session.state';
+import {Store} from '@ngrx/store';
+
 /**
  * Header component
  */
@@ -23,31 +38,55 @@ import { Search } from '@app/search/search';
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [JwtPipe]
 })
-export class Header implements OnInit, OnDestroy {
+export class Header implements OnInit, OnDestroy, AfterViewInit {
   @Input() isSimple: boolean = false;
   isOpaque = false; // Controla si el header es opaco
   offset = 50;
   isMobile = false;
-  // Simulación de autenticación
-  private authState = new BehaviorSubject<boolean>(false);
-  isAuthenticated$ = this.authState.asObservable();
-  private destroy$ = new Subject<void>();
+
+  /**
+   * Change detector reference
+   * @private
+   */
+  protected changeDetectorRefs = inject(ChangeDetectorRef);
+
+  private readonly router: Router = inject(Router);
+  private readonly destroy$ = new Subject<void>();
   private scrollListener!: () => void;
+  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
+  private readonly store: Store<{ session: SessionData }> = inject(Store);
+  protected sessionData: SessionData | undefined;
 
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
+  userLogger = {
+    alias: '@',
+    fullName: '',
+  }
 
   constructor(
-    private renderer: Renderer2,
-    private breakpointObserver: BreakpointObserver,
-    private cdr: ChangeDetectorRef
-  ) {}
-
+    private readonly renderer: Renderer2,
+    private readonly breakpointObserver: BreakpointObserver,
+    private readonly cdr: ChangeDetectorRef
+  ) {
+  }
 
   ngOnInit(): void {
     // Configura el evento scroll
+    this.sessionStoreService.loadSessionData();
+    this.store.select('session').subscribe(sessionData => {
+      this.sessionData = sessionData;
+      if (this.sessionData?.userAuth) {
+        this.userLogger.alias = this.sessionData.userAuth.alias;
+        this.userLogger.fullName = this.sessionData.userAuth.fullName;
+        this.userLogger.alias = this.sessionData.userAuth.alias;
+        this.userLogger.fullName = this.sessionData.userAuth.fullName;
+        console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
+      }
+    });
     this.scrollListener = this.renderer.listen('window', 'scroll', () => {
       const scrollY = window.scrollY;
       const shouldBeOpaque = scrollY > this.offset;
@@ -56,6 +95,7 @@ export class Header implements OnInit, OnDestroy {
         this.cdr.markForCheck(); // Optimiza la detección de cambios
       }
     });
+    ;
     this.setupBreakpointObserver();
   }
 
@@ -66,6 +106,7 @@ export class Header implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
   /**
    * Configura un observador para detectar dispositivos móviles.
    */
@@ -84,6 +125,15 @@ export class Header implements OnInit, OnDestroy {
         }
       });
   }
+
+  /**
+   * Establecer si el header es simple
+   */
+  setSimple(value: boolean): void {
+    this.isSimple = value;
+    this.cdr.detectChanges(); // Forzar detección de cambios
+  }
+
   /**
    * Alternar visibilidad del menú móvil
    */
@@ -91,6 +141,7 @@ export class Header implements OnInit, OnDestroy {
     console.log('User clicked the menu');
     this.isMenuOpen = !this.isMenuOpen;
   }
+
   /**
    * Alternar visibilidad del submenú de soporte
    */
@@ -107,15 +158,10 @@ export class Header implements OnInit, OnDestroy {
     }
   }
 
-  logout(event: Event): void {
-    event.preventDefault();
+  logout(): void {
+    this.sessionStoreService.clearSessionData();
     console.log('User logged out');
-    this.authState.next(false); // Actualiza el estado de autenticación a no autenticado.
-  }
-
-  login(): void {
-    console.log('User logged in');
-    this.authState.next(true); // Actualiza el estado de autenticación a autenticado.
+    this.router.navigate(['/stage']);
   }
 
   signup() {
@@ -126,8 +172,7 @@ export class Header implements OnInit, OnDestroy {
    * Devuelve el estado actual de autenticación.
    */
   get isAuthenticated(): boolean {
-    return this.authState.value; // Accede al valor actual de `authState`.
-    // return true;
+    return (this.sessionData?.token !== null && this.sessionData?.token !== undefined && this.sessionData?.token !== '');
   }
 
   get dynamicClasses(): string {
@@ -138,5 +183,10 @@ export class Header implements OnInit, OnDestroy {
     return this.isSimple
       ? 'tw-justify-center tw-py-2 tw-px-2'
       : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3';
+  }
+
+  ngAfterViewInit(): void {
+    console.log(`Header component initialized :: ${this.sessionData?.token}`);
+    this.changeDetectorRefs.detectChanges();
   }
 }

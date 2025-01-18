@@ -1,63 +1,64 @@
 {
+  "": "",
   "menu_header": {
-    "title": "Menú",
-    "title1": "Directory",
-    "title2": "Site",
-    "user_icon": {
-      "title": "User",
-      "tooltip": "User",
-      "menu": {
-        "signed": {
-          "title": "Autenticado como",
-          "tooltip": "Sitios guardados"
-        },
-        "saved": {
-          "title": "Guardado",
-          "tooltip": "Sitios guardados"
-        },
-        "profile": {
-          "title": "Perfil",
-          "tooltip": "Ajustes para perfil de usuario"
-        },
-        "business": {
-          "title": "Mi negocio",
-          "tooltip": "Mis negocios administrados"
-        },
-        "support": {
-          "title": "Soporte",
-          "tooltip": "Soporte y contactos",
-          "submenu": {
-            "back": {
-              "title": "Volver",
-              "tooltip": "Regresar al menú principal"
-            },
-            "help": {
-              "title": "Ayuda",
-              "tooltip": "Obtener asistencia"
-            },
-            "contact": {
-              "title": "Contáctanos",
-              "tooltip": "Comunícate con nosotros"
-            }
-          }
-        },
-        "logout": {
-          "title": "Salir",
-          "tooltip": "Cerrar sesión"
-        }
-      }
+    "join_now_button": {
+      "title": "¡Únete ya!",
+      "tooltip": "¡Únete ya!"
     },
     "login_button": {
       "title": "Iniciar sesión",
       "tooltip": "Iniciar sesión"
     },
-    "join_now_button": {
-      "title": "¡Únete ya!",
-      "tooltip": "¡Únete ya!"
-    },
     "search": {
-      "title": "Buscar",
-      "placeholder": "Buscar"
+      "placeholder": "Buscar",
+      "title": "Buscar"
+    },
+    "title": "Menú",
+    "title1": "Directory",
+    "title2": "Site",
+    "user_icon": {
+      "menu": {
+        "business": {
+          "title": "Mi negocio",
+          "tooltip": "Mis negocios administrados"
+        },
+        "logout": {
+          "title": "Salir",
+          "tooltip": "Cerrar sesión"
+        },
+        "profile": {
+          "title": "Perfil",
+          "tooltip": "Ajustes para perfil de usuario"
+        },
+        "saved": {
+          "title": "Guardado",
+          "tooltip": "Sitios guardados"
+        },
+        "signed": {
+          "title": "Autenticado como",
+          "tooltip": "Sitios guardados"
+        },
+        "support": {
+          "submenu": {
+            "back": {
+              "title": "Volver",
+              "tooltip": "Regresar al menú principal"
+            },
+            "contact": {
+              "title": "Contáctanos",
+              "tooltip": "Comunícate con nosotros"
+            },
+            "help": {
+              "title": "Ayuda",
+              "tooltip": "Obtener asistencia"
+            }
+          },
+          "title": "Soporte",
+          "tooltip": "Soporte y contactos"
+        }
+      },
+      "title": "User",
+      "tooltip": "User"
     }
   }
 }

@@ -1,20 +1,24 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { UserClient } from './user.client';
+import {AuthClient} from './auth.client';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
-describe('UserClient', () => {
-  let service: UserClient;
+describe('AuthClientService', () => {
+  let service: AuthClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [UserClient, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+      providers: [AuthClient, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     });
-    service = TestBed.inject(UserClient);
+    service = TestBed.inject(AuthClient);
     httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {

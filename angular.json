@@ -13,6 +13,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "crypto-js",
+              "libphonenumber-js",
+              "picocolors",
+              "nanoid/non-secure",
+              "source-map-js"
+            ],
             "outputPath": "dist/directory-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
