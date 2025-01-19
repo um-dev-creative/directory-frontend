@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 interface BannerData {
@@ -25,7 +25,9 @@ export class Banner implements OnInit {
     }
   };
 
-  constructor(private http: HttpClient) {}
+  private readonly httpClient: HttpClient = inject(HttpClient);
+
+  constructor() {}
 
   get title(): string {
     return this.bannerData?.banner?.title || '';
@@ -35,7 +37,7 @@ export class Banner implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get<BannerData>('assets/data/banner.json')
+    this.httpClient.get<BannerData>('assets/data/banner.json')
       .subscribe({
         next: (data) => {
           this.bannerData = data;

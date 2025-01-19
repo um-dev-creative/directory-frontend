@@ -19,7 +19,7 @@
       },
       "urlRewrite": {
         "from": "/backbone/api",
-        "to": "/backbone/v1"
+        "to": "/backbone/api/v1"
       }
     }
   ]
