@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Footer} from '@app/footer/footer';
 import {Header} from '@app/header/header';
@@ -29,13 +29,6 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
   providers: [JwtPipe]
 })
 export class App implements AfterViewInit {
-
-  @ViewChild(Header) headerComponent!: Header;
-
-  changeHeaderSimple(value: boolean): void {
-    this.headerComponent.setSimple(value);
-    this.headerComponent.ngOnInit();
-  }
 
   ngAfterViewInit() {
     if (typeof document !== 'undefined') {

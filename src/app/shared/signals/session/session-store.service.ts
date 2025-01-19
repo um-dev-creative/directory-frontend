@@ -1,13 +1,14 @@
 import {inject, Injectable} from '@angular/core';
-import {SessionData} from "@shared/state/session.state";
+import {SessionData} from "@shared/signals/session/session.state";
 import {Store} from '@ngrx/store';
-import {clearSession, loadSession, saveSession} from '@shared/state/session.action';
+import {clearSession, loadSession, saveSession} from '@shared/signals/session/session.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionStoreService {
 
+  private sessionData: SessionData | undefined;
   protected readonly store: Store<{ session: SessionData }> = inject(Store);
 
   protected constructor() {
@@ -23,8 +24,14 @@ export class SessionStoreService {
   }
 
   loadSessionData(): void {
-    // Load session data from sessionStorage
     this.store.dispatch(loadSession());
+  }
+
+  get session(): SessionData {
+    this.store.select('session').subscribe((sessionData: SessionData) => {
+      this.sessionData = sessionData;
+    });
+    return <SessionData>this.sessionData;
   }
 
 }

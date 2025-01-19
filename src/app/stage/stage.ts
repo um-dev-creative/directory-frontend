@@ -1,9 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
-import {App} from '@app/app';
 import {JwtPipe} from '@shared/services/jwt.pipe';
-import {DirectoryFrontendConst} from '@shared/app.const';
+import {HeaderService} from '@app/header/header.service';
+import {HeaderType} from '@shared/constants/header-type';
+import {SessionStoreService} from '@shared/signals/session/session-store.service';
+
+interface OnAfterViewInit {
+}
 
 /**
  * Main stage component
@@ -17,24 +21,29 @@ import {DirectoryFrontendConst} from '@shared/app.const';
   animations: [],
   providers: [JwtPipe]
 })
-export class Stage implements OnInit, AfterViewInit {
-  private readonly directoryFrontendConst = DirectoryFrontendConst;
+export class Stage implements OnInit, OnAfterViewInit {
 
-  /**
-   * Change detector reference
-   * @private
-   */
-  protected changeDetectorRefs = inject(ChangeDetectorRef);
+  private readonly headerService: HeaderService = inject(HeaderService);
+  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
+  private readonly changeDetectorRefs = inject(ChangeDetectorRef);
 
-  constructor(private readonly appComponent: App) {
+
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.appComponent.changeHeaderSimple(this.directoryFrontendConst.HeaderOption.SIMPLE_HEADER_DISABLED);
+    this.processSessionData();
   }
 
-  ngAfterViewInit(): void {
-    console.info('Stage component initialized');
+  private processSessionData(): void  {
+    let session = this.sessionStoreService.session;
+    if (session.token) {
+      this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+      console.debug('User is authenticated');
+    } else {
+      this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+    }
     this.changeDetectorRefs.detectChanges();
   }
+
 }

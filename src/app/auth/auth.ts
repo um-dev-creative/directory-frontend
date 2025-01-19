@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {countries, Country, Month, months} from '@shared/data/common';
 import {Examples, getExampleNumber, parsePhoneNumberFromString, PhoneNumber} from 'libphonenumber-js';
-import examples from 'libphonenumber-js/examples.mobile.json';
 import {UserClient} from '@app/user/user.client';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -12,15 +11,18 @@ import {App} from '@app/app';
 import {AlertService} from '@shared/services/alert.service';
 import {AuthClient} from '@app/auth/auth.client';
 import {LoadingService} from '@shared/services/loading.service';
-import {SessionStoreService} from '@shared/store/session-store.service';
-import {SessionData, UserAuth} from '@shared/state/session.state';
+import {SessionData, UserAuth} from '@shared/signals/session/session.state';
 import {JwtPipe} from '@shared/services/jwt.pipe';
 import {Store} from '@ngrx/store';
 import {Router} from '@angular/router';
-import {loadSession} from '@shared/state/session.action';
+import {loadSession} from '@shared/signals/session/session.action';
 import {DFC} from '@shared/app.const';
 import {INITIAL_LOGIN_DATA, LoginData} from '@shared/models/login-data.model';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {HeaderService} from '@app/header/header.service';
+import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import examples from 'libphonenumber-js/examples.mobile.json';
+import {HeaderType} from '@shared/constants/header-type';
 
 /**
  * Component for handling user authentication.
@@ -50,12 +52,6 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly subject$: Subject<void> = new Subject<void>();
 
   /**
-   * Alert services
-   * @type {AlertService}
-   */
-  private readonly alertService: AlertService = inject(AlertService);
-
-  /**
    * User client services
    * @type {AuthClient}
    */
@@ -66,6 +62,18 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @type {Store<{ session: SessionData }>}
    */
   private readonly store: Store<{ session: SessionData }> = inject(Store);
+
+  /**
+   * Header services for changing the header type
+   * @type {HeaderService}
+   */
+  private readonly headerService: HeaderService = inject(HeaderService);
+
+  /**
+   * Alert services
+   * @type {AlertService}
+   */
+  private readonly alertService: AlertService = inject(AlertService);
 
   /**
    * Store services for session data management
@@ -224,7 +232,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   };
 
   /**
-   * Dropdown state for country and month dropdowns
+   * Dropdown signals for country and month dropdowns
    * @type {{country: boolean, month: boolean}}
    */
   protected dropdownState: { country: boolean; month: boolean; } = {
@@ -257,7 +265,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Lifecycle hook that is called after the component's view has been fully initialized.
    */
   ngOnInit(): void {
-    this.appComponent.changeHeaderSimple(DFC.HeaderOption.SIMPLE_HEADER_ENABLED);
+    this.headerService.setHeaderType(HeaderType.CENTER_HEADER);
   }
 
   /**
@@ -269,11 +277,11 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   }
 
   /**
-   * Toggles the dropdown state for the specified type.
+   * Toggles the dropdown signals for the specified type.
    * @param type - The type of dropdown to toggle ('country' or 'month').
    */
   toggleDropdown(type: 'country' | 'month'): void {
-    // Cierra otros dropdowns antes de abrir el seleccionado
+    // Close the other dropdown if it is open and open the specified dropdown
     Object.keys(this.dropdownState).forEach((key) => {
       this.dropdownState[key as 'country' | 'month'] = key === type ? !this.dropdownState[key] : false;
     });
@@ -289,7 +297,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.phoneNumber = '';
     this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
-    console.log('Country selected:', country);
+    console.debug('Country selected:', country);
   }
 
   /**
@@ -300,7 +308,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.birthMonth = month.number;
     this.selectedMonth = month.abbr;
     this.dropdownState.month = false;
-    console.log('Month selected:', month);
+    console.debug('Month selected:', month);
   }
 
   /**
@@ -350,7 +358,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         };
         this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
           next: (response: any) => {
-            console.log('User created:', response);
+            console.debug('User created:', response);
           },
           error: (error: any) => {
             console.error('Error creating user:', error);
@@ -360,7 +368,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         console.error('Invalid user data:', userToRegister);
       }
     } else {
-      console.log('Login Data:', this.loginData);
+      console.debug('Login Data:', this.loginData);
       this.authenticateUser(this.loginData.email, this.loginData.password);
     }
   }
@@ -466,7 +474,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
     this.isRegistrationFormValid = userToValidate.isValid() && this.isFullDateValid && this.isEmailValid && this.isPasswordValid && this.isValidPhoneNumber;
 
-    console.log('Is Registration Form Valid:', this.isRegistrationFormValid);
+    console.debug('Is Registration Form Valid:', this.isRegistrationFormValid);
   }
 
   /**
@@ -518,8 +526,8 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
               this.sessionData = {userAuth: userAuth, token: decodedToken?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData)
               console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
-              this.appComponent.changeHeaderSimple(DFC.HeaderOption.SIMPLE_HEADER_DISABLED);
-              this.router.navigate(['stage']);
+              this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+              this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
             }
           }
           this.loader.hide();

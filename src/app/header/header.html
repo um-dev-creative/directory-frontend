@@ -18,11 +18,11 @@
         src="/assets/images/latin_hub_logo_v1.svg"
         alt="Latin Hub Logo"
         class="tw-w-auto"
-        [class]="isSimple ? 'tw-h-6 sm:tw-h-5' : 'tw-h-8 sm:tw-h-6'"
+        [class]="validateHeader(HeaderType.CENTER_HEADER) ? 'tw-h-6 sm:tw-h-5' : 'tw-h-8 sm:tw-h-6'"
       >
     </a>
   </div>
-  @if (!isSimple) {
+  @if (validateHeader(HeaderType.GENERAL_HEADER) || validateHeader(HeaderType.USER_AUTH_HEADER)) {
     <!-- EJEMPLO: Buscador visible en pantallas grandes -->
     <div class="
     tw-w-[90%]
@@ -32,7 +32,7 @@
       <app-search></app-search>
     </div>
     <div class="tw-flex tw-items-center tw-gap-4">
-      @if (isAuthenticated){
+      @if (validateHeader(HeaderType.USER_AUTH_HEADER)){
         <div class="tw-relative">
           <button
             class="tw-relative tw-flex tw-rounded-full tw-bg-gray-100 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-300"
@@ -53,7 +53,7 @@
             -->
           </button>
         </div>
-      } @else {
+      } @else if (validateHeader(HeaderType.GENERAL_HEADER)) {
         <!-- Botón de inicio de sesión -->
         <button class="
         tw-font-bold
@@ -237,7 +237,7 @@
           </ul>
         </nav>
       }@else {
-        @if (isAuthenticated) {
+        @if (validateHeader(HeaderType.USER_AUTH_HEADER)){
           <div class="tw-border-b" role="none">
             <div
               class="tw-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700"

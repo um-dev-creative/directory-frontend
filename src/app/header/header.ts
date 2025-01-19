@@ -1,10 +1,10 @@
 import {
+  afterRenderEffect,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
-  Input,
   OnDestroy,
   OnInit,
   Renderer2
@@ -13,21 +13,23 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
 import {Search} from '@app/search/search';
-import {SessionStoreService} from '@shared/store/session-store.service';
 import {JwtPipe} from '@shared/services/jwt.pipe';
-import {SessionData} from '@shared/state/session.state';
+import {SessionData} from '@shared/signals/session/session.state';
 import {Store} from '@ngrx/store';
+import {DFC} from '@shared/app.const';
+import {HeaderType} from '@shared/constants/header-type';
+import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import {HeaderService} from '@app/header/header.service';
 
 /**
  * Header component
  */
 @Component({
   selector: 'app-header',
-  standalone: true, // Use standalone components for modularity
   imports: [
     CommonModule,
     RouterModule,
@@ -42,7 +44,8 @@ import {Store} from '@ngrx/store';
   providers: [JwtPipe]
 })
 export class Header implements OnInit, OnDestroy, AfterViewInit {
-  @Input() isSimple: boolean = false;
+  headerType$: Observable<HeaderType>;
+  headerType: HeaderType | undefined;
   isOpaque = false; // Controla si el header es opaco
   offset = 50;
   isMobile = false;
@@ -59,6 +62,8 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly store: Store<{ session: SessionData }> = inject(Store);
   protected sessionData: SessionData | undefined;
+  protected readonly DFC = DFC;
+  protected readonly HeaderType = HeaderType;
 
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
@@ -68,15 +73,28 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(
+    private readonly headerService: HeaderService,
     private readonly renderer: Renderer2,
-    private readonly breakpointObserver: BreakpointObserver,
-    private readonly cdr: ChangeDetectorRef
+    private readonly breakpointObserver: BreakpointObserver
   ) {
+    this.headerType$ = this.headerService.headerType$;
+    this.headerType$.subscribe(headerType => {
+      this.headerType = headerType;
+      this.changeDetectorRefs.markForCheck();
+    });
   }
 
   ngOnInit(): void {
-    // Configura el evento scroll
     this.sessionStoreService.loadSessionData();
+    this.scrollListener = this.renderer.listen('window', 'scroll', () => {
+      const scrollY = window.scrollY;
+      const shouldBeOpaque = scrollY > this.offset;
+      if (this.isOpaque !== shouldBeOpaque) {
+        this.isOpaque = shouldBeOpaque;
+        this.changeDetectorRefs.markForCheck(); // Optimiza la detección de cambios
+      }
+    });
+    // Configura el evento scroll
     this.store.select('session').subscribe(sessionData => {
       this.sessionData = sessionData;
       if (this.sessionData?.userAuth) {
@@ -84,18 +102,10 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
         this.userLogger.alias = this.sessionData.userAuth.alias;
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
+        this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
         console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
       }
     });
-    this.scrollListener = this.renderer.listen('window', 'scroll', () => {
-      const scrollY = window.scrollY;
-      const shouldBeOpaque = scrollY > this.offset;
-      if (this.isOpaque !== shouldBeOpaque) {
-        this.isOpaque = shouldBeOpaque;
-        this.cdr.markForCheck(); // Optimiza la detección de cambios
-      }
-    });
-    ;
     this.setupBreakpointObserver();
   }
 
@@ -115,30 +125,22 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       .observe([Breakpoints.XSmall, Breakpoints.Small])
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
-        console.log('BreakpointObserver result:', result);
+        console.debug('BreakpointObserver result:', result);
         this.isMobile = result.matches;
 
         if (!this.isMobile && this.isMenuOpen) {
           this.isMenuOpen = false;
-          console.log('The screen is not mobile, closing the menu.');
-          this.cdr.detectChanges(); // Forzar detección de cambios
+          console.debug('The screen is not mobile, closing the menu.');
+          this.changeDetectorRefs.detectChanges(); // Forzar detección de cambios
         }
       });
-  }
-
-  /**
-   * Establecer si el header es simple
-   */
-  setSimple(value: boolean): void {
-    this.isSimple = value;
-    this.cdr.detectChanges(); // Forzar detección de cambios
   }
 
   /**
    * Alternar visibilidad del menú móvil
    */
   openMenu() {
-    console.log('User clicked the menu');
+    console.debug('User clicked the menu');
     this.isMenuOpen = !this.isMenuOpen;
   }
 
@@ -160,19 +162,13 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
 
   logout(): void {
     this.sessionStoreService.clearSessionData();
-    console.log('User logged out');
-    this.router.navigate(['/stage']);
+    this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+    console.debug('User logged out');
+    this.router.navigate([DFC.RelativePath.STAGE_PATH]);
   }
 
   signup() {
-    console.log('signup click it'); // Mensaje de consola para depuración.
-  }
-
-  /**
-   * Devuelve el estado actual de autenticación.
-   */
-  get isAuthenticated(): boolean {
-    return (this.sessionData?.token !== null && this.sessionData?.token !== undefined && this.sessionData?.token !== '');
+    console.debug('signup click it'); // Mensaje de consola para depuración.
   }
 
   get dynamicClasses(): string {
@@ -180,13 +176,18 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get layoutClasses(): string {
-    return this.isSimple
+    return this.validateHeader(HeaderType.CENTER_HEADER)
       ? 'tw-justify-center tw-py-2 tw-px-2'
       : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3';
   }
 
   ngAfterViewInit(): void {
-    console.log(`Header component initialized :: ${this.sessionData?.token}`);
+    console.debug(`Header component initialized :: ${this.sessionData?.token}`);
     this.changeDetectorRefs.detectChanges();
+  }
+
+  validateHeader(headerType: HeaderType): boolean {
+    console.debug('Validating header type:', this.headerType);
+    return (this.headerType as HeaderType) === headerType;
   }
 }

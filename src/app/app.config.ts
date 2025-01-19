@@ -7,9 +7,9 @@ import {HttpClient, provideHttpClient, withFetch} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideStore} from '@ngrx/store';
-import {sessionReducer} from '@shared/state/session.reducer';
+import {sessionReducer} from '@shared/signals/session/session.reducer';
 import {provideEffects} from '@ngrx/effects';
-import {SessionEffects} from '@shared/state/session-effects';
+import {SessionEffects} from '@shared/signals/session/session-effects';
 
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
-    provideStore({ session: sessionReducer }),
-    provideEffects([SessionEffects])
+    provideStore({ session: sessionReducer}),
+    provideEffects([SessionEffects]),
   ]
 };

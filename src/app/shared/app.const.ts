@@ -17,15 +17,9 @@ export class DirectoryFrontendConst {
     DIRECTORY_BACKEND_SERVICE_BASE_URL: '/api/v1',
     BACKBONE_SERVICE_BASE_URL: 'backbone/api',
     AUTH_PATH: '/auth',
-    USERS_PATH: '/users'
-  };
-
-  /**
-   * Options for enabling or disabling simple headers.
-   */
-  public static readonly HeaderOption = {
-    SIMPLE_HEADER_ENABLED: true,
-    SIMPLE_HEADER_DISABLED: false
+    USERS_PATH: '/users',
+    STAGE_PATH: '/stage',
+    STAGE_UI_PATH: 'stage'
   };
 
   /**
@@ -93,6 +87,7 @@ export class DirectoryFrontendConst {
     }
   };
 }
+
 export const DFC = DirectoryFrontendConst;
 // tslint:disable-next-line:no-namespace
 export namespace AppConstants {

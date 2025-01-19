@@ -1,6 +1,6 @@
 import {CanActivateFn} from '@angular/router';
 import {Store} from "@ngrx/store";
-import {SessionData} from "@shared/state/session.state";
+import {SessionData} from "@shared/signals/session/session.state";
 import {inject} from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
