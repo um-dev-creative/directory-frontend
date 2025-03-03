@@ -1,0 +1,69 @@
+<div class="tw-my-4">
+  <div>
+    <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Tendencia</h2>
+  </div>
+  <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto">
+    <!-- Botón Izquierdo -->
+    <button
+      (mouseenter)="startScroll('left')"
+      (mouseleave)="stopScroll()"
+      class="tw-absolute tw-left-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition tw-hidden md:tw-flex"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+
+    <!-- Contenedor del Carrusel -->
+    <div #carousel class="overflow-container tw-overflow-x-auto tw-hide-scrollbar tw-scroll-smooth tw-w-full px-0 md:tw-px-[40px]">
+      <ul class="tw-flex tw-h-[410px] tw-w-max">
+        @for (offer of offers; track offer) {
+          <li class="tw-w-[320px] tw-h-[404px] tw-flex-shrink-0 tw-rounded-2xl tw-bg-white tw-shadow-md hover:tw-shadow-md tw-transition tw-flex tw-flex-col tw-items-center tw-justify-between tw-p-[10px] tw-mr-8">
+            <!-- Imagen principal -->
+            <div class="shake-hover tw-relative tw-inline-block tw-w-[300px] tw-h-[246px] tw-overflow-hidden tw-rounded-[8.5px] tw-mx-auto"
+                 [style.backgroundImage]="'url(' + offer.image + ')'"
+                 style="background-size: cover; background-position: center;">
+              <!-- Etiqueta (pill) superior izquierda -->
+              <div class="tw-absolute tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">
+                Online
+              </div>
+            </div>
+            <!-- Contenido debajo de la imagen -->
+            <div class="tw-flex tw-items-center tw-gap-4 tw-w-full tw-px-4 tw-py-2">
+              <!-- Logo de la Marca -->
+              <div class="tw-flex tw-items-center tw-justify-center tw-w-20 tw-h-20 tw-border tw-border-gray-300 tw-rounded-full">
+                <img [src]="offer.brandLogo" alt="brand-logo" class="tw-w-[54px] tw-h-[54px] tw-object-contain">
+              </div>
+
+              <!-- Contenedor de Texto -->
+              <div class="tw-flex tw-flex-col tw-flex-1">
+                <h3 class="tw-text-lg tw-font-bold tw-text-black">{{ offer.title }}</h3>
+                <p class="tw-text-sm tw-text-gray-600">{{ offer.description }}</p>
+              </div>
+            </div>
+
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Botón Derecho -->
+    <button
+      (mouseenter)="startScroll('right')"
+      (mouseleave)="stopScroll()"
+      class="tw-absolute tw-right-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition tw-hidden md:tw-flex"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+  </div>
+  <div class="tw-flex tw-justify-center tw-mt-[30px]">
+    <button class="tw-bg-transparent tw-border tw-border-gray-400 tw-text-gray-700 tw-font-semibold tw-py-2 tw-px-6 tw-rounded-full hover:tw-border-gray-600 hover:tw-text-gray-900 tw-transition tw-w-[228px] md:tw-w-[280px] tw-my-2">
+      VER TODO
+    </button>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,16 @@
+<div class="tw-overflow-auto tw-flex tw-scrollbar-hide tw-w-full tw-justify-between">
+  @for (image of cards; track image.src) {
+    <div [class]="$last ?
+         'tw-flex-shrink-0 tw-w-[389px] tw-h-[180px] tw-rounded-[15px] tw-shadow-md' :
+         'tw-flex-shrink-0 tw-w-[389px] tw-h-[180px] tw-rounded-[15px] tw-shadow-md tw-mr-2'"
+    >
+      <img
+        [src]="image.src"
+        [alt]="image.alt"
+        class="tw-w-full tw-h-full tw-object-cover tw-object-center tw-rounded-lg"
+        loading="lazy"
+        [attr.fetchpriority]="$index === 0 ? 'high' : 'low'"
+      >
+    </div>
+  }
+</div>

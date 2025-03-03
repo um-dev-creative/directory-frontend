@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "ASUS Laptop",
+    "image": "https://storage.spccard.ca/EN_ASUS_ProductTile_103024.png",
+    "alt": "Homepage Partner Products - ASUS - EN",
+    "price": 999.99,
+    "currency": "USD",
+    "link": "https://asus.com"
+  },
+  {
+    "id": 2,
+    "name": "Muji Stationery",
+    "image": "https://storage.spccard.ca/EN_Muji_ProductTile_103024.png",
+    "alt": "Home Page Partner Product: Muji - ongoing - EN",
+    "price": 19.99,
+    "currency": "USD",
+    "link": "https://muji.com"
+  },
+  {
+    "id": 3,
+    "name": "New Balance Sneakers",
+    "image": "https://storage.spccard.ca/EN_New%20Balance_ProductTile_103024-2.png",
+    "alt": "Home Page Partner Product: New Balance - ongoing - EN",
+    "price": 129.99,
+    "currency": "USD",
+    "link": "https://newbalance.com"
+  }
+]

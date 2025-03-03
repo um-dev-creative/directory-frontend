@@ -1,0 +1,24 @@
+.tw-hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Oculta el scrollbar en navegadores basados en WebKit */
+}
+
+.tw-hide-scrollbar {
+  -ms-overflow-style: none; /* Oculta el scrollbar en IE y Edge */
+  scrollbar-width: none; /* Oculta el scrollbar en Firefox */
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-hover:hover {
+  animation: shake 0.5s ease-in-out;
+}

@@ -1,0 +1,45 @@
+.clickable-pointer {
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+}
+
+.bounce-hover {
+  transition: all 0.3s ease-in-out; /* Transición suave para otros cambios */
+}
+
+.bounce-hover:hover {
+  animation: bounce 0.5s ease-in-out infinite; /* Animación al hacer hover */
+}
+
+.zoom-hover {
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoom-hover:hover {
+  transform: scale(1.1); /* Incrementa un 10% el tamaño */
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-hover:hover {
+  animation: shake 0.5s ease-in-out;
+}
+

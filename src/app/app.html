@@ -1,5 +1,8 @@
 <app-header></app-header>
-  <div [@routeAnimations]="getRouteAnimationData(outlet)" class="tw-relative tw-w-full tw-h-screen">
+<div class="tw-flex tw-flex-col tw-h-screen">
+  <div [@routeAnimations]="getRouteAnimationData(outlet)" class="tw-flex-1 tw-relative tw-w-full">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-<app-footer></app-footer>
+
+  <app-footer></app-footer>
+</div>
