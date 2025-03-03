@@ -13,11 +13,16 @@ const oauthclient = require('../proxy/oauth-client');
 const backboneclient = require('../proxy/backbone-client');
 const logger = appConfig.getLoggerApp();
 const {v4: uuidv4} = require('uuid');
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
+const CryptoJS = require("crypto-js");
+const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
+const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
+// const salt = bcrypt.genSaltSync(10);
 const Ajv = require('ajv');
 
+const APPLICATION_ID = process.env.APPLICATION_ID;
 const API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH = process.env.API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH;
-const API_SERVICE_DIRECTORY_MAP = JSON.parse(process.env.API_SERVICE_DIRECTORY_MAP);
+const API_SERVICE_DIRECTORY_MAP =   JSON.parse(process.env.API_SERVICE_DIRECTORY_MAP);
 const OAUTH_AUTHENTICATION_TYPE = process.env.AUTH_AUTHENTICATION_TYPE;
 const OAUTH_CLIENT_ID = process.env.AUTH_CLIENT_ID;
 const OAUTH_CLIENT_SECRET = process.env.AUTH_CLIENT_SECRET;
@@ -138,7 +143,7 @@ let getApiEndpoint = function (path) {
  * @returns {Object} - The backbone client instance.
  */
 let getBackboneClient = function () {
-  let backboneApiURL = BACKBONE_API_SERVICE_MAP['backbone'] + '/backbone/v1/session';
+  let backboneApiURL = BACKBONE_API_SERVICE_MAP['backbone'] + '/backbone/api/v1/session/token';
   if (backboneClient) {
     return backboneClient;
   }
@@ -160,7 +165,7 @@ let getOauthClient = function (oauthClientConfig) {
 };
 
 /**
- * Retrieves the session token for the backbone service.
+ * Retrieves the session token for the backbone services.
  *
  * @param req - The request object.
  * @returns {Promise<*>} - The session token.
@@ -169,13 +174,14 @@ const backboneSessionToken = async (req) => {
   let backboneSession = null;
   if (req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH) {
     const backboneToken = await getOauthClient(backboneOauthClientConfig).getBearerToken();
-    backboneSession = await getBackboneClient().getToken(req.body.alias, bcrypt.hashSync(req.body.password, 10), backboneToken);
+    backboneSession = await getBackboneClient().getToken(req.body.alias,
+      CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(), APPLICATION_ID, backboneToken);
   }
   return backboneSession?.token;
 };
 
 /**
- * Proxies API requests to the appropriate backend service.
+ * Proxies API requests to the appropriate backend services.
  *
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
@@ -222,8 +228,8 @@ const proxyApi = async (req, res, next) => {
  * Constructs the basic headers for the proxied request.
  *
  * @param {Object} req - The request object.
- * @param jobsToken - The token for the jobs service.
- * @param backboneSession - The session token for the backbone service.
+ * @param jobsToken - The token for the jobs services.
+ * @param backboneSession - The session token for the backbone services.
  * @param {string} defaultAccept - The default Accept header value.
  * @param {string} defaultContentType - The default Content-Type header value.
  * @returns {Object} - The constructed headers.
@@ -231,6 +237,10 @@ const proxyApi = async (req, res, next) => {
 const getRequestHeader = function (req, jobsToken, backboneSession, defaultAccept, defaultContentType) {
   let headers = getBasicHeader(req, jobsToken, backboneSession, defaultAccept);
   const contentType = req.header(CONTENT_TYPE);
+  if (req.url === '/api/v1/users' || req.url === '/api/v1/auth/token' && req.method === 'POST') {
+    // req.body['password'] = bcrypt.hashSync(req.body['password'], salt);
+    req.body['password'] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
+  }
   if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
     headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
   } else {
@@ -242,8 +252,8 @@ const getRequestHeader = function (req, jobsToken, backboneSession, defaultAccep
 /**
  * Constructs the basic headers for the proxied request.
  * @param req - The request object.
- * @param jobsToken - The token for the jobs service.
- * @param backboneSession - The session token for the backbone service.
+ * @param jobsToken - The token for the jobs services.
+ * @param backboneSession - The session token for the backbone services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */

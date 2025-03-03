@@ -1,7 +1,9 @@
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
+import {DirectoryFrontendConst} from '@shared/app.const';
 
 export class ServiceTemplate {
+
   public handlerError(errorResponse: HttpErrorResponse | ErrorEvent): any {
     if (errorResponse instanceof ErrorEvent) {
       console.error(errorResponse);

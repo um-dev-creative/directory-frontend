@@ -1,40 +1,41 @@
 {
+  "": "",
   "menu_header": {
-    "title1": "Directory",
-    "title2": "Site",
-    "user_icon": {
-      "title": "User",
-      "tooltip": "User",
-      "menu": {
-        "saved": {
-          "title": "Saved",
-          "tooltip": "Saved sites"
-        },
-        "profile": {
-          "title": "Profile",
-          "tooltip": "User profile settings"
-        },
-        "business": {
-          "title": "My Business",
-          "tooltip": "Managed businesses"
-        },
-        "support": {
-          "title": "Contact Support",
-          "tooltip": "Contact & Support"
-        },
-        "logout": {
-          "title": "Logout",
-          "tooltip": "Session logout"
-        }
-      }
+    "search": {
+      "placeholder": "Search",
+      "title": "Search"
     },
     "signing_button": {
       "title": "JOIN NOW",
       "tooltip": "JOIN NOW"
     },
-    "search": {
-      "title": "Search",
-      "placeholder": "Search"
+    "title1": "Directory",
+    "title2": "Site",
+    "user_icon": {
+      "menu": {
+        "business": {
+          "title": "My Business",
+          "tooltip": "Managed businesses"
+        },
+        "logout": {
+          "title": "Logout",
+          "tooltip": "Session logout"
+        },
+        "profile": {
+          "title": "Profile",
+          "tooltip": "User profile settings"
+        },
+        "saved": {
+          "title": "Saved",
+          "tooltip": "Saved sites"
+        },
+        "support": {
+          "title": "Contact Support",
+          "tooltip": "Contact & Support"
+        }
+      },
+      "title": "User",
+      "tooltip": "User"
     }
   }
 }

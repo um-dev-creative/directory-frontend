@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, inject, OnInit, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -35,7 +35,10 @@ export class Banner implements OnInit {
     categories: [] as Category[],
     banners: {},
   };
-  constructor(private http: HttpClient) {}
+
+  private readonly httpClient: HttpClient = inject(HttpClient);
+
+  constructor() {}
 
   get title(): string {
     return this.bannerData?.title || '';
@@ -51,7 +54,7 @@ export class Banner implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get<{ banner: BannerData }>('assets/data/banner.json')
+    this.httpClient.get<BannerData>('assets/data/banner.json')
       .subscribe({
         next: (data) => {
           this.bannerData = data.banner;

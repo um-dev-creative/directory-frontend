@@ -1,0 +1,7 @@
+export enum HeaderType {
+  CENTER_HEADER ,
+  SIMPLE_HEADER,
+  MINIMAL_HEADER,
+  USER_AUTH_HEADER,
+  GENERAL_HEADER
+}
