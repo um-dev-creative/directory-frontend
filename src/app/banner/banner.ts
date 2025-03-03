@@ -1,28 +1,39 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
+interface Category {
+  name: string;
+  image: string;
+}
+interface BannerImage {
+  desktop: string;
+  tablet: string;
+  mobile: string;
+  alt: string;
+}
 interface BannerData {
-  banner: {
-    title: string;
-    categories: Array<{
-      name: string;
-      image: string;
-    }>;
+  title: string;
+  categories: Category[];
+  banners: {
+    top?: BannerImage;
+    mid?: BannerImage;
   };
 }
-
 @Component({
   selector: 'app-banner',
   templateUrl: './banner.html',
   styleUrls: ['./banner.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule]
 })
 export class Banner implements OnInit {
+  @Input() bannerType?: 'top' | 'mid';
+
   bannerData: BannerData = {
-    banner: {
-      title: '',
-      categories: []
-    }
+    title: '',
+    categories: [] as Category[],
+    banners: {},
   };
 
   private readonly httpClient: HttpClient = inject(HttpClient);
@@ -30,21 +41,27 @@ export class Banner implements OnInit {
   constructor() {}
 
   get title(): string {
-    return this.bannerData?.banner?.title || '';
+    return this.bannerData?.title || '';
   }
-  get categories(): Array<{ name: string; image: string }> {
-    return this.bannerData?.banner?.categories || [];
+
+  get categories(): Category[] {
+    return this.bannerData?.categories || [];
+  }
+
+  get currentBanner(): BannerImage | null {
+    if (!this.bannerType || !this.bannerData?.banners) return null;
+    return this.bannerData.banners[this.bannerType] || null;
   }
 
   ngOnInit() {
     this.httpClient.get<BannerData>('assets/data/banner.json')
       .subscribe({
         next: (data) => {
-          this.bannerData = data;
+          this.bannerData = data.banner;
         },
         error: (error) => {
           console.error('Error loading banner data:', error);
-        }
+        },
       });
   }
 }

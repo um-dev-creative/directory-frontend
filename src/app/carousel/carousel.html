@@ -1,0 +1,83 @@
+<div class="tw-relative tw-w-full tw-overflow-hidden tw-group tw-pb-4"
+     (mouseenter)="pauseAutoplay()"
+     (mouseleave)="resumeAutoplay()">
+  <!-- Carrusel -->
+  <div class="tw-flex tw-transition-transform tw-duration-500 tw-ease-in-out"
+       [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+    <div *ngFor="let slide of slides" class="tw-flex-shrink-0 tw-w-full">
+      <picture>
+        <!-- Desktop -->
+        <img
+          class="tw-hidden lg:tw-block tw-rounded-[15px] tw-shadow-md"
+          [src]="slide.desktop"
+          [alt]="slide.alt"
+        >
+        <!-- Tablet -->
+        <img
+          class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-[15px] tw-shadow-md"
+          [src]="slide.tablet"
+          [alt]="slide.alt"
+        >
+        <!-- Mobile -->
+        <img
+          class="tw-block md:tw-hidden tw-rounded-[15px] tw-shadow-md"
+          [src]="slide.mobile"
+          [alt]="slide.alt"
+        >
+      </picture>
+    </div>
+  </div>
+
+  <!-- Controles y paginación -->
+  <div class="tw-absolute tw-bottom-0 tw-w-full tw-flex tw-justify-center tw-items-center tw-space-x-4 tw-p-4">
+    <div class="tw-flex tw-items-center tw-space-x-3">
+      <!-- Botón Anterior -->
+      <button
+        (click)="prevSlide()"
+        class="tw-bg-white/90 tw-p-2 tw-rounded-md tw-shadow-lg hover:tw-bg-white tw-transition-colors tw-duration-200"
+        aria-label="Previous slide"
+      >
+        <svg
+          class="tw-w-6 tw-h-6 tw-text-gray-600 hover:tw-text-gray-800 tw-transition-colors"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+
+      <!-- Paginación -->
+      <div class="tw-flex tw-space-x-3">
+        <button
+          *ngFor="let slide of slides; let i = index"
+          (click)="goToSlide(i)"
+          [class]="'tw-w-3 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300 ' +
+                (currentSlide === i ? 'tw-bg-white tw-scale-110' : 'tw-bg-white/50 hover:tw-bg-white/75')"
+          [attr.aria-label]="'Go to slide ' + (i + 1)"
+        ></button>
+      </div>
+
+      <!-- Botón Siguiente -->
+      <button
+        (click)="nextSlide()"
+        class="tw-bg-white/90 tw-p-2 tw-rounded-md tw-shadow-lg hover:tw-bg-white tw-transition-colors tw-duration-200"
+        aria-label="Next slide"
+      >
+        <svg
+          class="tw-w-6 tw-h-6 tw-text-gray-600 hover:tw-text-gray-800 tw-transition-colors"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+
+      </button>
+    </div>
+  </div>
+</div>

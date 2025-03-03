@@ -1,45 +1,98 @@
-<!--section class="tw-bg-[#faf8f8] tw-w-full tw-max-w-[1200px] tw-mx-auto tw-rounded-[15px] tw-overflow-hidden tw-shadow-sm">
-  <div class="tw-container tw-mx-auto">
-    <h2 class="tw-text-2xl tw-font-bold tw-text-left tw-mb-3">{{ title }}</h2>
-
-    <div class="tw-flex tw-overflow-x-auto tw-gap-6 tw-py-8 tw-scrollbar-hide">
-      @for (product of categories; track product) {
-        <div class="tw-flex-shrink-0 tw-flex tw-flex-col tw-items-center">
-
-          <div class="tw-w-24 tw-h-24 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden tw-shadow-md">
-            <img
-              [src]="product.image"
-              [alt]="product.name"
-              class="tw-w-full tw-h-full tw-object-cover"
-            />
+<!-- Categories section -->
+<!--
+@if (categories.length) {
+  <section class="tw-bg-[#faf8f8] tw-w-full tw-max-w-[1200px] tw-mx-auto tw-rounded-[15px] tw-overflow-hidden tw-shadow-sm">
+    <div class="tw-container tw-mx-auto">
+      <h2 class="tw-text-2xl tw-font-bold tw-text-left tw-mb-3">{{ title }}</h2>
+      <div class="tw-flex tw-overflow-x-auto tw-gap-6 tw-py-8 tw-scrollbar-hide">
+        @for (product of categories; track product) {
+          <div class="tw-flex-shrink-0 tw-flex tw-flex-col tw-items-center">
+            <div class="tw-w-24 tw-h-24 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden tw-shadow-md">
+              <img
+                [src]="product.image"
+                [alt]="product.name"
+                class="tw-w-full tw-h-full tw-object-cover"
+              />
+            </div>
+            <span class="tw-mt-2 tw-text-sm tw-font-medium">{{ product.name }}</span>
           </div>
-
-          <span class="tw-mt-2 tw-text-sm tw-font-medium">{{ product.name }}</span>
-        </div>
-      }
+        }
+      </div>
     </div>
-  </div>
-</section-->
-
-<div class="tw-py-4 tw-bg-gray-50 tw-flex tw-justify-center">
-  <div>
-    <!-- Desktop -->
-    <img
-      class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
-      src="https://storage.spccard.ca/W_OfferBanner_FrostWeek_12202024_EN.png"
-      alt="SPC's Winter Campus Tour"
-    >
-    <!-- Tablet -->
-    <img
-      class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
-      src="https://storage.spccard.ca/T_OfferBanner_FrostWeek_12202024_EN.png"
-      alt="SPC's Winter Campus Tour"
-    >
-    <!-- Mobile -->
-    <img
-      class="tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
-      src="https://storage.spccard.ca/M_OfferBanner_FrostWeek_12202024_EN.png"
-      alt="SPC's Winter Campus Tour"
-    >
-  </div>
-</div>
+  </section>
+}
+-->
+<!-- Banner section -->
+@if (currentBanner) {
+  @switch (bannerType) {
+    @case ('top') {
+      <!--div class="tw-pb-4 tw-flex tw-justify-center tw-rounded-[15px]">
+        @for (offer of offers; track offer) {
+          <div>
+            <img
+              class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
+              [src]="offer.desktop"
+              [alt]="offer.alt"
+            >
+            <img
+              class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
+              [src]="offer.tablet"
+              [alt]="offer.alt"
+            >
+            <img
+              class="tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
+              [src]="offer.mobile"
+              [alt]="offer.alt"
+            >
+          </div>
+        }
+      </div-->
+      <div class="tw-pb-4 tw-flex tw-justify-center tw-rounded-[15px]">
+        <div>
+          <img
+            class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
+            [src]="currentBanner.desktop"
+            [alt]="currentBanner.alt"
+          >
+          <img
+            class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
+            [src]="currentBanner.tablet"
+            [alt]="currentBanner.alt"
+          >
+          <img
+            class="tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
+            [src]="currentBanner.mobile"
+            [alt]="currentBanner.alt"
+          >
+        </div>
+      </div>
+    }
+    @case ('mid') {
+      <div class="tw-flex tw-justify-center tw-items-center tw-rounded-[5px] tw-overflow-hidden tw-w-full tw-h-full">
+        <div class="clickable-pointer shake-hover tw-relative tw-w-full tw-h-full">
+          <a [routerLink]="['/auth']">
+            <img
+              class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
+              [src]="currentBanner.desktop"
+              [alt]="currentBanner.alt"
+            >
+          </a>
+          <a [routerLink]="['/auth']">
+            <img
+              class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
+              [src]="currentBanner.tablet"
+              [alt]="currentBanner.alt"
+            >
+          </a>
+          <a [routerLink]="['/auth']">
+            <img
+              class="tw-w-full tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
+              [src]="currentBanner.mobile"
+              [alt]="currentBanner.alt"
+            >
+          </a>
+        </div>
+      </div>
+    }
+  }
+}

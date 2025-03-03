@@ -1,0 +1,48 @@
+.marquee-container {
+  @apply tw-w-full tw-overflow-hidden; /* Contenedor principal ocupa todo el ancho */
+}
+
+.marquee-wrapper {
+  @apply tw-overflow-hidden tw-w-[1440px] tw-relative; /* Contenedor visible de 1440px */
+}
+
+.marquee-block {
+  @apply tw-relative tw-h-[60px] tw-box-border tw-relative tw-mt-[24px] tw-mb-[24px];
+}
+
+.marquee-inner {
+  @apply tw-flex tw-whitespace-nowrap tw-relative; /* Elementos alineados en una fila */
+  width: 2880px; /* Doble del contenedor visible */
+  animation: marquee 45s linear infinite; /* Desplazamiento continuo */
+}
+
+.marquee-content {
+  @apply tw-flex tw-whitespace-nowrap; /* Cada copia ocupa la mitad */
+  width: 1440px;
+}
+.marquee-content {
+  @apply tw-flex tw-items-center tw-justify-center tw-h-[52px];
+  /* Ajustar el ancho dinámicamente */
+  /*width: calc(var(--logo-px) * 2 * var(--number-of-items));*/
+  width: 1440px;
+}
+
+
+.marquee-item {
+  @apply tw-items-center tw-justify-center;
+  padding: 0.5rem;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0); /* Inicia desde el inicio */
+  }
+  100% {
+    transform: translateX(-1440px); /* Mueve el contenido visible hacia la izquierda */
+  }
+}
+
+/* Opcional: pausar la animación al hacer hover */
+.marquee-wrapper:hover .marquee-block .marquee-inner {
+  animation-play-state: paused;
+}

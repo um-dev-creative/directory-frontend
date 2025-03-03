@@ -1,0 +1,40 @@
+<div class="tw-w-full tw-my-6 tw-bg-white">
+  <div class="tw-max-w-screen-xl tw-mx-auto">
+    <div class="tw-w-full tw-overflow-x-auto tw-hide-scrollbar">
+      <div class="tw-flex tw-whitespace-nowrap tw-gap-4 md:tw-justify-center">
+        @for (product of products; track product) {
+          <div
+            class="shake-hover tw-flex-none tw-w-[310px] tw-h-[349px] tw-border tw-rounded-lg tw-bg-gray-100 tw-shadow-md hover:tw-shadow-lg tw-transition tw-flex tw-items-center tw-justify-center"
+          >
+            <img
+              [src]="product.image"
+              [alt]="product.alt"
+              class="tw-w-full tw-h-full tw-object-contain tw-rounded-md tw-my-1">
+          </div>
+        }
+      </div>
+    </div>
+    <div class="tw-mt-6 tw-text-center">
+      <button class="
+        tw-font-bold
+        tw-h-10
+        tw-text-sm
+        tw-shadow-lg
+        tw-shadow-indigo-500/40
+        tw-bg-red-500
+        tw-text-white
+        tw-rounded-full
+        tw-px-6
+        tw-py-2
+        tw-whitespace-nowrap
+        tw-min-w-[100px]
+        hover:tw-bg-red-600"
+      >
+        ¡Únete ya!
+      </button>
+      <p class="tw-mt-2 tw-text-sm tw-text-gray-500">
+        * For illustrative purposes only. Products, partners, and offers may vary & subject to change at any time without notice.
+      </p>
+    </div>
+  </div>
+</div>

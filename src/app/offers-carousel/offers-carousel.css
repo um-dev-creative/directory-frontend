@@ -1,0 +1,26 @@
+.overflow-container {
+  overflow-x: auto; /* Mantiene el scroll horizontal activo */
+  overflow-y: hidden; /* Oculta el scroll vertical si aparece */
+  -ms-overflow-style: none; /* Oculta el scroll en Edge */
+  scrollbar-width: none; /* Oculta el scroll en Firefox */
+}
+
+.overflow-container::-webkit-scrollbar {
+  display: none; /* Oculta el scroll en Chrome, Safari y Edge */
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-hover:hover {
+  animation: shake 0.5s ease-in-out;
+}

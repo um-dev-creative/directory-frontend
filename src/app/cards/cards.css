@@ -1,0 +1,14 @@
+.scrollbar-hide {
+  overflow: scroll; /* Activa el scroll explícitamente */
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Edge */
+}
+
+.scrollbar-hide {
+  overscroll-behavior: none; /* Evita el rebote */
+  touch-action: pan-y; /* Desactiva rebotes innecesarios en móviles */
+}

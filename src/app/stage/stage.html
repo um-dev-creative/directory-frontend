@@ -1,4 +1,4 @@
-<main class="tw-mt-16 sm:tw-mt-20 tw-relative">
+<main class="tw-relative tw-mx-auto">
   <!-- Imágenes de fondo visibles solo en pantallas grandes -->
   <div class="tw-hidden sm:tw-block">
     <img
@@ -14,80 +14,24 @@
          simplemente omite el bloque anterior o pon otra imagen si lo deseas -->
   </div>
   <!-- Contenedor central -->
-  <div class="tw-relative tw-max-w-3xl tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-mx-auto sm:tw-text-center">
-    <app-banner></app-banner>
-    <h1 class="tw-text-sm tw-leading-6 tw-font-semibold tw-text-sky-500">
-      Showcase
-    </h1>
-    <p class="tw-mt-6 tw-text-[2rem] sm:tw-text-[2.5rem] tw-leading-tight sm:tw-leading-none tw-font-bold tw-text-slate-900">
-      You can build anything with Tailwind CSS.
-    </p>
-    <p class="tw-mt-4 tw-text-base sm:tw-text-lg tw-text-slate-600">
-      Well not quite <em>anything</em>, like you can't build a spaceship with it.
-      But you can definitely build the website for the spaceship —
-      <a
-        class="tw-font-semibold tw-border-b tw-border-sky-300 tw-text-gray-900 hover:tw-border-b-2"
-        href="/showcase/nasa"
-      >NASA did</a
-      >.
-    </p>
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <app-banner bannerType="top"></app-banner>
+      <app-carousel/>
+      <app-cards/>
+    </div>
   </div>
   <!-- Lista de ítems -->
-  <ul
-    class="tw-grid tw-max-w-[26rem] sm:tw-max-w-[52.5rem] tw-mt-12 sm:tw-mt-20 tw-grid-cols-1
-               sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-mx-auto tw-gap-6 lg:tw-gap-y-8
-               xl:tw-gap-x-8 lg:tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8"
-  >
-    <!-- Ítem individual -->
-    <li
-      class="tw-group tw-relative tw-rounded-3xl tw-bg-slate-50 tw-p-6 hover:tw-bg-slate-100"
-    >
-      <div
-        class="tw-aspect-[672/494] tw-relative tw-rounded-md tw-overflow-hidden
-               tw-shadow-[0_2px_8px_rgba(15,23,42,0.08)] tw-bg-slate-200"
-      >
-        <img
-          alt=""
-          fetchpriority="high"
-          width="672"
-          height="494"
-          decoding="async"
-          class="tw-absolute tw-inset-0 tw-w-full tw-h-full"
-          src="/assets/images/example-image.jpg"
-        />
-        <div>
-          <video
-            preload="none"
-            muted
-            playsinline
-            class="tw-absolute tw-inset-0 tw-w-full tw-h-full [mask-image:radial-gradient(white,black)]"
-          >
-            <source
-              src="/assets/images/algolia.com.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div>
-      </div>
-      <div class="tw-flex tw-flex-wrap tw-items-center tw-mt-6">
-        <h2
-          class="tw-text-sm tw-leading-6 tw-font-semibold tw-text-slate-900
-                 group-hover:tw-text-sky-500"
-        >
-          <a href="/showcase/openai">
-            <span class="tw-absolute tw-inset-0 tw-rounded-3xl"></span>
-            OpenAI / ChatGPT
-          </a>
-        </h2>
-        <p
-          class="tw-w-full tw-flex-none tw-text-[0.8125rem]
-                 tw-leading-6 tw-text-slate-500"
-        >
-          Marketing website &amp; chat interface
-        </p>
-      </div>
-    </li>
-    <!-- Repite más ítems del mismo modo -->
-  </ul>
+  <div class="tw-relative tw-max-w-[1440px] tw-mx-auto">
+    <app-marquee/>
+    <app-banner bannerType="mid"></app-banner>
+  </div>
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <app-product-list/>
+      <app-offers-carousel/>
+      <app-promo-section/>
+    </div>
+  </div>
 </main>
 
