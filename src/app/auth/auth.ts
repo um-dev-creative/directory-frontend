@@ -359,6 +359,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
           next: (response: any) => {
             console.debug('User created:', response);
+            this.authenticateUser(this.loginData.email, this.loginData.password);
           },
           error: (error: any) => {
             console.error('Error creating user:', error);

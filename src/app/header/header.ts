@@ -18,7 +18,7 @@ import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
 import {Search} from '@app/search/search';
 import {JwtPipe} from '@shared/services/jwt.pipe';
-import {SessionData} from '@shared/signals/session/session.state';
+import {SessionData, SessionState} from '@shared/signals/session/session.state';
 import {Store} from '@ngrx/store';
 import {DFC} from '@shared/app.const';
 import {HeaderType} from '@shared/constants/header-type';
@@ -60,7 +60,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   private scrollListener!: () => void;
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
-  private readonly store: Store<{ session: SessionData }> = inject(Store);
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
   protected sessionData: SessionData | undefined;
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
@@ -98,12 +98,11 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       });
     }
     // Configura el evento scroll
-    this.store.select('session').subscribe(sessionData => {
-      this.sessionData = sessionData;
+    this.store.select('session').subscribe(sessionState => {
+      this.sessionData = sessionState.sessionData;
       if (this.sessionData?.userAuth) {
         this.userLogger.alias = this.sessionData.userAuth.alias;
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
-        this.userLogger.alias = this.sessionData.userAuth.alias;
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
         console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
