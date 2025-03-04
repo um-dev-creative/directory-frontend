@@ -523,7 +523,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
               sessionToken: response.body.token
             };
             if (decodedToken?.uid) {
-              this.sessionData = {userAuth: userAuth, token: decodedToken?.uid};
+              this.sessionData = {userAuth, token: decodedToken?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData)
               console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);

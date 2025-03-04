@@ -1,5 +1,4 @@
 import {
-  afterRenderEffect,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
