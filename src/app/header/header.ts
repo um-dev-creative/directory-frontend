@@ -7,10 +7,11 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
+  PLATFORM_ID
 } from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {CommonModule} from '@angular/common';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
@@ -55,7 +56,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
    * @private
    */
   protected changeDetectorRefs = inject(ChangeDetectorRef);
-
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly router: Router = inject(Router);
   private readonly destroy$ = new Subject<void>();
   private scrollListener!: () => void;
@@ -86,14 +87,17 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.sessionStoreService.loadSessionData();
-    this.scrollListener = this.renderer.listen('window', 'scroll', () => {
-      const scrollY = window.scrollY;
-      const shouldBeOpaque = scrollY > this.offset;
-      if (this.isOpaque !== shouldBeOpaque) {
-        this.isOpaque = shouldBeOpaque;
-        this.changeDetectorRefs.markForCheck(); // Optimiza la detección de cambios
-      }
-    });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.scrollListener = this.renderer.listen('window', 'scroll', () => {
+        const scrollY = window.scrollY;
+        const shouldBeOpaque = scrollY > this.offset;
+        if (this.isOpaque !== shouldBeOpaque) {
+          this.isOpaque = shouldBeOpaque;
+          this.changeDetectorRefs.markForCheck(); // Optimiza la detección de cambios
+        }
+      });
+    }
     // Configura el evento scroll
     this.store.select('session').subscribe(sessionData => {
       this.sessionData = sessionData;
@@ -121,19 +125,21 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
    * Configura un observador para detectar dispositivos móviles.
    */
   private setupBreakpointObserver(): void {
-    this.breakpointObserver
-      .observe([Breakpoints.XSmall, Breakpoints.Small])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(result => {
-        console.debug('BreakpointObserver result:', result);
-        this.isMobile = result.matches;
+    if (isPlatformBrowser(this.platformId)) {
+      this.breakpointObserver
+        .observe([Breakpoints.XSmall, Breakpoints.Small])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          console.debug('BreakpointObserver result:', result);
+          this.isMobile = result.matches;
 
-        if (!this.isMobile && this.isMenuOpen) {
-          this.isMenuOpen = false;
-          console.debug('The screen is not mobile, closing the menu.');
-          this.changeDetectorRefs.detectChanges(); // Forzar detección de cambios
-        }
-      });
+          if (!this.isMobile && this.isMenuOpen) {
+            this.isMenuOpen = false;
+            console.debug('The screen is not mobile, closing the menu.');
+            this.changeDetectorRefs.detectChanges(); // Forzar detección de cambios
+          }
+        });
+    }
   }
 
   /**
