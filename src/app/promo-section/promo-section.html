@@ -11,7 +11,7 @@
   <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6 tw-w-full">
     @for (promoItem of promo?.promotions; track promoItem) {
       <a [href]="promoItem.url" target="_blank" class="tw-block tw-rounded-lg tw-overflow-hidden tw-shadow-lg hover:tw-shadow-xl tw-transition tw-w-full tw-mx-auto">
-        <img [src]="promoItem.image" [alt]="promoItem.title" class="tw-w-full tw-max-w-[589px] tw-rounded-lg tw-border tw-border-gray-300 tw-shadow-md tw-transition hover:tw-scale-105">
+        <img [src]="promoItem.image" [alt]="promoItem.title" class="tw-w-full tw-max-w-[589px] tw-rounded-lg tw-shadow-md tw-transition hover:tw-scale-105">
       </a>
     }
   </div>

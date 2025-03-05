@@ -1,34 +1,38 @@
-import {Component, inject, OnInit} from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
+interface MarqueeImage {
+  id: number;
+  src: string;
+  alt: string;
+  link: string;
+}
 
 @Component({
   selector: 'app-marquee',
-  imports: [
-    CommonModule,
-    RouterModule,
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './marquee.html',
   styleUrl: './marquee.css',
 })
 export class Marquee implements OnInit {
-  images: { id: number; src: string; alt: string; link: string }[] = [];
-  duplicatedImages: { id: number; src: string; alt: string, link: string }[] = [];
-
-  private readonly http: HttpClient = inject(HttpClient);
+  images: MarqueeImage[] = [];
+  duplicatedImages: MarqueeImage[] = [];
+  private readonly http = inject(HttpClient);
+  private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {}
 
   ngOnInit(): void {
-    const numberOfItems = this.images.length;
-    document.documentElement.style.setProperty('--number-of-items', numberOfItems.toString());
+    this.http.get<MarqueeImage[]>('/assets/data/marquee-images.json').subscribe((data) => {
+      this.images = data;
+      this.duplicatedImages = [...this.images, ...this.images];
 
-    this.http.get<{ id: number; src: string; alt: string, link: string }[]>('/assets/data/marquee-images.json')
-      .subscribe(data => {
-        this.images = data;
-        // Duplicamos las imágenes para crear el efecto continuo
-        this.duplicatedImages = [...this.images, ...this.images];
-      });
+      if (isPlatformBrowser(this.platformId)) {
+        document.documentElement.style.setProperty('--number-of-items', this.images.length.toString());
+      }
+    });
   }
 }

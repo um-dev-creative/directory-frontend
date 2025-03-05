@@ -5,7 +5,7 @@ import {Carousel} from '@app/carousel/carousel';
 import {Cards} from '@app/cards/cards';
 import {Marquee} from '@app/marquee/marquee';
 import {ProductList} from '@app/product-list/product-list';
-import {OffersCarousel} from '@app/offers-carousel/offers-carousel';
+import {TrendCarousel} from '@app/trend-carousel/trend-carousel';
 import {PromoSection} from '@app/promo-section/promo-section';
 
 import {JwtPipe} from '@shared/services/jwt.pipe';
@@ -22,7 +22,7 @@ interface OnAfterViewInit {
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, Banner, Carousel, Cards, Marquee, ProductList, OffersCarousel, PromoSection],
+  imports: [CommonModule, Banner, Carousel, Cards, Marquee, ProductList, TrendCarousel, PromoSection],
   templateUrl: './stage.html',
   styleUrl: './stage.css',
   animations: [],
