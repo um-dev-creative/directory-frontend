@@ -16,7 +16,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
-import {Search} from '@app/search/search';
 import {JwtPipe} from '@shared/services/jwt.pipe';
 import {SessionData, SessionState} from '@shared/signals/session/session.state';
 import {Store} from '@ngrx/store';
@@ -35,8 +34,7 @@ import {HeaderService} from '@app/header/header.service';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    TranslateModule,
-    Search,
+    TranslateModule
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
@@ -169,10 +167,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
     console.debug('User logged out');
     this.router.navigate([DFC.RelativePath.STAGE_PATH]);
-  }
-
-  signup() {
-    console.debug('signup click it'); // Mensaje de consola para depuración.
   }
 
   get dynamicClasses(): string {
