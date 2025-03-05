@@ -228,16 +228,16 @@ const proxyApi = async (req, res, next) => {
  * Constructs the basic headers for the proxied request.
  *
  * @param {Object} req - The request object.
- * @param jobsToken - The token for the jobs services.
+ * @param directoryToken - The token for the directory services.
  * @param backboneSession - The session token for the backbone services.
  * @param {string} defaultAccept - The default Accept header value.
  * @param {string} defaultContentType - The default Content-Type header value.
  * @returns {Object} - The constructed headers.
  */
-const getRequestHeader = function (req, jobsToken, backboneSession, defaultAccept, defaultContentType) {
-  let headers = getBasicHeader(req, jobsToken, backboneSession, defaultAccept);
+const getRequestHeader = function (req, directoryToken, backboneSession, defaultAccept, defaultContentType) {
+  let headers = getBasicHeader(req, directoryToken, backboneSession, defaultAccept);
   const contentType = req.header(CONTENT_TYPE);
-  if (req.url === '/api/v1/users' || req.url === '/api/v1/auth/token' && req.method === 'POST') {
+  if (req.url === '/api/v1/users' || req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH && req.method === 'POST') {
     // req.body['password'] = bcrypt.hashSync(req.body['password'], salt);
     req.body['password'] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
   }
@@ -252,12 +252,12 @@ const getRequestHeader = function (req, jobsToken, backboneSession, defaultAccep
 /**
  * Constructs the basic headers for the proxied request.
  * @param req - The request object.
- * @param jobsToken - The token for the jobs services.
+ * @param directoryToken - The token for the directory services.
  * @param backboneSession - The session token for the backbone services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getBasicHeader = function (req, jobsToken, backboneSession, defaultAccept) {
+const getBasicHeader = function (req, directoryToken, backboneSession, defaultAccept) {
   let headers = {};
   const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
   const userId = req.header(FID_USER_ID);
@@ -273,7 +273,7 @@ const getBasicHeader = function (req, jobsToken, backboneSession, defaultAccept)
   } else {
     headers[FID_USER_ID] = "anonymous";
   }
-  headers[AUTHORIZATION] = BEARER + jobsToken;
+  headers[AUTHORIZATION] = BEARER + directoryToken;
 
   if (accept && accept === ACCEPT) {
     headers[ACCEPT] = accept;

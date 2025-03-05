@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start-dev": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken  hvs.CAESIKjA3lCOt6gbzeTG5JdcrT1w15cMpsfX5Y78MVH7m84nGh4KHGh2cy41WE9rTXRicW8zMmN5MDAyc0F4eDNaT0M  --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode DEBUG_MODE",
+    "start-dev": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken  hvs.CAESICQ6OJfAd0x_MrVsq4DpdT5TIsl7NwqS5cwEWlTNN2LoGh4KHGh2cy51YTFIUTJGZE91UUx4VmU2VVl5bHVVTmg  --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode DEBUG_MODE",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",

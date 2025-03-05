@@ -17,11 +17,11 @@
     <!-- Contenedor del Carrusel -->
     <div #carousel class="overflow-container tw-overflow-x-auto tw-hide-scrollbar tw-scroll-smooth tw-w-full px-0 md:tw-px-[40px]">
       <ul class="tw-flex tw-h-[410px] tw-w-max">
-        @for (offer of offers; track offer) {
+        @for (trend of trends; track trend) {
           <li class="tw-w-[320px] tw-h-[404px] tw-flex-shrink-0 tw-rounded-2xl tw-bg-white tw-shadow-md hover:tw-shadow-md tw-transition tw-flex tw-flex-col tw-items-center tw-justify-between tw-p-[10px] tw-mr-8">
             <!-- Imagen principal -->
             <div class="shake-hover tw-relative tw-inline-block tw-w-[300px] tw-h-[246px] tw-overflow-hidden tw-rounded-[8.5px] tw-mx-auto"
-                 [style.backgroundImage]="'url(' + offer.image + ')'"
+                 [style.backgroundImage]="'url(' + trend.image + ')'"
                  style="background-size: cover; background-position: center;">
               <!-- Etiqueta (pill) superior izquierda -->
               <div class="tw-absolute tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">
@@ -32,13 +32,13 @@
             <div class="tw-flex tw-items-center tw-gap-4 tw-w-full tw-px-4 tw-py-2">
               <!-- Logo de la Marca -->
               <div class="tw-flex tw-items-center tw-justify-center tw-w-20 tw-h-20 tw-border tw-border-gray-300 tw-rounded-full">
-                <img [src]="offer.brandLogo" alt="brand-logo" class="tw-w-[54px] tw-h-[54px] tw-object-contain">
+                <img [src]="trend.brandLogo" alt="brand-logo" class="tw-w-[54px] tw-h-[54px] tw-object-contain">
               </div>
 
               <!-- Contenedor de Texto -->
               <div class="tw-flex tw-flex-col tw-flex-1">
-                <h3 class="tw-text-lg tw-font-bold tw-text-black">{{ offer.title }}</h3>
-                <p class="tw-text-sm tw-text-gray-600">{{ offer.description }}</p>
+                <h3 class="tw-text-lg tw-font-bold tw-text-black">{{ trend.title }}</h3>
+                <p class="tw-text-sm tw-text-gray-600">{{ trend.description }}</p>
               </div>
             </div>
 

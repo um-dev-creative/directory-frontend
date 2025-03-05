@@ -1,4 +1,12 @@
-import {AfterViewInit, ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {countries, Country, Month, months} from '@shared/data/common';
@@ -14,7 +22,7 @@ import {LoadingService} from '@shared/services/loading.service';
 import {SessionData, UserAuth} from '@shared/signals/session/session.state';
 import {JwtPipe} from '@shared/services/jwt.pipe';
 import {Store} from '@ngrx/store';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {loadSession} from '@shared/signals/session/session.action';
 import {DFC} from '@shared/app.const';
 import {INITIAL_LOGIN_DATA, LoginData} from '@shared/models/login-data.model';
@@ -75,6 +83,8 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    */
   private readonly alertService: AlertService = inject(AlertService);
 
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+
   /**
    * Store services for session data management
    * @type {SessionStoreService}
@@ -115,7 +125,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Flag to indicate if the user is registering
    * @type {boolean}
    */
-  protected isRegistering: boolean = true;
+  isRegistering: boolean | undefined = true;
 
   /**
    * List of active countries
@@ -266,6 +276,11 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    */
   ngOnInit(): void {
     this.headerService.setHeaderType(HeaderType.CENTER_HEADER);
+    // Get the query parameter
+    this.route.queryParams.subscribe(params => {
+      this.isRegistering = params['isRegistering'] === 'true';
+      console.debug('Auth initialized with isRegistering:', this.isRegistering);
+    });
   }
 
   /**
@@ -297,7 +312,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.phoneNumber = '';
     this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
-    console.debug('Country selected:', country);
+    console.debug ('Country selected:', country);
   }
 
   /**
@@ -359,6 +374,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
           next: (response: any) => {
             console.debug('User created:', response);
+            this.authenticateUser(this.loginData.email, this.loginData.password);
           },
           error: (error: any) => {
             console.error('Error creating user:', error);
@@ -523,7 +539,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
               sessionToken: response.body.token
             };
             if (decodedToken?.uid) {
-              this.sessionData = {userAuth: userAuth, token: decodedToken?.uid};
+              this.sessionData = {userAuth, token: decodedToken?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData)
               console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);

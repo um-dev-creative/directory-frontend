@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, OnInit, OnDestroy, Input, inject, PLATFORM_ID} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 interface Slide {
   desktop: string;
@@ -16,6 +16,7 @@ interface Slide {
   templateUrl: './carousel.html',
 })
 export class Carousel implements OnInit, OnDestroy {
+  private readonly platformId = inject(PLATFORM_ID);
   @Input() index: number = 0;
   currentSlide = 0;
   isAutoPlaying = true;
@@ -63,16 +64,20 @@ export class Carousel implements OnInit, OnDestroy {
   }
 
   private startAutoplay(): void {
-    if (this.isAutoPlaying) {
-      this.autoplayInterval = setInterval(() => {
-        this.nextSlide();
-      }, 5000);
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.isAutoPlaying) {
+        this.autoplayInterval = setInterval(() => {
+          this.nextSlide();
+        }, 5000);
+      }
     }
   }
 
   private stopAutoplay(): void {
-    if (this.autoplayInterval) {
-      clearInterval(this.autoplayInterval);
+    if (isPlatformBrowser(this.platformId) && this.autoplayInterval) {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+      }
     }
   }
 

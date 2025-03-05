@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-interface Offer {
+interface Trend {
   title: string;
   description: string;
   image: string;
@@ -9,13 +9,13 @@ interface Offer {
 }
 
 @Component({
-  selector: 'app-offers-carousel',
+  selector: 'app-trend-carousel',
   imports: [],
-  templateUrl: './offers-carousel.html',
-  styleUrl: './offers-carousel.css'
+  templateUrl: './trend-carousel.html',
+  styleUrl: './trend-carousel.css'
 })
 
-export class OffersCarousel implements OnInit {
+export class TrendCarousel implements OnInit {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
   private scrollInterval: any;
   private scrollSpeed = 200;  // Ajusta este valor para controlar la velocidad
@@ -33,13 +33,13 @@ export class OffersCarousel implements OnInit {
   stopScroll() {
     clearInterval(this.scrollInterval);
   }
-  offers: Offer[] = [];
+  trends: Trend[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Offer[]>('/assets/data/offers-list.json').subscribe(data => {
-      this.offers = data;
+    this.http.get<Trend[]>('/assets/data/offers-list.json').subscribe(data => {
+      this.trends = data;
     });
   }
 }
