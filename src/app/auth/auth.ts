@@ -39,7 +39,8 @@ import {HeaderType} from '@shared/constants/header-type';
   selector: 'app-auth',
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinner
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.css',

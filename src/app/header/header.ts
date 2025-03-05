@@ -23,6 +23,7 @@ import {DFC} from '@shared/app.const';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@shared/signals/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
+import {Search} from '@app/search/search';
 
 /**
  * Header component
@@ -34,7 +35,8 @@ import {HeaderService} from '@app/header/header.service';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    TranslateModule
+    TranslateModule,
+    Search
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
