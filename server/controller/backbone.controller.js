@@ -4,32 +4,21 @@
  */
 let backboneClient = null;
 
-const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
+const {getOAuthClient} = require("../proxy/oauth-client");
 const axios = require('axios');
 const jobsProxyConfig = appConfig.getDirectoryProxyConfig();
-const oauthclient = require('../proxy/oauth-client');
 const backboneclient = require('../proxy/backbone-client');
 const logger = appConfig.getLoggerApp();
 const {v4: uuidv4} = require('uuid');
-// const bcrypt = require("bcrypt");
 const CryptoJS = require("crypto-js");
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
-// const salt = bcrypt.genSaltSync(10);
 const Ajv = require('ajv');
+const {isValidUUID, getRegex, decodeJwtToken, createRequestOption} = require("../shared/common-function");
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
-const API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH = process.env.API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH;
-const API_SERVICE_DIRECTORY_MAP =   JSON.parse(process.env.API_SERVICE_DIRECTORY_MAP);
-const OAUTH_AUTHENTICATION_TYPE = process.env.AUTH_AUTHENTICATION_TYPE;
-const OAUTH_CLIENT_ID = process.env.AUTH_CLIENT_ID;
-const OAUTH_CLIENT_SECRET = process.env.AUTH_CLIENT_SECRET;
-const OAUTH_GRANT_TYPE = process.env.AUTH_GRANT_TYPE;
-const OAUTH_TOKEN_URL = process.env.AUTH_SERVER_URI;
-const OAUTH_USER_ALIAS = process.env.AUTH_USER_ALIAS;
-const OAUTH_USER_PASSWORD = process.env.AUTH_USER_PASSWORD;
 
 const BACKBONE_API_SERVICE_MAP = JSON.parse(process.env.BACKBONE_API_SERVICE_MAP);
 const BACKBONE_OAUTH_AUTHENTICATION_TYPE = process.env.BACKBONE_AUTH_AUTHENTICATION_TYPE;
@@ -43,29 +32,17 @@ const BACKBONE_OAUTH_USER_PASSWORD = process.env.BACKBONE_AUTH_USER_PASSWORD;
 const schemesList = ["http:", "https:"];
 const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 
-const HttpsAgent = require('agentkeepalive').HttpsAgent;
+// const HttpsAgent = require('agentkeepalive').HttpsAgent;
 const ajv = new Ajv();
-ajv.addFormat('uuid', uuidRegex)
+ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
-const Agent = require('agentkeepalive');
+// const Agent = require('agentkeepalive');
 const {
-  AUTHORIZATION, BEARER, SESSION_TOKEN_BKD, FID_LOGGER_TRACKING_ID, CONTENT_TYPE, FID_USER_ID,
-  CONTENT_TYPE_DEFAULT, ACCEPT, API_INVALID_URL_REQUEST_TITLE
+  AUTHORIZATION, BEARER, SESSION_TOKEN_BKD, SESSION_TOKEN_DIR, FID_LOGGER_TRACKING_ID, CONTENT_TYPE,
+  FID_USER_ID, CONTENT_TYPE_DEFAULT, ACCEPT, API_INVALID_URL_REQUEST_TITLE,
+  BACKBONE_TOKEN_RELATIVE_PATH
 } = require("../config/constants.util");
-
-/**
- * Jobs OAuth client configuration.
- * @type {{password: string, clientId: string, tokenUrl: string, clientSecret: string, authenticationType: string, grantType: string, username: string}}
- */
-const jobsOauthClientConfig = {
-  clientId: OAUTH_CLIENT_ID,
-  clientSecret: OAUTH_CLIENT_SECRET,
-  grantType: OAUTH_GRANT_TYPE,
-  tokenUrl: OAUTH_TOKEN_URL,
-  authenticationType: OAUTH_AUTHENTICATION_TYPE,
-  username: OAUTH_USER_ALIAS,
-  password: OAUTH_USER_PASSWORD
-};
+const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH} = require("../shared/oauth-common-function");
 
 /**
  * Backbone OAuth client configuration.
@@ -94,56 +71,11 @@ const httpConnectionOptions = {
 };
 
 /**
- * Keepalive agent for HTTP connections.
- * @type {AgentKeepAlive} keepaliveAgent - The keepalive agent.
- */
-const keepaliveAgent = new Agent(httpConnectionOptions);
-
-/**
- * Keepalive agent for HTTPS connections.
- * @type {keepaliveHttpsAgent.HttpsAgent} keepaliveHttpsAgent
- */
-const keepaliveHttpsAgent = new HttpsAgent(httpConnectionOptions);
-
-/**
- * Retrieves the API endpoint for a given path.
- *
- * @param {string} path - The request path.
- * @returns {string} - The full API endpoint URL.
- * @throws {Error} - Throws an error if the API endpoint is not found.
- */
-let getApiEndpoint = function (path) {
-  let finalPath = null;
-  let applicationName = null;
-  for (const element of jobsProxyConfig) {
-    if (element.matchOn != null && element.matchOn.startWith != null && path.startsWith(element.matchOn.startWith)) {
-      if (element.urlRewrite != null) {
-        finalPath = path.replace(element.urlRewrite.from, element.urlRewrite.to);
-      } else {
-        finalPath = path;
-      }
-      applicationName = element.applicationName;
-      break;
-    }
-  }
-  let apiURL = API_SERVICE_DIRECTORY_MAP[applicationName];
-
-  if (apiURL != null) {
-    return apiURL + finalPath;
-  } else {
-    throw errorUtil.createErrorResponse(constants.NOT_FOUND_REQUEST_CODE,
-      constants.NOT_FOUND_REQUEST_TITLE,
-      constants.NOT_FOUND_REQUEST_DETAIL,
-      constants.NOT_FOUND_REQUEST_CODE_VALUE);
-  }
-};
-
-/**
  * Retrieves the backbone client instance, initializing it if necessary.
  * @returns {Object} - The backbone client instance.
  */
 let getBackboneClient = function () {
-  let backboneApiURL = BACKBONE_API_SERVICE_MAP['backbone'] + '/backbone/api/v1/session/token';
+  let backboneApiURL = BACKBONE_API_SERVICE_MAP['backbone'] + BACKBONE_TOKEN_RELATIVE_PATH;
   if (backboneClient) {
     return backboneClient;
   }
@@ -151,17 +83,6 @@ let getBackboneClient = function () {
     url: backboneApiURL
   });
   return backboneClient;
-};
-
-/**
- * Retrieves the OAuth client instance, initializing it if necessary.
- *
- * @returns {Object} - The OAuth client instance.
- */
-let getOauthClient = function (oauthClientConfig) {
-  let oauthClient;
-  oauthClient = oauthclient.getOAuthClient(oauthClientConfig);
-  return oauthClient;
 };
 
 /**
@@ -173,7 +94,7 @@ let getOauthClient = function (oauthClientConfig) {
 const backboneSessionToken = async (req) => {
   let backboneSession = null;
   if (req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH) {
-    const backboneToken = await getOauthClient(backboneOauthClientConfig).getBearerToken();
+    const backboneToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
     backboneSession = await getBackboneClient().getToken(req.body.alias,
       CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(), APPLICATION_ID, backboneToken);
   }
@@ -192,12 +113,20 @@ const proxyApi = async (req, res, next) => {
   const apiURL = getApiEndpoint(req.url);
   if (schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname)) {
     try {
-      let directoryToken = await getOauthClient(jobsOauthClientConfig).getBearerToken();
+      // Get the (keycloak) OAuth client token
+      let authBearToken = await getOAuthClient(directoryOauthClientConfig).getBearerToken();
+      // Get the backbone session token
       let backboneSession = await backboneSessionToken(req);
-      let headers = getRequestHeader(req, directoryToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      let headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       // Trace
       logger.info(`[DIS] Proxying request to ${apiURL}`);
-      let httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
+      let httpOptions;
+      if(apiURL.indexOf('/api/v1/auth/token') > 0) {
+        let alias = decodeJwtToken(backboneSession);
+        httpOptions = createRequestOption(req.method, apiURL, {alias: alias}, headers);
+      } else {
+        httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
+      }
 
       let axiosResponse = await axios(httpOptions);
 
@@ -228,19 +157,16 @@ const proxyApi = async (req, res, next) => {
  * Constructs the basic headers for the proxied request.
  *
  * @param {Object} req - The request object.
- * @param directoryToken - The token for the directory services.
+ * @param authBearToken - The token for the backend services.
  * @param backboneSession - The session token for the backbone services.
  * @param {string} defaultAccept - The default Accept header value.
  * @param {string} defaultContentType - The default Content-Type header value.
  * @returns {Object} - The constructed headers.
  */
-const getRequestHeader = function (req, directoryToken, backboneSession, defaultAccept, defaultContentType) {
-  let headers = getBasicHeader(req, directoryToken, backboneSession, defaultAccept);
+const getRequestHeader = function (req, authBearToken, backboneSession, defaultAccept, defaultContentType) {
+  let headers = getBasicHeader(req, authBearToken, backboneSession, defaultAccept);
   const contentType = req.header(CONTENT_TYPE);
-  if (req.url === '/api/v1/users' || req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH && req.method === 'POST') {
-    // req.body['password'] = bcrypt.hashSync(req.body['password'], salt);
-    req.body['password'] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
-  }
+
   if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
     headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
   } else {
@@ -252,28 +178,28 @@ const getRequestHeader = function (req, directoryToken, backboneSession, default
 /**
  * Constructs the basic headers for the proxied request.
  * @param req - The request object.
- * @param directoryToken - The token for the directory services.
+ * @param bearerToken - The token for the directory services.
  * @param backboneSession - The session token for the backbone services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getBasicHeader = function (req, directoryToken, backboneSession, defaultAccept) {
+const getBasicHeader = function (req, bearerToken, backboneSession, defaultAccept) {
   let headers = {};
   const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
   const userId = req.header(FID_USER_ID);
-  const sessionTokenBkd = req.header(SESSION_TOKEN_BKD);
   const accept = req.header(ACCEPT);
-  if (fidLoggerTrackingId !== null && isValidUUID(fidLoggerTrackingId)) {
+  const uuidValid =  isValidUUID(fidLoggerTrackingId);
+  if (fidLoggerTrackingId !== null && uuidValid) {
     headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
   } else {
     headers[FID_LOGGER_TRACKING_ID] = uuidv4();
   }
-  if (userId !== null && isValidUUID(userId)) {
+  if (userId !== null && uuidValid) {
     headers[FID_USER_ID] = fidLoggerTrackingId;
   } else {
     headers[FID_USER_ID] = "anonymous";
   }
-  headers[AUTHORIZATION] = BEARER + directoryToken;
+  headers[AUTHORIZATION] = BEARER + bearerToken;
 
   if (accept && accept === ACCEPT) {
     headers[ACCEPT] = accept;
@@ -281,20 +207,8 @@ const getBasicHeader = function (req, directoryToken, backboneSession, defaultAc
     headers[ACCEPT] = defaultAccept
   }
 
-  if (sessionTokenBkd !== null && isValidBearerToken(sessionTokenBkd)) {
-    headers[SESSION_TOKEN_BKD] = sessionTokenBkd;
-  }
-
-  if (backboneSession) {
-    headers[SESSION_TOKEN_BKD] = backboneSession;
-  }
-
   return headers;
 };
-
-function isValidUUID(uuid) {
-  return uuidRegex.test(uuid);
-}
 
 const bearerTokenRegex = /^Bearer\s[a-zA-Z0-9\-._~+/]+=*$/;
 
@@ -302,27 +216,7 @@ function isValidBearerToken(token) {
   return bearerTokenRegex.test(token);
 }
 
-/**
- * Creates the request options for the proxied request.
- *
- * @param {string} method - The HTTP method.
- * @param {string} url - The request URL.
- * @param {Object} body - The request body.
- * @param {Object} headers - The request headers.
- * @returns {Object} - The constructed request options.
- */
-let createRequestOption = function (method, url, body, headers) {
-  return {
-    method: method.toLowerCase(),
-    url: url,
-    data: body != null ? body : null,
-    headers: headers,
-    httpAgent: keepaliveAgent,
-    httpsAgent: keepaliveHttpsAgent,
-    responseType: headers[ACCEPT] === CONTENT_TYPE_DEFAULT ? 'blob' : 'json'
-  }
-};
-
 module.exports = {
-  proxyApi
+  proxyApi,
+  backboneSessionToken
 };

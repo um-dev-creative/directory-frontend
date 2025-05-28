@@ -4,7 +4,7 @@
   <div class="tw-w-[108rem] tw-flex-none tw-flex tw-justify-end">
     <picture>
       <source srcset="/assets/images/media.avif" type="image/avif">
-      <img src="/assets/images/media.png" class="tw-w-[71.75rem] tw-flex-none tw-max-w-none" decoding="async">
+      <img alt="im" src="/assets/images/media.png" class="tw-w-[71.75rem] tw-flex-none tw-max-w-none" decoding="async">
     </picture>
   </div>
 </div>
@@ -74,6 +74,7 @@
         hover:tw-bg-blue-600"
                 [routerLink]="['/auth']"
                 [queryParams]="{ ref: 'header' }"
+                [queryParams]="{ ref: 'menu', isRegistering: false }"
         >
           {{ 'menu_header.login_button.title' | translate }}
         </button>
@@ -413,7 +414,7 @@
             tw-whitespace-nowrap
             hover:tw-bg-blue-600"
                     [routerLink]="['/auth']"
-                    [queryParams]="{ ref: 'menu', isRegistering: true }"
+                    [queryParams]="{ ref: 'menu', isRegistering: false }"
             >
               {{ 'menu_header.login_button.title' | translate }}
             </button>
@@ -434,7 +435,7 @@
             tw-whitespace-nowrap
             hover:tw-bg-red-600"
                     [routerLink]="['/auth']"
-                    [queryParams]="{ ref: 'menu', isRegistering: false }"
+                    [queryParams]="{ ref: 'menu', isRegistering: true }"
             >
               {{ 'menu_header.join_now_button.title' | translate }}
             </button>
