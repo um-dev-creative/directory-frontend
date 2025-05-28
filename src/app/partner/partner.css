@@ -1,0 +1,7 @@
+.container {
+  @apply tw-my-[30px];
+}
+
+.partner-logo {
+  max-width: 150px;
+}

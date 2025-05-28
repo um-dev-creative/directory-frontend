@@ -1,0 +1,15 @@
+/* Ocultar la barra de desplazamiento en todos los navegadores */
+.offer-container {
+  overflow-x: auto; /* Permitir desplazamiento solo si es necesario */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer y Edge */
+}
+
+.offer-container::-webkit-scrollbar {
+  display: none; /* Safari y Chrome */
+}
+
+/* En mobile, deshabilitar completamente el desplazamiento horizontal */
+.hide-scroll {
+  overflow-x: hidden !important; /* Elimina el desplazamiento en mobile */
+}
