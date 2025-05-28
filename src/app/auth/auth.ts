@@ -532,18 +532,21 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
           const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
           if (decodedToken) {
             userAuth = {
-              ...userAuth,
-              alias: email,
+              alias: decodedToken.alias?decodedToken.alias:'',
+              email: decodedToken.email?decodedToken.email:'',
               fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
               sessionTokenBkd: response.sessionTokenBkd,
-              sessionToken: response.body.token
+              sessionToken: response.body.token,
+              features: []
             };
             if (decodedToken?.uid) {
               this.sessionData = {userAuth, token: decodedToken?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData)
               console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-              this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
+              // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
+              this.clearForm();
+              this.router.navigate(['/veracode']);
             }
           }
           this.loader.hide();
@@ -557,6 +560,35 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
           this.loader.hide();
         },
       });
+  }
+
+  /**
+   * Clears all fields in the registration form.
+   */
+  clearForm(): void {
+    this.registerData = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      country: this.selectedCountry.code,
+      phoneNumber: '',
+      birthMonth: null,
+      birthDay: null,
+      birthYear: null,
+      birthdayFull: null,
+    };
+
+    this.isValidPhoneNumber = true;
+    this.isEmailValid = true;
+    this.isFullDateValid = true;
+    this.showFullDateError = false;
+    this.isRegistrationFormValid = false;
+    this.isPasswordValid = true;
+    this.selectedMonth = null;
+    this.loginData.email = '';
+    this.loginData.password = '';
+    console.debug('Form cleared');
   }
 
 }

@@ -12,6 +12,8 @@ import {JwtPipe} from '@shared/services/jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import {SessionData, SessionState} from '@shared/signals/session/session.state';
+import {Store} from '@ngrx/store';
 
 interface OnAfterViewInit {
 }
@@ -34,17 +36,31 @@ export class Stage implements OnInit, OnAfterViewInit {
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
 
+  /**
+   * Store services for session data management
+   * @type {Store<{ session: SessionData }>}
+   */
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+
+  /**
+   * Session data
+   * @type {SessionData | undefined}
+   */
+  protected sessionData: SessionData | undefined;
+
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.store.select('session').subscribe(sessionState => {
+      this.sessionData = sessionState.sessionData;
+    });
     this.processSessionData();
   }
 
   private processSessionData(): void  {
-    let session = this.sessionStoreService.session;
-    if (session.token) {
+    if (this.sessionData?.token) {
       this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
       console.debug('User is authenticated');
     } else {

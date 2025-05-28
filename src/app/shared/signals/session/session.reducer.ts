@@ -4,8 +4,8 @@ import {initialState, SessionData} from './session.state';
 
 const _sessionReducer = createReducer(
   initialState,
-  on(saveSession, (state, {data, token}) => {
-    return {sessionData: data, token: token};
+  on(saveSession, (state, {sessionData}) => {
+    return {sessionData: sessionData};
   }),
   on(clearSession, () => initialState),
   on(loadSession, (state) => {

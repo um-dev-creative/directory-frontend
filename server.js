@@ -42,7 +42,8 @@ appConfig.bootstrapConfiguration(app).then(
   config => {
     appConfig.createDirectoryProxyConfig();
 
-    app.use("/", require("./server/routes/directory-backend.routes"));
+    app.use("/", require("./server/routes/auth-directory-backend.routes"));
+    app.use("/", require("./server/routes/backbone.routes"));
     app.use(express.static("dist/directory-frontend/browser"));
     app.get("/*", (req, res) => {
       res.sendFile(path.join(__dirname, "dist/directory-frontend/browser", "index.html"));

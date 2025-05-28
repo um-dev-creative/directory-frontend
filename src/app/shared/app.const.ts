@@ -14,10 +14,12 @@ export class DirectoryFrontendConst {
    * Relative paths used for backend service URLs.
    */
   public static readonly RelativePath = {
-    DIRECTORY_BACKEND_SERVICE_BASE_URL: '/api/v1',
-    BACKBONE_SERVICE_BASE_URL: 'backbone/api',
+    DIRECTORY_BACKEND_SERVICE_BASE_URL: '/drb/api/v1',
+    AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL: '/auth/drb/api/v1',
+    BACKBONE_SERVICE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
+    USER_REGISTER_PATH: '/user-register',
     STAGE_PATH: '/stage',
     STAGE_UI_PATH: 'stage'
   };
@@ -76,11 +78,27 @@ export class DirectoryFrontendConst {
      * @param {string} token - The session token.
      * @returns {Object} The HTTP headers object with the session token.
      */
-    STANDARD_TOKEN: function (token: string): object {
+    STANDARD_TOKEN_BKD: function (token: string): object {
       return {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'session-token-bkd': token,
+          'Access-Control-Allow-Origin': '*'
+        })
+      };
+    },
+    /**
+     * Generates HTTP headers with a session token.
+     * @param {string} token - The session token.
+     * @param {string} tokenBkd - The session token bkd.
+     * @returns {Object} The HTTP headers object with the session token.
+     */
+    STANDARD_TOKEN_DIR: function (token: string, tokenBkd: string): object {
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'session-token': token,
+          'session-token-bkd': tokenBkd,
           'Access-Control-Allow-Origin': '*'
         })
       };

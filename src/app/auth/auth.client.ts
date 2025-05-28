@@ -12,7 +12,7 @@ import {DFC, SESSION_TOKEN_BACKEND} from '@shared/app.const';
 })
 export class AuthClient extends ServiceTemplate {
   private readonly httpClient: HttpClient = inject(HttpClient);
-  private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_SERVICE_BASE_URL +
+  private readonly CONTENT_PATH: string = DFC.RelativePath.AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
 
   /**

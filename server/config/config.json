@@ -3,11 +3,23 @@
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/api/v1"
+        "startWith": "/drb/api/v1"
       },
       "urlRewrite": {
-        "from": "/api/v1",
+        "from": "/drb/api/v1",
         "to": "/directory-backend/api/v1"
+      }
+    }
+  ],
+  "authDirectoryBackendProxyConfig": [
+    {
+      "applicationName": "directory-backend",
+      "matchOn": {
+        "startWith": "/auth/drb/api/v1/auth"
+      },
+      "urlRewrite": {
+        "from": "/auth/drb/api/v1/auth",
+        "to": "/directory-backend/api/v1/auth"
       }
     }
   ],
@@ -15,10 +27,10 @@
     {
       "applicationName": "backbone",
       "matchOn": {
-        "startWith": "/backbone/api"
+        "startWith": "/bkd/api/v1"
       },
       "urlRewrite": {
-        "from": "/backbone/api",
+        "from": "/bkd/api/v1",
         "to": "/backbone/api/v1"
       }
     }

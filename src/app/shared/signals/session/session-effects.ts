@@ -18,7 +18,7 @@ export class SessionEffects {
   saveSession$ = createEffect(() => this.action$.pipe(
       ofType(saveSession),
       tap(action => {
-        sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(action.data));
+        sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(action.sessionData));
       })
     ),
     {dispatch: false}
@@ -41,7 +41,7 @@ export class SessionEffects {
             const storedSession = sessionStorage.getItem(this.SESSION_KEY);
             if (storedSession) {
               const sessionData: SessionData = JSON.parse(storedSession);
-              this.store.dispatch(saveSession({data: sessionData, token: sessionData.token}));
+              this.store.dispatch(saveSession({sessionData: sessionData}));
             }
           }
         })

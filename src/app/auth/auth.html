@@ -457,6 +457,16 @@
       <!-- Formulario Inicio Sesion-->
       <form (submit)="onSubmit()" #loginForm="ngForm" class="tw-space-y-4">
         <div>
+          @if (this.isErrorFound) {
+            <div class="tw-bg-yellow-100 tw-p-4 tw-rounded-md tw-border tw-border-orange-300">
+              <svg class="tw-w-6 tw-h-6 tw-text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 9v2m0 4h.01M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/>
+              </svg>
+              <p class="tw-text-center tw-text-red-500">Error: Usuario y/o clave incorrecto.</p>
+            </div>
+          }
           <div class="tw-mt-1">
             <input
               id="email_login"

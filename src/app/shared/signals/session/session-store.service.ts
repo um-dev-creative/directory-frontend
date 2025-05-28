@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {SessionData} from "@shared/signals/session/session.state";
+import {SessionData, SessionState} from "@shared/signals/session/session.state";
 import {Store} from '@ngrx/store';
 import {clearSession, loadSession, saveSession} from '@shared/signals/session/session.action';
 
@@ -16,7 +16,8 @@ export class SessionStoreService {
   }
 
   saveSessionData(sessionData: SessionData): void {
-    this.store.dispatch(saveSession({data: sessionData, token: sessionData.token}));
+    const sessionState: SessionState = {sessionData: sessionData};
+    this.store.dispatch(saveSession(sessionState));
   }
 
   clearSessionData(): void {

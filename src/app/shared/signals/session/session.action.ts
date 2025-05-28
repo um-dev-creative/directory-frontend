@@ -1,9 +1,9 @@
 import {createAction, props} from '@ngrx/store';
-import {SessionData} from './session.state';
+import {SessionState} from './session.state';
 
 export const saveSession = createAction(
     '[Session] Save session',
-    props<{ data: SessionData; token: string }>()
+    props<SessionState>()
 );
 
 export const clearSession = createAction(('[Session] Clear session'));
