@@ -1,4 +1,5 @@
 const SESSION_TOKEN_BKD = 'session-token-bkd';
+const SESSION_TOKEN_DIR = 'session-token';
 const AUTHORIZATION = 'Authorization';
 const CONTENT_TYPE = 'Content-Type';
 const FID_USER_ID = 'FID-USER-ID';
@@ -20,10 +21,12 @@ const API_FAILURE_REQUEST_TITLE = 'Error in Downstream API.';
 const API_FAILURE_REQUEST_DETAIL = 'Error in Downstream API, an non 2xx response was thrown when proxying downstream API.';
 
 const CONTENT_TYPE_DEFAULT = 'application/json';
+const BACKBONE_TOKEN_RELATIVE_PATH = '/backbone/api/v1/session/token';
 
 module.exports = {
   AUTHORIZATION,
   BEARER,
+  SESSION_TOKEN_DIR,
   SESSION_TOKEN_BKD,
   FID_LOGGER_TRACKING_ID,
   NOT_FOUND_REQUEST_CODE,
@@ -41,5 +44,6 @@ module.exports = {
   CONTENT_TYPE_DEFAULT,
   CONTENT_TYPE,
   FID_USER_ID,
-  ACCEPT
+  ACCEPT,
+  BACKBONE_TOKEN_RELATIVE_PATH
 }

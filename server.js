@@ -1,144 +1,97 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+if (process.env.NODE_ENV !== 'production') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
 process.env.NODE_CONFIG_DIR = __dirname + "/server/config";
 
-const httpContext = require('express-http-context');
-const RateLimit = require('express-rate-limit');
 const express = require('express');
-const path = require('path');
+const fs = require('fs');
 const https = require('https');
+const path = require('path');
 const bodyParser = require('body-parser');
-const appConfig = require('./server/config/app.config');
 const compression = require('compression');
 const cors = require('cors');
-const fs = require('fs');
+const RateLimit = require('express-rate-limit');
+const httpContext = require('express-http-context');
+const appConfig = require('./server/config/app.config');
 
-// Importar el servidor SSR de Angular
-let angularApp;
-
-const options = {
+const PORT = process.env.PORT || '7001';
+const DIST_FOLDER = path.join(process.cwd(), 'dist/directory-frontend');
+const SSL_OPTIONS = {
   key: fs.readFileSync('./ssl/backbone.key'),
   cert: fs.readFileSync('./ssl/backbone.crt')
+};
+
+// Cargar archivo index.html o index.csr.html dinámicamente
+function getIndexHtml() {
+  const htmlPath = fs.existsSync(path.join(DIST_FOLDER, 'browser/index.html'))
+    ? 'index.html'
+    : 'index.csr.html';
+  return fs.readFileSync(path.join(DIST_FOLDER, 'browser', htmlPath), 'utf-8');
 }
 
-// Función para inicializar la aplicación Angular SSR
 async function initAngularSSR() {
   try {
     const serverPath = './dist/directory-frontend/server/main.js';
     console.log(`Loading SSR from: ${serverPath}`);
 
-    if (fs.existsSync(serverPath)) {
-      // Limpiar cache de require para desarrollo
-      delete require.cache[require.resolve(serverPath)];
-      const serverModule = require(serverPath);
+    if (!fs.existsSync(serverPath)) return null;
 
-      console.log('Server module loaded successfully');
+    delete require.cache[require.resolve(serverPath)];
+    const serverModule = require(serverPath);
+    const bootstrap = serverModule.default || serverModule.bootstrap;
 
-      // Crear aplicación Express para SSR
-      const app = express();
-      const DIST_FOLDER = path.join(process.cwd(), 'dist/directory-frontend');
+    if (!bootstrap || !serverModule.renderApplication) return null;
 
-      // Configurar archivos estáticos
-      app.use(express.static(path.join(DIST_FOLDER, 'browser')));
+    const app = express();
+    app.use(express.static(path.join(DIST_FOLDER, 'browser')));
 
-      // Configurar SSR para rutas Angular
-      app.get('*', async (req, res) => {
-        try {
-          const indexHtml = fs.readFileSync(
-            path.join(DIST_FOLDER, 'browser/index.html'),
-            'utf-8'
-          );
+    app.get('*', async (req, res) => {
+      try {
+        const html = await serverModule.renderApplication(bootstrap, {
+          document: getIndexHtml(),
+          url: req.url,
+          platformProviders: []
+        });
+        res.send(html);
+      } catch (err) {
+        console.error('❌ SSR error. Falling back to static HTML.');
+        res.send(getIndexHtml());
+      }
+    });
 
-          // Usar la función bootstrap de Angular
-          if (serverModule.renderApplication && (serverModule.default || serverModule.bootstrap)) {
-            const bootstrap = serverModule.default || serverModule.bootstrap;
-            const html = await serverModule.renderApplication(bootstrap, {
-              document: indexHtml,
-              url: req.url,
-              platformProviders: [],
-            });
-            res.send(html);
-          } else {
-            console.warn('SSR bootstrap or renderApplication not found. Falling back to static index.html');
-            res.send(indexHtml);
-          }
-        } catch (error) {
-          console.error('SSR rendering error:', error);
-          // Fallback a index.html estático
-          const indexFileName = fs.existsSync(path.join(DIST_FOLDER, 'browser/index.html'))
-            ? 'index.html'
-            : 'index.csr.html';
-
-          const indexHtml = fs.readFileSync(
-            path.join(DIST_FOLDER, 'browser', indexFileName),
-            'utf-8'
-          );
-          console.warn(`SSR failed, serving static ${indexFileName}`);
-          res.send(indexHtml);
-        }
-      });
-
-      return app;
-    }
-  } catch (error) {
-    console.error('Error setting up Angular SSR:', error);
+    return app;
+  } catch (err) {
+    console.error('Error initializing Angular SSR:', err);
+    return null;
   }
-
-  return null;
 }
 
-// set up rate limiter: maximum of 100 requests per 15 minutes
-const limiter = RateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10000, // max 1000 requests per windowMs
-});
+appConfig.bootstrapConfiguration().then(async config => {
+  const logger = appConfig.getLoggerApp();
+  appConfig.createDirectoryProxyConfig();
 
-// Call bootstrap method which calls iConfig
-appConfig.bootstrapConfiguration().then(
-  async config => {
-    appConfig.createDirectoryProxyConfig();
+  const ssrApp = await initAngularSSR();
+  const app = ssrApp || express();
 
-    let logger = appConfig.getLoggerApp();
+  app.use(RateLimit({ windowMs: 15 * 60 * 1000, max: 10000 }));
+  app.use(httpContext.middleware);
+  app.use(compression());
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(cors());
 
-    // Inicializar Angular SSR
-    angularApp = await initAngularSSR();
-
-    if (angularApp) {
-      // Configurar middlewares en la app de Angular
-      angularApp.use(limiter);
-      angularApp.use(httpContext.middleware);
-      angularApp.use(compression());
-      angularApp.use(bodyParser.json({limit: '50mb'}));
-      angularApp.use(cors());
-
-      // Agregar las rutas de backend ANTES de las rutas de Angular
-      angularApp.use("/", require("./server/routes/directory-backend.routes"));
-
-      // Get port from environment and store in Express.
-      const port = '7001';
-
-      const server = https.createServer(options, angularApp);
-      server.listen(port, () => logger.info(`UI running with SSR on localhost:${port}`));
-    } else {
-      // Fallback a configuración SPA si SSR falla
-      const app = express();
-      app.use(limiter);
-      app.use(httpContext.middleware);
-      app.use(compression());
-      app.use(bodyParser.json({limit: '50mb'}));
-      app.use(cors());
-
-      app.use("/", require("./server/routes/directory-backend.routes"));
-      app.use(express.static("dist/directory-frontend/browser"));
-      app.get("/*", (req, res) => {
-        res.sendFile(path.join(__dirname, "dist/directory-frontend/browser", "index.html"));
-      });
-
-      const port = '7001';
-      const server = https.createServer(options, app);
-      server.listen(port, () => logger.info(`UI running in SPA mode on localhost:${port} (SSR failed)`));
-    }
-  },
-  err => {
-    logger.error("Error in bootstrapping application", err);
+  // Rutas backend
+  if (!ssrApp) {
+    app.use("/", require("./server/routes/auth-directory-backend.routes"));
+    app.use("/", require("./server/routes/backbone.routes"));
+    app.use(express.static(path.join(DIST_FOLDER, 'browser')));
+    app.get("/*", (req, res) => {
+      res.sendFile(path.join(DIST_FOLDER, 'browser', 'index.html'));
+    });
   }
-);
+
+  https.createServer(SSL_OPTIONS, app).listen(PORT, () => {
+    logger.info(`UI running ${ssrApp ? 'with SSR' : 'in SPA mode'} on https://localhost:${PORT}`);
+  });
+}, err => {
+  console.error("Error during bootstrapConfiguration:", err);
+});

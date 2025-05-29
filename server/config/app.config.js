@@ -3,6 +3,7 @@
  */
 
 let directoryProxyConfig = {};
+let authDirectoryProxyConfig = {};
 const fs = require('fs');
 const {format} = require('logform');
 const winston = require('winston');
@@ -101,7 +102,9 @@ module.exports.createDirectoryProxyConfig = function () {
     const configJson = fs.readFileSync('server/config/config.json', 'utf8');
     const config = JSON.parse(configJson);
     directoryProxyConfig = config['directoryBackendProxyConfig'];
-    logger.info("[DS] - Proxy Config: " + JSON.stringify(directoryProxyConfig));
+    authDirectoryProxyConfig = config['authDirectoryBackendProxyConfig'];
+    logger.info("[DS] - Proxy Config [Directory]: " + JSON.stringify(directoryProxyConfig));
+    logger.info("[DS] - Proxy Config [Auth Directory]: " + JSON.stringify(authDirectoryProxyConfig));
 };
 
 /**
@@ -111,6 +114,15 @@ module.exports.createDirectoryProxyConfig = function () {
  */
 module.exports.getDirectoryProxyConfig = function () {
     return directoryProxyConfig;
+};
+
+/**
+ * Retrieves the jobs proxy configuration.
+ *
+ * @returns {Object} - The jobs proxy configuration.
+ */
+module.exports.getAuthDirectoryProxyConfig = function () {
+  return authDirectoryProxyConfig;
 };
 
 let printVaultValues = function (vaultValues) {

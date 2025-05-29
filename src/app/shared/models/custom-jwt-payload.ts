@@ -6,8 +6,12 @@ import {JwtPayload} from "jwt-decode";
 export interface CustomJwtPayload extends JwtPayload {
     /** User ID */
     uid?: string;
+    /** User alias */
+    alias?: string;
     /** First name */
     firstname?: string;
     /** Last name */
     lastname?: string;
+    /** Email */
+    email?: string;
 }
