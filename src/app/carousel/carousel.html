@@ -4,30 +4,31 @@
   <!-- Carrusel -->
   <div class="tw-flex tw-transition-transform tw-duration-500 tw-ease-in-out"
        [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
-    <div *ngFor="let slide of slides" class="tw-flex-shrink-0 tw-w-full">
-      <picture>
-        <!-- Desktop -->
-        <img
-          class="tw-hidden lg:tw-block tw-rounded-[15px] tw-shadow-md"
-          [src]="slide.desktop"
-          [alt]="slide.alt"
-        >
-        <!-- Tablet -->
-        <img
-          class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-[15px] tw-shadow-md"
-          [src]="slide.tablet"
-          [alt]="slide.alt"
-        >
-        <!-- Mobile -->
-        <img
-          class="tw-block md:tw-hidden tw-rounded-[15px] tw-shadow-md"
-          [src]="slide.mobile"
-          [alt]="slide.alt"
-        >
-      </picture>
-    </div>
+    @for (slide of slides; track slide.desktop) {
+      <div class="tw-flex-shrink-0 tw-w-full">
+        <picture>
+          <!-- Desktop -->
+          <img
+            class="tw-hidden lg:tw-block tw-rounded-[15px] tw-shadow-md"
+            [src]="slide.desktop"
+            [alt]="slide.alt"
+          >
+          <!-- Tablet -->
+          <img
+            class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-[15px] tw-shadow-md"
+            [src]="slide.tablet"
+            [alt]="slide.alt"
+          >
+          <!-- Mobile -->
+          <img
+            class="tw-block md:tw-hidden tw-rounded-[15px] tw-shadow-md"
+            [src]="slide.mobile"
+            [alt]="slide.alt"
+          >
+        </picture>
+      </div>
+    }
   </div>
-
   <!-- Controles y paginación -->
   <div class="tw-absolute tw-bottom-0 tw-w-full tw-flex tw-justify-center tw-items-center tw-space-x-4 tw-p-4">
     <div class="tw-flex tw-items-center tw-space-x-3">
@@ -51,13 +52,13 @@
 
       <!-- Paginación -->
       <div class="tw-flex tw-space-x-3">
-        <button
-          *ngFor="let slide of slides; let i = index"
-          (click)="goToSlide(i)"
-          [class]="'tw-w-3 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300 ' +
-                (currentSlide === i ? 'tw-bg-white tw-scale-110' : 'tw-bg-white/50 hover:tw-bg-white/75')"
-          [attr.aria-label]="'Go to slide ' + (i + 1)"
-        ></button>
+        @for (slide of slides; track slide; let i = $index) {
+          <button
+            (click)="goToSlide(i)"
+            [class]="'tw-w-3 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300 ' + (currentSlide === i ? 'tw-bg-white tw-scale-110' : 'tw-bg-white/50 hover:tw-bg-white/75')"
+            [attr.aria-label]="'Go to slide ' + (i + 1)">
+          </button>
+        }
       </div>
 
       <!-- Botón Siguiente -->

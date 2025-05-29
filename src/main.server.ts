@@ -8,4 +8,5 @@ import {config} from '@app/app.config.server';
 const bootstrap = () => bootstrapApplication(App, config);
 
 /** Export the bootstrap function */
+export { bootstrap };
 export default bootstrap;

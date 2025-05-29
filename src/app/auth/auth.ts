@@ -66,7 +66,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly authClient: AuthClient = inject(AuthClient);
 
   /**
-   * Store services for session data management
+   * Partner services for session data management
    * @type {Store<{ session: SessionData }>}
    */
   private readonly store: Store<{ session: SessionData }> = inject(Store);
@@ -86,7 +86,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   /**
-   * Store services for session data management
+   * Partner services for session data management
    * @type {SessionStoreService}
    */
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);

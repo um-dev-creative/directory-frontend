@@ -1,0 +1,55 @@
+{
+  "partner": {
+    "name": "MUJI",
+    "logo": "https://storage.spccard.ca/MUJI_LOGO_192x192-min.jpg",
+    "discount": "10% off regular-priced merchandise.*",
+    "categories": [
+      { "type": "availability", "label": "Online" },
+      { "type": "new", "label": "NEW PARTNER" },
+      { "type": "exclusive", "label": "LatinHub+" },
+      { "type": "availability", "label": "In-Store" }
+    ],
+    "timeOffers": [
+      { "label": "1 WEEK", "value": "1w" },
+      { "label": "<1 MONTH", "value": "1m" },
+      { "label": "<1 DAY", "value": "1d" },
+      { "label": "<1 HOURS", "value": "1h" }
+    ],
+    "cta": {
+      "text": "Redeem Online",
+      "url": "#"
+    }
+  },
+  "about": {
+    "title": "About Gymshark",
+    "description": "Gymshark makes top quality performance wear to workout in. But that’s not even the half of it. They exist to unite the conditioning* community. They do that by providing the tools to help everyone become their personal best: the clothing you’ll sweat in, the content you’ll find inspiration in and the community you’ll feel you belong in. They’re a global family over 10 million strong. They say their community is ‘not united by our goals, but by the things we do to achieve them’.",
+    "note": "*Conditioning is everything we do today to prepare for tomorrow."
+  },
+  "relatedOffers": [
+    {
+      "name": "Footlocker.ca",
+      "image": "https://storage.spccard.ca/FL_FLLogo_190423_Foot%20Locker%20Logo%202_2019-09-04-215725.jpg",
+      "discount": "Save 15% off $99+ at Footlocker.ca.*"
+    },
+    {
+      "name": "Adidas",
+      "image": "https://storage.spccard.ca/adidas2024logo.webp",
+      "discount": "Save 25% off Regular Priced Products +15% OFF Sale.*"
+    },
+    {
+      "name": "H&M",
+      "image": "https://storage.spccard.ca/H%26M_logo.png",
+      "discount": "Save 10% off H&M with SPC"
+    },
+    {
+      "name": "Uber",
+      "image": "https://storage.spccard.ca/UberOne-Black_192px.webp",
+      "discount": "3 Months Free of Uber One for New Members*"
+    },
+    {
+      "name": "Walmart Canada",
+      "image": "https://storage.spccard.ca/walmart.png",
+      "discount": "Get $20 off first 4 online grocery orders of $100 or more"
+    }
+  ]
+}

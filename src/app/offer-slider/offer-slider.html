@@ -1,0 +1,113 @@
+@if (isMobile$ | async) {
+  <!-- Mobile Carousel -->
+    <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-overflow-hidden">
+      @for (offer of offers$ | async; track offer) {
+        <!-- Carrusel -->
+        <div class="app-view-container tw-flex tw-items-center tw-gap-4 tw-p-2 tw-rounded-lg tw-border tw-border-gray-200 tw-shadow-md tw-mb-[10px]">
+          <!-- Icon Container -->
+          <div class="tw-w-16 tw-h-16 tw-border tw-border-gray-300 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
+            <img [src]="offer.image" [alt]="offer.name" class="tw-w-[38px] tw-h-[38px] tw-object-cover tw-aspect-square">
+          </div>
+          <!-- Content Container -->
+          <div class="content-container tw-flex-1">
+            <div class="title tw-text-lg tw-font-semibold">{{ offer.name }}</div>
+            <div class="description tw-text-sm tw-text-gray-600">{{ offer.discount }}</div>
+          </div>
+
+          <!-- Pill Container -->
+          <div class="tw-flex tw-flex-col tw-space-y-2 tw-mt-2">
+            @if (offer.isOnline) { <div class="tw-bg-green-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">Online</div> }
+            @if (offer.isInStore) { <div class="tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">In-Store</div> }
+          </div>
+        </div>
+      }
+    </div>
+} @else {
+  <!-- Desktop version -->
+  <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto">
+    <!-- Flecha izquierda -->
+    @if ((offers$ | async)!.length > 4) {
+      <button
+        (click)="scrollLeft()"
+        class="tw-absolute tw-left-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+    }
+    <!-- Contenedor del carrusel -->
+    <div
+      #offerContainer
+      [class]="{
+      'offer-container': true,
+      'hide-scroll': isMobile$ | async
+    }"
+      class="tw-overflow-auto tw-scroll-smooth tw-whitespace-nowrap tw-flex tw-space-x-6 tw-px-[45px] tw-scroll-snap-x"
+    >
+      <ul class="tw-flex tw-w-max">
+        <!-- Tarjetas de ofertas -->
+        @for (offer of offers$ | async; track offer) {
+          <div class="tw-px-[10px] tw-py-[20px]">
+            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border tw-border-gray-200 tw-rounded-lg tw-shadow-md hover:tw-shadow-lg tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer">
+
+              <!-- Contenedor Principal -->
+              <div class="tw-w-full tw-relative">
+                <!-- Imagen del producto -->
+                <div class="tw-w-full tw-flex tw-justify-center">
+                  <div class="tw-w-[90px] tw-h-[90px] tw-border tw-border-gray-300 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
+                    <img [src]="offer.image" [alt]="offer.name" class="tw-w-[50px] tw-h-[50px] tw-object-cover tw-aspect-square">
+                  </div>
+                </div>
+                <!-- Icono de Favorito (Bookmark) -->
+                <div class="tw-absolute tw-top-2 tw-right-2 tw-border tw-border-gray-300 tw-rounded-lg tw-p-1 tw-bg-white">
+                  <svg
+                    alt="Bookmark"
+                    class="tw-w-6 tw-h-6 tw-opacity-75 hover:tw-opacity-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
+                  </svg>
+                </div>
+
+              </div>
+              <!-- Etiquetas (Online, In-Store, etc.) -->
+              <div class="tw-flex tw-space-x-2 tw-mt-2">
+                @if (offer.isOnline) { <div class="tw-top-3 tw-left-3 tw-bg-green-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">Online</div> }
+                @if (offer.isInStore) { <div class="tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">In-Store</div> }
+              </div>
+
+              <!-- Información de la Oferta -->
+              <div class="tw-mt-4">
+                <div class="tw-text-lg tw-font-semibold">{{ offer.name }}</div>
+                <p class="tw-text-sm tw-text-gray-600 tw-truncate tw-w-full tw-overflow-hidden tw-whitespace-normal tw-break-words">
+                  {{ offer.discount }}
+                </p>
+              </div>
+
+            </li>
+          </div>
+        }
+      </ul>
+    </div>
+    <!-- Flecha derecha -->
+    @if ((offers$ | async)!.length > 4) {
+      <button
+        (click)="scrollRight()"
+        class="tw-absolute tw-right-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    }
+  </div>
+}
+
