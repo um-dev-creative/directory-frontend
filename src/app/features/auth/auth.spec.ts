@@ -9,7 +9,7 @@ import {HttpClient, provideHttpClient, withInterceptorsFromDi} from "@angular/co
 import {App} from '@app/app';
 import {Stage} from '@app/stage/stage';
 import {Store} from "@ngrx/store";
-import {AuthClient} from '@app/auth/auth.client';
+import {AuthClient} from '@app/features/auth/auth.client';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 describe('AuthComponent', () => {

@@ -17,7 +17,7 @@ import {Subject} from 'rxjs';
 import {User} from '@shared/models/register-user.model';
 import {App} from '@app/app';
 import {AlertService} from '@shared/services/alert.service';
-import {AuthClient} from '@app/auth/auth.client';
+import {AuthClient} from '@app/features/auth/auth.client';
 import {LoadingService} from '@shared/services/loading.service';
 import {SessionData, UserAuth} from '@shared/signals/session/session.state';
 import {JwtPipe} from '@shared/services/jwt.pipe';

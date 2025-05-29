@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  appBaseHref: '/'
+  appBaseHref: '/',
+  apiUrl: 'http://localhost:3000/api', // Update this with your actual API URL
+  appName: 'Directory Frontend',
+  version: '1.0.0'
 };
 
 /*
