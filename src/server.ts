@@ -8,7 +8,9 @@ import rateLimit from 'express-rate-limit';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
-const indexHtml = join(serverDistFolder, 'index.html');
+//const indexHtml = join(serverDistFolder, 'index.html');
+const indexHtml = join(browserDistFolder, 'index.html');
+
 
 const app = express();
 const commonEngine = new CommonEngine();

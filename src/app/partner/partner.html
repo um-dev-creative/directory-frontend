@@ -1,0 +1,150 @@
+<main class="tw-relative tw-mx-auto">
+  <div class="tw-w-full tw-max-w-[1200px] tw-bg-center tw-mx-auto">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center tw-mx-2">
+      <section class="tw-bg-gradient-to-b tw-from-green-900 tw-from-10% tw-via-teal-900 tw-via-40% tw-to-black tw-to-90% tw-text-white tw-py-6 tw-rounded-xl tw-shadow-lg tw-my-[30px]">
+        <div>
+          <div class="tw-flex tw-flex-col tw-items-center tw-relative">
+            <div class="tw-absolute tw-top-4 tw-left-4">
+              <a href="#" class="tw-flex tw-items-center tw-text-white tw-font-semibold">
+                <!--img src="assets/back-icon.svg" alt="Back" class="tw-w-6 tw-h-6 tw-mr-2"-->
+                <svg
+                  class="tw-w-6 tw-h-6 tw-text-white tw-mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+                </svg>
+                Back
+              </a>
+            </div>
+            <div class="tw-absolute tw-top-4 tw-right-4 tw-flex tw-space-x-4">
+              <a href="#" >
+                <!--img src="assets/bookmark-icon.png" alt="Bookmark" class="tw-w-6 tw-h-6"-->
+                <svg
+                  class="tw-w-6 tw-h-6 tw-text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
+                </svg>
+              </a>
+              <!-- img src="assets/share-icon.png" alt="Share" class="tw-w-6 tw-h-6"-->
+              <svg
+                class="tw-w-6 tw-h-6 tw-text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
+              </svg>
+            </div>
+            <div class="tw-w-[100px] tw-h-[100px] tw-bg-white tw-rounded-[10px] tw-shadow-md tw-mx-auto tw-flex tw-items-center tw-justify-center tw-p-1 tw-overflow-hidden">
+              <img src="https://storage.spccard.ca/MUJI_LOGO_192x192-min.jpg"
+                   alt="partner-logo"
+                   class="tw-w-full tw-h-full tw-object-contain tw-aspect-square">
+            </div>
+            <div class="tw-flex tw-space-x-4 tw-mt-4">
+                <div class="tw-top-3 tw-left-3 tw-bg-green-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">Online</div>
+                <div class="tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">In-Store</div>
+            </div>
+            <h1 class="tw-text-2xl tw-font-bold tw-mt-4 tw-text-white">MUJI</h1>
+            <p class="tw-text-lg tw-mt-2 tw-text-white">10% off regular-priced merchandise.*</p>
+            <div class="tw-mt-4">
+              <button class="tw-bg-purple-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg">Redeem Online</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="tw-py-12">
+        <div class="tw-max-w-[1200px] tw-mx-auto">
+          <div class="tw-flex tw-flex-col tw-items-center tw-text-center">
+            <h2 class="tw-text-3xl tw-font-bold tw-text-gray-900">About Gymshark</h2>
+            <p class="tw-mt-4 tw-text-lg tw-text-gray-700 tw-max-w-2xl">
+              Gymshark makes top quality performance wear to workout in. But that’s not even the half of it.
+              They exist to unite the conditioning* community. They do that by providing the tools to help
+              everyone become their personal best: the clothing you’ll sweat in, the content you’ll find
+              inspiration in and the community you’ll feel you belong in. They’re a global family over
+              10 million strong. They say their community is ‘not united by our goals, but by the things we
+              do to achieve them’ <a (click)="openModal()" class="tw-font-bold tw-text-black tw-cursor-pointer hover:tw-text-gray-700">
+              ...more
+            </a>
+            </p>
+            <p class="tw-mt-2 tw-text-sm tw-text-gray-600 tw-italic">
+              *Conditioning is everything we do today to prepare for tomorrow.
+            </p>
+          </div>
+        </div>
+        <!-- Modal directo en el componente sin usar un componente separado -->
+        <!-- Modal using @if instead of *ngIf -->
+        @if (showModal) {
+          <div class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center">
+            <div class="tw-fixed tw-inset-0 tw-bg-black tw-opacity-50" (click)="closeModal()"></div>
+            <div class="tw-relative tw-bg-white tw-rounded-lg tw-shadow-xl tw-w-full tw-max-w-md tw-mx-4 tw-z-10">
+              <div class="tw-p-6">
+                <h3 class="tw-text-xl tw-font-semibold tw-text-gray-900 tw-mb-4">About Gymshark</h3>
+                <div class="tw-space-y-4 tw-text-base tw-text-gray-600">
+                  <p>
+                    Gymshark makes top quality performance wear to workout in. But that's not even the half of it.
+                    They exist to unite the conditioning* community. They do that by providing the tools to help
+                    everyone become their personal best: the clothing you'll sweat in, the content you'll find
+                    inspiration in and the community you'll feel you belong in.
+                  </p>
+                  <p>
+                    They're a global family over 10 million strong. They say their community is 'not united by our goals, but by the things we
+                    do to achieve them'.
+                  </p>
+                  <p>
+                    Founded in 2012 by then teenager Ben Francis and a group of his high-school friends, Gymshark has grown from a screen printing operation in a garage, into one of the fastest growing and most recognizable brands in fitness.
+                  </p>
+                  <p>
+                    In 2020, General Atlantic acquired a 21% stake in Gymshark, valuing the brand at over £1 billion, officially giving it "unicorn" status.
+                  </p>
+                  <p class="tw-mt-6 tw-text-sm tw-text-gray-500 tw-italic">
+                    *Conditioning is everything we do today to prepare for tomorrow.
+                  </p>
+                </div>
+                <div class="tw-mt-6 tw-flex tw-justify-end">
+                  <button (click)="closeModal()" class="tw-bg-gray-800 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-gray-700">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </section>
+      <section class="tw-py-12">
+        <div class="tw-max-w-[1200px] tw-mx-auto tw-px-2">
+          <!-- Título de la sección -->
+          <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-6 text-center">
+            More for Gymshark
+          </h3>
+          <!--app-offer-slider></app-offer-slider-->
+        </div>
+      </section>
+      <section class="tw-py-12">
+        <div class="tw-max-w-[1200px] tw-mx-auto tw-px-2">
+          <!-- Título de la sección -->
+          <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-6 text-center">
+            You might also like
+          </h3>
+          <app-offer-slider></app-offer-slider>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

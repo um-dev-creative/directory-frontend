@@ -1,0 +1,52 @@
+{
+  "offers": [
+    {
+      "name": "Footlocker.ca",
+      "image": "https://storage.spccard.ca/FL_FLLogo_190423_Foot%20Locker%20Logo%202_2019-09-04-215725.jpg",
+      "discount": "Save 15% off $99+ at Footlocker.ca.*",
+      "isOnline": true,
+      "isInStore": true,
+      "isLatinHubPlus": true
+    },
+    {
+      "name": "Adidas",
+      "image": "https://storage.spccard.ca/adidas2024logo.webp",
+      "discount": "Save 25% off Regular Priced Products +15% OFF Sale.*",
+      "isOnline": true,
+      "isInStore": false,
+      "isLatinHubPlus": false
+    },
+    {
+      "name": "H&M",
+      "image": "https://storage.spccard.ca/H%26M_logo.png",
+      "discount": "Save 10% off H&M with SPC",
+      "isOnline": false,
+      "isInStore": true,
+      "isLatinHubPlus": false
+    },
+    {
+      "name": "Uber",
+      "image": "https://storage.spccard.ca/UberOne-Black_192px.webp",
+      "discount": "3 Months Free of Uber One for New Members*",
+      "isOnline": false,
+      "isInStore": true,
+      "isLatinHubPlus": false
+    },
+    {
+      "name": "Walmart Canada",
+      "image": "https://storage.spccard.ca/walmart.png",
+      "discount": "Get $20 off first 4 online grocery orders of $100 or more",
+      "isOnline": true,
+      "isInStore": false,
+      "isLatinHubPlus": false
+    },
+    {
+      "name": "Psycho Bunny",
+      "image": "https://storage.spccard.ca/PB_Icon_3Color_Stroke_White%2BPink.jpeg",
+      "discount": "15% off*",
+      "isOnline": true,
+      "isInStore": false,
+      "isLatinHubPlus": false
+    }
+  ]
+}

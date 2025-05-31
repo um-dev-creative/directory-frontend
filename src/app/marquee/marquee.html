@@ -1,47 +1,26 @@
-<!--<div class="marquee-container">
-  <div class="marquee-wrapper tw-my-6" style="&#45;&#45;logo-px: 15;">
-    <div class="marquee-inner to-left">
-      &lt;!&ndash; Primera copia &ndash;&gt;
-      <span class="marquee-content">
-        <div *ngFor="let image of images" class="marquee-item tw-mx-4">
-          <img [src]="image.src" [alt]="image.alt" class="tw-w-auto" />
-        </div>
-      </span>
-      &lt;!&ndash; Segundo copia &ndash;&gt;
-      <span class="marquee-content">
-        <div *ngFor="let image of images" class="marquee-item tw-mx-4">
-          <img [src]="image.src" [alt]="image.alt" class="h-12 w-auto" />
-        </div>
-      </span>
-    </div>
-  </div>
-</div>-->
-
 <div class="marquee-container">
   <div class="marquee-wrapper">
     <div class="marquee-block">
       <div class="marquee-inner">
         <!-- Primera copia -->
         <span class="marquee-content">
-        <div
-          *ngFor="let image of images"
-          class="marquee-item tw-mx-4 tw-items-center tw-justify-center"
-        >
-          <a [routerLink]="[image.link]">
-            <img [src]="image.src" [alt]="image.alt" class="tw-w-auto" />
-          </a>
-        </div>
+          @for (image of images; track image.id) {
+            <div class="marquee-item tw-mx-4 tw-items-center tw-justify-center">
+              <a [routerLink]="[image.link]">
+                <img [src]="image.src" [alt]="image.alt" class="tw-w-auto" />
+              </a>
+            </div>
+          }
       </span>
         <!-- Segunda copia -->
         <span class="marquee-content">
-        <div
-          *ngFor="let image of images"
-          class="marquee-item tw-mx-4 tw-items-center tw-justify-center"
-        >
-          <a [routerLink]="[image.link]">
-            <img [src]="image.src" [alt]="image.alt" class="tw-w-auto" />
-          </a>
-        </div>
+          @for (image of images; track image.id) {
+            <div class="marquee-item tw-mx-4 tw-items-center tw-justify-center">
+              <a [routerLink]="[image.link]">
+                <img [src]="image.src" [alt]="image.alt" class="tw-w-auto" />
+              </a>
+            </div>
+          }
       </span>
       </div>
     </div>
