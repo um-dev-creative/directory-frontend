@@ -7,7 +7,7 @@ import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {App} from '@app/app';
-import {Stage} from '@app/stage/stage';
+import {Stage} from '@app/features/stage';
 import {Store} from "@ngrx/store";
 import {AuthClient} from '@app/features/auth/auth.client';
 import {provideHttpClientTesting} from '@angular/common/http/testing';

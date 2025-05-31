@@ -5,12 +5,12 @@ import {DebugElement} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Stage} from '@app/stage/stage';
+import {Stage} from '@app/features/stage/stage';
 import {App} from '@app/app';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Store} from '@ngrx/store';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {SessionStoreService} from '@shared/store/session-store.service';
+import {SessionStoreService} from '@shared/signals/session/session-store.service';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('Header', () => {
