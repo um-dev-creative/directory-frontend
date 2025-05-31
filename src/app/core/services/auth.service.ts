@@ -6,6 +6,7 @@ import { HttpService } from './http.service';
 import { StorageService } from './storage.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
+import { ServiceTemplate } from './service-template';
 
 export interface LoginCredentials {
   email: string;
@@ -34,7 +35,7 @@ export interface User {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends ServiceTemplate {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -48,6 +49,7 @@ export class AuthService {
     private notificationService: NotificationService,
     private router: Router
   ) {
+    super();
     this.initializeAuth();
   }
 
@@ -89,6 +91,7 @@ export class AuthService {
       catchError(error => {
         this.logger.error('Login failed', error);
         this.notificationService.error('Login failed. Please check your credentials.');
+        this.handlerError(error); // Using inherited error handler
         return of(false);
       })
     );
@@ -100,7 +103,7 @@ export class AuthService {
   logout(): void {
     this.clearAuthData();
     this.logger.info('User logged out');
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/stage']);
   }
 
   /**
@@ -119,7 +122,7 @@ export class AuthService {
   }
 
   /**
-   * Register new user
+   * Register new user...
    */
   register(userData: any): Observable<boolean> {
     return this.httpService.post<AuthResponse>('/auth/register', userData).pipe(
@@ -137,6 +140,7 @@ export class AuthService {
       catchError(error => {
         this.logger.error('Registration failed', error);
         this.notificationService.error('Registration failed. Please try again.');
+        this.handlerError(error);
         return of(false);
       })
     );
@@ -156,6 +160,7 @@ export class AuthService {
       map(() => true),
       catchError(error => {
         this.logger.error('Token refresh failed', error);
+        this.handlerError(error);
         this.logout();
         return of(false);
       })
@@ -252,6 +257,7 @@ export class AuthService {
       catchError(error => {
         this.logger.error('Profile update failed', error);
         this.notificationService.error('Failed to update profile. Please try again.');
+        this.handlerError(error);
         return of(false);
       })
     );

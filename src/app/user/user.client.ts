@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {ServiceTemplate} from '@app/core/services101/service-template';
+import {ServiceTemplate} from '@app/core/services/service-template';
 import {DFC} from '@app/shared/constants/app.const';
 
 @Injectable({
