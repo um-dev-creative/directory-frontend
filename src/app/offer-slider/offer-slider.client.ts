@@ -16,7 +16,7 @@ export class OfferSliderClient {
   constructor(private http: HttpClient, private breakpointObserver: BreakpointObserver) {}
 
   loadOffers() {
-    this.http.get<{ offers: Offer[] }>('/assets/data/offers.json')
+    this.http.get<{ offers: Offer[] }>('/assets/mocks/offers.json')
       .subscribe(response => this.offersSubject.next(response.offers));
   }
 }

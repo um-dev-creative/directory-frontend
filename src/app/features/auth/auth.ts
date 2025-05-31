@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {countries, Country, Month, months} from '@shared/data/common';
+import {countries, Country, Month, months} from 'assets/data/common';
 import {Examples, getExampleNumber, parsePhoneNumberFromString, PhoneNumber} from 'libphonenumber-js';
 import {UserClient} from '@app/user/user.client';
 import {takeUntil} from 'rxjs/operators';

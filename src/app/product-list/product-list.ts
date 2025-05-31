@@ -24,7 +24,7 @@ export class ProductList implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<Product[]>('assets/data/product-list.json').subscribe(data => {
+    this.http.get<Product[]>('assets/mocks/product-list.json').subscribe(data => {
       this.products = data;
     });
   }

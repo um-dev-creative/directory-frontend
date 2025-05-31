@@ -1,62 +1,81 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+/*import {CanActivateFn} from '@angular/router';
+import {Store} from "@ngrx/store";
+import {SessionData} from "@shared/signals/session/session.state";
+import {inject} from '@angular/core';
+
+export const authGuard: CanActivateFn = (route, state) => {
+    const store: Store<{ app: SessionData }> = inject(Store);
+    const sessionData = store.select(state => state.app);
+    let isAuthenticated = false;
+    if (sessionData) {
+      sessionData.subscribe(data => {
+            isAuthenticated = data.userAuth !== null && data.userAuth !== undefined;
+        });
+    } else {
+      isAuthenticated = false;
+    }
+    return isAuthenticated;
+};
+*/
+
+
+import { inject } from '@angular/core';
+import {
+  CanActivateFn,
+  CanActivateChildFn,
+  CanMatchFn,
+  Router
+} from '@angular/router';
+import { Store } from '@ngrx/store';
+import { SessionData } from '@shared/signals/session/session.state';
+import { map, take, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { StorageService } from '../services/storage.service';
-import { LoggerService } from '../services/logger.service';
+import { LoggerService, StorageService } from '../services';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate, CanActivateChild {
+// Lógica compartida para verificar autenticación
+function checkAuthState(targetUrl: string): Observable<boolean> {
+  const store = inject(Store<{ app: SessionData }>);
+  const router = inject(Router);
+  const logger = inject(LoggerService);
+  const storage = inject(StorageService);
+  logger.debug(`[Guard] Checking authentication state for URL: ${targetUrl}`);
 
-  constructor(
-    private router: Router,
-    private storageService: StorageService,
-    private logger: LoggerService
-  ) {}
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.checkAuth(state.url);
+  const token = storage.getLocal<string>('auth_token');
+  if (!token) {
+    logger.warn(`No auth token found, redirecting to /auth (URL: ${targetUrl})`);
+    storage.setLocal('redirect_url', targetUrl);
+    router.navigate(['/auth']);
+    return new Observable<boolean>(observer => observer.next(false));
   }
+  logger.debug(`Auth token found, checking session state for URL: ${targetUrl}`);
 
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.canActivate(childRoute, state);
-  }
-
-  private checkAuth(url: string): boolean {
-    const token = this.storageService.getLocal<string>('auth_token');
-
-    if (token && !this.isTokenExpired(token)) {
-      this.logger.debug('User is authenticated');
-      return true;
-    }
-
-    this.logger.warn('User is not authenticated, redirecting to auth');
-
-    // Store the attempted URL for redirecting after login
-    this.storageService.setLocal('redirect_url', url);
-
-    // Navigate to auth page
-    this.router.navigate(['/auth']);
-    return false;
-  }
-
-  private isTokenExpired(token: string): boolean {
-    try {
-      // Decode JWT token (simple base64 decode)
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const currentTime = Date.now() / 1000;
-
-      return payload.exp < currentTime;
-    } catch (error) {
-      this.logger.error('Error decoding token', error);
-      return true; // Treat invalid tokens as expired
-    }
-  }
+  return store.select(state => state.app).pipe(
+    take(1),
+    tap(session => logger.debug('[Guard] session:', session)),
+    map(session => !!(session?.userAuth)),
+    tap(isAuthenticated => {
+      if (!isAuthenticated) {
+        logger.warn(`User not authenticated, redirecting to /auth (URL: ${targetUrl})`);
+        // Guardar la URL de redirección en localStorage
+        storage.setLocal('redirect_url', targetUrl);
+        router.navigate(['/auth']);
+      }
+    })
+  );
 }
+
+// Guard clásico para rutas protegidas
+export const authGuard: CanActivateFn = (route, state) => {
+  return checkAuthState(state.url);
+};
+
+// Guard para rutas hijas
+export const authGuardChild: CanActivateChildFn = (childRoute, state) => {
+  return checkAuthState(state.url);
+};
+
+// Guard para rutas con carga diferida (lazy loading)
+export const authMatchGuard: CanMatchFn = (route, segments) => {
+  const targetUrl = '/' + segments.map(s => s.path).join('/');
+  return checkAuthState(targetUrl);
+};

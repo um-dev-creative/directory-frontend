@@ -33,4 +33,3 @@ export const months: Month[] = [
   { number: 11, name: 'Noviembre', abbr: 'Nov' },
   { number: 12, name: 'Diciembre', abbr: 'Dic' },
 ];
-

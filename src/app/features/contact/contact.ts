@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Country, countries } from '@shared/data/common';
+import { Country, countries } from 'assets/data/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples} from 'libphonenumber-js';

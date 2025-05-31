@@ -1,7 +1,7 @@
 // Example of how to use the guards in your routing configuration
 
 import { Routes } from '@angular/router';
-import { AuthGuard, RoleGuard, UnsavedChangesGuard } from './core/guards';
+import { authGuard, RoleGuard, UnsavedChangesGuard } from './core/guards';
 
 export const routes: Routes = [
   // Public routes

@@ -38,7 +38,7 @@ export class TrendCarousel implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Trend[]>('/assets/data/offers-list.json').subscribe(data => {
+    this.http.get<Trend[]>('/assets/mocks/offers-list.json').subscribe(data => {
       this.trends = data;
     });
   }

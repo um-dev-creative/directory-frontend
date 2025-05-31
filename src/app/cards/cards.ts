@@ -29,7 +29,7 @@ export class Cards implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<CardsData>('assets/data/images.json')
+    this.http.get<CardsData>('assets/mocks/images.json')
       .subscribe({
         next: (data) => {
           this.cardsData = data.images;

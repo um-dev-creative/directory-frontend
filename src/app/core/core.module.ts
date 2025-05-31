@@ -24,7 +24,7 @@ import {
 
 // Guards
 import {
-  AuthGuard,
+  authGuard,
   RoleGuard,
   UnsavedChangesGuard
 } from './guards';
@@ -45,12 +45,11 @@ import {
     NotificationService,
     StorageService,
     ThemeService,
-    
+
     // Guards
-    AuthGuard,
     RoleGuard,
     UnsavedChangesGuard,
-    
+
     // Interceptors
     {
       provide: HTTP_INTERCEPTORS,

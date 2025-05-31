@@ -26,7 +26,7 @@ export class Marquee implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.http.get<MarqueeImage[]>('/assets/data/marquee-images.json').subscribe((data) => {
+    this.http.get<MarqueeImage[]>('/assets/mocks/marquee-images.json').subscribe((data) => {
       this.images = data;
       this.duplicatedImages = [...this.images, ...this.images];
 
