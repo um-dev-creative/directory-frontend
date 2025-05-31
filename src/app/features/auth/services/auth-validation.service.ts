@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { Country } from 'assets/data/common';
 import { User } from '@shared/models/register-user.model';
+import { VALIDATION_PATTERNS } from '../auth.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,13 @@ export class AuthValidationService {
 
   validateEmail(email: string): boolean {
     if (!email) return true;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = VALIDATION_PATTERNS.EMAIL;
     return emailRegex.test(email);
   }
 
   validatePassword(password: string): boolean {
     if (!password || password.length >= 8) return true;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = VALIDATION_PATTERNS.PASSWORD;
     return passwordRegex.test(password);
   }
 
