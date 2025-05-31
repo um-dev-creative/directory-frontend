@@ -80,7 +80,7 @@ appConfig.bootstrapConfiguration().then(async config => {
   app.use(cors());
 
   // Rutas backend
-  if (!ssrApp) {
+  if (ssrApp) {
     app.use("/", require("./server/routes/auth-directory-backend.routes"));
     app.use("/", require("./server/routes/backbone.routes"));
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
