@@ -4,7 +4,7 @@ import {RouterOutlet} from '@angular/router';
 import {Footer} from '@app/footer/footer';
 import {Header} from '@app/header/header';
 import {animate, query, style, transition, trigger} from '@angular/animations';
-import {JwtPipe} from '@shared/services/jwt.pipe';
+import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
 
 export const routeTransitionAnimations = trigger('routeAnimations', [
   transition('* <=> *', [

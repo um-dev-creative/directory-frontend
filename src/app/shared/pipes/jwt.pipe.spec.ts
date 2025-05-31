@@ -3,8 +3,11 @@ import {JwtPipe} from './jwt.pipe';
 describe('JwtPipe', () => {
     let pipe: JwtPipe;
 
+    let mockLoggerService: any;
+
     beforeEach(() => {
-        pipe = new JwtPipe();
+        mockLoggerService = { log: jasmine.createSpy('log'), error: jasmine.createSpy('error') };
+        pipe = new JwtPipe(mockLoggerService);
     });
 
     it('create an instance', () => {

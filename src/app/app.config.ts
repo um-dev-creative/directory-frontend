@@ -7,9 +7,9 @@ import {HttpClient, provideHttpClient, withFetch, withInterceptorsFromDi} from '
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideStore} from '@ngrx/store';
-import {sessionReducer} from '@shared/signals/session/session.reducer';
+import {sessionReducer} from '@app/core/store/session/session.reducer';
 import {provideEffects} from '@ngrx/effects';
-import {SessionEffects} from '@shared/signals/session/session-effects';
+import {SessionEffects} from '@app/core/store/session/session-effects';
 import {CoreModule} from './core/core.module';
 
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
@@ -20,10 +20,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
-    
+
     // Import CoreModule providers
     importProvidersFrom(CoreModule),
-    
+
     // Translation
     TranslateModule.forRoot(
       {
@@ -35,17 +35,17 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ).providers!,
-    
+
     // Animations
     provideAnimations(),
     provideAnimationsAsync(),
-    
+
     // HTTP Client with interceptors support
     provideHttpClient(
       withFetch(),
       withInterceptorsFromDi() // This enables class-based interceptors
     ),
-    
+
     // NgRx Store
     provideStore({ session: sessionReducer}),
     provideEffects([SessionEffects]),

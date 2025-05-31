@@ -1,3 +1,4 @@
+// Angular Core
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -7,30 +8,44 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {countries, Country, Month, months} from 'assets/data/common';
-import {Examples, getExampleNumber, parsePhoneNumberFromString, PhoneNumber} from 'libphonenumber-js';
-import {UserClient} from '@app/user/user.client';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-import {User} from '@shared/models/register-user.model';
-import {App} from '@app/app';
-import {AlertService} from '@shared/services/alert.service';
-import {AuthClient} from '@app/features/auth/auth.client';
-import {LoadingService} from '@shared/services/loading.service';
-import {SessionData, UserAuth} from '@shared/signals/session/session.state';
-import {JwtPipe} from '@shared/services/jwt.pipe';
-import {Store} from '@ngrx/store';
-import {ActivatedRoute, Router} from '@angular/router';
-import {loadSession} from '@shared/signals/session/session.action';
-import {DFC} from '@shared/app.const';
-import {INITIAL_LOGIN_DATA, LoginData} from '@shared/models/login-data.model';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {HeaderService} from '@app/header/header.service';
-import {SessionStoreService} from '@shared/signals/session/session-store.service';
-import examples from 'libphonenumber-js/examples.mobile.json';
-import {HeaderType} from '@shared/constants/header-type';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { AlertService } from '@app/core/services101/alert.service';
+import { LoadingService } from '@app/core/services101/loading.service';
+import { AuthService } from '@app/core/services/auth.service';
+// App Store
+import { loadSession } from '@app/core/store/session/session.action';
+import { SessionData, UserAuth } from '@app/core/store/session/session.state';
+import { SessionStoreService } from '@app/core/store/session/session-store.service';
+// App Components & Services
+import { App } from '@app/app';
+import { AuthClient } from './auth.client';
+import { HeaderService } from '@app/header/header.service';
+import { UserClient } from '@app/user/user.client';
+// Shared
+import { JwtPipe } from '@app/shared/pipes/jwt.pipe';
+import { DFC } from '@app/shared/constants/app.const';
+import { HeaderType } from '@shared/constants/header-type';
+import { INITIAL_LOGIN_DATA, LoginData } from '@shared/models/login-data.model';
+import { User } from '@shared/models/register-user.model';
+// Assets
+import { countries, Country, Month, months } from 'assets/data/common';
+// Auth Services
+import { AuthValidationService } from './services/auth-validation.service';
+import { AuthFormService } from './services/auth-form.service';
+import { PlaceholderService } from './services/placeholder.service';
+// Auth Models
+import { RegisterData } from './models/register-data.interface';
+import { DropdownState } from './models/dropdown-state.interface';
+import { AuthPlaceholders } from './models/auth-placeholders.interface';
+// Auth Constants
+import { INITIAL_PLACEHOLDERS, INITIAL_DROPDOWN_STATE, DEFAULT_COUNTRY_CODE } from './auth.constants';
 
 /**
  * Component for handling user authentication.
@@ -47,6 +62,12 @@ import {HeaderType} from '@shared/constants/header-type';
   providers: [JwtPipe]
 })
 export class Auth implements OnDestroy, OnInit, AfterViewInit {
+  // Servicios inyectados
+  private readonly authValidationService = inject(AuthValidationService);
+  private readonly authFormService = inject(AuthFormService);
+  private readonly placeholderService = inject(PlaceholderService);
+  private readonly coreAuthService = inject(AuthService);
+
   /**
    * User client services
    * @type {UserClient}
@@ -153,34 +174,9 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Registration data
-   * @type {{firstName: string, lastName: string, email: string,
-   * password: string, country: string, phoneNumber: string,
-   * birthMonth: number | null, birthDay: number | null,
-   * birthYear: number | null, birthdayFull: Date | null}}
+   * @type {RegisterData}
    */
-  protected registerData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    country: string;
-    phoneNumber: string;
-    birthMonth: number | null;
-    birthDay: number | null;
-    birthYear: number | null;
-    birthdayFull: Date | null;
-  } = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    country: this.selectedCountry.code,
-    phoneNumber: '',
-    birthMonth: null as number | null,
-    birthDay: null as number | null,
-    birthYear: null as number | null,
-    birthdayFull: null as Date | null,
-  };
+  protected registerData: RegisterData = this.authFormService.getInitialRegisterData(DEFAULT_COUNTRY_CODE);
 
   /**
    * Login data
@@ -232,23 +228,15 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Placeholder texts for form fields in the registration form
-   * @type {{day: string, year: string, email: string, mobile: string}}
+   * @type {AuthPlaceholders}
    */
-  protected placeholders: { [key: string]: string } = {
-    day: 'Dia',
-    year: 'Año',
-    email: 'Email Address',
-    mobile: 'Mobile Number (optional)',
-  };
+  protected placeholders: AuthPlaceholders = INITIAL_PLACEHOLDERS;
 
   /**
    * Dropdown signals for country and month dropdowns
-   * @type {{country: boolean, month: boolean}}
+   * @type {DropdownState}
    */
-  protected dropdownState: { country: boolean; month: boolean; } = {
-    country: false,
-    month: false,
-  };
+  protected dropdownState: DropdownState = INITIAL_DROPDOWN_STATE;
 
   /**
    * Router services for navigation
@@ -350,43 +338,65 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   /**
    * Submits the registration or login form.
    */
-  onSubmit() {
+  onSubmit(): void {
     this.loader.show();
-    if (this.isRegistering) {
-      const userToRegister: User = new User({
-        password: this.registerData.password,
-        email: this.registerData.email,
-        firstname: this.registerData.firstName,
-        lastname: this.registerData.lastName,
-        dateOfBirth: this.registerData.birthdayFull,
-        phoneNumber: this.registerData.phoneNumber,
-      });
 
-      if (userToRegister.isValid()) {
-        const formattedPhoneNumber = userToRegister.phoneNumber
-          ? parsePhoneNumberFromString(userToRegister.phoneNumber, this.selectedCountry.code)?.formatInternational()
-          : null;
-        const apiPayload = {
-          ...userToRegister.toApiFormat(),
-          dateOfBirth: userToRegister.getFormattedDateOfBirth(),
-          phoneNumber: formattedPhoneNumber ?? userToRegister.phoneNumber,
-        };
-        this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
-          next: (response: any) => {
-            console.debug('User created:', response);
-            this.authenticateUser(this.loginData.email, this.loginData.password);
-          },
-          error: (error: any) => {
-            console.error('Error creating user:', error);
-          },
-        });
-      } else {
-        console.error('Invalid user data:', userToRegister);
-      }
+    if (this.isRegistering) {
+      this.handleRegistration();
     } else {
-      console.debug('Login Data:', this.loginData);
-      this.authenticateUser(this.loginData.email, this.loginData.password);
+      this.handleLogin();
     }
+  }
+
+  /**
+   * Handles user registration process.
+   */
+  private handleRegistration(): void {
+    const userToRegister: User = new User({
+      password: this.registerData.password,
+      email: this.registerData.email,
+      firstname: this.registerData.firstName,
+      lastname: this.registerData.lastName,
+      dateOfBirth: this.registerData.birthdayFull,
+      phoneNumber: this.registerData.phoneNumber,
+    });
+
+    if (userToRegister.isValid()) {
+      const formattedPhoneNumber = userToRegister.phoneNumber
+        ? parsePhoneNumberFromString(userToRegister.phoneNumber, this.selectedCountry.code)?.formatInternational()
+        : null;
+
+      const apiPayload = {
+        ...userToRegister.toApiFormat(),
+        dateOfBirth: userToRegister.getFormattedDateOfBirth(),
+        phoneNumber: formattedPhoneNumber ?? userToRegister.phoneNumber,
+      };
+
+      this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
+        next: (response: any) => {
+          console.debug('User created:', response);
+          this.handleLogin();
+        },
+        error: (error: any) => {
+          console.error('Error creating user:', error);
+          this.loader.hide();
+        },
+      });
+    } else {
+      console.error('Invalid user data:', userToRegister);
+      this.loader.hide();
+    }
+  }
+
+  /**
+   * Handles user login process.
+   */
+  private handleLogin(): void {
+    const email = this.isRegistering ? this.registerData.email : this.loginData.email;
+    const password = this.isRegistering ? this.registerData.password : this.loginData.password;
+
+    console.debug('Login Data:', { email, password: '***' });
+    this.authenticateUser(email, password);
   }
 
   /**
@@ -404,16 +414,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param field - The field that gained focus.
    */
   onFocus(field: string): void {
-    if (field === 'day') {
-      this.placeholders[field] = 'dd';
-    } else if (field === 'year') {
-      this.placeholders[field] = 'yyyy';
-    } else if (field === 'email') {
-      this.placeholders[field] = 'example@domain.com';
-    } else if (field === 'mobile') {
-      const focusPhoneNumber: PhoneNumber | undefined = getExampleNumber(this.selectedCountry.code, examples as Examples);
-      this.placeholders[field] = focusPhoneNumber ? focusPhoneNumber.formatNational() : this.selectedCountry.nationalTemplate;
-    }
+    this.placeholders[field] = this.placeholderService.getFocusPlaceholder(field, this.selectedCountry);
   }
 
   /**
@@ -421,56 +422,31 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param field - The field that lost focus.
    */
   onBlur(field: string): void {
-    if (field === 'day') {
-      this.placeholders[field] = 'Dia';
-    } else if (field === 'year') {
-      this.placeholders[field] = 'Año';
-    } else if (field === 'email') {
-      this.placeholders[field] = 'Email Address';
-    } else if (field === 'mobile') {
-      this.placeholders[field] = 'Mobile Number (optional)';
-    }
+    this.placeholders[field] = this.placeholderService.getBlurPlaceholder(field);
   }
 
   /**
    * Validates the email address.
    */
-  validateEmail() {
-    const email = this.registerData.email;
-    if (!email) {
-      this.isEmailValid = true;
-      return;
-    }
-    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.isEmailValid = emailRegex.test(email);
+  validateEmail(): void {
+    this.isEmailValid = this.authValidationService.validateEmail(this.registerData.email);
   }
 
   /**
    * Validates the password.
    */
   validatePassword(): void {
-    const password: string = this.registerData.password;
-    if (!password || password.length >= 8) {
-      this.isPasswordValid = true;
-      return;
-    }
-    const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //
-    this.isPasswordValid = passwordRegex.test(password);
+    this.isPasswordValid = this.authValidationService.validatePassword(this.registerData.password);
   }
 
   /**
    * Validates the phone number.
    */
   validatePhoneNumber(): void {
-    const selectedCountry: Country = this.selectedCountry;
-    const phoneNumber: string = this.registerData.phoneNumber;
-    if (!phoneNumber) {
-      this.isValidPhoneNumber = true;
-      return;
-    }
-    this.isValidPhoneNumber = selectedCountry
-      ? parsePhoneNumberFromString(phoneNumber, selectedCountry.code)?.isValid() ?? false
-      : false;
+    this.isValidPhoneNumber = this.authValidationService.validatePhoneNumber(
+      this.registerData.phoneNumber,
+      this.selectedCountry
+    );
   }
 
   /**
@@ -488,7 +464,16 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
     this.validateDateOfBirth(userToValidate);
 
-    this.isRegistrationFormValid = userToValidate.isValid() && this.isFullDateValid && this.isEmailValid && this.isPasswordValid && this.isValidPhoneNumber;
+    // Use validation services for each field
+    this.validateEmail();
+    this.validatePassword();
+    this.validatePhoneNumber();
+
+    this.isRegistrationFormValid = userToValidate.isValid() &&
+                                   this.isFullDateValid &&
+                                   this.isEmailValid &&
+                                   this.isPasswordValid &&
+                                   this.isValidPhoneNumber;
 
     console.debug('Is Registration Form Valid:', this.isRegistrationFormValid);
   }
@@ -498,13 +483,15 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param user - The user to validate.
    */
   private validateDateOfBirth(user: User): void {
-    const {birthDay: day, birthMonth: month, birthYear: year} = this.registerData;
+    const { birthDay: day, birthMonth: month, birthYear: year } = this.registerData;
+
     if (day && month && year) {
-      const validDate: Date | false = user.isValidDate(day, month, year);
-      if (validDate) {
-        this.registerData.birthdayFull = validDate;
+      const validationResult = this.authValidationService.validateDateOfBirth(day, month, year);
+
+      if (validationResult) {
+        this.registerData.birthdayFull = validationResult;
         this.isFullDateValid = true;
-        this.showFullDateError = false
+        this.showFullDateError = false;
       } else {
         console.error("Invalid date of birth.");
         this.isFullDateValid = false;
@@ -566,29 +553,23 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Clears all fields in the registration form.
    */
   clearForm(): void {
-    this.registerData = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      country: this.selectedCountry.code,
-      phoneNumber: '',
-      birthMonth: null,
-      birthDay: null,
-      birthYear: null,
-      birthdayFull: null,
-    };
+    this.registerData = this.authFormService.getInitialRegisterData(this.selectedCountry.code);
+    this.resetValidationFlags();
+    this.selectedMonth = null;
+    this.loginData = INITIAL_LOGIN_DATA;
+    console.debug('Form cleared');
+  }
 
+  /**
+   * Resets all validation flags to their initial state.
+   */
+  private resetValidationFlags(): void {
     this.isValidPhoneNumber = true;
     this.isEmailValid = true;
     this.isFullDateValid = true;
     this.showFullDateError = false;
     this.isRegistrationFormValid = false;
     this.isPasswordValid = true;
-    this.selectedMonth = null;
-    this.loginData.email = '';
-    this.loginData.password = '';
-    console.debug('Form cleared');
   }
 
 }

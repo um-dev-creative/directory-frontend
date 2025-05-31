@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {SessionData} from '@shared/signals/session/session.state';
-import {clearSession, loadSession, saveSession} from '@shared/signals/session/session.action';
+import {SessionData} from '@app/core/store/session/session.state';
+import {clearSession, loadSession, saveSession} from '@app/core/store/session/session.action';
 import {tap} from 'rxjs';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 

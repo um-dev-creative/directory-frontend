@@ -1,18 +1,18 @@
 import {AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {SessionData, SessionState} from '@app/shared/signals/session/session.state';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {LoadingService} from '@shared/services/loading.service';
-import {JwtPipe} from '@shared/services/jwt.pipe';
-import {AlertService} from '@shared/services/alert.service';
-import {loadSession} from '@shared/signals/session/session.action';
+import {LoadingService} from '@app/core/services101/loading.service';
+import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {AlertService} from '@app/core/services101/alert.service';
+import {loadSession} from '@app/core/store/session/session.action';
 import {HeaderType} from '@shared/constants/header-type';
 import {HeaderService} from '@app/header/header.service';
 import {UserRegisterClient} from '@app/user-register/user-register.client';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntil} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
-import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
 
 @Component({
   selector: 'app-verification-code',

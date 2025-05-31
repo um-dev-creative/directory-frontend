@@ -8,11 +8,11 @@ import {ProductList} from '@app/product-list/product-list';
 import {TrendCarousel} from '@app/trend-carousel/trend-carousel';
 import {PromoSection} from '@app/promo-section/promo-section';
 
-import {JwtPipe} from '@shared/services/jwt.pipe';
+import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
-import {SessionStoreService} from '@shared/signals/session/session-store.service';
-import {SessionData, SessionState} from '@shared/signals/session/session.state';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 
 interface OnAfterViewInit {

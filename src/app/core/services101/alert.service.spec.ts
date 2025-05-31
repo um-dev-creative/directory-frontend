@@ -1,4 +1,4 @@
-import {AlertService} from "@shared/services/alert.service";
+import {AlertService} from "@app/core/services101/alert.service";
 import {TestBed} from "@angular/core/testing";
 import {Router} from "@angular/router";
 import {of} from "rxjs";

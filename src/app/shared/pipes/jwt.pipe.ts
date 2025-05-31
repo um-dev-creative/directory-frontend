@@ -1,6 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {jwtDecode} from "jwt-decode";
 import {CustomJwtPayload} from "@shared/models/custom-jwt-payload";
+import { LoggerService } from '@app/core/services';
 
 /**
  * Pipe to decode a JWT token.
@@ -11,6 +12,8 @@ import {CustomJwtPayload} from "@shared/models/custom-jwt-payload";
 })
 export class JwtPipe implements PipeTransform {
 
+    constructor(private logger: LoggerService) {}
+
     /**
      * Transform the token into a JwtPayload object.
      * @param token
@@ -19,7 +22,7 @@ export class JwtPipe implements PipeTransform {
         try {
             return jwtDecode<CustomJwtPayload>(token);
         } catch (error) {
-            console.error('Invalid JWT token', error);
+            this.logger.error('Invalid JWT token', error);
             return null;
         }
     }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Ren
 import { CommonModule } from '@angular/common';
 import { OfferSliderClient } from '@app/offer-slider/offer-slider.client';
 import { Observable, Subscription } from 'rxjs';
-import { Offer } from '@app/models/offer.model';
+import { Offer } from '@app/shared/models/offer.model';
 
 @Component({
   selector: 'app-offer-slider',

@@ -1,8 +1,24 @@
 import {inject, Injectable} from '@angular/core';
-import {ServiceTemplate} from '@shared/services/service-template';
+import {ServiceTemplate} from '@app/core/services101/service-template';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map, Observable} from 'rxjs';
-import {DFC, SESSION_TOKEN_BACKEND} from '@shared/app.const';
+import {DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
+
+export interface AuthTokenRequest {
+  alias: string;
+  password: string;
+}
+
+export interface AuthTokenResponse {
+  headers: any;
+  body: any;
+  sessionTokenBkd: string | null;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
 
 /**
  * Auth client services to get token from backend services

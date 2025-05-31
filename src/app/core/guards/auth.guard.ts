@@ -1,6 +1,6 @@
 /*import {CanActivateFn} from '@angular/router';
 import {Store} from "@ngrx/store";
-import {SessionData} from "@shared/signals/session/session.state";
+import {SessionData} from "@app/core/store/session/session.state";
 import {inject} from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
@@ -27,7 +27,7 @@ import {
   Router
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { SessionData } from '@shared/signals/session/session.state';
+import { SessionData } from '@app/core/store/session/session.state';
 import { map, take, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LoggerService, StorageService } from '../services';
@@ -56,7 +56,7 @@ function checkAuthState(targetUrl: string): Observable<boolean> {
     tap(isAuthenticated => {
       if (!isAuthenticated) {
         logger.warn(`User not authenticated, redirecting to /auth (URL: ${targetUrl})`);
-        // Guardar la URL de redirección en localStorage
+        // Store the attempted URL for redirecting after login
         storage.setLocal('redirect_url', targetUrl);
         router.navigate(['/auth']);
       }

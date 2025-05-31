@@ -16,12 +16,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
-import {JwtPipe} from '@shared/services/jwt.pipe';
-import {SessionData, SessionState} from '@shared/signals/session/session.state';
+import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
-import {DFC} from '@shared/app.const';
+import {DFC} from '@app/shared/constants/app.const';
 import {HeaderType} from '@shared/constants/header-type';
-import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/search/search';
 

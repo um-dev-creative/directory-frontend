@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Offer } from '@app/models/offer.model';
+import { Offer } from '@app/shared/models/offer.model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Injectable({ providedIn: 'root' })

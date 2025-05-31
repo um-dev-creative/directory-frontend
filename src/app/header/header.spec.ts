@@ -10,7 +10,7 @@ import {App} from '@app/app';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Store} from '@ngrx/store';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {SessionStoreService} from '@shared/signals/session/session-store.service';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('Header', () => {
