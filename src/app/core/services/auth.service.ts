@@ -62,7 +62,8 @@ export class AuthService {
       this.setAuthenticatedUser(user);
       this.logger.info('User authenticated from storage');
     } else {
-      this.logout();
+      // this.logout();
+      this.clearAuthData();
     }
   }
 
@@ -97,6 +98,15 @@ export class AuthService {
    * Logout user
    */
   logout(): void {
+    this.clearAuthData();
+    this.logger.info('User logged out');
+    this.router.navigate(['/auth']);
+  }
+
+  /**
+   * Clear authentication data without navigation
+   */
+  private clearAuthData(): void {
     this.storageService.removeLocal('auth_token');
     this.storageService.removeLocal('user_info');
     this.storageService.removeLocal('redirect_url');
@@ -104,8 +114,8 @@ export class AuthService {
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
 
-    this.logger.info('User logged out');
-    this.router.navigate(['/auth/login']);
+    // this.logger.info('User logged out');
+    // this.router.navigate(['/auth/login']);
   }
 
   /**

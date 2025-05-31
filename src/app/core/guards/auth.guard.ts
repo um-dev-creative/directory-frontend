@@ -37,13 +37,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return true;
     }
 
-    this.logger.warn('User is not authenticated, redirecting to login');
+    this.logger.warn('User is not authenticated, redirecting to auth');
 
     // Store the attempted URL for redirecting after login
     this.storageService.setLocal('redirect_url', url);
 
-    // Navigate to login page
-    this.router.navigate(['/auth/login']);
+    // Navigate to auth page
+    this.router.navigate(['/auth']);
     return false;
   }
 
