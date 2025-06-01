@@ -18,10 +18,10 @@ export interface UserInfo {
 export class RoleGuard implements CanActivate {
 
   constructor(
-    private router: Router,
-    private storageService: StorageService,
-    private logger: LoggerService,
-    private notificationService: NotificationService
+    private readonly router: Router,
+    private readonly storageService: StorageService,
+    private readonly logger: LoggerService,
+    private readonly notificationService: NotificationService
   ) {}
 
   canActivate(

@@ -33,9 +33,9 @@ export class Spinner implements OnInit, OnDestroy {
   @Input() contained = false;
 
   isVisible = false;
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private readonly loadingService: LoadingService) {}
 
   ngOnInit() {
     this.loadingService.loading$

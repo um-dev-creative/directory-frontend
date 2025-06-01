@@ -49,7 +49,7 @@ export class SessionStoreService {
 
   readonly session$: Observable<SessionData> = inject(Store).select(state => state.session?.sessionData);
 
-  constructor(private store: Store<{ session: SessionState }>) {
+  constructor(private readonly store: Store<{ session: SessionState }>) {
     this.loadSessionData();
   }
 

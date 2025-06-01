@@ -9,13 +9,13 @@ export interface NotificationConfig extends MatSnackBarConfig {
   providedIn: 'root'
 })
 export class NotificationService {
-  private defaultConfig: MatSnackBarConfig = {
+  private readonly defaultConfig: MatSnackBarConfig = {
     duration: 5000,
     horizontalPosition: 'right',
     verticalPosition: 'top',
   };
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private readonly snackBar: MatSnackBar) {}
 
   /**
    * Show success notification

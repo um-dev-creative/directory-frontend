@@ -10,9 +10,9 @@ import { NotificationService } from '../services/notification.service';
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(
-    private router: Router,
-    private logger: LoggerService,
-    private notificationService: NotificationService
+    private readonly router: Router,
+    private readonly logger: LoggerService,
+    private readonly notificationService: NotificationService
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

@@ -22,7 +22,7 @@ interface CardsData {
 export class Cards implements OnInit {
   cardsData: Image[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   get cards(): Image[] {
     return this.cardsData;

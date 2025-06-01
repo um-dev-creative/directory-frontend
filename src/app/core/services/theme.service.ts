@@ -15,18 +15,18 @@ export class ThemeService {
   private readonly THEME_KEY = 'app-theme';
   private readonly DARK_MODE_KEY = 'dark-mode';
 
-  private themes: Theme[] = [
+  private readonly themes: Theme[] = [
     { name: 'light', displayName: 'Light', className: 'light-theme' },
     { name: 'dark', displayName: 'Dark', className: 'dark-theme' }
   ];
 
-  private currentThemeSubject = new BehaviorSubject<Theme>(this.themes[0]);
-  private isDarkModeSubject = new BehaviorSubject<boolean>(false);
+  private readonly  currentThemeSubject = new BehaviorSubject<Theme>(this.themes[0]);
+  private readonly isDarkModeSubject = new BehaviorSubject<boolean>(false);
 
   public currentTheme$: Observable<Theme> = this.currentThemeSubject.asObservable();
   public isDarkMode$: Observable<boolean> = this.isDarkModeSubject.asObservable();
 
-  constructor(private storageService: StorageService) {
+  constructor(private readonly storageService: StorageService) {
     this.initializeTheme();
   }
 

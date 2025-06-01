@@ -18,7 +18,7 @@ interface Trend {
 export class TrendCarousel implements OnInit {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
   private scrollInterval: any;
-  private scrollSpeed = 200;  // Ajusta este valor para controlar la velocidad
+  private readonly scrollSpeed = 200;  // Ajusta este valor para controlar la velocidad
 
   /** Inicia el desplazamiento automático */
   startScroll(direction: 'left' | 'right') {
@@ -35,7 +35,7 @@ export class TrendCarousel implements OnInit {
   }
   trends: Trend[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
     this.http.get<Trend[]>('/assets/mocks/offers-list.json').subscribe(data => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Country, Month } from 'assets/data/common';
+import { Country } from 'assets/data/common';
 import { RegisterData } from '../models/register-data.interface';
 
 @Injectable({

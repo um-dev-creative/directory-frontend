@@ -37,8 +37,8 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService extends ServiceTemplate {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private readonly currentUserSubject = new BehaviorSubject<User | null>(null);
+  private readonly  isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
@@ -47,11 +47,11 @@ export class AuthService extends ServiceTemplate {
     DFC.RelativePath.AUTH_PATH;
 
   constructor(
-    private httpService: HttpService,
-    private storageService: StorageService,
-    private logger: LoggerService,
-    private notificationService: NotificationService,
-    private router: Router
+    private readonly httpService: HttpService,
+    private readonly storageService: StorageService,
+    private readonly logger: LoggerService,
+    private readonly notificationService: NotificationService,
+    private readonly router: Router
   ) {
     super();
     this.initializeAuth();
@@ -68,7 +68,6 @@ export class AuthService extends ServiceTemplate {
       this.setAuthenticatedUser(user);
       this.logger.info('User authenticated from storage');
     } else {
-      // this.logout();
       this.clearAuthData();
     }
   }
@@ -138,8 +137,6 @@ export class AuthService extends ServiceTemplate {
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
 
-    // this.logger.info('User logged out');
-    // this.router.navigate(['/auth/login']);
   }
 
   /**

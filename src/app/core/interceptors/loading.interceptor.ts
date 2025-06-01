@@ -8,7 +8,7 @@ import { LoadingService } from '../services/loading.service';
 export class LoadingInterceptor implements HttpInterceptor {
   private totalRequests = 0;
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private readonly loadingService: LoadingService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Skip loading for certain requests if needed

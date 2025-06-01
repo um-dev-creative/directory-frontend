@@ -11,7 +11,7 @@ interface CacheEntry {
 
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
-  private cache = new Map<string, CacheEntry>();
+  private readonly cache = new Map<string, CacheEntry>();
   private readonly DEFAULT_MAX_AGE = 5 * 60 * 1000; // 5 minutes
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

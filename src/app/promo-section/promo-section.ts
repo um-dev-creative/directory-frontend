@@ -25,7 +25,7 @@ interface PromoSectionData {
 export class PromoSection implements OnInit {
   promo: PromoSectionData | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadPromoData();

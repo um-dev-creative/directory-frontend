@@ -36,7 +36,7 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
 export class App implements AfterViewInit, OnInit {
   isInitialized$: Observable<boolean>;
 
-  constructor(private store: Store<{ session: SessionState }>) {
+  constructor(private readonly store: Store<{ session: SessionState }>) {
     this.isInitialized$ = this.store.select(state => state.session?.isInitialized ?? false);
   }
 

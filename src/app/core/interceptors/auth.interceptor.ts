@@ -6,7 +6,7 @@ import { StorageService } from '../services/storage.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private storageService: StorageService) {}
+  constructor(private readonly storageService: StorageService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Skip auth header for certain requests

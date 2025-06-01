@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SessionData, SessionState } from '@app/core/store/session/session.state';
-import { map, take, filter, switchMap } from 'rxjs/operators';
+import { take, filter, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LoggerService, StorageService } from '../services';
 
@@ -93,23 +93,3 @@ export const authMatchGuard: CanMatchFn = (route, segments) => {
   const targetUrl = '/' + segments.map(s => s.path).join('/');
   return checkAuthState(targetUrl);
 };
-/*
-import {CanActivateFn} from '@angular/router';
-import {Store} from "@ngrx/store";
-import {SessionData} from "@app/core/store/session/session.state";
-import {inject} from '@angular/core';
-
-export const authGuard: CanActivateFn = (route, state) => {
-    const store: Store<{ app: SessionData }> = inject(Store);
-    const sessionData = store.select(state => state.app);
-    let isAuthenticated = false;
-    if (sessionData) {
-      sessionData.subscribe(data => {
-            isAuthenticated = data.userAuth !== null && data.userAuth !== undefined;
-        });
-    } else {
-      isAuthenticated = false;
-    }
-    return isAuthenticated;
-};
-*/

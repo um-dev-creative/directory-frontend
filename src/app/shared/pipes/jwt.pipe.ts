@@ -12,7 +12,7 @@ import { LoggerService } from '@app/core/services';
 })
 export class JwtPipe implements PipeTransform {
 
-    constructor(private logger: LoggerService) {}
+    constructor(private readonly logger: LoggerService) {}
 
     /**
      * Transform the token into a JwtPayload object.

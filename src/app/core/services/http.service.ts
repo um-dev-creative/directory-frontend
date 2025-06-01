@@ -23,7 +23,7 @@ export class HttpService {
     'Accept': 'application/json'
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * GET request

@@ -13,6 +13,7 @@ const indexHtml = join(browserDistFolder, 'index.html');
 
 
 const app = express();
+app.disable("x-powered-by");
 const commonEngine = new CommonEngine();
 
 // Set up rate limiter: maximum of 100 requests per 15 minutes

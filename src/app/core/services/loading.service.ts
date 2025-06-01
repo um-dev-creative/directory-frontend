@@ -9,8 +9,8 @@ export interface LoadingState {
   providedIn: 'root'
 })
 export class LoadingService {
-  private loadingSubject = new BehaviorSubject<LoadingState>({});
-  private globalLoadingSubject = new BehaviorSubject<boolean>(false);
+  private readonly loadingSubject = new BehaviorSubject<LoadingState>({});
+  private readonly globalLoadingSubject = new BehaviorSubject<boolean>(false);
 
   public loading$: Observable<LoadingState> = this.loadingSubject.asObservable();
   public globalLoading$: Observable<boolean> = this.globalLoadingSubject.asObservable();

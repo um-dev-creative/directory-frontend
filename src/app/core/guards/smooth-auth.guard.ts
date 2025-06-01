@@ -3,7 +3,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SessionState } from '@app/core/store/session/session.state';
 import { filter, map, take, delay } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 /**
  * Guard más suave que espera la inicialización sin logs excesivos

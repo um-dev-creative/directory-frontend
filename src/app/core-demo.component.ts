@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { 
-  AuthService, 
-  NotificationService, 
-  ThemeService, 
+import {
+  AuthService,
+  NotificationService,
+  ThemeService,
   LoadingService,
-  LoggerService 
+  LoggerService
 } from './core/services';
 import { Observable } from 'rxjs';
 
@@ -26,7 +26,7 @@ import { Observable } from 'rxjs';
           <mat-card-title>Core Services Demo</mat-card-title>
           <mat-card-subtitle>Prueba los servicios principales</mat-card-subtitle>
         </mat-card-header>
-        
+
         <mat-card-content>
           <!-- Auth Status -->
           <div class="section">
@@ -48,9 +48,9 @@ import { Observable } from 'rxjs';
           <!-- Loading Demo -->
           <div class="section">
             <h3>Loading</h3>
-            <button 
-              mat-raised-button 
-              color="accent" 
+            <button
+              mat-raised-button
+              color="accent"
               (click)="showLoading()"
               [disabled]="isLoading$ | async">
               {{ (isLoading$ | async) ? 'Loading...' : 'Test Loading' }}
@@ -77,20 +77,20 @@ import { Observable } from 'rxjs';
       margin: 20px auto;
       padding: 20px;
     }
-    
+
     .section {
       margin: 20px 0;
       padding: 15px;
       border: 1px solid #ddd;
       border-radius: 8px;
     }
-    
+
     .button-group {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
-    
+
     h3 {
       margin-top: 0;
       color: var(--primary-color);
@@ -103,9 +103,9 @@ export class CoreDemoComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public themeService: ThemeService,
-    private notificationService: NotificationService,
-    private loadingService: LoadingService,
-    private logger: LoggerService
+    private readonly notificationService: NotificationService,
+    private readonly loadingService: LoadingService,
+    private readonly logger: LoggerService
   ) {
     this.isLoading$ = this.loadingService.globalLoading$;
   }
@@ -121,7 +121,7 @@ export class CoreDemoComponent implements OnInit {
 
   showLoading(): void {
     this.loadingService.showGlobal();
-    
+
     // Simulate async operation
     setTimeout(() => {
       this.loadingService.hideGlobal();

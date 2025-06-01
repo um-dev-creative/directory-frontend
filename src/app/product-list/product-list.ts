@@ -21,7 +21,7 @@ interface Product {
 export class ProductList implements OnInit {
   products: Product[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   ngOnInit() {
     this.http.get<Product[]>('assets/mocks/product-list.json').subscribe(data => {

@@ -10,12 +10,12 @@ import { LoggerService } from '../services/logger.service';
 export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    private router: Router,
-    private storageService: StorageService,
-    private logger: LoggerService
+    private readonly router: Router,
+    private readonly storageService: StorageService,
+    private readonly logger: LoggerService
   ) {}
 
-  canActivate( 
+  canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {

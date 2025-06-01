@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OfferSliderClient } from '@app/offer-slider/offer-slider.client';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Offer } from '@app/shared/models/offer.model';
 
 @Component({
@@ -18,12 +18,12 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('offerContainer', { static: false }) offerContainer!: ElementRef;
 
-  private events: (() => void)[] = []; // Para eliminar eventos dinámicos
+  private readonly events: (() => void)[] = []; // Para eliminar eventos dinámicos
   private isDragging = false;
   private startX = 0;
   private scrollStartPosition = 0;
 
-  constructor(private offerSliderClient: OfferSliderClient, private renderer: Renderer2) {
+  constructor(private readonly offerSliderClient: OfferSliderClient, private readonly renderer: Renderer2) {
     this.offers$ = this.offerSliderClient.offers$;
     this.isMobile$ = this.offerSliderClient.isMobile$;
   }
