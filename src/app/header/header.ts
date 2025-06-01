@@ -166,9 +166,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
 
   logout(): void {
     this.sessionStoreService.clearSessionData();
-    this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-    console.debug('User logged out');
-    this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+    // Cambiar el header y navegar después de que los efectos de limpiar la sesión se completen
+    setTimeout(() => {
+      this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+      console.debug('User logged out');
+      this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+    }, 0);
   }
 
   get dynamicClasses(): string {

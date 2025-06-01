@@ -1,5 +1,6 @@
 export interface SessionState {
   sessionData: SessionData;
+  isInitialized: boolean;
 }
 
 export class SessionData {
@@ -27,7 +28,8 @@ export const initialState: SessionState = {
       features: []
     },
     token: ''
-  }
+  },
+  isInitialized: false
 };
 
 

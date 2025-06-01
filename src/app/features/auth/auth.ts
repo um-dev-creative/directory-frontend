@@ -11,14 +11,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Spinner } from '@app/shared/components/spinner/spinner';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import { AlertService } from '@app/core/services101/alert.service';
-import { LoadingService } from '@app/core/services101/loading.service';
+import { LoadingService } from '@app/core/services/loading.service';
 import { AuthService } from '@app/core/services';
+import { NotificationService } from '@app/core/services/notification.service';
 // App Store
 import { loadSession } from '@app/core/store/session/session.action';
 import { SessionData, UserAuth } from '@app/core/store/session/session.state';
@@ -52,11 +52,7 @@ import { INITIAL_PLACEHOLDERS, INITIAL_DROPDOWN_STATE, DEFAULT_COUNTRY_CODE } fr
  */
 @Component({
   selector: 'app-auth',
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatProgressSpinner
-  ],
+  imports: [CommonModule, FormsModule, Spinner],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
   providers: [JwtPipe]
@@ -103,12 +99,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    */
   private readonly headerService: HeaderService = inject(HeaderService);
 
-  /**
-   * Alert services
-   * @type {AlertService}
-   */
-  private readonly alertService: AlertService = inject(AlertService);
-
+  private readonly notificationService = inject(NotificationService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   /**
@@ -344,7 +335,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Submits the registration or login form.
    */
   onSubmit(): void {
-    this.loader.show();
+    this.loader.show('auth');
 
     if (this.isRegistering) {
       this.handleRegistration();
@@ -384,12 +375,14 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         },
         error: (error: any) => {
           console.error('Error creating user:', error);
-          this.loader.hide();
+          this.notificationService.error('Error creating user. Please try again.');
+          this.loader.hide('auth');
         },
       });
     } else {
       console.error('Invalid user data:', userToRegister);
-      this.loader.hide();
+      this.notificationService.error('Invalid registration data. Please check your inputs.');
+      this.loader.hide('auth');
     }
   }
 
@@ -516,88 +509,50 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param password - The user's password.
    */
   private authenticateUser(email: string, password: string): void {
-    const credentials = { email, password };
-    this.authService.login(credentials).pipe(takeUntil(this.subject$))
+    let userAuth = new UserAuth();
+    this.loader.show('auth'); // Usando una key específica para auth
+    this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
       .subscribe({
-        next: (success: boolean) => {
-          if (success) {
-            console.log('User authenticated successfully');
-
-            // Get the current user from the auth service
-            const currentUser = this.authService.getCurrentUser();
-
-            if (currentUser) {
-              // Create UserAuth object for your session store
-              const userAuth: UserAuth = {
-                alias: currentUser.email,
-                email: currentUser.email,
-                fullName: currentUser.name,
-                sessionTokenBkd: this.authService.getToken() || '',
-                sessionToken: this.authService.getToken() || '',
-                features: currentUser.permissions || []
-              };
-
-              // Save session data
-              this.sessionData = { userAuth, token: currentUser.id };
+        next: (response: any) => {
+          const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
+          if (decodedToken) {
+            userAuth = {
+              alias: decodedToken.alias?decodedToken.alias:'',
+              email: decodedToken.email?decodedToken.email:'',
+              fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
+              sessionTokenBkd: response.sessionTokenBkd,
+              sessionToken: response.body.token,
+              features: []
+            };
+            if (decodedToken?.uid) {
+              this.sessionData = {userAuth, token: decodedToken?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData);
-              console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
 
-              // Update header and navigate
+              // Verificar que el estado se guardó correctamente
+              this.sessionStoreService.session$.subscribe(sessionData => {
+                console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
+              });
+
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+              // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
               this.clearForm();
               this.router.navigate(['/veracode']);
             }
-          } else {
-            // Login failed
-            this.isErrorFound = true;
-            this.alertService.error('Invalid credentials', true);
-            console.error('Login failed: Invalid credentials');
           }
-          this.loader.hide();
+          this.loader.hide('auth');
         },
         error: (error: any) => {
           this.isErrorFound = true;
-          this.alertService.error('Login failed. Please try again.', true);
+          if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
+              error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
+            this.notificationService.error('Invalid credentials. Please check your email and password.');
+          } else {
+            this.notificationService.error('Login failed. Please try again later.');
+          }
           console.error('Error authenticating user:', error);
-          this.loader.hide();
-        }
+          this.loader.hide('auth');
+        },
       });
-
-    // this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
-    //   .subscribe({
-    //     next: (response: any) => {
-    //       console.log('User authenticated:', response);
-    //       const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
-    //       if (decodedToken) {
-    //         userAuth = {
-    //           alias: decodedToken.alias?decodedToken.alias:'',
-    //           email: decodedToken.email?decodedToken.email:'',
-    //           fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
-    //           sessionTokenBkd: response.sessionTokenBkd,
-    //           sessionToken: response.body.token,
-    //           features: []
-    //         };
-    //         if (decodedToken?.uid) {
-    //           this.sessionData = {userAuth, token: decodedToken?.uid};
-    //           this.sessionStoreService.saveSessionData(this.sessionData)
-    //           console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
-    //           this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-    //           // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
-    //           this.clearForm();
-    //           this.router.navigate(['/veracode']);
-    //         }
-    //       }
-    //       this.loader.hide();
-    //     },
-    //     error: (error: any) => {
-    //       this.isErrorFound = true;
-    //       if (error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT) {
-    //         this.alertService.error('Invalid credentials', true);
-    //       }
-    //       console.error('Error authenticating user:', error);
-    //       this.loader.hide();
-    //     },
-    //   });
   }
 
   /**

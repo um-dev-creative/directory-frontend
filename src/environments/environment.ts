@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   appBaseHref: '/',
-  apiUrl: 'http://localhost:3000/api', // Update this with your actual API URL
+  apiUrl: '', // Empty because APIs are served from the same server as the frontend
   appName: 'Directory Frontend',
   version: '1.0.0'
 };

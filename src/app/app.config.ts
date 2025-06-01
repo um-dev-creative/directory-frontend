@@ -11,6 +11,7 @@ import {sessionReducer} from '@app/core/store/session/session.reducer';
 import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
 import {provideCore} from './core/core.module';
+import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
 
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
@@ -46,6 +47,10 @@ export const appConfig: ApplicationConfig = {
     // NgRx Store
     provideStore({ session: sessionReducer}),
     provideEffects([SessionEffects]),
+
+    // Session initialization
+    SESSION_INITIALIZER_PROVIDER,
+
     // Core services and modules
     provideCore()
   ]

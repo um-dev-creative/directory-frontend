@@ -2,9 +2,9 @@ import {AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit} 
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {LoadingService} from '@app/core/services101/loading.service';
+import {LoadingService} from '@app/core/services/loading.service';
 import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
-import {AlertService} from '@app/core/services101/alert.service';
+import {NotificationService} from '@app/core/services/notification.service';
 import {loadSession} from '@app/core/store/session/session.action';
 import {HeaderType} from '@shared/constants/header-type';
 import {HeaderService} from '@app/header/header.service';
@@ -84,10 +84,10 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
   protected verificationCodeForm: FormGroup;
 
   /**
-   * Alert services
-   * @type {AlertService}
+   * Notification service for showing messages
+   * @type {NotificationService}
    */
-  private readonly alertService: AlertService = inject(AlertService);
+  private readonly notificationService: NotificationService = inject(NotificationService);
 
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
 
@@ -143,13 +143,13 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
         .subscribe({
           next: (response) => {
             if (response.status === 202) {
-              this.alertService.success('Success', true);
+              this.notificationService.success('Success');
             }
             this.loader.hide();
           },
           error: (error) => {
             this.setErrorFound('verification-code', error);
-            this.alertService.error('Error', true);
+            this.notificationService.error('Error');
             this.loader.hide();
           }
         });

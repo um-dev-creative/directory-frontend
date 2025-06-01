@@ -15,11 +15,6 @@ export interface AuthTokenResponse {
   sessionTokenBkd: string | null;
 }
 
-export interface LoginCredentials { 
-  email: string;
-  password: string;
-}
-
 /**
  * Auth client services to get token from backend services
  */

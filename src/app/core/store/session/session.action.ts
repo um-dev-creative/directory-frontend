@@ -4,3 +4,4 @@ import {SessionState} from './session.state';
 export const saveSession = createAction('[Session] Save session', props<SessionState>());
 export const clearSession = createAction(('[Session] Clear session'));
 export const loadSession = createAction('[Session] Load Session');
+export const setInitialized = createAction('[Session] Set Initialized');

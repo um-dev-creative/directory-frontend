@@ -21,6 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.logger.error('HTTP Error occurred', error);
 
         let errorMessage = 'An unexpected error occurred';
+        let shouldRedirect = false;
 
         switch (error.status) {
           case 400:
@@ -28,8 +29,14 @@ export class ErrorInterceptor implements HttpInterceptor {
             break;
           case 401:
             errorMessage = 'Unauthorized - Please login again';
-            // Redirect to login or refresh token
-            this.router.navigate(['/auth/login']);
+            // Only redirect to auth if this is NOT a login request
+            // Check if the request URL contains auth/token or login endpoints
+            const isAuthRequest = req.url.includes('/auth/token') ||
+                                 req.url.includes('/login') ||
+                                 req.url.includes('/auth/drb/api/v1/auth');
+            if (!isAuthRequest) {
+              shouldRedirect = true;
+            }
             break;
           case 403:
             errorMessage = 'Forbidden - You don\'t have permission';
@@ -49,8 +56,17 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
         }
 
-        // Show notification for user-facing errors
-        if (error.status !== 401) { // Don't show notification for auth errors as we redirect
+        // Redirect to auth page if needed
+        if (shouldRedirect) {
+          this.router.navigate(['/auth']);
+        }
+
+        // Show notification for user-facing errors, but not for auth requests
+        // as the component should handle its own error messaging
+        const isAuthRequest = req.url.includes('/auth/token') ||
+                             req.url.includes('/login') ||
+                             req.url.includes('/auth/drb/api/v1/auth');
+        if (error.status !== 401 || !isAuthRequest) {
           this.notificationService.error(errorMessage);
         }
 

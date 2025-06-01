@@ -1,22 +1,35 @@
 import {createReducer, on} from '@ngrx/store';
-import {clearSession, loadSession, saveSession} from './session.action';
+import {clearSession, loadSession, saveSession, setInitialized} from './session.action';
 import {initialState, SessionData} from './session.state';
 
 const _sessionReducer = createReducer(
   initialState,
-  on(saveSession, (state, {sessionData}) => {
-    return {sessionData: sessionData};
+  on(saveSession, (state, {sessionData, isInitialized}) => {
+    console.debug('🔐 Saving session:', sessionData?.userAuth?.email);
+    return {...state, sessionData, isInitialized: isInitialized ?? state.isInitialized};
   }),
-  on(clearSession, () => initialState),
+  on(clearSession, (state) => {
+    console.debug('🔒 Session cleared');
+    return {
+      ...initialState,
+      isInitialized: true
+    };
+  }),
   on(loadSession, (state) => {
     if (isSessionStorageAvailable()) {
       const storedSession = sessionStorage.getItem('currentSession');
       if (storedSession) {
         const sessionData: SessionData = JSON.parse(storedSession);
-        return {...state, ...sessionData};
+        console.debug('🔓 Session loaded:', sessionData?.userAuth?.email);
+        return {...state, sessionData};
       }
     }
+    console.debug('🔍 No session found');
     return state;
+  }),
+  on(setInitialized, (state) => {
+    console.debug('✨ App initialized');
+    return {...state, isInitialized: true};
   })
 );
 

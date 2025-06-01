@@ -41,20 +41,20 @@ export class SessionStoreService {
 import { inject, Injectable } from '@angular/core';
 import { SessionData, SessionState } from "@app/core/store/session/session.state";
 import { Store } from '@ngrx/store';
-import { clearSession, loadSession, saveSession } from '@app/core/store/session/session.action';
+import { clearSession, loadSession, saveSession, setInitialized } from '@app/core/store/session/session.action';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SessionStoreService {
 
-  readonly session$: Observable<SessionData> = inject(Store).select('session');
+  readonly session$: Observable<SessionData> = inject(Store).select(state => state.session?.sessionData);
 
-  constructor(private store: Store<{ session: SessionData }>) {
+  constructor(private store: Store<{ session: SessionState }>) {
     this.loadSessionData();
   }
 
   saveSessionData(sessionData: SessionData): void {
-    const sessionState: SessionState = { sessionData };
+    const sessionState: SessionState = { sessionData, isInitialized: true };
     this.store.dispatch(saveSession(sessionState));
   }
 
@@ -64,5 +64,9 @@ export class SessionStoreService {
 
   loadSessionData(): void {
     this.store.dispatch(loadSession());
+  }
+
+  setInitialized(): void {
+    this.store.dispatch(setInitialized());
   }
 }
