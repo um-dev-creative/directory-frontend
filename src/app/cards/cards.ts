@@ -22,14 +22,14 @@ interface CardsData {
 export class Cards implements OnInit {
   cardsData: Image[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   get cards(): Image[] {
     return this.cardsData;
   }
 
   ngOnInit(): void {
-    this.http.get<CardsData>('assets/data/images.json')
+    this.http.get<CardsData>('assets/mocks/images.json')
       .subscribe({
         next: (data) => {
           this.cardsData = data.images;

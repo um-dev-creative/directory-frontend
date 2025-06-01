@@ -1,0 +1,135 @@
+<div class="tw-max-w-2xl tw-mx-auto tw-py-8">
+  <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-mb-5 tw-text-black">Profile</h2>
+  <!-- Breadcrumb -->
+  <nav class="tw-text-sm tw-mb-5 tw-text-center">
+    <span class="tw-text-gray-400">Account Settings</span>
+    <span class="tw-mx-2">&gt;</span>
+    <span class="tw-text-gray-700 tw-font-medium">Profile</span>
+  </nav>
+
+  <!-- Avatar Section -->
+  <div class="tw-flex tw-flex-col tw-items-center tw-mb-8 tw-bg-gradient-to-br tw-from-blue-600 tw-to-blue-400 tw-text-white tw-py-8 tw-rounded-xl tw-shadow-lg">
+    <div class="tw-w-28 tw-h-28 tw-bg-gray-100 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-mb-2 tw-border tw-border-gray-200 tw-overflow-hidden">
+      @if (hasAvatar()) {
+        <img [src]="profileData.avatar" alt="User avatar" class="tw-w-full tw-h-full tw-object-cover" />
+      } @else {
+        <span class="tw-text-4xl tw-text-gray-600 tw-font-semibold">{{ getAvatarDisplay() }}</span>
+      }
+    </div>
+    <button class="tw-bg-gray-400 tw-text-white tw-px-4 tw-py-1 tw-rounded tw-text-sm tw-mt-1 tw-shadow tw-cursor-not-allowed">Update Photo</button>
+  </div>
+
+  <form class="tw-space-y-8">
+    <!-- Basic Information -->
+    <div class="tw-space-y-6">
+      <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-pb-2">Basic Information</h3>
+      <div>
+        <label class="tw-block tw-font-semibold tw-mb-1">Email Address</label>
+        <input type="email" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.email" readonly />
+        <span class="tw-text-xs tw-text-green-600 tw-mt-1 tw-block" *ngIf="profileData.emailConfirmed">Confirmed</span>
+      </div>
+      <div class="tw-flex tw-gap-4">
+        <div class="tw-flex-1">
+          <label class="tw-block tw-font-semibold tw-mb-1">First Name</label>
+          <input type="text" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.firstName" />
+        </div>
+        <div class="tw-flex-1">
+          <label class="tw-block tw-font-semibold tw-mb-1">Last Name</label>
+          <input type="text" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.lastName" />
+        </div>
+      </div>
+      <div>
+        <label class="tw-block tw-font-semibold tw-mb-1">Display Name</label>
+        <input type="text" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.displayName" />
+        <span class="tw-text-xs tw-text-gray-400 tw-mt-1 tw-block">Your Display Name is how you want to be known to the LatinHub community.</span>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="tw-space-y-6">
+      <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-pb-2">Contact Information</h3>
+      <div class="tw-flex tw-gap-4">
+        <div class="tw-flex-1">
+          <label class="tw-block tw-font-semibold tw-mb-1">Mobile number</label>
+          <input type="text" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.phone" />
+        </div>
+        <div class="tw-flex-1">
+          <label class="tw-block tw-font-semibold tw-mb-1">Date of birth</label>
+          <input type="text" class="tw-w-full tw-bg-gray-100 tw-rounded tw-px-3 tw-py-2 tw-text-gray-700 tw-border tw-border-gray-200" [value]="profileData.birthDate.month + ' ' + profileData.birthDate.day + ', ' + profileData.birthDate.year" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Preferences -->
+    <div class="tw-space-y-6">
+      <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-pb-2">Notification Preferences</h3>
+      <div class="tw-space-y-4">
+        <div class="tw-flex tw-items-center tw-justify-between tw-py-2">
+          <div>
+            <h4 class="tw-font-medium">Deals & Offers</h4>
+            <p class="tw-text-sm tw-text-gray-500">Get notified about new deals and special offers</p>
+          </div>
+          <div class="tw-flex tw-gap-4">
+            <label class="tw-flex tw-items-center">
+              <input type="checkbox" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-blue-600" [checked]="profileData.notifications.email" />
+              <span class="tw-ml-2 tw-text-sm">Email</span>
+            </label>
+            <label class="tw-flex tw-items-center">
+              <input type="checkbox" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-blue-600" [checked]="profileData.notifications.sms" />
+              <span class="tw-ml-2 tw-text-sm">SMS</span>
+            </label>
+          </div>
+        </div>
+        <div class="tw-flex tw-items-center tw-justify-between tw-py-2">
+          <div>
+            <h4 class="tw-font-medium">Account Updates</h4>
+            <p class="tw-text-sm tw-text-gray-500">Important updates about your account</p>
+          </div>
+          <div class="tw-flex tw-gap-4">
+            <label class="tw-flex tw-items-center">
+              <input type="checkbox" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-gray-400 tw-bg-gray-200 tw-cursor-not-allowed" [checked]="true" disabled />
+              <span class="tw-ml-2 tw-text-sm tw-text-gray-500">Email</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy & Legal -->
+    <div class="tw-space-y-6">
+      <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-pb-2">Privacy & Legal</h3>
+      <div class="tw-bg-gray-50 tw-p-4 tw-rounded-lg tw-flex tw-items-start tw-gap-3">
+        <input type="checkbox" id="privacy" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-blue-600 tw-mt-1" [checked]="profileData.privacyOptOut" />
+        <div class="tw-flex-1">
+          <label for="privacy" class="tw-font-semibold tw-block">Do not sell my personal information</label>
+          <span class="tw-text-xs tw-text-gray-400">By law you may opt-out, but we do not sell, trade, or rent Users' personal information to others.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="tw-flex tw-justify-between tw-items-center tw-pt-6">
+      <button type="button" class="tw-text-red-600 tw-text-sm tw-underline">Delete Account</button>
+      <button type="submit" class="
+        tw-font-bold
+        tw-h-10
+        tw-text-sm
+        md:tw-inline-block
+        tw-shadow-lg
+        tw-shadow-indigo-500/40
+        tw-bg-red-500
+        tw-text-white
+        tw-rounded-full
+        tw-px-8
+        tw-py-2
+        tw-whitespace-nowrap
+        tw-min-w-[100px]
+        tw-transition
+        tw-duration-300
+        tw-ease-in-out
+        hover:tw-bg-red-600
+        hover:tw-scale-105
+      ">Save Changes</button>
+    </div>
+  </form>
+</div>

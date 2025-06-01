@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {ServiceTemplate} from '@shared/services/service-template';
-import {DFC} from '@shared/app.const';
+import {ServiceTemplate} from '@app/core/services/service-template';
+import {DFC} from '@app/shared/constants/app.const';
 
 @Injectable({
   providedIn: 'root'

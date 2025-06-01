@@ -1,4 +1,4 @@
-import {Injectable, signal, Signal} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {HeaderType} from '@shared/constants/header-type';
 import {BehaviorSubject, Observable} from 'rxjs';
 
