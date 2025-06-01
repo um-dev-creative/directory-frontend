@@ -1,11 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {App} from './app';
-import {AuthClient} from '@app/auth/auth.client';
+import {AuthClient} from '@app/features/auth/auth.client';
 import {DebugElement} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Stage} from '@app/stage/stage';
+import {Stage} from '@app/features/stage';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Store} from '@ngrx/store';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';

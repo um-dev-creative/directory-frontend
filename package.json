@@ -7,6 +7,8 @@
     "build": "ng build",
     "build:ssr": "ng build && ng run directory-frontend:server",
     "watch": "ng build --watch --configuration development",
+    "watch:ssr": "ng build --watch --configuration development && ng run directory-frontend:server --watch",
+    "dev": "concurrently \"npm run watch:ssr\" \"npm run start-dev\"",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
     "serve:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs"
   },
@@ -67,6 +69,7 @@
     "@types/jasmine": "~5.1.5",
     "@types/node": "^22.10.7",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",

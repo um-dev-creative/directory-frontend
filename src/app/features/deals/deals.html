@@ -1,0 +1,41 @@
+<main class="tw-relative tw-mx-auto">
+  <!-- Imágenes de fondo visibles solo en pantallas grandes -->
+  <div class="tw-hidden sm:tw-block">
+    <img
+      alt=""
+      fetchpriority="high"
+      width="2170"
+      height="1494"
+      decoding="async"
+      class="tw-absolute tw-top-[-6.25rem] tw-left-1/2 tw-max-w-none tw-w-[67.8125rem] tw-ml-[-46.875rem] tw-pointer-events-none"
+      src="/assets/images/media_bg.jpg"
+    />
+    <!-- Si no quieres ninguna imagen de fondo en móvil,
+         simplemente omite el bloque anterior o pon otra imagen si lo deseas -->
+  </div>
+  <!-- Contenedor central -->
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      @if (isAuthenticated) {
+        <div class="tw-text-base sm:tw-text-lg tw-font-semibold tw-mb-4 tw-text-blue-700 tw-bg-[#faf8f8] tw-rounded-lg tw-px-4 tw-py-2 tw-text-left">
+          👋 Hola, {{ userFullName }}!
+        </div>
+      } @else {
+        <div class="tw-text-base sm:tw-text-lg tw-font-semibold tw-mb-4 tw-text-blue-700 tw-bg-[#faf8f8] tw-rounded-lg tw-px-4 tw-py-2 tw-text-left">
+          👋 Hola! Bienvenido 😊
+        </div>
+      }
+      <app-banner bannerType="top"></app-banner>
+    </div>
+  </div>
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <app-trend-carousel/>
+          @if (!isAuthenticated) {
+      <app-banner bannerType="mid"></app-banner>
+    }
+    <app-trend-carousel/>
+    </div>
+  </div>
+</main>
+

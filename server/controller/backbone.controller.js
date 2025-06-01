@@ -31,12 +31,10 @@ const BACKBONE_OAUTH_USER_PASSWORD = process.env.BACKBONE_AUTH_USER_PASSWORD;
 
 const schemesList = ["http:", "https:"];
 const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
-
-// const HttpsAgent = require('agentkeepalive').HttpsAgent;
 const ajv = new Ajv();
 ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
-// const Agent = require('agentkeepalive');
+
 const {
   AUTHORIZATION, BEARER, SESSION_TOKEN_BKD, SESSION_TOKEN_DIR, FID_LOGGER_TRACKING_ID, CONTENT_TYPE,
   FID_USER_ID, CONTENT_TYPE_DEFAULT, ACCEPT, API_INVALID_URL_REQUEST_TITLE,

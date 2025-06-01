@@ -1,0 +1,24 @@
+@media (max-width: 639px) {
+  .custom-small-styles {
+    @apply tw-m-[7px] tw-mx-[16px];
+  }
+}
+.container {
+  @apply tw-p-[22px] tw-pb-[7px];
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-hover:hover {
+  animation: shake 0.5s ease-in-out;
+}

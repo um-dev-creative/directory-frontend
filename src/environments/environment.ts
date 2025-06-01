@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  appBaseHref: '/'
+  appBaseHref: '/',
+  apiUrl: '', // Empty because APIs are served from the same server as the frontend
+  appName: 'Directory Frontend',
+  version: '1.0.0'
 };
 
 /*

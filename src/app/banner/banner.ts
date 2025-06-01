@@ -54,7 +54,7 @@ export class Banner implements OnInit {
   }
 
   ngOnInit() {
-    this.httpClient.get<{ banner: BannerData}>('assets/data/banner.json')
+    this.httpClient.get<{ banner: BannerData}>('assets/mocks/banner.json')
       .subscribe({
         next: (data) => {
           this.bannerData = data.banner;
