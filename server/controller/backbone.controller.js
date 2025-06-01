@@ -16,7 +16,7 @@ const CryptoJS = require("crypto-js");
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const Ajv = require('ajv');
-const {isValidUUID, getRegex, decodeJwtToken, createRequestOption} = require("../shared/common-function");
+const {isValidUUID, getRegex, decodeJwtToken, createRequestOption, getApiEndpoint} = require("../shared/common-function");
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 
@@ -164,7 +164,7 @@ const proxyApi = async (req, res, next) => {
  * @returns {Object} - The constructed headers.
  */
 const getRequestHeader = function (req, authBearToken, backboneSession, defaultAccept, defaultContentType) {
-  let headers = getBasicHeader(req, authBearToken, backboneSession, defaultAccept);
+  let headers = getBasicHeader(req, authBearToken, defaultAccept);
   const contentType = req.header(CONTENT_TYPE);
 
   if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
@@ -179,11 +179,10 @@ const getRequestHeader = function (req, authBearToken, backboneSession, defaultA
  * Constructs the basic headers for the proxied request.
  * @param req - The request object.
  * @param bearerToken - The token for the directory services.
- * @param backboneSession - The session token for the backbone services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getBasicHeader = function (req, bearerToken, backboneSession, defaultAccept) {
+const getBasicHeader = function (req, bearerToken, defaultAccept) {
   let headers = {};
   const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
   const userId = req.header(FID_USER_ID);

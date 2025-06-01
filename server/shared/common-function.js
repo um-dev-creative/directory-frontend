@@ -1,9 +1,11 @@
-const appConfig = require("../config/app.config");
 const Agent = require('agentkeepalive');
 const HttpsAgent = require('agentkeepalive').HttpsAgent;
 const bearerTokenRegex = /^Bearer\s[a-zA-Z0-9\-._~+/]+=*$/;
-const {ACCEPT, CONTENT_TYPE_DEFAULT} = require("../config/constants.util");
+const {ACCEPT, CONTENT_TYPE_DEFAULT, NOT_FOUND_REQUEST_CODE, NOT_FOUND_REQUEST_TITLE, NOT_FOUND_REQUEST_DETAIL,
+  NOT_FOUND_REQUEST_CODE_VALUE
+} = require("../config/constants.util");
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const {createErrorResponse} = require("./error-util");
 
 /**
  * HTTP connection options.
@@ -110,10 +112,11 @@ let getApiEndpoint = function (path, oAuthProxyConfig, API_SERVICE_MAP) {
   if (apiURL != null) {
     return apiURL + finalPath;
   } else {
-    throw errorUtil.createErrorResponse(constants.NOT_FOUND_REQUEST_CODE,
-      constants.NOT_FOUND_REQUEST_TITLE,
-      constants.NOT_FOUND_REQUEST_DETAIL,
-      constants.NOT_FOUND_REQUEST_CODE_VALUE);
+
+    throw createErrorResponse(NOT_FOUND_REQUEST_CODE,
+      NOT_FOUND_REQUEST_TITLE,
+      NOT_FOUND_REQUEST_DETAIL,
+      NOT_FOUND_REQUEST_CODE_VALUE);
   }
 };
 

@@ -2,6 +2,7 @@ const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
 const axios = require('axios');
 const authDirectoryProxyConfig = appConfig.getAuthDirectoryProxyConfig();
+const directoryProxyConfig = appConfig.getDirectoryProxyConfig();
 const logger = appConfig.getLoggerApp();
 const {v4: uuidv4} = require('uuid');
 const CryptoJS = require("crypto-js");
@@ -114,6 +115,47 @@ const proxyApi = async (req, res, next) => {
     res.send(API_INVALID_URL_REQUEST_TITLE);
   }
 };
+
+const proxyApiUserRegister = async (req, res, next) => {
+  let response = null;
+  const apiURL = getApiEndpoint(req.url, directoryProxyConfig, API_SERVICE_DIRECTORY_MAP);
+  const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
+
+  if (validationSchema) {
+    try {
+      // Get the (keycloak) OAuth client token - this is used to authenticate the request to the directory services
+      const authBearToken = await getOauthClient(directoryOauthClientConfig).getBearerToken();
+      // Get the backbone session token
+      const backboneSession = await backboneSessionToken(req);
+      // Construct the request headers for directory backend services
+      const headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      // Trace
+      logger.info(`[DIS] Proxying request to ${apiURL}`);
+      let httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
+
+      let axiosResponse = await axios(httpOptions);
+      delete axiosResponse.headers['transfer-encoding'];
+      response = axiosResponse.data;
+      res.set(axiosResponse.headers);
+
+      // Include the session-token-bkd in the response headers
+      if (backboneSession && req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH) {
+        res.set(SESSION_TOKEN_BKD, backboneSession);
+      }
+    } catch (error) {
+      if (error.response != null) {
+        response = error.response.data;
+        res.status(error.response.status);
+      } else if (error.errors != null) {
+        response = error;
+        res.status(500);
+      }
+    }
+    res.send(response);
+  } else {
+    res.send(API_INVALID_URL_REQUEST_TITLE);
+  }
+}
 
 /**
  * Constructs the basic headers for the proxied request.
