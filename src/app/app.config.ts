@@ -10,7 +10,7 @@ import {provideStore} from '@ngrx/store';
 import {sessionReducer} from '@app/core/store/session/session.reducer';
 import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
-import {CoreModule} from './core/core.module';
+import {provideCore} from './core/core.module';
 
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
@@ -20,9 +20,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
-
-    // Import CoreModule providers
-    importProvidersFrom(CoreModule),
 
     // Translation
     TranslateModule.forRoot(
@@ -49,5 +46,7 @@ export const appConfig: ApplicationConfig = {
     // NgRx Store
     provideStore({ session: sessionReducer}),
     provideEffects([SessionEffects]),
+    // Core services and modules
+    provideCore()
   ]
 };

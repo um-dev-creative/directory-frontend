@@ -1,7 +1,5 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Provider } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Services
 import {
@@ -24,33 +22,40 @@ import {
 
 // Guards
 import {
-  authGuard,
   RoleGuard,
   UnsavedChangesGuard
 } from './guards';
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatSnackBarModule
-  ],
-  providers: [
-    // Services
+/**
+ * Provides core services
+ */
+export function provideCoreServices(): Provider[] {
+  return [
     AuthService,
     HttpService,
     LoggerService,
     LoadingService,
     NotificationService,
     StorageService,
-    ThemeService,
+    ThemeService
+  ];
+}
 
-    // Guards
+/**
+ * Provides guards
+ */
+export function provideCoreGuards(): Provider[] {
+  return [
     RoleGuard,
-    UnsavedChangesGuard,
+    UnsavedChangesGuard
+  ];
+}
 
-    // Interceptors
+/**
+ * Provides HTTP interceptors
+ */
+export function provideCoreInterceptors(): Provider[] {
+  return [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -71,12 +76,16 @@ import {
       useClass: CacheInterceptor,
       multi: true
     }
-  ]
-})
-export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    if (parentModule) {
-      throw new Error('CoreModule is already loaded. Import it in the AppModule only.');
-    }
-  }
+  ];
+}
+
+/**
+ * Provides all core functionality
+ */
+export function provideCore(): Provider[] {
+  return [
+    ...provideCoreServices(),
+    ...provideCoreGuards(),
+    ...provideCoreInterceptors()
+  ];
 }

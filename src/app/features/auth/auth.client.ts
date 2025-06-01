@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
-import {ServiceTemplate} from '@app/core/services/service-template';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map, Observable} from 'rxjs';
+import {ServiceTemplate} from '@app/core/services/service-template';
 import {DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
 
 export interface AuthTokenRequest {
@@ -15,7 +15,7 @@ export interface AuthTokenResponse {
   sessionTokenBkd: string | null;
 }
 
-export interface LoginCredentials {
+export interface LoginCredentials { 
   email: string;
   password: string;
 }
@@ -42,6 +42,7 @@ export class AuthClient extends ServiceTemplate {
    * Get token from backend services with user and password provided by the user
    * @param user
    * @param password
+   * @return Observable<any>
    */
   getToken(user: string, password: string): Observable<any> {
     const tokenURL = `${this.CONTENT_PATH}/token`;

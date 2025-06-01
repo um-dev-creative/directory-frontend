@@ -14,14 +14,14 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [AuthGuard]
+    canActivate: [authGuard]
   },
 
   // Admin routes requiring specific role
   {
     path: 'admin',
     loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [authGuard, RoleGuard],
     data: { roles: ['admin', 'super_admin'] }
   },
 
@@ -29,7 +29,7 @@ export const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule),
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [authGuard, RoleGuard],
     data: { permissions: ['manage_users'] }
   },
 
@@ -37,14 +37,14 @@ export const routes: Routes = [
   {
     path: 'profile/edit',
     loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule),
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     canDeactivate: [UnsavedChangesGuard]
   },
 
   // Nested routes with child protection
   {
     path: 'settings',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     canActivateChild: [RoleGuard],
     data: { roles: ['admin'] },
     children: [

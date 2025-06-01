@@ -7,6 +7,7 @@ import { StorageService } from './storage.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
 import { ServiceTemplate } from './service-template';
+import { DFC } from '@app/shared/constants/app.const';
 
 export interface LoginCredentials {
   email: string;
@@ -42,6 +43,9 @@ export class AuthService extends ServiceTemplate {
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
+  private readonly CONTENT_PATH: string = DFC.RelativePath.AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL +
+    DFC.RelativePath.AUTH_PATH;
+
   constructor(
     private httpService: HttpService,
     private storageService: StorageService,
@@ -71,9 +75,26 @@ export class AuthService extends ServiceTemplate {
 
   /**
    * Login user
+   * @param credentials - User credentials for login
+   * @returns Observable<boolean> - True if login is successful, false otherwise
+   * @throws Error - If login fails, an error is thrown and handled
+   * @description This method sends a login request to the server with the provided credentials.
+   * It stores the authentication token and user information in local storage upon successful login.
+   * It also updates the current user state and navigates to the intended route or default dashboard.
+   * If the login fails, it logs the error and shows a notification to the user.
+   * It also handles any errors that occur during the login process.
+   * @example
+   * authService.login({ email: 'hello@gmail.com', password: 'password123' })
+   *   .subscribe(success => {
+   *     if (success) {
+   *       console.log('Login successful');
+   *     } else {
+   *       console.log('Login failed');
+   *     }
+   *   });
    */
   login(credentials: LoginCredentials): Observable<boolean> {
-    return this.httpService.post<AuthResponse>('/auth/login', credentials).pipe(
+    return this.httpService.post<AuthResponse>(`${this.CONTENT_PATH}/login`, credentials).pipe(
       tap(response => {
         this.storageService.setLocal('auth_token', response.token);
         this.storageService.setLocal('user_info', response.user);

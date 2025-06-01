@@ -18,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { AlertService } from '@app/core/services101/alert.service';
 import { LoadingService } from '@app/core/services101/loading.service';
-import { AuthService } from '@app/core/services/auth.service';
+import { AuthService } from '@app/core/services';
 // App Store
 import { loadSession } from '@app/core/store/session/session.action';
 import { SessionData, UserAuth } from '@app/core/store/session/session.state';
@@ -66,7 +66,6 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly authValidationService = inject(AuthValidationService);
   private readonly authFormService = inject(AuthFormService);
   private readonly placeholderService = inject(PlaceholderService);
-  private readonly coreAuthService = inject(AuthService);
 
   /**
    * User client services
@@ -79,6 +78,12 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @type {Subject<void>}
    */
   private readonly subject$: Subject<void> = new Subject<void>();
+
+  /**
+   * Core authentication service
+   * @type {AuthService}
+   */
+  private readonly authService: AuthService = inject(AuthService);
 
   /**
    * User client services
@@ -511,42 +516,88 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param password - The user's password.
    */
   private authenticateUser(email: string, password: string): void {
-    let userAuth = new UserAuth();
-    this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
+    const credentials = { email, password };
+    this.authService.login(credentials).pipe(takeUntil(this.subject$))
       .subscribe({
-        next: (response: any) => {
-          console.log('User authenticated:', response);
-          const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
-          if (decodedToken) {
-            userAuth = {
-              alias: decodedToken.alias?decodedToken.alias:'',
-              email: decodedToken.email?decodedToken.email:'',
-              fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
-              sessionTokenBkd: response.sessionTokenBkd,
-              sessionToken: response.body.token,
-              features: []
-            };
-            if (decodedToken?.uid) {
-              this.sessionData = {userAuth, token: decodedToken?.uid};
-              this.sessionStoreService.saveSessionData(this.sessionData)
+        next: (success: boolean) => {
+          if (success) {
+            console.log('User authenticated successfully');
+
+            // Get the current user from the auth service
+            const currentUser = this.authService.getCurrentUser();
+
+            if (currentUser) {
+              // Create UserAuth object for your session store
+              const userAuth: UserAuth = {
+                alias: currentUser.email,
+                email: currentUser.email,
+                fullName: currentUser.name,
+                sessionTokenBkd: this.authService.getToken() || '',
+                sessionToken: this.authService.getToken() || '',
+                features: currentUser.permissions || []
+              };
+
+              // Save session data
+              this.sessionData = { userAuth, token: currentUser.id };
+              this.sessionStoreService.saveSessionData(this.sessionData);
               console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
+
+              // Update header and navigate
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-              // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
               this.clearForm();
               this.router.navigate(['/veracode']);
             }
+          } else {
+            // Login failed
+            this.isErrorFound = true;
+            this.alertService.error('Invalid credentials', true);
+            console.error('Login failed: Invalid credentials');
           }
           this.loader.hide();
         },
         error: (error: any) => {
           this.isErrorFound = true;
-          if (error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT) {
-            this.alertService.error('Invalid credentials', true);
-          }
+          this.alertService.error('Login failed. Please try again.', true);
           console.error('Error authenticating user:', error);
           this.loader.hide();
-        },
+        }
       });
+
+    // this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       console.log('User authenticated:', response);
+    //       const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
+    //       if (decodedToken) {
+    //         userAuth = {
+    //           alias: decodedToken.alias?decodedToken.alias:'',
+    //           email: decodedToken.email?decodedToken.email:'',
+    //           fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
+    //           sessionTokenBkd: response.sessionTokenBkd,
+    //           sessionToken: response.body.token,
+    //           features: []
+    //         };
+    //         if (decodedToken?.uid) {
+    //           this.sessionData = {userAuth, token: decodedToken?.uid};
+    //           this.sessionStoreService.saveSessionData(this.sessionData)
+    //           console.debug(`Saved sessionData :: ${JSON.stringify(this.sessionData)}`);
+    //           this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+    //           // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
+    //           this.clearForm();
+    //           this.router.navigate(['/veracode']);
+    //         }
+    //       }
+    //       this.loader.hide();
+    //     },
+    //     error: (error: any) => {
+    //       this.isErrorFound = true;
+    //       if (error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT) {
+    //         this.alertService.error('Invalid credentials', true);
+    //       }
+    //       console.error('Error authenticating user:', error);
+    //       this.loader.hide();
+    //     },
+    //   });
   }
 
   /**
