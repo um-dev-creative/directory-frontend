@@ -47,6 +47,8 @@ export class Stage implements OnInit, OnAfterViewInit {
    * @type {SessionData | undefined}
    */
   protected sessionData: SessionData | undefined;
+  protected isAuthenticated = false;
+  protected userFullName: string | undefined;
 
 
   constructor() {
@@ -55,6 +57,14 @@ export class Stage implements OnInit, OnAfterViewInit {
   ngOnInit(): void {
     this.store.select('session').subscribe(sessionState => {
       this.sessionData = sessionState.sessionData;
+      if (this.sessionData && this.sessionData.userAuth?.fullName) {
+        this.isAuthenticated = true;
+        console.debug('User is authenticated:', this.sessionData.userAuth.fullName);
+        // this.userFullName = this.sessionData.userAuth.fullName;
+      } else {
+        this.isAuthenticated = false;
+        this.userFullName = undefined;
+      }
     });
     this.processSessionData();
   }

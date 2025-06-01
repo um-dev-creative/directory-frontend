@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
-import {Stage} from '@app/features/stage/stage';
-import {Contact} from '@app/features/contact';
+import {Stage} from '@app/features/stage';
 import {Auth} from '@app/features/auth/auth';
 import {Partner} from '@app/features/partner';
 import {Deals} from '@app/features/deals';
@@ -14,9 +13,10 @@ export const routes: Routes = [
   { path: 'demo', component: CoreDemoComponent }, // Demo route for testing core services - MOVED TO TOP
   { path: 'stage', component: Stage },
   { path: 'partner', component: Partner },
-  { path: 'contact', component: Contact },
+  { path: 'contact', loadComponent: () => import('./features/contact').then(m => m.Contact) },
   { path: 'auth', component: Auth },
   { path: 'not-found', component: NotFound },
+  { path: 'deals', component: Deals },
 
   // Protected routes (require authentication)
   {
@@ -24,11 +24,13 @@ export const routes: Routes = [
     component: VerificationCode,
     canActivate: [authGuard]
   },
+
+  // Protected profile route (lazy loaded)
   {
-    path: 'deals',
-    component: Deals,
-    canActivate: [authGuard]
-  },
+  path: 'profile',
+  loadComponent: () => import('./features/profile/profile').then(m => m.Profile),
+  canActivate: [authGuard]
+},
 
   // Default redirect
   { path: '', redirectTo: 'stage', pathMatch: 'full' },
