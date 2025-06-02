@@ -51,6 +51,25 @@ export class LoadingService {
   }
 
   /**
+   * Show loading for a specific key WITHOUT affecting global loading
+   */
+
+  showSpecific(key: string): void {
+    this.loadingState[key] = true;
+    this.loadingSubject.next({ ...this.loadingState });
+    // NO llamar updateGlobalLoading()
+  }
+  /**
+   * Hide loading for a specific key WITHOUT affecting global loading
+   */
+
+  hideSpecific(key: string): void {
+    delete this.loadingState[key];
+    this.loadingSubject.next({ ...this.loadingState });
+    // NO llamar updateGlobalLoading()
+  }
+
+  /**
    * Show global loading (for HTTP interceptor)
    */
   showGlobal(): void {

@@ -2,6 +2,16 @@
 /* html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*
 */
+/* Import brand colors and variables */
+@import './styles/brand-colors.css';
+
+/* The following lines require Tailwind CSS processing via PostCSS or a compatible build tool.
+   If you see an error like "Unknown at rule @tailwind", make sure your build process includes Tailwind CSS.
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

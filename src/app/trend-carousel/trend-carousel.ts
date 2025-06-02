@@ -1,5 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface Trend {
   title: string;
@@ -35,11 +36,17 @@ export class TrendCarousel implements OnInit {
   }
   trends: Trend[] = [];
 
+  private readonly router: Router = inject(Router);
+
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
     this.http.get<Trend[]>('/assets/mocks/offers-list.json').subscribe(data => {
       this.trends = data;
     });
+  }
+
+  navigateToDeals(): void {
+    this.router.navigate(['/deals']);
   }
 }

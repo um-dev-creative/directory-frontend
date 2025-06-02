@@ -7,7 +7,7 @@
 }
 
 .marquee-block {
-  @apply tw-relative tw-h-[60px] tw-box-border tw-relative tw-mt-[24px] tw-mb-[24px];
+  @apply tw-relative tw-h-[60px] tw-box-border tw-mt-[24px] tw-mb-[24px];
 }
 
 .marquee-inner {
