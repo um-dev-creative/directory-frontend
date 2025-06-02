@@ -74,22 +74,6 @@ const registerProxyApi = async (req, res, next) => {
   } else {
     res.send(API_INVALID_URL_REQUEST_TITLE);
   }
-
-  // if (apiServiceDirectoryMap && apiServiceDirectoryMap[url]) {
-  //   const targetUrl = apiServiceDirectoryMap[url];
-  //   req.url = targetUrl;
-  //   req.method = POST_METHOD; // Assuming POST method for all requests
-  //   req.headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
-  //   req.headers[TRANSFER_ENCODING] = 'chunked';
-  //
-  //   // Forward the request to the target URL
-  //   return next();
-  // } else {
-  //   res.status(404).json({
-  //     title: API_INVALID_URL_REQUEST_TITLE,
-  //     message: `Invalid URL request: ${url}`
-  //   });
-  // }
 }
 
 /**
