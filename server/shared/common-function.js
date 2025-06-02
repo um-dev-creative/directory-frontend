@@ -210,4 +210,22 @@ const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultA
   return headers;
 };
 
-module.exports = {decodeJwtToken, createRequestOption, isValidUUID, getRegex, getApiEndpoint, isValidBearerToken, getBasicHeader, getAuthBasicHeader};
+/**
+ * Constructs the standard headers for the proxied request.
+ * @param req - The request object.
+ * @param bearerToken - The token for the directory services.
+ * @param sessionToken - The session token for the directory services.
+ * @param backboneSession - The session token for the backbone services.
+ * @param defaultAccept - The default Accept header value.
+ * @returns {{}} - The constructed headers.
+ */
+const getStandardHeader = function (req, bearerToken, sessionToken, backboneSession, defaultAccept) {
+  // getAuthBasicHeader: (req, bearerToken, backboneSession, defaultAccept)
+  const headers = getAuthBasicHeader(req, bearerToken, backboneSession, defaultAccept);
+  if (sessionToken) {
+    headers[SESSION_TOKEN_DIR] = sessionToken;
+  }
+  return headers;
+};
+
+module.exports = {decodeJwtToken, createRequestOption, isValidUUID, getRegex, getApiEndpoint, isValidBearerToken, getBasicHeader, getAuthBasicHeader, getStandardHeader};
