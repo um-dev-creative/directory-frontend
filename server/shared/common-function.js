@@ -1,9 +1,13 @@
-const appConfig = require("../config/app.config");
 const Agent = require('agentkeepalive');
 const HttpsAgent = require('agentkeepalive').HttpsAgent;
-const bearerTokenRegex = /^Bearer\s[a-zA-Z0-9\-._~+/]+=*$/;
-const {ACCEPT, CONTENT_TYPE_DEFAULT} = require("../config/constants.util");
+
+const {ACCEPT, CONTENT_TYPE_DEFAULT, NOT_FOUND_REQUEST_CODE, NOT_FOUND_REQUEST_TITLE, NOT_FOUND_REQUEST_DETAIL,
+  NOT_FOUND_REQUEST_CODE_VALUE, AUTHORIZATION, FID_USER_ID, FID_LOGGER_TRACKING_ID, BEARER, SESSION_TOKEN_BKD,
+  SESSION_TOKEN_DIR, BEARER_TOKEN_REGEX
+} = require("../config/constants.util");
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const {createErrorResponse} = require("./error-util");
+const {v4: uuidv4} = require('uuid');
 
 /**
  * HTTP connection options.
@@ -110,15 +114,100 @@ let getApiEndpoint = function (path, oAuthProxyConfig, API_SERVICE_MAP) {
   if (apiURL != null) {
     return apiURL + finalPath;
   } else {
-    throw errorUtil.createErrorResponse(constants.NOT_FOUND_REQUEST_CODE,
-      constants.NOT_FOUND_REQUEST_TITLE,
-      constants.NOT_FOUND_REQUEST_DETAIL,
-      constants.NOT_FOUND_REQUEST_CODE_VALUE);
+
+    throw createErrorResponse(NOT_FOUND_REQUEST_CODE,
+      NOT_FOUND_REQUEST_TITLE,
+      NOT_FOUND_REQUEST_DETAIL,
+      NOT_FOUND_REQUEST_CODE_VALUE);
   }
 };
 
 function isValidBearerToken(token) {
-  return bearerTokenRegex.test(token);
+  return BEARER_TOKEN_REGEX.test(token);
 }
 
-module.exports = {decodeJwtToken, createRequestOption, isValidUUID, getRegex, getApiEndpoint, isValidBearerToken};
+/**
+ * Constructs the basic headers for the proxied request.
+ * @param req - The request object.
+ * @param bearerToken - The token for the directory services.
+ * @param defaultAccept - The default Accept header value.
+ * @returns {{}} - The constructed headers.
+ */
+const getBasicHeader = function (req, bearerToken, defaultAccept) {
+  let headers = {};
+  const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
+  const userId = req.header(FID_USER_ID);
+  const accept = req.header(ACCEPT);
+  const uuidValid =  isValidUUID(fidLoggerTrackingId);
+  if (fidLoggerTrackingId !== null && uuidValid) {
+    headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
+  } else {
+    headers[FID_LOGGER_TRACKING_ID] = uuidv4();
+  }
+  if (userId !== null && uuidValid) {
+    headers[FID_USER_ID] = fidLoggerTrackingId;
+  } else {
+    headers[FID_USER_ID] = "anonymous";
+  }
+  headers[AUTHORIZATION] = BEARER + bearerToken;
+
+  if (accept && accept === ACCEPT) {
+    headers[ACCEPT] = accept;
+  } else {
+    headers[ACCEPT] = defaultAccept
+  }
+
+  return headers;
+};
+
+
+/**
+ * Constructs the basic headers for the proxied request.
+ * @param req - The request object.
+ * @param bearerToken - The token for the directory services.
+ * @param backboneSession - The session token for the backbone services.
+ * @param defaultAccept - The default Accept header value.
+ * @returns {{}} - The constructed headers.
+ */
+const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultAccept) {
+  let headers = {};
+  const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
+  const userId = req.header(FID_USER_ID);
+  const sessionTokenBkd = req.header(SESSION_TOKEN_BKD);
+  const accept = req.header(ACCEPT);
+  const sessionToken = req.header(SESSION_TOKEN_DIR);
+  if (fidLoggerTrackingId !== null && isValidUUID(fidLoggerTrackingId)) {
+    headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
+  } else {
+    headers[FID_LOGGER_TRACKING_ID] = uuidv4();
+  }
+
+  if (userId !== null && isValidUUID(userId)) {
+    headers[FID_USER_ID] = fidLoggerTrackingId;
+  } else {
+    headers[FID_USER_ID] = "anonymous";
+  }
+  headers[AUTHORIZATION] = BEARER + bearerToken;
+
+  if (accept && accept === ACCEPT) {
+    headers[ACCEPT] = accept;
+  } else {
+    headers[ACCEPT] = defaultAccept
+  }
+
+  if (sessionTokenBkd !== null && isValidBearerToken(sessionTokenBkd)) {
+    headers[SESSION_TOKEN_BKD] = sessionTokenBkd;
+  }
+
+  if (backboneSession) {
+    headers[SESSION_TOKEN_BKD] = backboneSession;
+  }
+
+  if (sessionToken) {
+    headers[SESSION_TOKEN_DIR] = sessionToken;
+  }
+
+  return headers;
+};
+
+module.exports = {decodeJwtToken, createRequestOption, isValidUUID, getRegex, getApiEndpoint, isValidBearerToken, getBasicHeader, getAuthBasicHeader};

@@ -3,7 +3,8 @@
  */
 
 let directoryProxyConfig = {};
-let authDirectoryProxyConfig = {};
+let directoryAuthProxyConfig = {};
+let directoryRegisterProxyConfig = {};
 const fs = require('fs');
 const {format} = require('logform');
 const winston = require('winston');
@@ -96,34 +97,40 @@ module.exports.getLoggerApp = function () {
 };
 
 /**
- * Reads and parses the jobs proxy configuration from a JSON file.
+ * Reads and parses the directory proxy configuration from a JSON file.
  */
 module.exports.createDirectoryProxyConfig = function () {
     const configJson = fs.readFileSync('server/config/config.json', 'utf8');
     const config = JSON.parse(configJson);
     directoryProxyConfig = config['directoryBackendProxyConfig'];
-    authDirectoryProxyConfig = config['authDirectoryBackendProxyConfig'];
+    directoryAuthProxyConfig = config['directoryBackendAuthProxyConfig'];
+    directoryRegisterProxyConfig = config['directoryBackendRegisterProxyConfig'];
     logger.info("[DS] - Proxy Config [Directory]: " + JSON.stringify(directoryProxyConfig));
-    logger.info("[DS] - Proxy Config [Auth Directory]: " + JSON.stringify(authDirectoryProxyConfig));
+    logger.info("[DS] - Proxy Config [Directory Auth]: " + JSON.stringify(directoryAuthProxyConfig));
+    logger.info("[DS] - Proxy Config [Directory Register]: " + JSON.stringify(directoryRegisterProxyConfig));
 };
 
 /**
- * Retrieves the jobs proxy configuration.
+ * Retrieves the directory proxy configuration.
  *
- * @returns {Object} - The jobs proxy configuration.
+ * @returns {Object} - The directory proxy configuration.
  */
 module.exports.getDirectoryProxyConfig = function () {
     return directoryProxyConfig;
 };
 
 /**
- * Retrieves the jobs proxy configuration.
+ * Retrieves the directory proxy configuration.
  *
- * @returns {Object} - The jobs proxy configuration.
+ * @returns {Object} - The directory proxy configuration.
  */
-module.exports.getAuthDirectoryProxyConfig = function () {
-  return authDirectoryProxyConfig;
+module.exports.getDirectoryAuthProxyConfig = function () {
+  return directoryAuthProxyConfig;
 };
+
+module.exports.getDirectoryRegisterProxyConfig = function () {
+  return directoryRegisterProxyConfig;
+}
 
 let printVaultValues = function (vaultValues) {
     logger.info("<><><><><><><><><><><><><><> Vault values <><><><><><><><><><><><><><>");

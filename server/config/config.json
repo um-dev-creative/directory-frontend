@@ -11,7 +11,7 @@
       }
     }
   ],
-  "authDirectoryBackendProxyConfig": [
+  "directoryBackendAuthProxyConfig": [
     {
       "applicationName": "directory-backend",
       "matchOn": {
@@ -20,6 +20,18 @@
       "urlRewrite": {
         "from": "/auth/drb/api/v1/auth",
         "to": "/directory-backend/api/v1/auth"
+      }
+    }
+  ],
+  "directoryBackendRegisterProxyConfig": [
+    {
+      "applicationName": "directory-backend",
+      "matchOn": {
+        "startWith": "/auth/drb/api/v1/user-register"
+      },
+      "urlRewrite": {
+        "from": "/auth/drb/api/v1/user-register",
+        "to": "/directory-backend/api/v1/users"
       }
     }
   ],

@@ -9,8 +9,8 @@ import {DFC} from '@app/shared/constants/app.const';
 })
 export class UserClient extends ServiceTemplate {
   private readonly httpClient: HttpClient = inject(HttpClient);
-  private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_SERVICE_BASE_URL +
-    DFC.RelativePath.USERS_PATH;
+  private readonly CONTENT_PATH: string = DFC.RelativePath.AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL +
+    DFC.RelativePath.USER_REGISTER_PATH;
 
   constructor() { super(); }
 

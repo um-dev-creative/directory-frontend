@@ -10,7 +10,7 @@ import {catchError, Observable} from 'rxjs';
 export class UserRegisterClient extends ServiceTemplate {
   private readonly httpClient: HttpClient = inject(HttpClient);
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_SERVICE_BASE_URL +
-    DFC.RelativePath.USER_REGISTER_PATH;
+    DFC.RelativePath.USERS_PATH;
 
   constructor() { super(); }
 
