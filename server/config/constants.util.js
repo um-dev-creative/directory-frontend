@@ -1,3 +1,4 @@
+const PASSWORD_ATTRIBUTE = 'password';
 const SESSION_TOKEN_BKD = 'session-token-bkd';
 const SESSION_TOKEN_DIR = 'session-token';
 const AUTHORIZATION = 'Authorization';
@@ -5,11 +6,15 @@ const CONTENT_TYPE = 'Content-Type';
 const FID_USER_ID = 'FID-USER-ID';
 const BEARER = 'Bearer ';
 const ACCEPT = 'Accept';
+const TRANSFER_ENCODING = 'transfer-encoding';
+const POST_METHOD = 'POST';
 const FID_LOGGER_TRACKING_ID = 'FID-LOGGER-TRACKING-ID'
 const NOT_FOUND_REQUEST_CODE = 404;
 const NOT_FOUND_REQUEST_CODE_VALUE= 'DIS-FRONT-UI-FAIL';
 const NOT_FOUND_REQUEST_TITLE = 'Invalid API request.'
 const NOT_FOUND_REQUEST_DETAIL = 'Invalid API request, no backend API found for the request path.'
+
+const BEARER_TOKEN_REGEX = /^Bearer\s[a-zA-Z0-9\-._~+/]+=*$/;
 
 const API_INVALID_URL_REQUEST_CODE = 404;
 const API_INVALID_URL_REQUEST_CODE_VALUE = 'DIS-FRONT-UI-FAIL';
@@ -21,9 +26,14 @@ const API_FAILURE_REQUEST_TITLE = 'Error in Downstream API.';
 const API_FAILURE_REQUEST_DETAIL = 'Error in Downstream API, an non 2xx response was thrown when proxying downstream API.';
 
 const CONTENT_TYPE_DEFAULT = 'application/json';
+const INNER_REGISTER_PATH = '/auth/drb/api/v1/user-register';
 const BACKBONE_TOKEN_RELATIVE_PATH = '/backbone/api/v1/session/token';
+const DIR_AUTH_TOKEN_PATH = '/api/v1/auth/token';
+const SESSION_TOKEN_DIR_RELATIVE_PATH = '/api/v1/session/token';
+const DIR_USER_RELATIVE_PATH = '/api/v1/users';
 
 module.exports = {
+  PASSWORD_ATTRIBUTE,
   AUTHORIZATION,
   BEARER,
   SESSION_TOKEN_DIR,
@@ -45,5 +55,12 @@ module.exports = {
   CONTENT_TYPE,
   FID_USER_ID,
   ACCEPT,
-  BACKBONE_TOKEN_RELATIVE_PATH
+  BEARER_TOKEN_REGEX,
+  POST_METHOD,
+  TRANSFER_ENCODING,
+  DIR_AUTH_TOKEN_PATH,
+  DIR_USER_RELATIVE_PATH,
+  BACKBONE_TOKEN_RELATIVE_PATH,
+  SESSION_TOKEN_DIR_RELATIVE_PATH,
+  INNER_REGISTER_PATH
 }

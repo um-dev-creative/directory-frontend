@@ -8,15 +8,14 @@ const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
 const {getOAuthClient} = require("../proxy/oauth-client");
 const axios = require('axios');
-const jobsProxyConfig = appConfig.getDirectoryProxyConfig();
 const backboneclient = require('../proxy/backbone-client');
 const logger = appConfig.getLoggerApp();
-const {v4: uuidv4} = require('uuid');
 const CryptoJS = require("crypto-js");
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const Ajv = require('ajv');
-const {isValidUUID, getRegex, decodeJwtToken, createRequestOption, getApiEndpoint} = require("../shared/common-function");
+const authDirectoryProxyConfig = appConfig.getDirectoryAuthProxyConfig();
+const {getRegex, decodeJwtToken, createRequestOption, getApiEndpoint, getBasicHeader} = require("../shared/common-function");
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 
@@ -36,9 +35,8 @@ ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
 
 const {
-  AUTHORIZATION, BEARER, SESSION_TOKEN_BKD, SESSION_TOKEN_DIR, FID_LOGGER_TRACKING_ID, CONTENT_TYPE,
-  FID_USER_ID, CONTENT_TYPE_DEFAULT, ACCEPT, API_INVALID_URL_REQUEST_TITLE,
-  BACKBONE_TOKEN_RELATIVE_PATH
+  SESSION_TOKEN_BKD, CONTENT_TYPE, CONTENT_TYPE_DEFAULT, API_INVALID_URL_REQUEST_TITLE,
+  BACKBONE_TOKEN_RELATIVE_PATH, DIR_AUTH_TOKEN_PATH, TRANSFER_ENCODING
 } = require("../config/constants.util");
 const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH} = require("../shared/oauth-common-function");
 
@@ -54,18 +52,6 @@ const backboneOauthClientConfig = {
   authenticationType: BACKBONE_OAUTH_AUTHENTICATION_TYPE,
   username: BACKBONE_OAUTH_USER_ALIAS,
   password: BACKBONE_OAUTH_USER_PASSWORD
-};
-
-/**
- * HTTP connection options.
- * @type {{maxFreeSockets: number, keepAlive: boolean, maxSockets: number, freeSocketTimeout: number, timeout: number}}
- */
-const httpConnectionOptions = {
-  keepAlive: true,
-  maxSockets: 100,
-  maxFreeSockets: 10,
-  timeout: 60000,
-  freeSocketTimeout: 30000
 };
 
 /**
@@ -112,14 +98,14 @@ const proxyApi = async (req, res, next) => {
   if (schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname)) {
     try {
       // Get the (keycloak) OAuth client token
-      let authBearToken = await getOAuthClient(directoryOauthClientConfig).getBearerToken();
+      let authBearToken = await getOAuthClient(authDirectoryProxyConfig).getBearerToken();
       // Get the backbone session token
       let backboneSession = await backboneSessionToken(req);
       let headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       // Trace
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions;
-      if(apiURL.indexOf('/api/v1/auth/token') > 0) {
+      if(apiURL.indexOf(DIR_AUTH_TOKEN_PATH) > 0) {
         let alias = decodeJwtToken(backboneSession);
         httpOptions = createRequestOption(req.method, apiURL, {alias: alias}, headers);
       } else {
@@ -128,7 +114,7 @@ const proxyApi = async (req, res, next) => {
 
       let axiosResponse = await axios(httpOptions);
 
-      delete axiosResponse.headers['transfer-encoding'];
+      delete axiosResponse.headers[TRANSFER_ENCODING];
       response = axiosResponse.data;
       res.set(axiosResponse.headers);
 
@@ -172,46 +158,6 @@ const getRequestHeader = function (req, authBearToken, backboneSession, defaultA
   }
   return headers;
 };
-
-/**
- * Constructs the basic headers for the proxied request.
- * @param req - The request object.
- * @param bearerToken - The token for the directory services.
- * @param defaultAccept - The default Accept header value.
- * @returns {{}} - The constructed headers.
- */
-const getBasicHeader = function (req, bearerToken, defaultAccept) {
-  let headers = {};
-  const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
-  const userId = req.header(FID_USER_ID);
-  const accept = req.header(ACCEPT);
-  const uuidValid =  isValidUUID(fidLoggerTrackingId);
-  if (fidLoggerTrackingId !== null && uuidValid) {
-    headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
-  } else {
-    headers[FID_LOGGER_TRACKING_ID] = uuidv4();
-  }
-  if (userId !== null && uuidValid) {
-    headers[FID_USER_ID] = fidLoggerTrackingId;
-  } else {
-    headers[FID_USER_ID] = "anonymous";
-  }
-  headers[AUTHORIZATION] = BEARER + bearerToken;
-
-  if (accept && accept === ACCEPT) {
-    headers[ACCEPT] = accept;
-  } else {
-    headers[ACCEPT] = defaultAccept
-  }
-
-  return headers;
-};
-
-const bearerTokenRegex = /^Bearer\s[a-zA-Z0-9\-._~+/]+=*$/;
-
-function isValidBearerToken(token) {
-  return bearerTokenRegex.test(token);
-}
 
 module.exports = {
   proxyApi,

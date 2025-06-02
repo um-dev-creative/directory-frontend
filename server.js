@@ -81,7 +81,7 @@ appConfig.bootstrapConfiguration().then(async config => {
 
   // Rutas backend
   if (ssrApp) {
-    app.use("/", require("./server/routes/auth-directory-backend.routes"));
+    app.use("/", require("./server/routes/directory-backend-auth.routes"));
     app.use("/", require("./server/routes/backbone.routes"));
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
     app.get("/*", (req, res) => {
