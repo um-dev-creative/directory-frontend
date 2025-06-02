@@ -48,22 +48,28 @@
         }
       </div-->
       <div class="tw-pb-4 tw-flex tw-justify-center tw-rounded-[15px]">
-        <div>
-          <img
+        <div class="clickable-pointer">
+          <a [routerLink]="['/seasonal-offers']">
+            <img
             class="tw-hidden lg:tw-block tw-rounded-lg tw-shadow-md"
             [src]="currentBanner.desktop"
             [alt]="currentBanner.alt"
           >
-          <img
+          </a>
+          <a [routerLink]="['/seasonal-offers']">
+            <img
             class="tw-hidden md:tw-block lg:tw-hidden tw-rounded-lg tw-shadow-md"
             [src]="currentBanner.tablet"
             [alt]="currentBanner.alt"
           >
-          <img
+          </a>
+          <a [routerLink]="['/seasonal-offers']">
+            <img
             class="tw-block md:tw-hidden tw-rounded-lg tw-shadow-md"
             [src]="currentBanner.mobile"
             [alt]="currentBanner.alt"
           >
+          </a>
         </div>
       </div>
     }

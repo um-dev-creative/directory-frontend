@@ -30,11 +30,38 @@
   </div>
   <div class="container">
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <app-trend-carousel/>
-          @if (!isAuthenticated) {
+      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Los mas reclamados</h2>
+      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
+      <app-offer-slider/>
+
+    </div>
+  </div>
+  @if (!isAuthenticated) {
       <app-banner bannerType="mid"></app-banner>
-    }
-    <app-trend-carousel/>
+  }
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Moda</h2>
+      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
+      <app-offer-slider/>
+
+    </div>
+  </div>
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Tecnologia</h2>
+      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
+      <app-offer-slider/>
+    </div>
+  </div>
+  @if (!isAuthenticated) {
+    <app-banner bannerType="mid"></app-banner>
+  }
+  <div class="container">
+    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Hogar</h2>
+      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
+      <app-offer-slider/>
     </div>
   </div>
 </main>
