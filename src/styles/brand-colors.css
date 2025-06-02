@@ -1,0 +1,183 @@
+/* Brand Colors CSS Variables */
+:root {
+  /* Emerald Green - Primary Brand Color */
+  --emerald-50: #f0f9f4;
+  --emerald-100: #dcf2e3;
+  --emerald-200: #bce5ca;
+  --emerald-300: #8dd1a7;
+  --emerald-400: #5bb67d;
+  --emerald-500: #2E8B57; /* Main brand color */
+  --emerald-600: #267048;
+  --emerald-700: #1f5a3a;
+  --emerald-800: #1a4730;
+  --emerald-900: #163a28;
+
+  /* Coral - Secondary Brand Color */
+  --coral-50: #fef7f6;
+  --coral-100: #fdeeed;
+  --coral-200: #fbd5d1;
+  --coral-300: #f8b5ae;
+  --coral-400: #f48b7f;
+  --coral-500: #FF6F61; /* Main brand color */
+  --coral-600: #e55a4f;
+  --coral-700: #c1453c;
+  --coral-800: #a03832;
+  --coral-900: #84302e;
+
+  /* Sky Blue - Accent Color */
+  --sky-50: #f0f9ff;
+  --sky-100: #e0f2fe;
+  --sky-200: #bae6fd;
+  --sky-300: #87CEEB; /* Main brand color */
+  --sky-400: #38bdf8;
+  --sky-500: #0ea5e9;
+  --sky-600: #0284c7;
+  --sky-700: #0369a1;
+  --sky-800: #075985;
+  --sky-900: #0c4a6e;
+
+  /* Beige - Neutral Color */
+  --beige-50: #fefefe;
+  --beige-100: #F5F5DC; /* Main brand color */
+  --beige-200: #f0f0d5;
+  --beige-300: #e8e8c8;
+  --beige-400: #dcdcb8;
+  --beige-500: #d0d0a8;
+  --beige-600: #b8b890;
+  --beige-700: #9a9a78;
+  --beige-800: #7c7c60;
+  --beige-900: #5e5e48;
+
+  /* Semantic Colors using Brand Palette */
+  --success: var(--emerald-500);
+  --success-light: var(--emerald-100);
+  --success-dark: var(--emerald-700);
+
+  --error: var(--coral-500);
+  --error-light: var(--coral-100);
+  --error-dark: var(--coral-700);
+
+  --info: var(--sky-300);
+  --info-light: var(--sky-100);
+  --info-dark: var(--sky-700);
+
+  --warning: #ff9800;
+  --warning-light: #fff3e0;
+  --warning-dark: #f57c00;
+
+  /* Brand Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--emerald-500) 0%, var(--emerald-400) 100%);
+  --gradient-primary-hover: linear-gradient(135deg, var(--emerald-600) 0%, var(--emerald-500) 100%);
+  --gradient-soft: linear-gradient(135deg, var(--emerald-50) 0%, var(--emerald-100) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--beige-100) 0%, var(--coral-50) 100%);
+  --gradient-sky: linear-gradient(135deg, var(--sky-50) 0%, var(--sky-100) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--emerald-50) 0%, var(--coral-50) 50%, var(--sky-50) 100%);
+
+  /* Shadow Variables */
+  --shadow-soft: 0 2px 15px -3px rgba(46, 139, 87, 0.08), 0 10px 20px -2px rgba(46, 139, 87, 0.04);
+  --shadow-soft-lg: 0 10px 40px -15px rgba(46, 139, 87, 0.12), 0 20px 25px -5px rgba(46, 139, 87, 0.06);
+  --shadow-warm: 0 2px 15px -3px rgba(255, 111, 97, 0.08), 0 10px 20px -2px rgba(255, 111, 97, 0.04);
+}
+
+/* Utility Classes for Brand Colors */
+.bg-brand-primary { background-color: var(--emerald-500); }
+.bg-brand-secondary { background-color: var(--coral-500); }
+.bg-brand-accent { background-color: var(--sky-300); }
+.bg-brand-neutral { background-color: var(--beige-100); }
+
+.text-brand-primary { color: var(--emerald-500); }
+.text-brand-secondary { color: var(--coral-500); }
+.text-brand-accent { color: var(--sky-300); }
+.text-brand-neutral { color: var(--beige-700); }
+
+.border-brand-primary { border-color: var(--emerald-500); }
+.border-brand-secondary { border-color: var(--coral-500); }
+.border-brand-accent { border-color: var(--sky-300); }
+
+/* Button Styles using Brand Colors */
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+  background: var(--gradient-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft-lg);
+}
+
+.btn-secondary {
+  background-color: var(--coral-500);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-warm);
+}
+
+.btn-secondary:hover {
+  background-color: var(--coral-600);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--emerald-500);
+  border: 2px solid var(--emerald-500);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--emerald-500);
+  color: white;
+}
+
+/* Card Styles */
+.card-brand {
+  background: var(--gradient-card);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.card-brand:hover {
+  box-shadow: var(--shadow-soft-lg);
+  transform: translateY(-2px);
+}
+
+/* Alert Styles */
+.alert-success {
+  background-color: var(--success-light);
+  color: var(--success-dark);
+  border-left: 4px solid var(--success);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.alert-error {
+  background-color: var(--error-light);
+  color: var(--error-dark);
+  border-left: 4px solid var(--error);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.alert-info {
+  background-color: var(--info-light);
+  color: var(--info-dark);
+  border-left: 4px solid var(--info);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
-import {TrendCarousel} from '@app/trend-carousel/trend-carousel';
+import {OfferSlider} from '@app/offer-slider/offer-slider';
 import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
@@ -17,7 +17,7 @@ interface OnAfterViewInit {
 @Component({
   selector: 'app-deals',
   standalone: true,
-  imports: [CommonModule, Banner, TrendCarousel],
+  imports: [CommonModule, Banner, OfferSlider],
   templateUrl: './deals.html',
   styleUrl: './deals.css',
   animations: [],

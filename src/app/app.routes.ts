@@ -7,10 +7,12 @@ import {NotFound} from '@app/layout/not-found';
 import {VerificationCode} from '@app/verification-code/verification-code';
 import {authGuard} from './core/guards/auth.guard';
 import {CoreDemoComponent} from './core-demo.component';
+import {BrandShowcase} from './components/brand-showcase'
 
 export const routes: Routes = [
   // Public routes (no authentication required)
   { path: 'demo', component: CoreDemoComponent }, // Demo route for testing core services - MOVED TO TOP
+  { path: 'brand-showcase', component: BrandShowcase }, // Showcase for brand colors
   { path: 'stage', component: Stage },
   { path: 'partner', component: Partner },
   { path: 'contact', loadComponent: () => import('./features/contact').then(m => m.Contact) },

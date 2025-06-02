@@ -1,5 +1,3 @@
-@import "tailwindcss/preflight";
-
 /* Notification Styles */
 .notification-success {
   background-color: #4caf50 !important;

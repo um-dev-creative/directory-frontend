@@ -1,7 +1,7 @@
 @if (isMobile$ | async) {
   <!-- Mobile Carousel -->
     <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-overflow-hidden">
-      @for (offer of offers$ | async; track offer) {
+      @for (offer of offers$ | async; track offer.id) {
         <!-- Carrusel -->
         <div class="app-view-container tw-flex tw-items-center tw-gap-4 tw-p-2 tw-rounded-lg tw-border tw-border-gray-200 tw-shadow-md tw-mb-[10px]">
           <!-- Icon Container -->
@@ -47,7 +47,7 @@
     >
       <ul class="tw-flex tw-w-max">
         <!-- Tarjetas de ofertas -->
-        @for (offer of offers$ | async; track offer) {
+        @for (offer of offers$ | async; track offer.id) {
           <div class="tw-px-[10px] tw-py-[20px]">
             <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border tw-border-gray-200 tw-rounded-lg tw-shadow-md hover:tw-shadow-lg tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer">
 

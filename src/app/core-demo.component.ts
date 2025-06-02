@@ -97,6 +97,7 @@ import { Observable } from 'rxjs';
     }
   `]
 })
+
 export class CoreDemoComponent implements OnInit {
   isLoading$: Observable<boolean>;
 
