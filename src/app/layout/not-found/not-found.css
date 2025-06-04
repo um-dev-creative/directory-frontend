@@ -1,0 +1,233 @@
+/* 404 Not Found Page Styles */
+.not-found-container {
+  @apply tw-min-h-screen tw-flex tw-flex-col tw-items-center tw-justify-center
+         tw-px-4 tw-py-12 tw-bg-gradient-to-br tw-from-beige-50 tw-to-beige-100;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero Section with 404 Animation */
+.not-found-hero {
+  @apply tw-relative tw-mb-12;
+}
+
+.not-found-number {
+  @apply tw-flex tw-items-center tw-justify-center tw-text-9xl tw-font-bold;
+  font-family: 'Arial', sans-serif;
+  color: #10b981; /* emerald-green-500 */
+  text-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.number-4 {
+  @apply tw-relative;
+  display: inline-block;
+}
+
+.number-0 {
+  @apply tw-relative tw-mx-4;
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+}
+
+.circle-outer {
+  @apply tw-absolute tw-inset-0 tw-rounded-full tw-border-8;
+  border-color: #10b981; /* emerald-green-500 */
+  animation: rotate 3s linear infinite;
+}
+
+.circle-inner {
+  @apply tw-absolute tw-inset-4 tw-rounded-full tw-bg-coral-400;
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+/* Floating Elements */
+.floating-elements {
+  @apply tw-absolute tw-inset-0;
+  pointer-events: none;
+}
+
+.float-element {
+  @apply tw-absolute tw-rounded-full tw-opacity-60;
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-element-1 {
+  @apply tw-w-4 tw-h-4 tw-bg-emerald-green-300;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.float-element-2 {
+  @apply tw-w-6 tw-h-6 tw-bg-coral-300;
+  top: 60%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.float-element-3 {
+  @apply tw-w-3 tw-h-3 tw-bg-sky-blue-400;
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.float-element-4 {
+  @apply tw-w-5 tw-h-5 tw-bg-beige-400;
+  top: 10%;
+  right: 25%;
+  animation-delay: 3s;
+}
+
+/* Content Section */
+.not-found-content {
+  @apply tw-text-center tw-max-w-2xl tw-mx-auto;
+}
+
+.not-found-title {
+  @apply tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-gray-800 tw-mb-6;
+  background: linear-gradient(135deg, #10b981, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found-description {
+  @apply tw-text-lg tw-text-gray-600 tw-mb-8 tw-leading-relaxed;
+}
+
+/* Action Buttons */
+.not-found-actions {
+  @apply tw-flex tw-flex-col sm:tw-flex-row tw-gap-4 tw-justify-center tw-items-center tw-mb-12;
+}
+
+.action-button {
+  @apply tw-min-w-48;
+}
+
+/* Helpful Links */
+.helpful-links {
+  @apply tw-mt-12;
+}
+
+.links-title {
+  @apply tw-text-xl tw-font-semibold tw-text-gray-700 tw-mb-6;
+}
+
+.links-grid {
+  @apply tw-grid tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-4;
+}
+
+.help-link {
+  @apply tw-flex tw-flex-col tw-items-center tw-p-4 tw-bg-white tw-rounded-lg
+         tw-shadow-sm tw-border tw-border-beige-200 tw-transition-all tw-duration-200
+         hover:tw-shadow-md hover:tw-border-emerald-green-300 hover:tw-scale-105
+         tw-text-gray-600 hover:tw-text-emerald-green-600;
+  text-decoration: none;
+}
+
+.link-icon {
+  @apply tw-w-6 tw-h-6 tw-mb-2;
+}
+
+.help-link span {
+  @apply tw-text-sm tw-font-medium;
+}
+
+/* Animations */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(3deg);
+  }
+}
+
+@keyframes bounce-left {
+  0%, 100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes bounce-right {
+  0%, 100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+.animate-bounce-left {
+  animation: bounce-left 2s ease-in-out infinite;
+}
+
+.animate-bounce-right {
+  animation: bounce-right 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .not-found-number {
+    @apply tw-text-6xl;
+  }
+
+  .number-0 {
+    width: 80px;
+    height: 80px;
+  }
+
+  .not-found-title {
+    @apply tw-text-3xl;
+  }
+
+  .not-found-description {
+    @apply tw-text-base;
+  }
+}
+
+/* Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .circle-outer,
+  .circle-inner,
+  .float-element,
+  .animate-bounce-left,
+  .animate-bounce-right {
+    animation: none;
+  }
+
+  .help-link {
+    @apply hover:tw-scale-100;
+  }
+}
