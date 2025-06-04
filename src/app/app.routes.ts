@@ -7,7 +7,7 @@ import {NotFound} from '@app/layout/not-found';
 import {VerificationCode} from '@app/verification-code/verification-code';
 import {authGuard} from './core/guards/auth.guard';
 import {CoreDemoComponent} from './core-demo.component';
-import {BrandShowcase} from './components/brand-showcase'
+import {BrandShowcase} from './components/brand-showcase';
 
 export const routes: Routes = [
   // Public routes (no authentication required)
