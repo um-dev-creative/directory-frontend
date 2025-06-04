@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { NotificationService, LoadingService } from '../core/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Button } from './ui/buttons/button';
+import { ButtonExampleButtonUsage } from './ui/buttons/button-usage-example';
 
 @Component({
   selector: 'app-brand-showcase',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Button, ButtonExampleButtonUsage],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
       <div class="tw-max-w-6xl tw-mx-auto">
@@ -71,19 +73,342 @@ import { map } from 'rxjs/operators';
         <!-- Buttons -->
         <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
           <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Botones</h2>
-          <div class="tw-flex tw-flex-wrap tw-gap-4">
-            <button class="btn-primary">
-              Botón Principal
-            </button>
-            <button class="btn-secondary">
-              Botón Secundario
-            </button>
-            <button class="btn-outline">
-              Botón Outline
-            </button>
-            <button class="tw-bg-sky-blue-500 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-sky-blue-600 tw-transition-all">
-              Botón Info
-            </button>
+          <p class="tw-text-beige-700 tw-mb-6">
+            Componente Button reutilizable con colores de marca
+          </p>
+
+          <!-- Variantes Principales -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Variantes Principales</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-4">
+              <app-button variant="primary">
+                Botón Principal
+              </app-button>
+              <app-button variant="secondary">
+                Botón Secundario
+              </app-button>
+              <app-button variant="alert">
+                Botón Alerta
+              </app-button>
+              <app-button variant="success">
+                Botón Éxito
+              </app-button>
+              <app-button variant="info">
+                Botón Info
+              </app-button>
+            </div>
+          </div>
+
+          <!-- Variantes de Estilo -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estilos Alternativos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-4">
+              <app-button variant="outline">
+                Botón Outline
+              </app-button>
+              <app-button variant="solid-outline">
+                Solid Outline
+              </app-button>
+              <app-button variant="ghost">
+                Botón Ghost
+              </app-button>
+            </div>
+          </div>
+
+          <!-- Tamaños -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Tamaños</h3>
+            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-4">
+              <app-button variant="primary" size="sm">
+                Pequeño
+              </app-button>
+              <app-button variant="primary" size="md">
+                Mediano
+              </app-button>
+              <app-button variant="primary" size="lg">
+                Grande
+              </app-button>
+            </div>
+          </div>
+
+          <!-- Estados -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estados</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-4">
+              <app-button variant="primary" [loading]="true">
+                Cargando...
+              </app-button>
+              <app-button variant="secondary" [disabled]="true">
+                Deshabilitado
+              </app-button>
+              <app-button variant="primary" [fullWidth]="false">
+                Ancho Normal
+              </app-button>
+            </div>
+          </div>
+
+          <!-- Botones con Eventos -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Interactivos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-4">
+              <app-button
+                variant="primary"
+                (buttonClick)="showSuccessNotification()"
+              >
+                Mostrar Notificación
+              </app-button>
+              <app-button
+                variant="secondary"
+                (buttonClick)="showBasicLoading()"
+                [loading]="(isBasicLoading$ | async) || false"
+              >
+                Test Loading
+              </app-button>
+              <app-button
+                variant="info"
+                (buttonClick)="showInfoNotification()"
+              >
+                Botón Info
+              </app-button>
+            </div>
+          </div>
+
+          <!-- Botones Legacy (comparación) -->
+          <div class="tw-border-t tw-border-beige-200 tw-pt-6">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-beige-700 tw-mb-4">Botones Legacy (antes)</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-4">
+              <button class="btn-primary">
+                Legacy Principal
+              </button>
+              <button class="btn-secondary">
+                Legacy Secundario
+              </button>
+              <button class="btn-outline">
+                Legacy Outline
+              </button>
+              <button class="tw-bg-sky-blue-500 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-sky-blue-600 tw-transition-all">
+                Legacy Info
+              </button>
+            </div>
+          </div>
+        </div>
+
+      <!-- Casos de Uso Reales -->
+        <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
+          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Casos de Uso Reales</h2>
+          <p class="tw-text-beige-700 tw-mb-6">
+            Ejemplos prácticos de implementación del componente Button
+          </p>
+          <!-- Importar el componente completo -->
+          <app-example-button-usage></app-example-button-usage>
+        </div>
+
+        <!-- Badges -->
+        <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
+          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Badges</h2>
+          <p class="tw-text-beige-700 tw-mb-6">
+            Diferentes estilos de badges usando la paleta de colores de marca
+          </p>
+
+          <!-- Basic Badges -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges Básicos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-3">
+              <!-- Emerald Green Badges -->
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800">
+                Activo
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-500 tw-text-white">
+                Aprobado
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-700 tw-text-white">
+                Verificado
+              </span>
+
+              <!-- Coral Badges -->
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800">
+                Pendiente
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-500 tw-text-white">
+                Urgente
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-700 tw-text-white">
+                Error
+              </span>
+
+              <!-- Sky Blue Badges -->
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-100 tw-text-sky-blue-800">
+                Info
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-500 tw-text-white">
+                Nuevo
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-700 tw-text-white">
+                Premium
+              </span>
+
+              <!-- Beige Badges -->
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-100 tw-text-beige-800">
+                Borrador
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-500 tw-text-white">
+                Archivado
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-700 tw-text-white">
+                Completado
+              </span>
+            </div>
+          </div>
+
+          <!-- Badge Sizes -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Tamaños</h3>
+            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-4">
+              <span class="tw-inline-flex tw-items-center tw-px-2 tw-py-0.5 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800">
+                Pequeño
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-sm tw-font-medium tw-bg-emerald-green-500 tw-text-white">
+                Mediano
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-rounded-full tw-text-base tw-font-medium tw-bg-emerald-green-700 tw-text-white">
+                Grande
+              </span>
+            </div>
+          </div>
+
+          <!-- Badges with Icons -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges con Iconos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-3">
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800">
+                <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                Completado
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800">
+                <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                Advertencia
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-100 tw-text-sky-blue-800">
+                <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                Información
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-500 tw-text-white">
+                <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                Cancelado
+              </span>
+            </div>
+          </div>
+
+          <!-- Badges with Dots -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges con Indicadores</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-3">
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800">
+                <div class="tw-w-2 tw-h-2 tw-bg-emerald-green-500 tw-rounded-full tw-mr-2"></div>
+                En línea
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800">
+                <div class="tw-w-2 tw-h-2 tw-bg-coral-500 tw-rounded-full tw-mr-2"></div>
+                Ocupado
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-100 tw-text-beige-800">
+                <div class="tw-w-2 tw-h-2 tw-bg-beige-500 tw-rounded-full tw-mr-2"></div>
+                Ausente
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-100 tw-text-sky-blue-800">
+                <div class="tw-w-2 tw-h-2 tw-bg-sky-blue-500 tw-rounded-full tw-mr-2 tw-animate-pulse"></div>
+                Conectando
+              </span>
+            </div>
+          </div>
+
+          <!-- Removable Badges -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges Removibles</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-3">
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800">
+                Angular
+                <button type="button" class="tw-ml-1.5 tw-inline-flex tw-items-center tw-justify-center tw-w-4 tw-h-4 tw-rounded-full tw-text-emerald-green-400 hover:tw-bg-emerald-green-200 hover:tw-text-emerald-green-500 focus:tw-outline-none">
+                  <svg class="tw-w-2 tw-h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                    <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
+                  </svg>
+                </button>
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-100 tw-text-sky-blue-800">
+                TypeScript
+                <button type="button" class="tw-ml-1.5 tw-inline-flex tw-items-center tw-justify-center tw-w-4 tw-h-4 tw-rounded-full tw-text-sky-blue-400 hover:tw-bg-sky-blue-200 hover:tw-text-sky-blue-500 focus:tw-outline-none">
+                  <svg class="tw-w-2 tw-h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                    <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
+                  </svg>
+                </button>
+              </span>
+              <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800">
+                Tailwind CSS
+                <button type="button" class="tw-ml-1.5 tw-inline-flex tw-items-center tw-justify-center tw-w-4 tw-h-4 tw-rounded-full tw-text-coral-400 hover:tw-bg-coral-200 hover:tw-text-coral-500 focus:tw-outline-none">
+                  <svg class="tw-w-2 tw-h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                    <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </div>
+
+          <!-- Number Badges -->
+          <div class="tw-mb-8">
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges Numéricos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-6">
+              <div class="tw-relative">
+                <span class="tw-text-sm tw-text-beige-700">Notificaciones</span>
+                <span class="tw-absolute tw--top-2 tw--right-2 tw-inline-flex tw-items-center tw-justify-center tw-px-2 tw-py-1 tw-text-xs tw-font-bold tw-leading-none tw-text-white tw-bg-coral-500 tw-rounded-full">
+                  3
+                </span>
+              </div>
+              <div class="tw-relative">
+                <span class="tw-text-sm tw-text-beige-700">Mensajes</span>
+                <span class="tw-absolute tw--top-2 tw--right-2 tw-inline-flex tw-items-center tw-justify-center tw-px-2 tw-py-1 tw-text-xs tw-font-bold tw-leading-none tw-text-white tw-bg-sky-blue-500 tw-rounded-full">
+                  12
+                </span>
+              </div>
+              <div class="tw-relative">
+                <span class="tw-text-sm tw-text-beige-700">Tareas</span>
+                <span class="tw-absolute tw--top-2 tw--right-2 tw-inline-flex tw-items-center tw-justify-center tw-px-2 tw-py-1 tw-text-xs tw-font-bold tw-leading-none tw-text-white tw-bg-emerald-green-500 tw-rounded-full">
+                  5
+                </span>
+              </div>
+              <div class="tw-relative">
+                <span class="tw-text-sm tw-text-beige-700">Alertas</span>
+                <span class="tw-absolute tw--top-2 tw--right-2 tw-inline-flex tw-items-center tw-justify-center tw-w-3 tw-h-3 tw-bg-coral-500 tw-rounded-full">
+                  <span class="tw-sr-only">Nuevas alertas</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Badges -->
+          <div>
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Badges Interactivos</h3>
+            <div class="tw-flex tw-flex-wrap tw-gap-3">
+              <button class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800 hover:tw-bg-emerald-green-200 tw-transition-colors tw-cursor-pointer">
+                Clickeable
+              </button>
+              <button class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-sky-blue-100 tw-text-sky-blue-800 hover:tw-bg-sky-blue-200 tw-transition-colors tw-cursor-pointer">
+                Filtro: Activo
+              </button>
+              <button class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800 hover:tw-bg-coral-200 tw-transition-colors tw-cursor-pointer">
+                Categoría: Urgente
+              </button>
+              <button class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-100 tw-text-beige-800 hover:tw-bg-beige-200 tw-transition-colors tw-cursor-pointer">
+                Estado: Borrador
+              </button>
+            </div>
           </div>
         </div>
 
