@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { NotificationService, LoadingService } from '../../core/services';
+import { NotificationService, LoadingService } from '@app/core/services';
 import { map } from 'rxjs/operators';
 
 // Import section components
@@ -14,6 +14,8 @@ import {
   NotificationsSectionComponent,
   LoadingSectionComponent
 } from './sections';
+import { IconsSectionComponent } from './sections/icons-section.component';
+import { TextSectionComponent } from './sections/text-section.component';
 
 export interface ShowcaseSection {
   id: string;
@@ -32,7 +34,9 @@ export interface ShowcaseSection {
     InputsSectionComponent,
     CardsSectionComponent,
     NotificationsSectionComponent,
-    LoadingSectionComponent
+    LoadingSectionComponent,
+    IconsSectionComponent,
+    TextSectionComponent
   ],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
@@ -85,11 +89,29 @@ export interface ShowcaseSection {
           <!-- Cards Section -->
           <app-cards-section
             *ngIf="activeSection === 'cards'"
+            [isBasicLoading$]="isBasicLoading$"
             (successCardAction)="onSuccessCardAction()"
             (errorCardAction)="onErrorCardAction()"
             (infoCardAction)="onInfoCardAction()"
             (formSubmit)="onFormSubmit()"
+            (successNotification)="onCardSuccessNotification()"
+            (infoNotification)="onCardInfoNotification()"
+            (warningNotification)="onCardWarningNotification()"
+            (basicLoading)="onCardBasicLoading()"
+            (cardFormSubmit)="onCardFormSubmit($event)"
           ></app-cards-section>
+
+          <!-- Icons Section -->
+          <app-icons-section
+            *ngIf="activeSection === 'icons'"
+            (iconClick)="onIconClick($event)"
+          ></app-icons-section>
+
+          <!-- Text Section -->
+          <app-text-section
+            *ngIf="activeSection === 'text'"
+            (textDemo)="onTextDemo($event)"
+          ></app-text-section>
 
           <!-- Loading Section -->
           <app-loading-section
@@ -110,6 +132,13 @@ export interface ShowcaseSection {
             (showPersistent)="onNotificationPersistent()"
             (showCustomPosition)="onNotificationCustomPosition()"
             (dismissAll)="onNotificationDismissAll()"
+            (successNotification)="onLegacySuccessNotification()"
+            (errorNotification)="onLegacyErrorNotification()"
+            (warningNotification)="onLegacyWarningNotification()"
+            (infoNotification)="onLegacyInfoNotification()"
+            (notificationWithAction)="onLegacyNotificationWithAction()"
+            (persistentNotification)="onLegacyPersistentNotification()"
+            (customPositionNotification)="onLegacyCustomPositionNotification()"
           ></app-notifications-section>
         </div>
       </div>
@@ -126,6 +155,8 @@ export class BrandShowcaseComponent {
     { id: 'badges', name: 'Badges', description: 'Diferentes estilos de badges' },
     { id: 'inputs', name: 'Inputs', description: 'Componentes de entrada de datos' },
     { id: 'cards', name: 'Cards', description: 'Componentes de tarjetas' },
+    { id: 'icons', name: 'Iconos', description: 'Biblioteca de iconos Heroicons' },
+    { id: 'text', name: 'Texto', description: 'Sistema de tipografía completo' },
     { id: 'loading', name: 'Loading', description: 'Estados de carga y spinners' },
     { id: 'notifications', name: 'Notificaciones', description: 'Sistema de notificaciones' }
   ];
@@ -211,6 +242,42 @@ export class BrandShowcaseComponent {
     });
   }
 
+  // New event handlers for card interactive features
+  onCardSuccessNotification() {
+    this.notificationService.success('¡Notificación de éxito desde card interactiva!', {
+      duration: 3000
+    });
+  }
+
+  onCardInfoNotification() {
+    this.notificationService.info('Información desde card interactiva', {
+      duration: 3000
+    });
+  }
+
+  onCardWarningNotification() {
+    this.notificationService.warning('Advertencia desde card interactiva', {
+      duration: 3000
+    });
+  }
+
+  onCardBasicLoading() {
+    this.loadingService.showSpecific('basic');
+    setTimeout(() => {
+      this.loadingService.hideSpecific('basic');
+      this.notificationService.info('Carga desde card completada', {
+        duration: 2000
+      });
+    }, 2000);
+  }
+
+  onCardFormSubmit(formData: any) {
+    console.log('Datos del formulario de card:', formData);
+    this.notificationService.success(`¡Formulario enviado! Hola ${formData.cardFormName}`, {
+      duration: 4000
+    });
+  }
+
   // Event handlers for notifications section
   onNotificationSuccess() {
     this.notificationService.success('¡Esta es una notificación de éxito!', {
@@ -284,5 +351,62 @@ export class BrandShowcaseComponent {
     setTimeout(() => {
       this.loadingService.hide();
     }, 4000);
+  }
+
+  // Legacy notification event handlers
+  onLegacySuccessNotification() {
+    this.notificationService.success('¡Notificación legacy de éxito!', {
+      duration: 3000
+    });
+  }
+
+  onLegacyErrorNotification() {
+    this.notificationService.error('Error legacy de demostración', {
+      duration: 4000
+    });
+  }
+
+  onLegacyWarningNotification() {
+    this.notificationService.warning('Advertencia legacy: Revisa los datos', {
+      duration: 4000
+    });
+  }
+
+  onLegacyInfoNotification() {
+    this.notificationService.info('Información legacy importante', {
+      duration: 3000
+    });
+  }
+
+  onLegacyNotificationWithAction() {
+    this.notificationService.success('Notificación legacy con acción', {
+      duration: 5000
+    });
+  }
+
+  onLegacyPersistentNotification() {
+    this.notificationService.info('Notificación legacy persistente', {
+      duration: 0
+    });
+  }
+
+  onLegacyCustomPositionNotification() {
+    this.notificationService.warning('Notificación legacy en posición personalizada', {
+      duration: 4000
+    });
+  }
+
+  // Icons event handlers
+  onIconClick(iconName: string) {
+    this.notificationService.info(`Icono seleccionado: ${iconName}`, {
+      duration: 2000
+    });
+  }
+
+  // Text event handlers
+  onTextDemo(demo: string) {
+    this.notificationService.info(`Demo de texto: ${demo}`, {
+      duration: 2000
+    });
   }
 }

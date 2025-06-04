@@ -5,3 +5,5 @@ export { InputsSectionComponent } from './inputs-section.component';
 export { CardsSectionComponent } from './cards-section.component';
 export { NotificationsSectionComponent } from './notifications-section.component';
 export { LoadingSectionComponent } from './loading-section.component';
+export { TextSectionComponent } from './text-section.component';
+export { IconsSectionComponent } from './icons-section.component';

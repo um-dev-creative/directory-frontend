@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { Button } from '../../ui/buttons/button';
+import { Button } from '@app/components/ui';
 
 @Component({
   selector: 'app-buttons-section',

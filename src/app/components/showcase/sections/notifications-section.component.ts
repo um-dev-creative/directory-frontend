@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Button } from '../../ui/buttons/button';
+import { Button } from '@app/components/ui';
 
 @Component({
   selector: 'app-notifications-section',
@@ -200,6 +200,91 @@ import { Button } from '../../ui/buttons/button';
         </div>
       </div>
     </div>
+
+    <!-- Legacy Notifications Section (for comparison) -->
+    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
+      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Notificaciones Legacy (Comparación)</h2>
+      <p class="tw-text-beige-700 tw-mb-6">
+        Prueba el sistema de notificaciones con los colores de marca
+      </p>
+
+      <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
+        <!-- Success Notification -->
+        <div class="tw-text-center">
+          <button
+            (click)="showSuccessNotification()"
+            class="tw-w-full tw-bg-emerald-green-500 tw-text-white tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-emerald-green-600 tw-transition-all tw-shadow-sm"
+          >
+            ✓ Éxito
+          </button>
+          <p class="tw-text-sm tw-text-beige-600 tw-mt-2">Notificación de éxito</p>
+        </div>
+
+        <!-- Error Notification -->
+        <div class="tw-text-center">
+          <button
+            (click)="showErrorNotification()"
+            class="tw-w-full tw-bg-coral-500 tw-text-white tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-coral-600 tw-transition-all tw-shadow-sm"
+          >
+            ✕ Error
+          </button>
+          <p class="tw-text-sm tw-text-beige-600 tw-mt-2">Notificación de error</p>
+        </div>
+
+        <!-- Warning Notification -->
+        <div class="tw-text-center">
+          <button
+            (click)="showWarningNotification()"
+            class="tw-w-full tw-bg-beige-500 tw-text-white tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-beige-600 tw-transition-all tw-shadow-sm"
+          >
+            ⚠ Advertencia
+          </button>
+          <p class="tw-text-sm tw-text-beige-600 tw-mt-2">Notificación de advertencia</p>
+        </div>
+
+        <!-- Info Notification -->
+        <div class="tw-text-center">
+          <button
+            (click)="showInfoNotification()"
+            class="tw-w-full tw-bg-sky-blue-500 tw-text-white tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-sky-blue-600 tw-transition-all tw-shadow-sm"
+          >
+            ℹ Información
+          </button>
+          <p class="tw-text-sm tw-text-beige-600 tw-mt-2">Notificación informativa</p>
+        </div>
+      </div>
+
+      <!-- Advanced Notifications -->
+      <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Notificaciones Avanzadas</h3>
+        <div class="tw-flex tw-flex-wrap tw-gap-4">
+          <button
+            (click)="showNotificationWithAction()"
+            class="btn-outline"
+          >
+            Con Acción
+          </button>
+          <button
+            (click)="showPersistentNotification()"
+            class="btn-secondary"
+          >
+            Persistente
+          </button>
+          <button
+            (click)="showCustomPositionNotification()"
+            class="tw-bg-beige-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg hover:tw-bg-beige-600 tw-transition-all"
+          >
+            Posición Personalizada
+          </button>
+          <button
+            (click)="dismissAllNotifications()"
+            class="tw-bg-coral-100 tw-text-coral-700 tw-px-4 tw-py-2 tw-rounded-lg hover:tw-bg-coral-200 tw-transition-all tw-border tw-border-coral-300"
+          >
+            Cerrar Todas
+          </button>
+        </div>
+      </div>
+    </div>
   `
 })
 export class NotificationsSectionComponent {
@@ -211,6 +296,15 @@ export class NotificationsSectionComponent {
   @Output() showPersistent = new EventEmitter<void>();
   @Output() showCustomPosition = new EventEmitter<void>();
   @Output() dismissAll = new EventEmitter<void>();
+
+  // Legacy notification events
+  @Output() successNotification = new EventEmitter<void>();
+  @Output() errorNotification = new EventEmitter<void>();
+  @Output() warningNotification = new EventEmitter<void>();
+  @Output() infoNotification = new EventEmitter<void>();
+  @Output() notificationWithAction = new EventEmitter<void>();
+  @Output() persistentNotification = new EventEmitter<void>();
+  @Output() customPositionNotification = new EventEmitter<void>();
 
   // Control para mostrar/ocultar el toast de ejemplo
   isToastVisible = true;
@@ -253,5 +347,38 @@ export class NotificationsSectionComponent {
 
   onShowToast() {
     this.isToastVisible = true;
+  }
+
+  // Legacy notification methods
+  showSuccessNotification() {
+    this.successNotification.emit();
+  }
+
+  showErrorNotification() {
+    this.errorNotification.emit();
+  }
+
+  showWarningNotification() {
+    this.warningNotification.emit();
+  }
+
+  showInfoNotification() {
+    this.infoNotification.emit();
+  }
+
+  showNotificationWithAction() {
+    this.notificationWithAction.emit();
+  }
+
+  showPersistentNotification() {
+    this.persistentNotification.emit();
+  }
+
+  showCustomPositionNotification() {
+    this.customPositionNotification.emit();
+  }
+
+  dismissAllNotifications() {
+    this.dismissAll.emit();
   }
 }

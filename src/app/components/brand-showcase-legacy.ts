@@ -1515,7 +1515,7 @@ import { InputComponent, BadgeComponent, CardComponent } from './ui';
     </div>
   `
 })
-export class BrandShowcase {
+export class BrandShowcaseLegacy {
   // Loading observables - usando correctamente tu LoadingService
   globalLoading$: Observable<boolean>;
   isBasicLoading$: Observable<boolean>;

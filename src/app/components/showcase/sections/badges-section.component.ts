@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BadgeComponent } from '../../ui/badges/badge';
+import { BadgeComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-badges-section',
