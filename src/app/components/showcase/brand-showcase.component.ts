@@ -11,6 +11,8 @@ import {
   BadgesSectionComponent,
   InputsSectionComponent,
   CardsSectionComponent,
+  ModalsSectionComponent,
+  SkeletonsSectionComponent,
   NotificationsSectionComponent,
   LoadingSectionComponent
 } from './sections';
@@ -32,6 +34,8 @@ export interface ShowcaseSection {
     BadgesSectionComponent,
     InputsSectionComponent,
     CardsSectionComponent,
+    ModalsSectionComponent,
+    SkeletonsSectionComponent,
     NotificationsSectionComponent,
     LoadingSectionComponent,
     IconsSectionComponent
@@ -99,6 +103,12 @@ export interface ShowcaseSection {
             (cardFormSubmit)="onCardFormSubmit($event)"
           ></app-cards-section>
 
+          <!-- Modals Section -->
+          <app-modals-section *ngIf="activeSection === 'modals'"></app-modals-section>
+
+          <!-- Skeletons Section -->
+          <app-skeletons-section *ngIf="activeSection === 'skeletons'"></app-skeletons-section>
+
           <!-- Icons Section -->
           <app-icons-section
             *ngIf="activeSection === 'icons'"
@@ -147,6 +157,8 @@ export class BrandShowcaseComponent {
     { id: 'badges', name: 'Badges', description: 'Diferentes estilos de badges' },
     { id: 'inputs', name: 'Inputs', description: 'Componentes de entrada de datos' },
     { id: 'cards', name: 'Cards', description: 'Componentes de tarjetas' },
+    { id: 'modals', name: 'Modals', description: 'Diálogos y ventanas modales' },
+    { id: 'skeletons', name: 'Skeletons', description: 'Componentes de carga con placeholders' },
     { id: 'icons', name: 'Iconos', description: 'Biblioteca de iconos Heroicons' },
     { id: 'loading', name: 'Loading', description: 'Estados de carga y spinners' },
     { id: 'notifications', name: 'Notificaciones', description: 'Sistema de notificaciones' }

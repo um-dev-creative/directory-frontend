@@ -1,6 +1,10 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Button, BadgeComponent, IconComponent } from '@app/components/ui';
+import {
+  Button,
+  BadgeComponent,
+  IconComponent
+} from '@app/components/ui';
 
 @Component({
   selector: 'app-icons-section',

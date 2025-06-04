@@ -8,6 +8,49 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ## Knowledge Base
 [Official Documentation](https://prx.myjetbrains.com/articles/DS-A-1/Directory-Frontend)
 
+## 📚 Documentation
+
+### Component Library & Design System
+Our comprehensive UI component library and design system documentation is available in the [`docs/`](./docs/) directory:
+
+- **[📖 Complete Documentation](./docs/README.md)** - Overview and quick start guide
+- **[🎨 Brand & Design System](./docs/guides/)** - Color palette and design guidelines  
+- **[🧩 Component Guides](./docs/components/)** - Detailed implementation guides for all UI components
+
+### Available Components
+- ✅ **Button** - Multiple variants, sizes, and states
+- ✅ **Input** - Form inputs with validation and reactive forms support
+- ✅ **Badge** - Status indicators and labels
+- ✅ **Card** - Content containers with various layouts
+- ✅ **Modal** - Dialog and overlay components
+- ✅ **Skeleton** - Loading placeholders and states
+
+### Quick Start - UI Components
+```typescript
+import { 
+  ButtonComponent, 
+  InputComponent, 
+  SkeletonComponent 
+} from './app/components/ui';
+```
+
+```html
+<app-button variant="primary" size="md">
+  Click me
+</app-button>
+
+<app-input 
+  type="email" 
+  placeholder="Enter email"
+  [required]="true">
+</app-input>
+
+<app-skeleton 
+  variant="card" 
+  [loading]="isLoading">
+</app-skeleton>
+```
+
 ## Development server
 
 To start a local development server, run:
