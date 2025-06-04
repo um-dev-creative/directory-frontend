@@ -15,7 +15,6 @@ import {
   LoadingSectionComponent
 } from './sections';
 import { IconsSectionComponent } from './sections/icons-section.component';
-import { TextSectionComponent } from './sections/text-section.component';
 
 export interface ShowcaseSection {
   id: string;
@@ -35,8 +34,7 @@ export interface ShowcaseSection {
     CardsSectionComponent,
     NotificationsSectionComponent,
     LoadingSectionComponent,
-    IconsSectionComponent,
-    TextSectionComponent
+    IconsSectionComponent
   ],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
@@ -107,12 +105,6 @@ export interface ShowcaseSection {
             (iconClick)="onIconClick($event)"
           ></app-icons-section>
 
-          <!-- Text Section -->
-          <app-text-section
-            *ngIf="activeSection === 'text'"
-            (textDemo)="onTextDemo($event)"
-          ></app-text-section>
-
           <!-- Loading Section -->
           <app-loading-section
             *ngIf="activeSection === 'loading'"
@@ -156,7 +148,6 @@ export class BrandShowcaseComponent {
     { id: 'inputs', name: 'Inputs', description: 'Componentes de entrada de datos' },
     { id: 'cards', name: 'Cards', description: 'Componentes de tarjetas' },
     { id: 'icons', name: 'Iconos', description: 'Biblioteca de iconos Heroicons' },
-    { id: 'text', name: 'Texto', description: 'Sistema de tipografía completo' },
     { id: 'loading', name: 'Loading', description: 'Estados de carga y spinners' },
     { id: 'notifications', name: 'Notificaciones', description: 'Sistema de notificaciones' }
   ];
@@ -399,13 +390,6 @@ export class BrandShowcaseComponent {
   // Icons event handlers
   onIconClick(iconName: string) {
     this.notificationService.info(`Icono seleccionado: ${iconName}`, {
-      duration: 2000
-    });
-  }
-
-  // Text event handlers
-  onTextDemo(demo: string) {
-    this.notificationService.info(`Demo de texto: ${demo}`, {
       duration: 2000
     });
   }
