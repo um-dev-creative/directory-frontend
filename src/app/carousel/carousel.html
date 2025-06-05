@@ -2,7 +2,7 @@
      (mouseenter)="pauseAutoplay()"
      (mouseleave)="resumeAutoplay()">
   <!-- Carrusel -->
-  <div class="tw-flex tw-transition-transform tw-duration-500 tw-ease-in-out"
+  <div class="tw-flex tw-transition-transform tw-duration-500 tw-ease-in-out tw-cursor-pointer"
        [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
     @for (slide of slides; track slide.desktop) {
       <div class="tw-flex-shrink-0 tw-w-full">

@@ -5,3 +5,5 @@ export * from './badges/badge';
 export * from './cards/card';
 export * from './modals/modal';
 export * from './skeletons/skeleton';
+export * from './alerts/alert';
+export * from './tooltips/tooltip';

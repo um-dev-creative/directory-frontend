@@ -181,7 +181,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'], // o 'Nunito' Fuente principal
+        sans: ['Nunito', 'sans-serif'], // o 'Nunito' Fuente principal
         hand: ['Patrick Hand', 'cursive'], // Fuente secundaria
         mono: ['Fira Code', 'monospace'], // Fuente monoespaciada
       },

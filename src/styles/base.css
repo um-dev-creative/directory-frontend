@@ -65,3 +65,26 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Custom scrollbar with harmonious colors */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f9f4; /* Very light emerald */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5bb67d; /* Medium emerald */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2e8b57; /* Main emerald */
+}
+
+/* Smooth transitions for better UX */
+* {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

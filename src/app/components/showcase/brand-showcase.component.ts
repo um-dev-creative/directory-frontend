@@ -14,7 +14,9 @@ import {
   ModalsSectionComponent,
   SkeletonsSectionComponent,
   NotificationsSectionComponent,
-  LoadingSectionComponent
+  LoadingSectionComponent,
+  AlertsSectionComponent,
+  TooltipsSectionComponent
 } from './sections';
 import { IconsSectionComponent } from './sections/icons-section.component';
 
@@ -38,7 +40,9 @@ export interface ShowcaseSection {
     SkeletonsSectionComponent,
     NotificationsSectionComponent,
     LoadingSectionComponent,
-    IconsSectionComponent
+    IconsSectionComponent,
+    AlertsSectionComponent,
+    TooltipsSectionComponent
   ],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
@@ -115,6 +119,23 @@ export interface ShowcaseSection {
             (iconClick)="onIconClick($event)"
           ></app-icons-section>
 
+          <!-- Alerts Section -->
+          <app-alerts-section
+            *ngIf="activeSection === 'alerts'"
+            (showInfoAlert)="onAlertInfo()"
+            (showSuccessAlert)="onAlertSuccess()"
+            (showWarningAlert)="onAlertWarning()"
+            (showErrorAlert)="onAlertError()"
+          ></app-alerts-section>
+
+          <!-- Tooltips Section -->
+          <app-tooltips-section
+            *ngIf="activeSection === 'tooltips'"
+            (showTooltipDemo)="onTooltipDemo()"
+            (showTooltipInfo)="onTooltipInfo()"
+            (showTooltipWarning)="onTooltipWarning()"
+          ></app-tooltips-section>
+
           <!-- Loading Section -->
           <app-loading-section
             *ngIf="activeSection === 'loading'"
@@ -162,6 +183,8 @@ export class BrandShowcaseComponent {
     { id: 'modals', name: 'Modals', description: 'Diálogos y ventanas modales' },
     { id: 'skeletons', name: 'Skeletons', description: 'Componentes de carga con placeholders' },
     { id: 'icons', name: 'Iconos', description: 'Biblioteca de iconos Heroicons' },
+    { id: 'alerts', name: 'Alertas', description: 'Mensajes de retroalimentación contextual' },
+    { id: 'tooltips', name: 'Tooltips', description: 'Información contextual en hover/click' },
     { id: 'loading', name: 'Loading', description: 'Estados de carga y spinners' },
     { id: 'notifications', name: 'Notificaciones', description: 'Sistema de notificaciones' }
   ];
@@ -357,10 +380,7 @@ export class BrandShowcaseComponent {
   }
 
   onNotificationDismissAll() {
-    // This would call a dismiss all method if available in the service
-    this.notificationService.info('Función para cerrar todas las notificaciones', {
-      duration: 3000
-    });
+    this.notificationService.dismiss();
   }
 
   // Event handlers for loading section
@@ -411,9 +431,14 @@ export class BrandShowcaseComponent {
   }
 
   onLegacyNotificationWithAction() {
-    this.notificationService.success('Notificación legacy con acción', {
-      duration: 5000
-    });
+    this.notificationService.showWithAction(
+      'Archivo guardado correctamente',
+      'Ver archivo',
+      {
+        type: 'success',
+        duration: 7000
+      }
+    );
   }
 
   onLegacyPersistentNotification() {
@@ -423,8 +448,54 @@ export class BrandShowcaseComponent {
   }
 
   onLegacyCustomPositionNotification() {
-    this.notificationService.warning('Notificación legacy en posición personalizada', {
+    this.notificationService.show('Notificación en posición personalizada', {
+      type: 'warning',
+      position: 'bottom-left',
+      duration: 5000
+    });
+  }
+
+  // Alert event handlers
+  onAlertInfo() {
+    this.notificationService.info('Alerta de información activada desde el showcase', {
+      duration: 3000
+    });
+  }
+
+  onAlertSuccess() {
+    this.notificationService.success('¡Alerta de éxito activada desde el showcase!', {
+      duration: 3000
+    });
+  }
+
+  onAlertWarning() {
+    this.notificationService.warning('Alerta de advertencia activada desde el showcase', {
       duration: 4000
+    });
+  }
+
+  onAlertError() {
+    this.notificationService.error('Alerta de error activada desde el showcase', {
+      duration: 4000
+    });
+  }
+
+  // Tooltip event handlers
+  onTooltipDemo() {
+    this.notificationService.info('Demo de tooltip ejecutado', {
+      duration: 3000
+    });
+  }
+
+  onTooltipInfo() {
+    this.notificationService.info('Tooltip informativo mostrado desde el showcase', {
+      duration: 3000
+    });
+  }
+
+  onTooltipWarning() {
+    this.notificationService.warning('Tooltip de advertencia activado', {
+      duration: 3000
     });
   }
 

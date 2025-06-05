@@ -572,7 +572,7 @@ import { InputComponent, BadgeComponent, CardComponent } from './ui';
 
           <!-- Advanced Notifications -->
           <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
-            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Notificaciones Avanzadas</h3>
+            <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Notificaciones Avanzadas Legacy</h3>
             <div class="tw-flex tw-flex-wrap tw-gap-4">
               <button
                 (click)="showNotificationWithAction()"

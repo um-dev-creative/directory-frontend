@@ -165,7 +165,7 @@ import { Button } from '@app/components/ui';
         <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Notificaciones Avanzadas</h3>
         <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
           <app-button variant="primary" (buttonClick)="onShowWithAction()">
-            Con Botón de Acción
+            Con Botón de Acción Legacy
           </app-button>
           <app-button variant="secondary" (buttonClick)="onShowPersistent()">
             Persistente
@@ -173,6 +173,7 @@ import { Button } from '@app/components/ui';
           <app-button variant="outline" (buttonClick)="onShowCustomPosition()">
             Posición Personalizada
           </app-button>
+          <!-- Botón para cerrar todas las notificaciones -->
           <app-button variant="alert" (buttonClick)="onDismissAll()">
             Cerrar Todas
           </app-button>
@@ -297,7 +298,7 @@ import { Button } from '@app/components/ui';
             (click)="showNotificationWithAction()"
             class="btn-outline"
           >
-            Con Acción
+            Con Acción Legacy
           </button>
           <button
             (click)="showPersistentNotification()"
@@ -315,7 +316,7 @@ import { Button } from '@app/components/ui';
             (click)="dismissAllNotifications()"
             class="tw-bg-coral-100 tw-text-coral-700 tw-px-4 tw-py-2 tw-rounded-lg hover:tw-bg-coral-200 tw-transition-all tw-border tw-border-coral-300"
           >
-            Cerrar Todas
+            Cerrar Todas Legacy
           </button>
         </div>
       </div>
@@ -383,7 +384,7 @@ export class NotificationsSectionComponent {
   }
 
   onDismissAll() {
-    this.dismissAll.emit();
+    this.dismissAll.emit(); // Emitir evento para cerrar todas las notificaciones
   }
 
   onCloseToast() {
