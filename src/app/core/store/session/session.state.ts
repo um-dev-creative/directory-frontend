@@ -14,6 +14,7 @@ export class UserAuth {
   fullName!: string;
   sessionToken!: string;
   sessionTokenBkd!: string;
+  authorization!: string;
   features!: string[];
 }
 
@@ -25,6 +26,7 @@ export const initialState: SessionState = {
       fullName: '',
       sessionToken: '',
       sessionTokenBkd: '',
+      authorization: '',
       features: []
     },
     token: ''

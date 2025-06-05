@@ -3,7 +3,7 @@ const CryptoJS = require("crypto-js");
 const axios = require('axios');
 const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
-const directoryAuthProxyConfig = appConfig.getDirectoryAuthProxyConfig();
+const directoryCreateUserProxyConfig = appConfig.getDirectoryCreateUserProxyConfig();
 const logger = appConfig.getLoggerApp();
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
@@ -27,7 +27,8 @@ const {
   CONTENT_TYPE_DEFAULT,
   API_INVALID_URL_REQUEST_TITLE,
   POST_METHOD,
-  TRANSFER_ENCODING, PASSWORD_ATTRIBUTE, INNER_AUTH_PATH, DS_AUTH_RELATIVE_PATH, INNER_CREATE_USER_PATH
+  TRANSFER_ENCODING, PASSWORD_ATTRIBUTE, INNER_AUTH_PATH,
+  BACKBONE_TOKEN_RELATIVE_PATH, DS_AUTH_RELATIVE_PATH, INNER_CREATE_USER_PATH
 } = require("../config/constants.util");
 const {
   OAUTH_CLIENT_ID,
@@ -65,29 +66,18 @@ let getOauthClient = function (oauthClientConfig) {
   return oauthClient;
 };
 
-/**
- * Helper to obtain and cache the user session token for Directory Backend.
- *
- * @param {Object} req - The request object.
- * @returns {Object} - The session token and bearer token.
- */
 async function getDirectorySessionToken(req) {
   const userId = req.body.alias;
   let session = getUserSession(userId);
   if (session && session.directorySession && session.dsBearToken && session.directorySessionExpiresAt > Date.now()) {
     return { directorySession: session.directorySession, dsBearToken: session.dsBearToken };
   }
-  // Obtain new tokens
   const dsBearToken = await getOauthClient(directoryOauthClientConfig).getBearerToken();
-  // Here you might have a call to an endpoint to obtain the specific session token for Directory if applicable
-  // For example, if you need to call an endpoint to get a session token, do it here
-  // const directorySession = await ...
-  // For this example, we assume that the dsBearToken is sufficient
   setUserSession(userId, {
     ...session,
-    directorySession: dsBearToken, // Or the actual session token if it exists
+    directorySession: dsBearToken,
     dsBearToken,
-    directorySessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hour
+    directorySessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
   });
   return { directorySession: dsBearToken, dsBearToken };
 }
@@ -101,16 +91,16 @@ async function getDirectorySessionToken(req) {
  */
 const proxyApi = async (req, res, next) => {
   let response = null;
-  const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, API_SERVICE_DIRECTORY_MAP);
+  const apiURL = getApiEndpoint(req.url, directoryCreateUserProxyConfig, API_SERVICE_DIRECTORY_MAP);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
 
   if (validationSchema) {
     try {
-      // Obtain and reuse session and application tokens for Directory Backend
+      // Obtener y reutilizar tokens de sesión y de aplicación para Directory Backend
       const { directorySession, dsBearToken } = await getDirectorySessionToken(req);
-      // Get the backbone session token (already cached in backbone.controller.js)
+      // Obtener el token de sesión de backbone (ya cacheado en backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
-      // Construct headers
+      // Construir headers
       const headers = getRequestHeader(req, dsBearToken, backboneSessionData.backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions;
@@ -130,7 +120,6 @@ const proxyApi = async (req, res, next) => {
       // Include the session-token-bkd in the response headers
       if (backboneSessionData && req.url === INNER_AUTH_PATH) {
         res.set(SESSION_TOKEN_BKD, backboneSessionData.backboneSession);
-        res.set('authorization', dsBearToken);
       }
     } catch (error) {
       if (error.response != null) {
