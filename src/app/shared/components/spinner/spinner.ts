@@ -15,13 +15,13 @@ import { takeUntil } from 'rxjs/operators';
         'tw-opacity-0': !isVisible,
         'tw-opacity-100': isVisible,
         'tw-absolute': contained,
-        'tw-bg-white/80 tw-backdrop-blur-sm': !transparent
+        'tw-bg-beige-50/90 tw-backdrop-blur-sm': !transparent
       }"
     >
       <div class="tw-relative">
         <div class="tw-w-12 tw-h-12">
-          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-gray-200"></div>
-          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-blue-500 tw-border-t-transparent tw-animate-spin"></div>
+          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-beige-200"></div>
+          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-emerald-green-500 tw-border-t-transparent tw-animate-spin"></div>
         </div>
       </div>
     </div>

@@ -1,0 +1,98 @@
+<div class="about-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="badge-text">Fundado en {{ companyInfo.founded }}</span>
+        </div>
+        <h1 class="hero-title">
+          Conecta con tu Comunidad
+        </h1>
+        <p class="hero-description">
+          {{ companyInfo.mission }}.
+        </p>
+        <div class="hero-actions">
+          <app-button
+            variant="primary"
+            size="lg"
+            [routerLink]="companyInfo.primary.link"
+            [fullWidth]="false">
+            {{ companyInfo.primary.text }}
+          </app-button>
+          <app-button
+            variant="outline"
+            size="lg"
+            [routerLink]="companyInfo.secondary.link"
+            [fullWidth]="false">
+            {{ companyInfo.secondary.text }}
+          </app-button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-logo-wrapper">
+          <img
+            src="/assets/images/latin_hub_logo_v1.svg"
+            alt="Latin Hub Logo"
+            class="hero-logo"
+          />
+          <div class="logo-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Features Section -->
+  <section class="features-section tw-py-8 sm:tw-py-12 md:tw-py-16">
+    <div class="content-container tw-px-4 sm:tw-px-6 md:tw-px-8">
+      <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 xl:tw-grid-cols-4 tw-gap-6 sm:tw-gap-8 tw-max-w-7xl tw-mx-auto tw-place-items-center sm:tw-place-items-stretch">
+        @for (feature of companyInfo.features; track feature.icon) {
+            <app-card
+              variant="elevated"
+              size="md"
+              class="feature-card tw-w-full tw-max-w-xs sm:tw-max-w-none tw-h-[320px] sm:tw-h-[340px] lg:tw-h-[320px] tw-flex tw-flex-col tw-border tw-border-emerald-green-300 tw-shadow-lg tw-shadow-emerald-green-100 tw-rounded-xl"
+              [clickable]="false">
+            <div class="feature-content tw-flex tw-flex-col tw-h-full tw-p-6 tw-text-center tw-items-center tw-justify-start">
+              <div class="feature-icon">
+                <app-icon [name]="feature.icon" size="lg"></app-icon>
+              </div>
+              <div class="tw-flex tw-flex-col tw-flex-grow tw-justify-start tw-w-full">
+                <h3 class="feature-title tw-text-lg sm:tw-text-xl tw-font-bold tw-text-gray-800 tw-line-clamp-2 tw-leading-tight tw-mb-4 tw-h-12 tw-flex tw-items-center tw-justify-center">{{ feature.title }}</h3>
+                <p class="feature-description tw-text-sm sm:tw-text-base tw-text-gray-600 tw-leading-relaxed tw-line-clamp-6 tw-h-36 tw-overflow-hidden">{{ feature.description }}</p>
+              </div>
+            </div>
+          </app-card>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="content-container">
+      <div class="tw-bg-gradient-sky tw-p-6 sm:tw-p-8 md:tw-p-10 lg:tw-p-12 tw-rounded-xl tw-border tw-border-sky-300 tw-shadow-lg tw-shadow-sky-100 tw-mx-4 sm:tw-mx-6 md:tw-mx-8">
+        <div class="tw-text-center tw-max-w-4xl tw-mx-auto">
+          <h3 class="tw-text-lg sm:tw-text-xl md:tw-text-2xl lg:tw-text-3xl tw-font-bold tw-mb-3 sm:tw-mb-4 tw-text-sky-blue-800 tw-leading-tight">¿Listo para unirte a nuestra comunidad?</h3>
+          <p class="tw-text-sm sm:tw-text-base md:tw-text-lg tw-text-sky-blue-700 tw-mb-6 sm:tw-mb-8 tw-leading-relaxed tw-max-w-2xl tw-mx-auto">Ya sea que busques ofertas o quieras promocionar tu negocio, tenemos algo para ti.</p>
+          <div class="tw-flex tw-flex-col sm:tw-flex-row tw-justify-center tw-items-center tw-gap-3 sm:tw-gap-4 tw-mt-6">
+            <app-button
+              variant="secondary"
+              size="lg"
+              [routerLink]="companyInfo.primary.link"
+              [fullWidth]="true"
+              class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
+              Únete a la comunidad
+            </app-button>
+            <app-button
+              variant="alert"
+              size="lg"
+              [routerLink]="companyInfo.secondary.link"
+              [fullWidth]="true"
+              class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
+              Para Negocios
+            </app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

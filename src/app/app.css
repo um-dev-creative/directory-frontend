@@ -4,6 +4,15 @@
   animation: fadeInApp 0.3s ease-out forwards;
 }
 
+/* Full page container for pages without layout (like 404) */
+.full-page-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeInApp 0.3s ease-out forwards;
+}
+
 @keyframes fadeInApp {
   to {
     opacity: 1;

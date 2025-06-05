@@ -1,18 +1,31 @@
 @if (!(isInitialized$ | async)) {
-  <app-loading-screen></app-loading-screen>
+  <app-loading-screen/><app-loading-screen/>
 }
 
 @if (isInitialized$ | async) {
-  <div class="app-container">
-    <app-header></app-header>
-    <div class="tw-flex tw-flex-col tw-h-screen tw-pt-[60px]">
+  @if (hideLayout$ | async) {
+    <!-- Layout sin header ni footer para páginas como 404 -->
+    <div class="full-page-container">
       <div
         [@routeAnimations]="getRouteAnimationData(outlet)"
-        class="tw-flex-1 tw-relative tw-w-full"
+        class="tw-w-full tw-h-screen"
       >
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
-      <app-footer></app-footer>
     </div>
-  </div>
+  } @else {
+    <!-- Layout normal con header y footer -->
+    <div class="app-container">
+      <app-header></app-header>
+      <div class="tw-flex tw-flex-col tw-h-screen tw-pt-[60px]">
+        <div
+          [@routeAnimations]="getRouteAnimationData(outlet)"
+          class="tw-flex-1 tw-relative tw-w-full"
+        >
+          <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+        <app-footer></app-footer>
+      </div>
+    </div>
+  }
 }

@@ -24,6 +24,7 @@ import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/search/search';
+import { Button } from '@app/components/ui';
 
 /**
  * Header component
@@ -36,7 +37,8 @@ import {Search} from '@app/search/search';
     ReactiveFormsModule,
     FormsModule,
     TranslateModule,
-    Search
+    Search,
+    Button
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
