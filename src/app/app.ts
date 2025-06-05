@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {Footer} from '@app/footer/footer';
+import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
+import {Footer} from '@app/layout/footer/footer';
 import {Header} from '@app/header/header';
 import {animate, query, style, transition, trigger} from '@angular/animations';
 import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
@@ -9,6 +9,7 @@ import {Store} from '@ngrx/store';
 import {SessionState} from '@app/core/store/session/session.state';
 import {Observable} from 'rxjs';
 import {LoadingScreen} from '@app/shared/components/loading-screen/loading-screen';
+import {filter, map} from 'rxjs/operators';
 
 export const routeTransitionAnimations = trigger('routeAnimations', [
   transition('* <=> *', [
@@ -35,9 +36,25 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
 })
 export class App implements AfterViewInit, OnInit {
   isInitialized$: Observable<boolean>;
+  hideLayout$: Observable<boolean>;
 
-  constructor(private readonly store: Store<{ session: SessionState }>) {
+  constructor(
+    private readonly store: Store<{ session: SessionState }>,
+    private readonly router: Router
+  ) {
     this.isInitialized$ = this.store.select(state => state.session?.isInitialized ?? false);
+
+    // Observable para detectar si la ruta actual debe ocultar el layout
+    this.hideLayout$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => {
+        let route = this.router.routerState.root;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route.snapshot.data['hideLayout'] || false;
+      })
+    );
   }
 
   ngOnInit() {

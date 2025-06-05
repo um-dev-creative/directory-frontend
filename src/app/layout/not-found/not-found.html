@@ -1,1 +1,77 @@
-<p>not-found works!</p>
+<div class="not-found-container">
+  <!-- Logo Section -->
+  <div class="not-found-hero">
+    <div class="logo-container">
+      <img
+        src="/assets/images/latin_hub_logo_v1.svg"
+        alt="Latin Hub Logo"
+        class="brand-logo"
+      />
+      <!-- div class="error-code">404</div-->
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="not-found-content">
+    <h1 class="not-found-title">
+      ¡Página no encontrada!
+    </h1>
+
+    <p class="not-found-description">
+      Lo sentimos, la página que estás buscando no existe o ha sido movida.
+      No te preocupes, te ayudamos a encontrar lo que necesitas.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="not-found-actions">
+      <app-button
+        variant="primary"
+        size="lg"
+        (buttonClick)="goHome()"
+        class="action-button">
+        <svg class="tw-w-5 tw-h-5 tw-mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        Ir al inicio
+      </app-button>
+
+      <app-button
+        variant="outline"
+        size="lg"
+        (buttonClick)="goBack()"
+        class="action-button">
+        <svg class="tw-w-5 tw-h-5 tw-mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Volver atrás
+      </app-button>
+    </div>
+
+    <!-- Helpful Links -->
+    <div class="helpful-links">
+      <h3 class="links-title">¿Necesitas ayuda?</h3>
+      <div class="links-grid">
+        <a routerLink="/" class="help-link">
+          <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span>Página principal</span>
+        </a>
+
+        <a routerLink="/contact" class="help-link">
+          <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          <span>Contacto</span>
+        </a>
+
+        <a href="mailto:support@example.com" class="help-link">
+          <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <span>Soporte</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,3 +15,34 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Variables for Tailwind BorderRadius */
+:root {
+  --radius: 0.75rem; /* 12px - valor base para bordes redondeados */
+
+  /* Variables adicionales para el sistema de colores (opcional) */
+  --background: 60 20% 99%; /* Very light warm beige */
+  --foreground: 160 25% 15%; /* Dark emerald for text */
+  --card: 0 0% 100%; /* Pure white */
+  --card-foreground: 160 25% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 160 25% 15%;
+  --primary: 160 50% 35%; /* Emerald green */
+  --primary-foreground: 0 0% 98%;
+  --secondary: 160 30% 97%; /* Very light emerald tint */
+  --secondary-foreground: 160 25% 15%;
+  --muted: 160 20% 96%;
+  --muted-foreground: 160 10% 45%;
+  --accent: 9 100% 69%; /* Coral */
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 160 15% 92%;
+  --input: 160 15% 94%;
+  --ring: 160 50% 35%;
+  --chart-1: 160 50% 35%;
+  --chart-2: 9 100% 69%;
+  --chart-3: 200 100% 85%;
+  --chart-4: 60 15% 85%;
+  --chart-5: 160 30% 60%;
+}
+

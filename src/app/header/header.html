@@ -56,55 +56,26 @@
         </div>
       } @else if (validateHeader(HeaderType.GENERAL_HEADER)) {
         <!-- Botón de inicio de sesión -->
-        <button class="
-        tw-font-bold
-        tw-h-10
-        tw-text-sm
-        md:tw-inline-block
-        tw-shadow-lg
-        tw-shadow-indigo-500/40
-        tw-hidden
-        tw-bg-blue-500
-        tw-text-white
-        tw-rounded-full
-        tw-px-4
-        tw-py-2
-        tw-whitespace-nowrap
-        tw-min-w-[100px]
-        hover:tw-bg-blue-600"
-                [routerLink]="['/auth']"
-                [queryParams]="{ ref: 'header' }"
-                [queryParams]="{ ref: 'menu', isRegistering: false }"
+        <app-button
+          variant="primary"
+          size="md"
+          class="md:tw-inline-block tw-hidden"
+          [routerLink]="['/auth']"
+          [queryParams]="{ ref: 'header', isRegistering: false }"
         >
           {{ 'menu_header.login_button.title' | translate }}
-        </button>
-        <!--class="custom-md:tw-inline-block tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 hover:tw-from-pink-500 hover:tw-to-orange-500"-->
-          <!-- Botón de unirse -->
-        <button class="
-        tw-font-bold
-        tw-h-10
-        tw-text-sm
-        md:tw-inline-block
-        tw-shadow-lg
-        tw-shadow-indigo-500/40
-        tw-hidden
-        tw-bg-red-500
-        tw-text-white
-        tw-rounded-full
-        tw-px-4
-        tw-py-2
-        tw-whitespace-nowrap
-        tw-min-w-[100px]
-        tw-transition
-        tw-duration-300
-        tw-ease-in-out
-        hover:tw-bg-red-600
-        hover:tw-scale-105"
+        </app-button>
+
+        <!-- Botón de unirse -->
+        <app-button
+          variant="secondary"
+          size="md"
+          class="md:tw-inline-block tw-hidden"
           [routerLink]="['/auth']"
           [queryParams]="{ ref: 'header', isRegistering: true }"
         >
           {{ 'menu_header.join_now_button.title' | translate }}
-        </button>
+        </app-button>
         <div class="tw-relative">
           <button
             class="tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-rounded-full tw-p-2 hover:tw-bg-gray-200 focus:tw-ring-2 focus:tw-ring-gray-300 focus:tw-outline-none tw-transition-colors"
