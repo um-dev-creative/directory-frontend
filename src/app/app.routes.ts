@@ -4,7 +4,7 @@ import {Auth} from '@app/features/auth/auth';
 import {Partner} from '@app/features/partner';
 import {Deals} from '@app/features/deals';
 import {NotFound} from '@app/layout/not-found';
-import {VerificationCode} from '@app/verification-code/verification-code';
+import {VerifyCode} from '@app/verify-code/verify-code';
 import {authGuard} from './core/guards/auth.guard';
 import {CoreDemoComponent} from './core-demo.component';
 import {BrandShowcase} from './components/brand-showcase';
@@ -27,7 +27,7 @@ export const routes: Routes = [
   // Protected routes (require authentication)
   {
     path: 'veracode',
-    component: VerificationCode,
+    component: VerifyCode,
     canActivate: [authGuard]
   },
 

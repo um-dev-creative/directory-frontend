@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserRegisterClient } from './user-register.client';
+import { VerifyCodeClient } from './verify-code-client.service';
 
 describe('UserRegisterService', () => {
-  let service: UserRegisterClient;
+  let service: VerifyCodeClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UserRegisterClient);
+    service = TestBed.inject(VerifyCodeClient);
   });
 
   it('should be created', () => {

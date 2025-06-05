@@ -43,7 +43,7 @@ export class AuthService extends ServiceTemplate {
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
-  private readonly CONTENT_PATH: string = DFC.RelativePath.AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL +
+  private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
 
   constructor(

@@ -522,6 +522,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
               fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
               sessionTokenBkd: response.sessionTokenBkd,
               sessionToken: response.body.token,
+              authorization: response.authorization,
               features: []
             };
             if (decodedToken?.uid) {

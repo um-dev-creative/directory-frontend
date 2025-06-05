@@ -15,23 +15,35 @@
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/auth/drb/api/v1/auth"
+        "startWith": "/drb/api/v1/auth/access-token"
       },
       "urlRewrite": {
-        "from": "/auth/drb/api/v1/auth",
-        "to": "/directory-backend/api/v1/auth"
+        "from": "/drb/api/v1/auth/access-token",
+        "to": "/directory-backend/api/v1/auth/token"
       }
     }
   ],
-  "directoryBackendRegisterProxyConfig": [
+  "directoryBackendCreateUserProxyConfig": [
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/auth/drb/api/v1/user-register"
+        "startWith": "/drb/api/v1/auth/create-user"
       },
       "urlRewrite": {
-        "from": "/auth/drb/api/v1/user-register",
+        "from": "/drb/api/v1/auth/create-user",
         "to": "/directory-backend/api/v1/users"
+      }
+    }
+  ],
+  "directoryBackendVerifyCodeProxyConfig": [
+    {
+      "applicationName": "directory-backend",
+      "matchOn": {
+        "startWith": "/drb/api/v1/verify-code"
+      },
+      "urlRewrite": {
+        "from": "/drb/api/v1/verify-code",
+        "to": "/directory-backend/api/v1/user-register"
       }
     }
   ],

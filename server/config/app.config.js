@@ -4,7 +4,8 @@
 
 let directoryProxyConfig = {};
 let directoryAuthProxyConfig = {};
-let directoryRegisterProxyConfig = {};
+let directoryCreateUserProxyConfig = {};
+let directoryVerifyCodeProxyConfig = {};
 const fs = require('fs');
 const {format} = require('logform');
 const winston = require('winston');
@@ -104,10 +105,12 @@ module.exports.createDirectoryProxyConfig = function () {
     const config = JSON.parse(configJson);
     directoryProxyConfig = config['directoryBackendProxyConfig'];
     directoryAuthProxyConfig = config['directoryBackendAuthProxyConfig'];
-    directoryRegisterProxyConfig = config['directoryBackendRegisterProxyConfig'];
+    directoryVerifyCodeProxyConfig = config['directoryBackendVerifyCodeProxyConfig'];
+    directoryCreateUserProxyConfig = config['directoryBackendCreateUserProxyConfig'];
     logger.info("[DS] - Proxy Config [Directory]: " + JSON.stringify(directoryProxyConfig));
     logger.info("[DS] - Proxy Config [Directory Auth]: " + JSON.stringify(directoryAuthProxyConfig));
-    logger.info("[DS] - Proxy Config [Directory Register]: " + JSON.stringify(directoryRegisterProxyConfig));
+    logger.info("[DS] - Proxy Config [Directory Register]: " + JSON.stringify(directoryVerifyCodeProxyConfig));
+    logger.info("[DS] - Proxy Config [Directory Create User]: " + JSON.stringify(directoryCreateUserProxyConfig));
 };
 
 /**
@@ -128,8 +131,17 @@ module.exports.getDirectoryAuthProxyConfig = function () {
   return directoryAuthProxyConfig;
 };
 
-module.exports.getDirectoryRegisterProxyConfig = function () {
-  return directoryRegisterProxyConfig;
+/**
+ * Retrieves the directory proxy configuration.
+ *
+ * @returns {Object} - The directory proxy configuration.
+ */
+module.exports.getDirectoryCreateUserProxyConfig = function () {
+  return directoryCreateUserProxyConfig;
+};
+
+module.exports.getDirectoryVerifyCodeProxyConfig = function () {
+  return directoryVerifyCodeProxyConfig;
 }
 
 let printVaultValues = function (vaultValues) {

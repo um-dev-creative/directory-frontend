@@ -4,6 +4,7 @@ import {HttpHeaders} from '@angular/common/http';
  * Constant for the session token header key used in backend communication.
  */
 export const SESSION_TOKEN_BACKEND = 'session-token-bkd';
+export const AUTHORIZATION_TOKEN_KEY = 'authorization';
 
 
 /**
@@ -14,12 +15,12 @@ export class DirectoryFrontendConst {
    * Relative paths used for backend service URLs.
    */
   public static readonly RelativePath = {
-    DIRECTORY_BACKEND_SERVICE_BASE_URL: '/drb/api/v1',
-    AUTH_DIRECTORY_BACKEND_SERVICE_BASE_URL: '/auth/drb/api/v1',
-    BACKBONE_SERVICE_BASE_URL: 'bkd/api/v1',
+    DIRECTORY_BACKEND_BASE_URL: '/drb/api/v1',
+    BACKBONE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
-    USER_REGISTER_PATH: '/user-register',
+    VERIFY_CODE_PATH: '/verify-code',
+    USER_CREATE_PATH: '/create-user',
     STAGE_PATH: '/stage',
     STAGE_UI_PATH: 'stage'
   };
@@ -93,12 +94,13 @@ export class DirectoryFrontendConst {
      * @param {string} tokenBkd - The session token bkd.
      * @returns {Object} The HTTP headers object with the session token.
      */
-    STANDARD_TOKEN_DIR: function (token: string, tokenBkd: string): object {
+    STANDARD_TOKEN_DIR: function (token: string, tokenBkd: string, authorization: string): object {
       return {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'session-token': token,
           'session-token-bkd': tokenBkd,
+          'Authorization': authorization,
           'Access-Control-Allow-Origin': '*'
         })
       };
