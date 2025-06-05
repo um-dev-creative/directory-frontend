@@ -17,9 +17,10 @@ export const routes: Routes = [
   { path: 'brand-showcase-legacy', component: BrandShowcaseLegacy },
   { path: 'stage', component: Stage },
   { path: 'partner', component: Partner },
+  { path: 'about', loadComponent: () => import('./features/about').then(m => m.AboutComponent) },
   { path: 'contact', loadComponent: () => import('./features/contact').then(m => m.Contact) },
   { path: 'auth', component: Auth },
-  { path: 'not-found', component: NotFound },
+  { path: 'not-found', component: NotFound, data: { hideLayout: true } },
   { path: 'deals', component: Deals },
 
   // Protected routes (require authentication)
@@ -32,7 +33,7 @@ export const routes: Routes = [
   // Protected profile route (lazy loaded)
   {
   path: 'profile',
-  loadComponent: () => import('./features/profile/profile').then(m => m.Profile),
+  loadComponent: () => import('./features/profile').then(m => m.Profile),
   canActivate: [authGuard]
 },
 

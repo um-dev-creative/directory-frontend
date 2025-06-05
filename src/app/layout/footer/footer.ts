@@ -10,8 +10,8 @@ import {CommonModule} from "@angular/common";
 })
 export class Footer {
   public autor: any = {
-    nombre: 'Omairys',
-    apellido: 'Mata',
+    nombre: 'Luis', 
+    apellido: 'Mata', 
     company: 'UM Dev Creative',
     year: new Date().getFullYear()
   };
