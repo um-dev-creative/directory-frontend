@@ -67,7 +67,19 @@ export class ErrorInterceptor implements HttpInterceptor {
                              req.url.includes('/login') ||
                              req.url.includes('/auth/drb/api/v1/auth');
         if (error.status !== 401 || !isAuthRequest) {
-          this.notificationService.error(errorMessage);
+          // this.notificationService.error(errorMessage);
+          const sanitizedMessage = (errorMessage || '')
+          .substring(0, 100) // Limit to 100 characters
+          .toLowerCase()
+          .replace(/[^\w\s]/gi, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+const encodedMessage = encodeURIComponent(sanitizedMessage);
+          this.notificationService.errorWithExternalLink(
+            errorMessage,
+            `https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=${encodedMessage}`,
+            'Reportar un problema');
         }
 
         return throwError(() => error);

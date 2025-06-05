@@ -7,6 +7,13 @@ export interface NotificationConfig {
   type?: 'success' | 'error' | 'warning' | 'info';
   action?: string;
   closable?: boolean;
+  reportError?: () => void;
+  errorContext?: string;
+  externalLink?: {
+    url: string;
+    text: string;
+    openInNewTab?: boolean;
+  };
 }
 
 @Injectable({
@@ -38,6 +45,27 @@ export class NotificationService {
       ...config,
       type: 'error',
       duration: 7000
+    });
+  }
+
+  errorWithReport(message: string, errorContext?: string, onReport?: () => void): void {
+    this.show(message, {
+      type: 'error',
+      duration: 10000, // Más tiempo para que el usuario pueda ver y usar el link
+      reportError: onReport,
+      errorContext: errorContext
+    });
+  }
+
+  errorWithExternalLink(message: string, linkUrl: string, linkText: string, openInNewTab: boolean = true): void {
+    this.show(message, {
+      type: 'error',
+      duration: 12000, // Más tiempo para que el usuario pueda leer y usar el enlace
+      externalLink: {
+        url: linkUrl,
+        text: linkText,
+        openInNewTab: openInNewTab
+      }
     });
   }
 

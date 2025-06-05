@@ -128,6 +128,8 @@ export interface ShowcaseSection {
             *ngIf="activeSection === 'notifications'"
             (showSuccess)="onNotificationSuccess()"
             (showError)="onNotificationError()"
+            (showErrorWithReport)="onNotificationErrorWithReport()"
+            (showErrorWithExternalLink)="onNotificationErrorWithExternalLink()"
             (showInfo)="onNotificationInfo()"
             (showWarning)="onNotificationWarning()"
             (showWithAction)="onNotificationWithAction()"
@@ -292,6 +294,33 @@ export class BrandShowcaseComponent {
     this.notificationService.error('Error de ejemplo para demostración', {
       duration: 6000
     });
+  }
+
+  onNotificationErrorWithReport() {
+    this.notificationService.errorWithReport(
+      'Ha ocurrido un error inesperado al procesar los datos.',
+      'Error en showcase - sección de notificaciones',
+      () => {
+        // Simular reporte de error
+        this.notificationService.info('¡Reporte de error enviado exitosamente! Nuestro equipo revisará el problema.', {
+          duration: 5000
+        });
+        console.log('Error reportado:', {
+          timestamp: new Date().toISOString(),
+          context: 'Error en showcase - sección de notificaciones',
+          userAgent: navigator.userAgent,
+          url: window.location.href
+        });
+      }
+    );
+  }
+
+  onNotificationErrorWithExternalLink() {
+    this.notificationService.errorWithExternalLink(
+      'Error de conexión con el servidor. No se pudieron cargar los datos.',
+      'https://docs.example.com/troubleshooting/connection-errors',
+      'Ver guía de solución de problemas'
+    );
   }
 
   onNotificationInfo() {
