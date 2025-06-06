@@ -25,22 +25,23 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'success' | 'warning
       <ng-content></ng-content>
 
       <!-- Tooltip -->
-      <div
-        *ngIf="isVisible"
-        [class]="tooltipClasses"
-        role="tooltip"
-        [attr.id]="tooltipId"
-        #tooltipElement
-      >
-        <!-- Tooltip Content -->
-        <div [class]="contentClasses">
-          {{ content }}
-          <ng-content select="[slot=tooltip-content]"></ng-content>
-        </div>
+      @if (isVisible) {
+        <div
+          [class]="tooltipClasses"
+          role="tooltip"
+          [attr.id]="tooltipId"
+          #tooltipElement
+        >
+          <!-- Tooltip Content -->
+          <div [class]="contentClasses">
+            {{ content }}
+            <ng-content select="[slot=tooltip-content]"></ng-content>
+          </div>
 
-        <!-- Arrow -->
-        <div [class]="arrowClasses"></div>
-      </div>
+          <!-- Arrow -->
+          <div [class]="arrowClasses"></div>
+        </div>
+      }
     </div>
   `,
   styles: [`

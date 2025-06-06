@@ -165,7 +165,7 @@ import { Button } from '@app/components/ui';
         <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Notificaciones Avanzadas</h3>
         <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
           <app-button variant="primary" (buttonClick)="onShowWithAction()">
-            Con Botón de Acción Legacy
+            Con Botón de Acción
           </app-button>
           <app-button variant="secondary" (buttonClick)="onShowPersistent()">
             Persistente

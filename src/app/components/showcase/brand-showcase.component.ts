@@ -16,7 +16,8 @@ import {
   NotificationsSectionComponent,
   LoadingSectionComponent,
   AlertsSectionComponent,
-  TooltipsSectionComponent
+  TooltipsSectionComponent,
+  AvatarsSectionComponent
 } from './sections';
 import { IconsSectionComponent } from './sections/icons-section.component';
 
@@ -42,7 +43,8 @@ export interface ShowcaseSection {
     LoadingSectionComponent,
     IconsSectionComponent,
     AlertsSectionComponent,
-    TooltipsSectionComponent
+    TooltipsSectionComponent,
+    AvatarsSectionComponent
   ],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
@@ -61,110 +63,133 @@ export interface ShowcaseSection {
         <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6 tw-mb-8">
           <h2 class="tw-text-xl tw-font-bold tw-text-emerald-green-700 tw-mb-4">Navegación</h2>
           <div class="tw-flex tw-flex-wrap tw-gap-3">
-            <button
-              *ngFor="let section of sections"
-              (click)="activeSection = section.id"
-              [class]="getSectionButtonClass(section.id)"
-              class="tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200"
-            >
-              {{ section.name }}
-            </button>
+            @for (section of sections; track section.id) {
+              <button
+                (click)="activeSection = section.id"
+                [class]="getSectionButtonClass(section.id)"
+                class="tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200"
+              >
+                {{ section.name }}
+              </button>
+            }
           </div>
         </div>
 
         <!-- Section Content -->
         <div class="tw-transition-all tw-duration-300">
           <!-- Colors Section -->
-          <app-colors-section *ngIf="activeSection === 'colors'"></app-colors-section>
+          @if (activeSection === 'colors') {
+            <app-colors-section></app-colors-section>
+          }
 
           <!-- Buttons Section -->
-          <app-buttons-section
-            *ngIf="activeSection === 'buttons'"
-            [isBasicLoading$]="isBasicLoading$"
-            (showSuccessNotification)="showSuccessNotification()"
-            (showBasicLoading)="showBasicLoading()"
-            (showInfoNotification)="showInfoNotification()"
-          ></app-buttons-section>
+          @if (activeSection === 'buttons') {
+            <app-buttons-section
+              [isBasicLoading$]="isBasicLoading$"
+              (showSuccessNotification)="showSuccessNotification()"
+              (showBasicLoading)="showBasicLoading()"
+              (showInfoNotification)="showInfoNotification()"
+            ></app-buttons-section>
+          }
 
           <!-- Badges Section -->
-          <app-badges-section *ngIf="activeSection === 'badges'"></app-badges-section>
+          @if (activeSection === 'badges') {
+            <app-badges-section></app-badges-section>
+          }
+
+          <!-- Avatars Section -->
+          @if (activeSection === 'avatars') {
+            <app-avatars-section></app-avatars-section>
+          }
 
           <!-- Inputs Section -->
-          <app-inputs-section *ngIf="activeSection === 'inputs'"></app-inputs-section>
+          @if (activeSection === 'inputs') {
+            <app-inputs-section></app-inputs-section>
+          }
 
           <!-- Cards Section -->
-          <app-cards-section
-            *ngIf="activeSection === 'cards'"
-            [isBasicLoading$]="isBasicLoading$"
-            (successCardAction)="onSuccessCardAction()"
-            (errorCardAction)="onErrorCardAction()"
-            (infoCardAction)="onInfoCardAction()"
-            (formSubmit)="onFormSubmit()"
-            (successNotification)="onCardSuccessNotification()"
-            (infoNotification)="onCardInfoNotification()"
-            (warningNotification)="onCardWarningNotification()"
-            (basicLoading)="onCardBasicLoading()"
-            (cardFormSubmit)="onCardFormSubmit($event)"
-          ></app-cards-section>
+          @if (activeSection === 'cards') {
+            <app-cards-section
+              [isBasicLoading$]="isBasicLoading$"
+              (successCardAction)="onSuccessCardAction()"
+              (errorCardAction)="onErrorCardAction()"
+              (infoCardAction)="onInfoCardAction()"
+              (formSubmit)="onFormSubmit()"
+              (successNotification)="onCardSuccessNotification()"
+              (infoNotification)="onCardInfoNotification()"
+              (warningNotification)="onCardWarningNotification()"
+              (basicLoading)="onCardBasicLoading()"
+              (cardFormSubmit)="onCardFormSubmit($event)"
+            ></app-cards-section>
+          }
 
           <!-- Modals Section -->
-          <app-modals-section *ngIf="activeSection === 'modals'"></app-modals-section>
+          @if (activeSection === 'modals') {
+            <app-modals-section></app-modals-section>
+          }
 
           <!-- Skeletons Section -->
-          <app-skeletons-section *ngIf="activeSection === 'skeletons'"></app-skeletons-section>
+          @if (activeSection === 'skeletons') {
+            <app-skeletons-section></app-skeletons-section>
+          }
 
           <!-- Icons Section -->
-          <app-icons-section
-            *ngIf="activeSection === 'icons'"
-            (iconClick)="onIconClick($event)"
-          ></app-icons-section>
+          @if (activeSection === 'icons') {
+            <app-icons-section
+              (iconClick)="onIconClick($event)"
+            ></app-icons-section>
+          }
 
           <!-- Alerts Section -->
-          <app-alerts-section
-            *ngIf="activeSection === 'alerts'"
-            (showInfoAlert)="onAlertInfo()"
-            (showSuccessAlert)="onAlertSuccess()"
-            (showWarningAlert)="onAlertWarning()"
-            (showErrorAlert)="onAlertError()"
-          ></app-alerts-section>
+          @if (activeSection === 'alerts') {
+            <app-alerts-section
+              (showInfoAlert)="onAlertInfo()"
+              (showSuccessAlert)="onAlertSuccess()"
+              (showWarningAlert)="onAlertWarning()"
+              (showErrorAlert)="onAlertError()"
+            ></app-alerts-section>
+          }
 
           <!-- Tooltips Section -->
-          <app-tooltips-section
-            *ngIf="activeSection === 'tooltips'"
-            (showTooltipDemo)="onTooltipDemo()"
-            (showTooltipInfo)="onTooltipInfo()"
-            (showTooltipWarning)="onTooltipWarning()"
-          ></app-tooltips-section>
+          @if (activeSection === 'tooltips') {
+            <app-tooltips-section
+              (showTooltipDemo)="onTooltipDemo()"
+              (showTooltipInfo)="onTooltipInfo()"
+              (showTooltipWarning)="onTooltipWarning()"
+            ></app-tooltips-section>
+          }
 
           <!-- Loading Section -->
-          <app-loading-section
-            *ngIf="activeSection === 'loading'"
-            (showBasicLoading)="onLoadingBasic()"
-            (showActionLoading)="onLoadingAction()"
-            (showGlobalLoading)="onLoadingGlobal()"
-          ></app-loading-section>
+          @if (activeSection === 'loading') {
+            <app-loading-section
+              (showBasicLoading)="onLoadingBasic()"
+              (showActionLoading)="onLoadingAction()"
+              (showGlobalLoading)="onLoadingGlobal()"
+            ></app-loading-section>
+          }
 
           <!-- Notifications Section -->
-          <app-notifications-section
-            *ngIf="activeSection === 'notifications'"
-            (showSuccess)="onNotificationSuccess()"
-            (showError)="onNotificationError()"
-            (showErrorWithReport)="onNotificationErrorWithReport()"
-            (showErrorWithExternalLink)="onNotificationErrorWithExternalLink()"
-            (showInfo)="onNotificationInfo()"
-            (showWarning)="onNotificationWarning()"
-            (showWithAction)="onNotificationWithAction()"
-            (showPersistent)="onNotificationPersistent()"
-            (showCustomPosition)="onNotificationCustomPosition()"
-            (dismissAll)="onNotificationDismissAll()"
-            (successNotification)="onLegacySuccessNotification()"
-            (errorNotification)="onLegacyErrorNotification()"
-            (warningNotification)="onLegacyWarningNotification()"
-            (infoNotification)="onLegacyInfoNotification()"
-            (notificationWithAction)="onLegacyNotificationWithAction()"
-            (persistentNotification)="onLegacyPersistentNotification()"
-            (customPositionNotification)="onLegacyCustomPositionNotification()"
-          ></app-notifications-section>
+          @if (activeSection === 'notifications') {
+            <app-notifications-section
+              (showSuccess)="onNotificationSuccess()"
+              (showError)="onNotificationError()"
+              (showErrorWithReport)="onNotificationErrorWithReport()"
+              (showErrorWithExternalLink)="onNotificationErrorWithExternalLink()"
+              (showInfo)="onNotificationInfo()"
+              (showWarning)="onNotificationWarning()"
+              (showWithAction)="onNotificationWithAction()"
+              (showPersistent)="onNotificationPersistent()"
+              (showCustomPosition)="onNotificationCustomPosition()"
+              (dismissAll)="onNotificationDismissAll()"
+              (successNotification)="onLegacySuccessNotification()"
+              (errorNotification)="onLegacyErrorNotification()"
+              (warningNotification)="onLegacyWarningNotification()"
+              (infoNotification)="onLegacyInfoNotification()"
+              (notificationWithAction)="onLegacyNotificationWithAction()"
+              (persistentNotification)="onLegacyPersistentNotification()"
+              (customPositionNotification)="onLegacyCustomPositionNotification()"
+            ></app-notifications-section>
+          }
         </div>
       </div>
     </div>
@@ -178,6 +203,7 @@ export class BrandShowcaseComponent {
     { id: 'colors', name: 'Colores', description: 'Paleta de colores de marca' },
     { id: 'buttons', name: 'Botones', description: 'Componentes de botón reutilizables' },
     { id: 'badges', name: 'Badges', description: 'Diferentes estilos de badges' },
+    { id: 'avatars', name: 'Avatares', description: 'Componentes de avatar reutilizables' },
     { id: 'inputs', name: 'Inputs', description: 'Componentes de entrada de datos' },
     { id: 'cards', name: 'Cards', description: 'Componentes de tarjetas' },
     { id: 'modals', name: 'Modals', description: 'Diálogos y ventanas modales' },

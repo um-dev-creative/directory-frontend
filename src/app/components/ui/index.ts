@@ -7,3 +7,4 @@ export * from './modals/modal';
 export * from './skeletons/skeleton';
 export * from './alerts/alert';
 export * from './tooltips/tooltip';
+export * from './avatars/avatar';

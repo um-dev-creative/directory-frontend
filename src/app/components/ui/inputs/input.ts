@@ -4,7 +4,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type InputVariant = 'default' | 'success' | 'error' | 'info';
 export type InputSize = 'sm' | 'md' | 'lg';
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
+export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'time';
 
 @Component({
   selector: 'app-input',
@@ -20,24 +20,28 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
   template: `
     <div class="tw-relative tw-w-full">
       <!-- Label -->
-      <label
-        *ngIf="label"
-        [for]="inputId"
-        [class]="labelClasses"
-      >
-        {{ label }}
-        <span *ngIf="required" class="tw-text-coral-500 tw-ml-1">*</span>
-      </label>
+      @if (label) {
+        <label
+          [for]="inputId"
+          [class]="labelClasses"
+        >
+          {{ label }}
+          @if (required) {
+            <span class="tw-text-coral-500 tw-ml-1">*</span>
+          }
+        </label>
+      }
 
       <!-- Input Container -->
       <div class="tw-relative">
         <!-- Leading Icon -->
-        <div
-          *ngIf="leadingIcon"
-          class="tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
-        >
-          <ng-content select="[slot=leading-icon]"></ng-content>
-        </div>
+        @if (leadingIcon) {
+          <div
+            class="tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
+          >
+            <ng-content select="[slot=leading-icon]"></ng-content>
+          </div>
+        }
 
         <!-- Input Field -->
         <input
@@ -56,35 +60,38 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
         />
 
         <!-- Trailing Icon -->
-        <div
-          *ngIf="trailingIcon"
-          class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
-        >
-          <ng-content select="[slot=trailing-icon]"></ng-content>
-        </div>
+        @if (trailingIcon) {
+          <div
+            class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
+          >
+            <ng-content select="[slot=trailing-icon]"></ng-content>
+          </div>
+        }
 
         <!-- Clear Button -->
-        <button
-          *ngIf="clearable && value && !disabled && !readonly"
-          type="button"
-          class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400 hover:tw-text-gray-600 tw-transition-colors"
-          (click)="clearValue()"
-          [attr.aria-label]="'Clear ' + (label || 'input')"
-        >
-          <svg class="tw-w-4 tw-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+        @if (clearable && value && !disabled && !readonly) {
+          <button
+            type="button"
+            class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400 hover:tw-text-gray-600 tw-transition-colors"
+            (click)="clearValue()"
+            [attr.aria-label]="'Clear ' + (label || 'input')"
+          >
+            <svg class="tw-w-4 tw-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        }
       </div>
 
       <!-- Helper Text / Error Message -->
-      <div
-        *ngIf="helperText || errorMessage"
-        [id]="inputId + '-description'"
-        [class]="descriptionClasses"
-      >
-        {{ errorMessage || helperText }}
-      </div>
+      @if (helperText || errorMessage) {
+        <div
+          [id]="inputId + '-description'"
+          [class]="descriptionClasses"
+        >
+          {{ errorMessage || helperText }}
+        </div>
+      }
     </div>
   `,
   styles: []
