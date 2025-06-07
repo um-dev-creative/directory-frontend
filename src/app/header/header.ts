@@ -16,7 +16,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import {DFC} from '@app/shared/constants/app.const';
@@ -43,7 +43,7 @@ import { Button } from '@app/components/ui';
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe]
 })
 export class Header implements OnInit, OnDestroy, AfterViewInit {
   headerType$: Observable<HeaderType>;

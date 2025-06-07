@@ -1,13 +1,13 @@
-import {JwtPipe} from './jwt.pipe';
+import {BackboneJwtPipe} from './backbone-jwt.pipe';
 
-describe('JwtPipe', () => {
-    let pipe: JwtPipe;
+describe('BackboneJwtPipe', () => {
+    let pipe: BackboneJwtPipe;
 
     let mockLoggerService: any;
 
     beforeEach(() => {
         mockLoggerService = { log: jasmine.createSpy('log'), error: jasmine.createSpy('error') };
-        pipe = new JwtPipe(mockLoggerService);
+        pipe = new BackboneJwtPipe(mockLoggerService);
     });
 
     it('create an instance', () => {

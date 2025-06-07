@@ -3,7 +3,7 @@ import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {LoadingService} from '@app/core/services/loading.service';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {NotificationService} from '@app/core/services/notification.service';
 import {loadSession} from '@app/core/store/session/session.action';
 import {HeaderType} from '@shared/constants/header-type';
@@ -53,9 +53,9 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Jwt pipe
-   * @type {JwtPipe}
+   * @type {BackboneJwtPipe}
    */
-  protected readonly jwtPipe: JwtPipe = inject(JwtPipe);
+  protected readonly jwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
 
   /**
    * Session data

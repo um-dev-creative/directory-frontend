@@ -61,16 +61,16 @@ function checkAuthState(targetUrl: string): Observable<boolean> {
         hasAlias: !!(sessionData?.userAuth?.alias && sessionData.userAuth.alias !== '')
       });
 
-      if (!isAuthenticated) {
+      if (isAuthenticated) {
+        console.log(`[Guard] User authenticated, access granted for URL: ${targetUrl}`);
+        logger.debug(`User authenticated, access granted for URL: ${targetUrl}`);
+        return [true];
+      } else {
         console.log(`[Guard] User not authenticated, redirecting to /auth (URL: ${targetUrl})`);
         logger.warn(`User not authenticated, redirecting to /auth (URL: ${targetUrl})`);
         storage.setLocal('redirect_url', targetUrl);
         router.navigate(['/auth']);
         return [false];
-      } else {
-        console.log(`[Guard] User authenticated, access granted for URL: ${targetUrl}`);
-        logger.debug(`User authenticated, access granted for URL: ${targetUrl}`);
-        return [true];
       }
     })
   );
