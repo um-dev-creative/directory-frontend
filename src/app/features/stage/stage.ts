@@ -8,7 +8,7 @@ import {ProductList} from '@app/product-list/product-list';
 import {TrendCarousel} from '@app/trend-carousel/trend-carousel';
 import {PromoSection} from '@app/promo-section/promo-section';
 
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
@@ -28,7 +28,7 @@ interface OnAfterViewInit {
   templateUrl: './stage.html',
   styleUrl: './stage.css',
   animations: [],
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe]
 })
 export class Stage implements OnInit, OnAfterViewInit {
 

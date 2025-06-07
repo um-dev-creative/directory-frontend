@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
@@ -21,7 +21,7 @@ interface OnAfterViewInit {
   templateUrl: './deals.html',
   styleUrl: './deals.css',
   animations: [],
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe]
 })
 export class Deals implements OnInit, OnAfterViewInit {
 

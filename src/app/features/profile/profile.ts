@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Store} from '@ngrx/store';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
@@ -13,7 +13,7 @@ import {SessionData, SessionState} from '@app/core/store/session/session.state';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
   animations: [],
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe]
 })
 
 export class Profile implements OnInit {

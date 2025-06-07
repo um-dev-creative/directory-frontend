@@ -1,51 +1,45 @@
 // Angular Core
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  inject,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Spinner } from '@app/shared/components/spinner/spinner';
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import { LoadingService } from '@app/core/services/loading.service';
-import { AuthService } from '@app/core/services';
-import { NotificationService } from '@app/core/services/notification.service';
+import {AfterViewInit, ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit,} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Spinner} from '@app/shared/components/spinner/spinner';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {parsePhoneNumberFromString} from 'libphonenumber-js';
+import {LoadingService} from '@app/core/services/loading.service';
+import {AuthService} from '@app/core/services';
+import {NotificationService} from '@app/core/services/notification.service';
 // App Store
-import { loadSession } from '@app/core/store/session/session.action';
-import { SessionData, UserAuth } from '@app/core/store/session/session.state';
-import { SessionStoreService } from '@app/core/store/session/session-store.service';
+import {loadSession} from '@app/core/store/session/session.action';
+import {SessionData, UserAuth} from '@app/core/store/session/session.state';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
 // App Components & Services
-import { App } from '@app/app';
-import { AuthClient } from './auth.client';
-import { HeaderService } from '@app/header/header.service';
-import { UserClient } from '@app/user/user.client';
+import {App} from '@app/app';
+import {AuthClient} from './auth.client';
+import {HeaderService} from '@app/header/header.service';
+import {UserClient} from '@app/user/user.client';
 // Shared
-import { JwtPipe } from '@app/shared/pipes/jwt.pipe';
-import { DFC } from '@app/shared/constants/app.const';
-import { HeaderType } from '@shared/constants/header-type';
-import { INITIAL_LOGIN_DATA, LoginData } from '@shared/models/login-data.model';
-import { User } from '@shared/models/register-user.model';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
+import {DFC} from '@app/shared/constants/app.const';
+import {HeaderType} from '@shared/constants/header-type';
+import {INITIAL_LOGIN_DATA, LoginData} from '@shared/models/login-data.model';
+import {User} from '@shared/models/register-user.model';
 // Assets
-import { countries, Country, Month, months } from 'assets/data/common';
+import {countries, Country, Month, months} from 'assets/data/common';
 // Auth Services
-import { AuthValidationService } from './services/auth-validation.service';
-import { AuthFormService } from './services/auth-form.service';
-import { PlaceholderService } from './services/placeholder.service';
+import {AuthValidationService} from './services/auth-validation.service';
+import {AuthFormService} from './services/auth-form.service';
+import {PlaceholderService} from './services/placeholder.service';
 // Auth Models
-import { RegisterData } from './models/register-data.interface';
-import { DropdownState } from './models/dropdown-state.interface';
-import { AuthPlaceholders } from './models/auth-placeholders.interface';
+import {RegisterData} from './models/register-data.interface';
+import {DropdownState} from './models/dropdown-state.interface';
+import {AuthPlaceholders} from './models/auth-placeholders.interface';
 // Auth Constants
-import { INITIAL_PLACEHOLDERS, INITIAL_DROPDOWN_STATE, DEFAULT_COUNTRY_CODE } from './auth.constants';
+import {DEFAULT_COUNTRY_CODE, INITIAL_DROPDOWN_STATE, INITIAL_PLACEHOLDERS} from './auth.constants';
+import {VerifyCodeClient} from '@app/verify-code/verify-code-client.service';
+import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 
 /**
  * Component for handling user authentication.
@@ -55,13 +49,14 @@ import { INITIAL_PLACEHOLDERS, INITIAL_DROPDOWN_STATE, DEFAULT_COUNTRY_CODE } fr
   imports: [CommonModule, FormsModule, Spinner],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class Auth implements OnDestroy, OnInit, AfterViewInit {
   // Servicios inyectados
   private readonly authValidationService = inject(AuthValidationService);
   private readonly authFormService = inject(AuthFormService);
   private readonly placeholderService = inject(PlaceholderService);
+  private readonly verifyCodeClient = inject(VerifyCodeClient);
 
   /**
    * User client services
@@ -122,9 +117,15 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Jwt pipe
-   * @type {JwtPipe}
+   * @type {BackboneJwtPipe}
    */
-  protected readonly jwtPipe: JwtPipe = inject(JwtPipe);
+  protected readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
+
+  /**
+   * Jwt pipe
+   * @type {DirectoryBackendJwtPipe}
+   */
+  protected readonly directoryBackendJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
 
   /**
    * Session data
@@ -514,30 +515,34 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
       .subscribe({
         next: (response: any) => {
-          const decodedToken = this.jwtPipe.transform(response.sessionTokenBkd);
-          if (decodedToken) {
+          const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
+          const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(response.body.token);
+          if (decodedTokenBackbone && decodedTokenDirectory) {
             userAuth = {
-              alias: decodedToken.alias?decodedToken.alias:'',
-              email: decodedToken.email?decodedToken.email:'',
-              fullName: `${decodedToken.firstname} ${decodedToken.lastname}`.trim(),
+              alias: decodedTokenBackbone.alias??'',
+              email: decodedTokenBackbone.email??'',
+              fullName: `${decodedTokenBackbone.firstname} ${decodedTokenBackbone.lastname}`.trim(),
               sessionTokenBkd: response.sessionTokenBkd,
               sessionToken: response.body.token,
               authorization: response.authorization,
               features: []
             };
-            if (decodedToken?.uid) {
-              this.sessionData = {userAuth, token: decodedToken?.uid};
+            if (decodedTokenBackbone?.uid) {
+              this.sessionData = {userAuth, token: decodedTokenBackbone?.uid};
               this.sessionStoreService.saveSessionData(this.sessionData);
 
               // Verificar que el estado se guardó correctamente
               this.sessionStoreService.session$.subscribe(sessionData => {
                 console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
               });
-
               this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-              // this.router.navigate([DFC.RelativePath.STAGE_UI_PATH]);
               this.clearForm();
-              this.router.navigate(['/veracode']);
+
+              if(decodedTokenDirectory.vcCompleted === 'true') {
+                this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+              } else {
+                this.router.navigate(['/veracode']);
+              }
             }
           }
           this.loader.hide('auth');
@@ -565,6 +570,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.selectedMonth = null;
     this.loginData = INITIAL_LOGIN_DATA;
     console.debug('Form cleared');
+
   }
 
   /**

@@ -19,7 +19,7 @@
       },
       "urlRewrite": {
         "from": "/drb/api/v1/auth/access-token",
-        "to": "/directory-backend/api/v1/auth/token"
+        "to": "/directory-backend/api/v1/auth/session-token"
       }
     }
   ],
