@@ -4,7 +4,7 @@ import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
 import {Footer} from '@app/layout/footer/footer';
 import {Header} from '@app/header/header';
 import {animate, query, style, transition, trigger} from '@angular/animations';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Store} from '@ngrx/store';
 import {SessionState} from '@app/core/store/session/session.state';
 import {Observable} from 'rxjs';
@@ -32,7 +32,7 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
   templateUrl: './app.html',
   styleUrl: './app.css',
   animations: [routeTransitionAnimations],
-  providers: [JwtPipe]
+  providers: [BackboneJwtPipe]
 })
 export class App implements AfterViewInit, OnInit {
   isInitialized$: Observable<boolean>;

@@ -3,26 +3,28 @@ import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {LoadingService} from '@app/core/services/loading.service';
-import {JwtPipe} from '@app/shared/pipes/jwt.pipe';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {NotificationService} from '@app/core/services/notification.service';
 import {loadSession} from '@app/core/store/session/session.action';
 import {HeaderType} from '@shared/constants/header-type';
 import {HeaderService} from '@app/header/header.service';
-import {UserRegisterClient} from '@app/user-register/user-register.client';
+import {VerifyCodeClient} from '@app/verify-code/verify-code-client.service';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntil} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
+import {DFC} from '@shared/constants/app.const';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-verification-code',
+  selector: 'app-verify-code',
   imports: [
     ReactiveFormsModule
   ],
-  templateUrl: './verification-code.html',
-  styleUrl: './verification-code.css'
+  templateUrl: './verify-code.html',
+  styleUrl: './verify-code.css'
 })
-export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
+export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Subject for unsubscribing from observables
@@ -51,9 +53,9 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Jwt pipe
-   * @type {JwtPipe}
+   * @type {BackboneJwtPipe}
    */
-  protected readonly jwtPipe: JwtPipe = inject(JwtPipe);
+  protected readonly jwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
 
   /**
    * Session data
@@ -67,7 +69,7 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
    */
   private readonly headerService: HeaderService = inject(HeaderService);
 
-  private readonly userRegisterClient: UserRegisterClient = inject(UserRegisterClient);
+  private readonly userRegisterClient: VerifyCodeClient = inject(VerifyCodeClient);
 
   /**
    * Flag to indicate if an error was found
@@ -90,6 +92,12 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
   private readonly notificationService: NotificationService = inject(NotificationService);
 
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
+
+  /**
+   * Router services for navigation
+   * @param {Router}
+   */
+  private readonly router: Router = inject(Router);
 
 
   constructor() {
@@ -127,28 +135,34 @@ export class VerificationCode implements OnDestroy, OnInit, AfterViewInit {
   confirmVerificationCode(): void {
     let sessionToken = null;
     let sessionTokenBkd = null;
-    const userRegisterRequest = {
-      userId: '9c5758ec-cf62-4c50-a8d4-e41e493f2415',
-      verificationCode: this.getCodeFormat()
-    };
+    let authorization = null;
+    let uuid = null;
 
     if(this.sessionData){
       sessionToken = this.sessionData.userAuth?.sessionToken;
       sessionTokenBkd = this.sessionData.userAuth?.sessionTokenBkd;
+      authorization = this.sessionData.userAuth?.authorization;
+      uuid = this.jwtPipe.transform(sessionTokenBkd)?.uid || '';
 
     }
+    const userRegisterRequest = {
+      userId: uuid,
+      verificationCode: this.getCodeFormat()
+    };
+
     this.loader.show();
-    if (sessionToken && sessionTokenBkd) {
-      this.userRegisterClient.confirmCode(userRegisterRequest, sessionToken, sessionTokenBkd).pipe(takeUntil(this.subject$))
+    if (sessionToken && sessionTokenBkd && authorization) {
+      this.userRegisterClient.confirmCode(userRegisterRequest, sessionToken, sessionTokenBkd, authorization).pipe(takeUntil(this.subject$))
         .subscribe({
           next: (response) => {
-            if (response.status === 202) {
+            // if (response.status === 202) {
               this.notificationService.success('Success');
-            }
+              this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+            // }
             this.loader.hide();
           },
           error: (error) => {
-            this.setErrorFound('verification-code', error);
+            this.setErrorFound('verify-code', error);
             this.notificationService.error('Error');
             this.loader.hide();
           }

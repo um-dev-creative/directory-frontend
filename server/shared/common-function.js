@@ -3,7 +3,7 @@ const HttpsAgent = require('agentkeepalive').HttpsAgent;
 
 const {ACCEPT, CONTENT_TYPE_DEFAULT, NOT_FOUND_REQUEST_CODE, NOT_FOUND_REQUEST_TITLE, NOT_FOUND_REQUEST_DETAIL,
   NOT_FOUND_REQUEST_CODE_VALUE, AUTHORIZATION, FID_USER_ID, FID_LOGGER_TRACKING_ID, BEARER, SESSION_TOKEN_BKD,
-  SESSION_TOKEN_DIR, BEARER_TOKEN_REGEX
+  SESSION_TOKEN_DIR, BEARER_TOKEN_REGEX, CONTENT_TYPE
 } = require("../config/constants.util");
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const {createErrorResponse} = require("./error-util");
@@ -210,4 +210,26 @@ const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultA
   return headers;
 };
 
-module.exports = {decodeJwtToken, createRequestOption, isValidUUID, getRegex, getApiEndpoint, isValidBearerToken, getBasicHeader, getAuthBasicHeader};
+/**
+ * Constructs the standard headers for the proxied request.
+ * @param req - The request object.
+ * @param bearToken
+ * @param sessionToken - The session token for the directory services.
+ * @param defaultAccept - The default Accept header value.
+ * @returns {{}} - The constructed headers.
+ */
+const getStandardHeader = function (req, bearToken, sessionToken, defaultAccept) {
+  // getAuthBasicHeader: (req, bearerToken, backboneSession, defaultAccept)
+  return {
+    // [AUTHORIZATION]: BEARER + req.header(AUTHORIZATION) || "",
+    [AUTHORIZATION]: BEARER + bearToken,
+    [FID_LOGGER_TRACKING_ID]: uuidv4(),
+    [FID_USER_ID]: req.header(FID_USER_ID) || "anonymous",
+    [ACCEPT]: req.header(ACCEPT) || defaultAccept,
+    [CONTENT_TYPE]: CONTENT_TYPE_DEFAULT,
+    [SESSION_TOKEN_DIR]: sessionToken
+    // [SESSION_TOKEN_BKD]: req.header(SESSION_TOKEN_BKD) || ""
+  };
+};
+
+module.exports = {decodeJwtToken, createRequestOption, getRegex, getApiEndpoint, getBasicHeader, getAuthBasicHeader, getStandardHeader};
