@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient';
+export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient' | 'outlined-blue';
 export type CardSize = 'sm' | 'md' | 'lg' | 'xl';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
@@ -21,26 +21,34 @@ export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
       (keydown.space)="onKeyDown($event)"
     >
       <!-- Header Section -->
-      <div *ngIf="hasHeader" [class]="headerClasses">
-        <ng-content select="[slot=header]"></ng-content>
-      </div>
+      @if (hasHeader) {
+        <div [class]="headerClasses">
+          <ng-content select="[slot=header]"></ng-content>
+        </div>
+      }
 
       <!-- Media Section (for images, logos, etc.) -->
-      <div *ngIf="hasMedia" [class]="mediaClasses">
-        <ng-content select="[slot=media]"></ng-content>
-      </div>
+      @if (hasMedia) {
+        <div [class]="mediaClasses">
+          <ng-content select="[slot=media]"></ng-content>
+        </div>
+      }
 
       <!-- Content Section -->
       <div [class]="contentClasses">
         <!-- Title -->
-        <h3 *ngIf="title" [class]="titleClasses">
-          {{ title }}
-        </h3>
+        @if (title) {
+          <h3 [class]="titleClasses">
+            {{ title }}
+          </h3>
+        }
 
         <!-- Subtitle -->
-        <p *ngIf="subtitle" [class]="subtitleClasses">
-          {{ subtitle }}
-        </p>
+        @if (subtitle) {
+          <p [class]="subtitleClasses">
+            {{ subtitle }}
+          </p>
+        }
 
         <!-- Main Content -->
         <div [class]="bodyClasses">
@@ -49,20 +57,24 @@ export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
       </div>
 
       <!-- Footer Section -->
-      <div *ngIf="hasFooter" [class]="footerClasses">
-        <ng-content select="[slot=footer]"></ng-content>
-      </div>
+      @if (hasFooter) {
+        <div [class]="footerClasses">
+          <ng-content select="[slot=footer]"></ng-content>
+        </div>
+      }
 
       <!-- Loading Overlay -->
-      <div *ngIf="loading" [class]="loadingOverlayClasses">
-        <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
-          <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
-            <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
+      @if (loading) {
+        <div [class]="loadingOverlayClasses">
+          <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+            <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
+              <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
+          </div>
         </div>
-      </div>
+      }
     </div>
   `,
   styles: []
@@ -125,9 +137,9 @@ export class CardComponent {
       interactiveClasses.push(
         'tw-cursor-pointer',
         'focus:tw-outline-none',
-        'focus:tw-ring-2',
-        'focus:tw-ring-emerald-green-500',
-        'focus:tw-ring-offset-2'
+        // 'focus:tw-ring-2',
+        // 'focus:tw-ring-emerald-green-500',
+        // 'focus:tw-ring-offset-2'
       );
     }
 
@@ -166,7 +178,7 @@ export class CardComponent {
         ...(this.clickable ? [
           'hover:tw-shadow-xl',
           'hover:tw-shadow-gray-300/50',
-          'hover:tw--translate-y-1'
+          'hover:tw-translate-y-1'
         ] : [])
       ],
       outlined: [
@@ -174,7 +186,7 @@ export class CardComponent {
         'tw-border-gray-300',
         ...(this.clickable ? [
           'hover:tw-border-emerald-green-400',
-          'hover:tw-shadow-md'
+          'hover:tw-shadow-md',
         ] : [])
       ],
       interactive: [
@@ -185,7 +197,7 @@ export class CardComponent {
           'hover:tw-shadow-lg',
           'hover:tw-shadow-emerald-green-500/20',
           'hover:tw-border-emerald-green-300',
-          'hover:tw--translate-y-0.5',
+          'hover:tw-translate-y-0.5',
           'active:tw-translate-y-0',
           'active:tw-shadow-md'
         ] : [])
@@ -202,7 +214,20 @@ export class CardComponent {
         ...(this.clickable ? [
           'hover:tw-shadow-xl',
           'hover:tw-shadow-emerald-green-500/20',
-          'hover:tw--translate-y-1'
+          'hover:tw-translate-y-1'
+        ] : [])
+      ],
+      'outlined-blue': [
+        'tw-my-2',
+        'tw-border',
+        'tw-border-sky-blue-200',
+        // 'tw-border-sky-300',
+        // 'tw-shadow-lg',
+        'tw-bg-gradient-sky',
+        ...(this.clickable ? [
+          'hover:tw-border-sky-blue-400',
+          'hover:tw-bg-sky-blue-50/50',
+          'hover:tw-shadow-md'
         ] : [])
       ]
     };
@@ -247,7 +272,7 @@ export class CardComponent {
   get titleClasses(): string {
     const baseClasses = [
       'tw-text-lg',
-      'tw-font-semibold',
+      'tw-font-bold',
       'tw-text-gray-900',
       'tw-mb-1',
       'tw-leading-tight'
@@ -258,9 +283,10 @@ export class CardComponent {
 
   get subtitleClasses(): string {
     const baseClasses = [
-      'tw-text-sm',
+      'tw-text-md',
+      'tw-font-semibold',
       'tw-text-gray-600',
-      'tw-mb-3',
+      'tw-mb-2',
       'tw-leading-relaxed'
     ];
 

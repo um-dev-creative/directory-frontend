@@ -289,45 +289,48 @@ import { FormsModule } from '@angular/forms';
         <div class="tw-mb-12">
           <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Directory Interactivo</h2>
           <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
-            <app-card
-              *ngFor="let business of businesses"
-              variant="interactive"
-              [title]="business.name"
-              [subtitle]="business.category"
-              [clickable]="true"
-              [hasFooter]="true"
-              size="sm"
-              (cardClick)="selectBusiness(business)">
+            @for (business of businesses; track business.name) {
+              <app-card
+                variant="interactive"
+                [title]="business.name"
+                [subtitle]="business.category"
+                [clickable]="true"
+                [hasFooter]="true"
+                size="sm"
+                (cardClick)="selectBusiness(business)">
 
-              <p class="tw-text-sm tw-mb-2">{{ business.description }}</p>
-              <div class="tw-flex tw-flex-wrap tw-gap-1 tw-mb-3">
-                <app-badge
-                  *ngFor="let tag of business.tags"
-                  variant="secondary"
-                  size="xs">
-                  {{ tag }}
-                </app-badge>
-              </div>
+                <p class="tw-text-sm tw-mb-2">{{ business.description }}</p>
+                <div class="tw-flex tw-flex-wrap tw-gap-1 tw-mb-3">
+                  @for (tag of business.tags; track tag) {
+                    <app-badge
+                      variant="secondary"
+                      size="xs">
+                      {{ tag }}
+                    </app-badge>
+                  }
+                </div>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
-                <span class="tw-text-xs tw-text-gray-500">{{ business.location }}</span>
-                <app-badge
-                  [variant]="business.status === 'open' ? 'success' : 'error'"
-                  size="xs"
-                  [dot]="true">
-                  {{ business.status === 'open' ? 'Abierto' : 'Cerrado' }}
-                </app-badge>
-              </div>
-            </app-card>
+                <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
+                  <span class="tw-text-xs tw-text-gray-500">{{ business.location }}</span>
+                  <app-badge
+                    [variant]="business.status === 'open' ? 'success' : 'error'"
+                    size="xs"
+                    [dot]="true">
+                    {{ business.status === 'open' ? 'Abierto' : 'Cerrado' }}
+                  </app-badge>
+                </div>
+              </app-card>
+            }
           </div>
         </div>
 
         <!-- Feedback -->
-        <div *ngIf="selectedBusiness" class="tw-fixed tw-bottom-4 tw-right-4 tw-max-w-sm">
-          <app-card
-            variant="gradient"
-            [hasHeader]="true"
-            [hasFooter]="true">
+        @if (selectedBusiness) {
+          <div class="tw-fixed tw-bottom-4 tw-right-4 tw-max-w-sm">
+            <app-card
+              variant="gradient"
+              [hasHeader]="true"
+              [hasFooter]="true">
 
             <div slot="header" class="tw-flex tw-justify-between tw-items-center tw-w-full">
               <span class="tw-font-semibold tw-text-emerald-green-700">Seleccionado</span>
@@ -346,7 +349,8 @@ import { FormsModule } from '@angular/forms';
               <app-button variant="outline" size="sm">Ver Perfil</app-button>
             </div>
           </app-card>
-        </div>
+          </div>
+        }
       </div>
     </div>
   `,

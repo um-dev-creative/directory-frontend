@@ -9,13 +9,15 @@ import { SkeletonComponent } from '../../ui';
   imports: [CommonModule, SkeletonComponent],
   template: `
     <!-- Full Screen Loading Overlay -->
-    <div *ngIf="isFullScreenLoading" class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center tw-z-50">
-      <div class="tw-bg-white tw-rounded-lg tw-p-8 tw-text-center">
-        <div class="tw-animate-spin tw-mx-auto tw-h-12 tw-w-12 tw-border-4 tw-border-emerald-green-200 tw-border-t-emerald-green-500 tw-rounded-full tw-mb-4"></div>
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-2">Cargando Directorio...</h3>
-        <p class="tw-text-beige-600">Por favor espere mientras se cargan los datos</p>
+    @if (isFullScreenLoading) {
+      <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center tw-z-50">
+        <div class="tw-bg-white tw-rounded-lg tw-p-8 tw-text-center">
+          <div class="tw-animate-spin tw-mx-auto tw-h-12 tw-w-12 tw-border-4 tw-border-emerald-green-200 tw-border-t-emerald-green-500 tw-rounded-full tw-mb-4"></div>
+          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-2">Cargando Directorio...</h3>
+          <p class="tw-text-beige-600">Por favor espere mientras se cargan los datos</p>
+        </div>
       </div>
-    </div>
+    }
 
     <!-- Loading -->
     <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
@@ -135,100 +137,106 @@ import { SkeletonComponent } from '../../ui';
       </div>
 
       <!-- Progress Loading Demo -->
-      <div *ngIf="isProgressLoading" class="tw-mt-6 tw-bg-sky-blue-50 tw-rounded-lg tw-p-6">
-        <h4 class="tw-font-semibold tw-text-sky-blue-800 tw-mb-4">Cargando datos del directorio...</h4>
-        <div class="tw-w-full tw-bg-sky-blue-200 tw-rounded-full tw-h-3 tw-mb-2">
-          <div
-            class="tw-bg-sky-blue-600 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300"
-            [style.width.%]="progressValue"
-          ></div>
+      @if (isProgressLoading) {
+        <div class="tw-mt-6 tw-bg-sky-blue-50 tw-rounded-lg tw-p-6">
+          <h4 class="tw-font-semibold tw-text-sky-blue-800 tw-mb-4">Cargando datos del directorio...</h4>
+          <div class="tw-w-full tw-bg-sky-blue-200 tw-rounded-full tw-h-3 tw-mb-2">
+            <div
+              class="tw-bg-sky-blue-600 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300"
+              [style.width.%]="progressValue"
+            ></div>
+          </div>
+          <p class="tw-text-sm tw-text-sky-blue-700">{{ progressValue }}% - {{ progressMessage }}</p>
         </div>
-        <p class="tw-text-sm tw-text-sky-blue-700">{{ progressValue }}% - {{ progressMessage }}</p>
-      </div>
+      }
 
       <!-- Skeleton Loading Demo -->
-      <div *ngIf="isSkeletonLoading" class="tw-mt-6 tw-bg-white tw-rounded-lg tw-p-6">
-        <h4 class="tw-font-semibold tw-text-emerald-green-800 tw-mb-4">Vista previa de empresas:</h4>
+      @if (isSkeletonLoading) {
+        <div class="tw-mt-6 tw-bg-white tw-rounded-lg tw-p-6">
+          <h4 class="tw-font-semibold tw-text-emerald-green-800 tw-mb-4">Vista previa de empresas:</h4>
 
-        <!-- Business Directory Skeleton -->
-        <div class="tw-space-y-6">
-          <!-- Featured Business Card -->
-          <div class="tw-mb-4">
+          <!-- Business Directory Skeleton -->
+          <div class="tw-space-y-6">
+            <!-- Featured Business Card -->
+            <div class="tw-mb-4">
+              <app-skeleton
+                variant="card"
+                [loading]="true"
+                [showImage]="true"
+                [imageHeight]="120"
+                animation="pulse"
+              ></app-skeleton>
+            </div>
+
+            <!-- Business List -->
             <app-skeleton
-              variant="card"
+              variant="list"
               [loading]="true"
-              [showImage]="true"
-              [imageHeight]="120"
+              [count]="4"
+              [showAvatar]="true"
+              [showAction]="true"
+              [avatarSize]="48"
               animation="pulse"
             ></app-skeleton>
           </div>
 
-          <!-- Business List -->
-          <app-skeleton
-            variant="list"
-            [loading]="true"
-            [count]="4"
-            [showAvatar]="true"
-            [showAction]="true"
-            [avatarSize]="48"
-            animation="pulse"
-          ></app-skeleton>
-        </div>
+          <!-- Alternative: Custom Skeleton Pattern -->
+          <div class="tw-mt-6 tw-pt-4 tw-border-t tw-border-emerald-green-200">
+            <h5 class="tw-font-medium tw-text-emerald-green-700 tw-mb-3">Patrón personalizado:</h5>
+            <app-skeleton
+              variant="custom"
+              [loading]="true"
+              animation="pulse"
+            >
+              <div class="tw-space-y-4">
+                @for (i of [1,2,3]; track i) {
+                  <div class="tw-flex tw-space-x-4 tw-p-4 tw-bg-white tw-rounded-lg tw-border tw-border-emerald-green-100">
+                    <!-- Company Logo -->
+                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-16 tw-h-16 tw-flex-shrink-0"></div>
 
-        <!-- Alternative: Custom Skeleton Pattern -->
-        <div class="tw-mt-6 tw-pt-4 tw-border-t tw-border-emerald-green-200">
-          <h5 class="tw-font-medium tw-tw-text-emerald-green-700 tw-mb-3">Patrón personalizado:</h5>
-          <app-skeleton
-            variant="custom"
-            [loading]="true"
-            animation="pulse"
-          >
-            <div class="tw-space-y-4">
-              @for (i of [1,2,3]; track i) {
-                <div class="tw-flex tw-space-x-4 tw-p-4 tw-bg-white tw-rounded-lg tw-border tw-border-emerald-green-100">
-                  <!-- Company Logo -->
-                  <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-16 tw-h-16 tw-flex-shrink-0"></div>
-
-                  <!-- Company Info -->
-                  <div class="tw-flex-1 tw-space-y-2">
-                    <!-- Company Name -->
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-5 tw-w-3/4"></div>
-                    <!-- Category -->
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-1/2"></div>
-                    <!-- Rating and Contact -->
-                    <div class="tw-flex tw-space-x-4">
-                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-20"></div>
-                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-24"></div>
+                    <!-- Company Info -->
+                    <div class="tw-flex-1 tw-space-y-2">
+                      <!-- Company Name -->
+                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-5 tw-w-3/4"></div>
+                      <!-- Category -->
+                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-1/2"></div>
+                      <!-- Rating and Contact -->
+                      <div class="tw-flex tw-space-x-4">
+                        <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-20"></div>
+                        <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-24"></div>
+                      </div>
                     </div>
-                  </div>
 
-                  <!-- Action Button -->
-                  <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-20 tw-h-10"></div>
-                </div>
-              }
-            </div>
-          </app-skeleton>
+                    <!-- Action Button -->
+                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-20 tw-h-10"></div>
+                  </div>
+                }
+              </div>
+            </app-skeleton>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Inline Loading Demo -->
-      <div *ngIf="isInlineLoading" class="tw-mt-6 tw-bg-beige-50 tw-rounded-lg tw-p-6">
-        <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-4">Lista de empresas</h4>
-        <div class="tw-space-y-3">
-          <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
-            <span>Restaurante El Buen Sabor</span>
-            <div class="tw-animate-spin tw-h-4 tw-w-4 tw-border-2 tw-border-beige-300 tw-border-t-beige-600 tw-rounded-full"></div>
-          </div>
-          <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
-            <span>Tecnología Avanzada S.A.</span>
-            <div class="tw-animate-pulse tw-h-4 tw-w-4 tw-bg-beige-400 tw-rounded-full"></div>
-          </div>
-          <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
-            <span>Centro Médico Salud+</span>
-            <div class="tw-animate-bounce tw-h-4 tw-w-4 tw-bg-beige-500 tw-rounded-full"></div>
+      @if (isInlineLoading) {
+        <div class="tw-mt-6 tw-bg-beige-50 tw-rounded-lg tw-p-6">
+          <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-4">Lista de empresas</h4>
+          <div class="tw-space-y-3">
+            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+              <span>Restaurante El Buen Sabor</span>
+              <div class="tw-animate-spin tw-h-4 tw-w-4 tw-border-2 tw-border-beige-300 tw-border-t-beige-600 tw-rounded-full"></div>
+            </div>
+            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+              <span>Tecnología Avanzada S.A.</span>
+              <div class="tw-animate-pulse tw-h-4 tw-w-4 tw-bg-beige-400 tw-rounded-full"></div>
+            </div>
+            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+              <span>Centro Médico Salud+</span>
+              <div class="tw-animate-bounce tw-h-4 tw-w-4 tw-bg-beige-500 tw-rounded-full"></div>
+            </div>
           </div>
         </div>
-      </div>
+      }
 
       <!-- Loading Spinners Showcase -->
       <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">

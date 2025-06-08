@@ -46,3 +46,26 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*
   --chart-5: 160 30% 60%;
 }
 
+/* Experimental: Scroll personalizado */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f9f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5bb67d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2e8b57;
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #5bb67d #f0f9f4;
+}

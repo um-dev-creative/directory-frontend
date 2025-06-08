@@ -12,15 +12,16 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
   template: `
     <span [class]="badgeClasses">
       <!-- Leading Icon -->
-      <span *ngIf="leadingIcon" class="tw-mr-1">
-        <ng-content select="[slot=leading-icon]"></ng-content>
-      </span>
+      @if (leadingIcon) {
+        <span class="tw-mr-1">
+          <ng-content select="[slot=leading-icon]"></ng-content>
+        </span>
+      }
 
       <!-- Dot Indicator -->
-      <span
-        *ngIf="dot"
-        [class]="dotClasses">
-      </span>
+      @if (dot) {
+        <span [class]="dotClasses"></span>
+      }
 
       <!-- Badge Content -->
       <span [class]="contentClasses">
@@ -28,22 +29,25 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
       </span>
 
       <!-- Trailing Icon / Close Button -->
-      <span *ngIf="trailingIcon" class="tw-ml-1">
-        <ng-content select="[slot=trailing-icon]"></ng-content>
-      </span>
+      @if (trailingIcon) {
+        <span class="tw-ml-1">
+          <ng-content select="[slot=trailing-icon]"></ng-content>
+        </span>
+      }
 
       <!-- Removable Button -->
-      <button
-        *ngIf="removable && !disabled"
-        type="button"
-        [class]="removeButtonClasses"
-        (click)="onRemove()"
-        [attr.aria-label]="'Remove ' + (label || 'badge')"
-      >
-        <svg class="tw-w-3 tw-h-3" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-          <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
-        </svg>
-      </button>
+      @if (removable && !disabled) {
+        <button
+          type="button"
+          [class]="removeButtonClasses"
+          (click)="onRemove()"
+          [attr.aria-label]="'Remove ' + (label || 'badge')"
+        >
+          <svg class="tw-w-3 tw-h-3" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+            <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
+          </svg>
+        </button>
+      }
     </span>
   `,
   styles: []

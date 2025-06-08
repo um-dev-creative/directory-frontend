@@ -14,7 +14,10 @@ import {
   ModalsSectionComponent,
   SkeletonsSectionComponent,
   NotificationsSectionComponent,
-  LoadingSectionComponent
+  LoadingSectionComponent,
+  AlertsSectionComponent,
+  TooltipsSectionComponent,
+  AvatarsSectionComponent
 } from './sections';
 import { IconsSectionComponent } from './sections/icons-section.component';
 
@@ -38,7 +41,10 @@ export interface ShowcaseSection {
     SkeletonsSectionComponent,
     NotificationsSectionComponent,
     LoadingSectionComponent,
-    IconsSectionComponent
+    IconsSectionComponent,
+    AlertsSectionComponent,
+    TooltipsSectionComponent,
+    AvatarsSectionComponent
   ],
   template: `
     <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
@@ -57,91 +63,133 @@ export interface ShowcaseSection {
         <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6 tw-mb-8">
           <h2 class="tw-text-xl tw-font-bold tw-text-emerald-green-700 tw-mb-4">Navegación</h2>
           <div class="tw-flex tw-flex-wrap tw-gap-3">
-            <button
-              *ngFor="let section of sections"
-              (click)="activeSection = section.id"
-              [class]="getSectionButtonClass(section.id)"
-              class="tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200"
-            >
-              {{ section.name }}
-            </button>
+            @for (section of sections; track section.id) {
+              <button
+                (click)="activeSection = section.id"
+                [class]="getSectionButtonClass(section.id)"
+                class="tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200"
+              >
+                {{ section.name }}
+              </button>
+            }
           </div>
         </div>
 
         <!-- Section Content -->
         <div class="tw-transition-all tw-duration-300">
           <!-- Colors Section -->
-          <app-colors-section *ngIf="activeSection === 'colors'"></app-colors-section>
+          @if (activeSection === 'colors') {
+            <app-colors-section></app-colors-section>
+          }
 
           <!-- Buttons Section -->
-          <app-buttons-section
-            *ngIf="activeSection === 'buttons'"
-            [isBasicLoading$]="isBasicLoading$"
-            (showSuccessNotification)="showSuccessNotification()"
-            (showBasicLoading)="showBasicLoading()"
-            (showInfoNotification)="showInfoNotification()"
-          ></app-buttons-section>
+          @if (activeSection === 'buttons') {
+            <app-buttons-section
+              [isBasicLoading$]="isBasicLoading$"
+              (showSuccessNotification)="showSuccessNotification()"
+              (showBasicLoading)="showBasicLoading()"
+              (showInfoNotification)="showInfoNotification()"
+            ></app-buttons-section>
+          }
 
           <!-- Badges Section -->
-          <app-badges-section *ngIf="activeSection === 'badges'"></app-badges-section>
+          @if (activeSection === 'badges') {
+            <app-badges-section></app-badges-section>
+          }
+
+          <!-- Avatars Section -->
+          @if (activeSection === 'avatars') {
+            <app-avatars-section></app-avatars-section>
+          }
 
           <!-- Inputs Section -->
-          <app-inputs-section *ngIf="activeSection === 'inputs'"></app-inputs-section>
+          @if (activeSection === 'inputs') {
+            <app-inputs-section></app-inputs-section>
+          }
 
           <!-- Cards Section -->
-          <app-cards-section
-            *ngIf="activeSection === 'cards'"
-            [isBasicLoading$]="isBasicLoading$"
-            (successCardAction)="onSuccessCardAction()"
-            (errorCardAction)="onErrorCardAction()"
-            (infoCardAction)="onInfoCardAction()"
-            (formSubmit)="onFormSubmit()"
-            (successNotification)="onCardSuccessNotification()"
-            (infoNotification)="onCardInfoNotification()"
-            (warningNotification)="onCardWarningNotification()"
-            (basicLoading)="onCardBasicLoading()"
-            (cardFormSubmit)="onCardFormSubmit($event)"
-          ></app-cards-section>
+          @if (activeSection === 'cards') {
+            <app-cards-section
+              [isBasicLoading$]="isBasicLoading$"
+              (successCardAction)="onSuccessCardAction()"
+              (errorCardAction)="onErrorCardAction()"
+              (infoCardAction)="onInfoCardAction()"
+              (formSubmit)="onFormSubmit()"
+              (successNotification)="onCardSuccessNotification()"
+              (infoNotification)="onCardInfoNotification()"
+              (warningNotification)="onCardWarningNotification()"
+              (basicLoading)="onCardBasicLoading()"
+              (cardFormSubmit)="onCardFormSubmit($event)"
+            ></app-cards-section>
+          }
 
           <!-- Modals Section -->
-          <app-modals-section *ngIf="activeSection === 'modals'"></app-modals-section>
+          @if (activeSection === 'modals') {
+            <app-modals-section></app-modals-section>
+          }
 
           <!-- Skeletons Section -->
-          <app-skeletons-section *ngIf="activeSection === 'skeletons'"></app-skeletons-section>
+          @if (activeSection === 'skeletons') {
+            <app-skeletons-section></app-skeletons-section>
+          }
 
           <!-- Icons Section -->
-          <app-icons-section
-            *ngIf="activeSection === 'icons'"
-            (iconClick)="onIconClick($event)"
-          ></app-icons-section>
+          @if (activeSection === 'icons') {
+            <app-icons-section
+              (iconClick)="onIconClick($event)"
+            ></app-icons-section>
+          }
+
+          <!-- Alerts Section -->
+          @if (activeSection === 'alerts') {
+            <app-alerts-section
+              (showInfoAlert)="onAlertInfo()"
+              (showSuccessAlert)="onAlertSuccess()"
+              (showWarningAlert)="onAlertWarning()"
+              (showErrorAlert)="onAlertError()"
+            ></app-alerts-section>
+          }
+
+          <!-- Tooltips Section -->
+          @if (activeSection === 'tooltips') {
+            <app-tooltips-section
+              (showTooltipDemo)="onTooltipDemo()"
+              (showTooltipInfo)="onTooltipInfo()"
+              (showTooltipWarning)="onTooltipWarning()"
+            ></app-tooltips-section>
+          }
 
           <!-- Loading Section -->
-          <app-loading-section
-            *ngIf="activeSection === 'loading'"
-            (showBasicLoading)="onLoadingBasic()"
-            (showActionLoading)="onLoadingAction()"
-            (showGlobalLoading)="onLoadingGlobal()"
-          ></app-loading-section>
+          @if (activeSection === 'loading') {
+            <app-loading-section
+              (showBasicLoading)="onLoadingBasic()"
+              (showActionLoading)="onLoadingAction()"
+              (showGlobalLoading)="onLoadingGlobal()"
+            ></app-loading-section>
+          }
 
           <!-- Notifications Section -->
-          <app-notifications-section
-            *ngIf="activeSection === 'notifications'"
-            (showSuccess)="onNotificationSuccess()"
-            (showError)="onNotificationError()"
-            (showInfo)="onNotificationInfo()"
-            (showWarning)="onNotificationWarning()"
-            (showWithAction)="onNotificationWithAction()"
-            (showPersistent)="onNotificationPersistent()"
-            (showCustomPosition)="onNotificationCustomPosition()"
-            (dismissAll)="onNotificationDismissAll()"
-            (successNotification)="onLegacySuccessNotification()"
-            (errorNotification)="onLegacyErrorNotification()"
-            (warningNotification)="onLegacyWarningNotification()"
-            (infoNotification)="onLegacyInfoNotification()"
-            (notificationWithAction)="onLegacyNotificationWithAction()"
-            (persistentNotification)="onLegacyPersistentNotification()"
-            (customPositionNotification)="onLegacyCustomPositionNotification()"
-          ></app-notifications-section>
+          @if (activeSection === 'notifications') {
+            <app-notifications-section
+              (showSuccess)="onNotificationSuccess()"
+              (showError)="onNotificationError()"
+              (showErrorWithReport)="onNotificationErrorWithReport()"
+              (showErrorWithExternalLink)="onNotificationErrorWithExternalLink()"
+              (showInfo)="onNotificationInfo()"
+              (showWarning)="onNotificationWarning()"
+              (showWithAction)="onNotificationWithAction()"
+              (showPersistent)="onNotificationPersistent()"
+              (showCustomPosition)="onNotificationCustomPosition()"
+              (dismissAll)="onNotificationDismissAll()"
+              (successNotification)="onLegacySuccessNotification()"
+              (errorNotification)="onLegacyErrorNotification()"
+              (warningNotification)="onLegacyWarningNotification()"
+              (infoNotification)="onLegacyInfoNotification()"
+              (notificationWithAction)="onLegacyNotificationWithAction()"
+              (persistentNotification)="onLegacyPersistentNotification()"
+              (customPositionNotification)="onLegacyCustomPositionNotification()"
+            ></app-notifications-section>
+          }
         </div>
       </div>
     </div>
@@ -155,11 +203,14 @@ export class BrandShowcaseComponent {
     { id: 'colors', name: 'Colores', description: 'Paleta de colores de marca' },
     { id: 'buttons', name: 'Botones', description: 'Componentes de botón reutilizables' },
     { id: 'badges', name: 'Badges', description: 'Diferentes estilos de badges' },
+    { id: 'avatars', name: 'Avatares', description: 'Componentes de avatar reutilizables' },
     { id: 'inputs', name: 'Inputs', description: 'Componentes de entrada de datos' },
     { id: 'cards', name: 'Cards', description: 'Componentes de tarjetas' },
     { id: 'modals', name: 'Modals', description: 'Diálogos y ventanas modales' },
     { id: 'skeletons', name: 'Skeletons', description: 'Componentes de carga con placeholders' },
     { id: 'icons', name: 'Iconos', description: 'Biblioteca de iconos Heroicons' },
+    { id: 'alerts', name: 'Alertas', description: 'Mensajes de retroalimentación contextual' },
+    { id: 'tooltips', name: 'Tooltips', description: 'Información contextual en hover/click' },
     { id: 'loading', name: 'Loading', description: 'Estados de carga y spinners' },
     { id: 'notifications', name: 'Notificaciones', description: 'Sistema de notificaciones' }
   ];
@@ -294,6 +345,33 @@ export class BrandShowcaseComponent {
     });
   }
 
+  onNotificationErrorWithReport() {
+    this.notificationService.errorWithReport(
+      'Ha ocurrido un error inesperado al procesar los datos.',
+      'Error en showcase - sección de notificaciones',
+      () => {
+        // Simular reporte de error
+        this.notificationService.info('¡Reporte de error enviado exitosamente! Nuestro equipo revisará el problema.', {
+          duration: 5000
+        });
+        console.log('Error reportado:', {
+          timestamp: new Date().toISOString(),
+          context: 'Error en showcase - sección de notificaciones',
+          userAgent: navigator.userAgent,
+          url: window.location.href
+        });
+      }
+    );
+  }
+
+  onNotificationErrorWithExternalLink() {
+    this.notificationService.errorWithExternalLink(
+      'Error de conexión con el servidor. No se pudieron cargar los datos.',
+      'https://docs.example.com/troubleshooting/connection-errors',
+      'Ver guía de solución de problemas'
+    );
+  }
+
   onNotificationInfo() {
     this.notificationService.info('Información importante para el usuario', {
       duration: 4000
@@ -328,10 +406,7 @@ export class BrandShowcaseComponent {
   }
 
   onNotificationDismissAll() {
-    // This would call a dismiss all method if available in the service
-    this.notificationService.info('Función para cerrar todas las notificaciones', {
-      duration: 3000
-    });
+    this.notificationService.dismiss();
   }
 
   // Event handlers for loading section
@@ -382,9 +457,14 @@ export class BrandShowcaseComponent {
   }
 
   onLegacyNotificationWithAction() {
-    this.notificationService.success('Notificación legacy con acción', {
-      duration: 5000
-    });
+    this.notificationService.showWithAction(
+      'Archivo guardado correctamente',
+      'Ver archivo',
+      {
+        type: 'success',
+        duration: 7000
+      }
+    );
   }
 
   onLegacyPersistentNotification() {
@@ -394,8 +474,54 @@ export class BrandShowcaseComponent {
   }
 
   onLegacyCustomPositionNotification() {
-    this.notificationService.warning('Notificación legacy en posición personalizada', {
+    this.notificationService.show('Notificación en posición personalizada', {
+      type: 'warning',
+      position: 'bottom-left',
+      duration: 5000
+    });
+  }
+
+  // Alert event handlers
+  onAlertInfo() {
+    this.notificationService.info('Alerta de información activada desde el showcase', {
+      duration: 3000
+    });
+  }
+
+  onAlertSuccess() {
+    this.notificationService.success('¡Alerta de éxito activada desde el showcase!', {
+      duration: 3000
+    });
+  }
+
+  onAlertWarning() {
+    this.notificationService.warning('Alerta de advertencia activada desde el showcase', {
       duration: 4000
+    });
+  }
+
+  onAlertError() {
+    this.notificationService.error('Alerta de error activada desde el showcase', {
+      duration: 4000
+    });
+  }
+
+  // Tooltip event handlers
+  onTooltipDemo() {
+    this.notificationService.info('Demo de tooltip ejecutado', {
+      duration: 3000
+    });
+  }
+
+  onTooltipInfo() {
+    this.notificationService.info('Tooltip informativo mostrado desde el showcase', {
+      duration: 3000
+    });
+  }
+
+  onTooltipWarning() {
+    this.notificationService.warning('Tooltip de advertencia activado', {
+      duration: 3000
     });
   }
 

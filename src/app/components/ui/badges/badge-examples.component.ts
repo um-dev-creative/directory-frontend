@@ -160,13 +160,14 @@ import { Button } from '../buttons/button';
           <div>
             <h3 class="tw-text-lg tw-font-medium tw-text-gray-700 tw-mb-4">Etiquetas de Tecnología</h3>
             <div class="tw-flex tw-flex-wrap tw-gap-3">
-              <app-badge
-                *ngFor="let tech of technologies; trackBy: trackByTech"
-                variant="primary"
-                [removable]="true"
-                (remove)="removeTechnology(tech.id)">
-                {{ tech.name }}
-              </app-badge>
+              @for (tech of technologies; track tech.id) {
+                <app-badge
+                  variant="primary"
+                  [removable]="true"
+                  (remove)="removeTechnology(tech.id)">
+                  {{ tech.name }}
+                </app-badge>
+              }
             </div>
             <app-button
               variant="outline"
@@ -181,14 +182,15 @@ import { Button } from '../buttons/button';
           <div>
             <h3 class="tw-text-lg tw-font-medium tw-text-gray-700 tw-mb-4">Categorías</h3>
             <div class="tw-flex tw-flex-wrap tw-gap-3">
-              <app-badge
-                *ngFor="let category of categories; trackBy: trackByCategory"
-                variant="secondary"
-                [removable]="true"
-                [outline]="true"
-                (remove)="removeCategory(category.id)">
-                {{ category.name }}
-              </app-badge>
+              @for (category of categories; track category.id) {
+                <app-badge
+                  variant="secondary"
+                  [removable]="true"
+                  [outline]="true"
+                  (remove)="removeCategory(category.id)">
+                  {{ category.name }}
+                </app-badge>
+              }
             </div>
             <app-button
               variant="outline"

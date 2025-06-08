@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'alert' | 'success' | 'info';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'alert' | 'success' | 'info' | 'alert-outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
@@ -17,26 +17,27 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
       (click)="handleClick($event)"
     >
       <!-- Loading Spinner -->
-      <svg
-        *ngIf="loading"
-        class="tw-animate-spin tw--ml-1 tw-mr-2 tw-h-4 tw-w-4"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          class="tw-opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="tw-opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
+      @if (loading) {
+        <svg
+          class="tw-animate-spin tw--ml-1 tw-mr-2 tw-h-4 tw-w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="tw-opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="tw-opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+      }
 
       <!-- Button Content -->
       <ng-content></ng-content>
@@ -156,6 +157,18 @@ export class Button {
         'hover:tw-shadow-coral-600/50',
         // 'focus:tw-ring-coral-500',
         'active:tw-bg-coral-700',
+        'active:tw-scale-95'
+      ],
+      'alert-outline': [
+        'tw-bg-transparent',
+        'tw-text-coral-600',
+        'tw-border-coral-500',
+        'tw-border-2',
+        'hover:tw-bg-coral-50',
+        'hover:tw-text-coral-700',
+        'hover:tw-scale-105',
+        // 'focus:tw-ring-coral-500',
+        'active:tw-bg-coral-100',
         'active:tw-scale-95'
       ],
       success: [

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Button, InputComponent } from '@app/components/ui';
+import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOption } from '@app/components/ui';
 
 @Component({
   selector: 'app-inputs-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, Button],
+  imports: [CommonModule, FormsModule, InputComponent, TextareaComponent, SelectComponent, Button],
   template: `
     <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
       <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Inputs</h2>
@@ -126,12 +126,149 @@ import { Button, InputComponent } from '@app/components/ui';
         </div>
       </div>
 
-      <!-- Textarea -->
+      <!-- Textarea Components -->
       <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Área de Texto</h3>
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Componentes de Área de Texto</h3>
+
+        <!-- Textarea básico -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Textarea Básico</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <app-textarea
+              label="Descripción"
+              placeholder="Escribe tu descripción aquí..."
+              [(ngModel)]="textareaValues.basic"
+              name="basicTextarea">
+            </app-textarea>
+
+            <app-textarea
+              label="Comentarios"
+              placeholder="Deja tus comentarios..."
+              [(ngModel)]="textareaValues.comments"
+              name="commentsTextarea"
+              [rows]="6">
+            </app-textarea>
+          </div>
+        </div>
+
+        <!-- Textarea con límite de caracteres -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Con Límite de Caracteres</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <app-textarea
+              label="Mensaje Corto"
+              placeholder="Máximo 100 caracteres..."
+              [(ngModel)]="textareaValues.short"
+              name="shortTextarea"
+              [maxLength]="100"
+              [showCharacterCount]="true">
+            </app-textarea>
+
+            <app-textarea
+              label="Mensaje Largo"
+              placeholder="Máximo 500 caracteres..."
+              [(ngModel)]="textareaValues.long"
+              name="longTextarea"
+              [maxLength]="500"
+              [showCharacterCount]="true"
+              [rows]="6">
+            </app-textarea>
+          </div>
+        </div>
+
+        <!-- Estados de Textarea -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados de Validación</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+            <app-textarea
+              label="Estado de Éxito"
+              placeholder="Campo válido..."
+              [(ngModel)]="textareaValues.success"
+              name="successTextarea"
+              variant="success"
+              helperText="Campo completado correctamente">
+            </app-textarea>
+
+            <app-textarea
+              label="Estado de Error"
+              placeholder="Campo con error..."
+              [(ngModel)]="textareaValues.error"
+              name="errorTextarea"
+              variant="error"
+              helperText="Este campo contiene errores">
+            </app-textarea>
+
+            <app-textarea
+              label="Estado de Información"
+              placeholder="Campo informativo..."
+              [(ngModel)]="textareaValues.info"
+              name="infoTextarea"
+              variant="info"
+              helperText="Información adicional">
+            </app-textarea>
+          </div>
+        </div>
+
+        <!-- Tamaños de Textarea -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Diferentes Tamaños</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+            <app-textarea
+              label="Tamaño Pequeño"
+              placeholder="Textarea pequeño..."
+              [(ngModel)]="textareaValues.small"
+              name="smallTextarea"
+              size="sm">
+            </app-textarea>
+
+            <app-textarea
+              label="Tamaño Mediano"
+              placeholder="Textarea mediano..."
+              [(ngModel)]="textareaValues.medium"
+              name="mediumTextarea"
+              size="md">
+            </app-textarea>
+
+            <app-textarea
+              label="Tamaño Grande"
+              placeholder="Textarea grande..."
+              [(ngModel)]="textareaValues.large"
+              name="largeTextarea"
+              size="lg">
+            </app-textarea>
+          </div>
+        </div>
+
+        <!-- Textarea deshabilitado y requerido -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados Especiales</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <app-textarea
+              label="Campo Requerido"
+              placeholder="Este campo es obligatorio..."
+              [(ngModel)]="textareaValues.required"
+              name="requiredTextarea"
+              [required]="true"
+              helperText="Campo obligatorio">
+            </app-textarea>
+
+            <app-textarea
+              label="Campo Deshabilitado"
+              placeholder="Este campo está deshabilitado..."
+              [(ngModel)]="textareaValues.disabled"
+              name="disabledTextarea"
+              [disabled]="true">
+            </app-textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Textarea Básico (HTML nativo para comparación) -->
+      <div class="tw-mb-8">
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Textarea Nativo (Comparación)</h3>
         <div>
           <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
-            Mensaje
+            Mensaje (HTML Nativo)
           </label>
           <textarea
             [(ngModel)]="formData.message"
@@ -142,13 +279,134 @@ import { Button, InputComponent } from '@app/components/ui';
         </div>
       </div>
 
-      <!-- Select -->
+      <!-- Select Components -->
       <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Select</h3>
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Componentes Select</h3>
+
+        <!-- Select básico -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Select Básico</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <app-select
+              label="País"
+              placeholder="Selecciona tu país"
+              [options]="selectOptions.countries"
+              [(ngModel)]="selectValues.country"
+              name="selectCountry">
+            </app-select>
+
+            <app-select
+              label="Categoría"
+              placeholder="Selecciona una categoría"
+              [options]="selectOptions.categories"
+              [(ngModel)]="selectValues.category"
+              name="selectCategory">
+            </app-select>
+          </div>
+        </div>
+
+        <!-- Estados de Select -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados de Validación</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+            <app-select
+              label="Estado de Éxito"
+              placeholder="Selección válida"
+              [options]="selectOptions.status"
+              [(ngModel)]="selectValues.success"
+              name="selectSuccess"
+              variant="success"
+              helperText="Selección completada correctamente">
+            </app-select>
+
+            <app-select
+              label="Estado de Error"
+              placeholder="Selección con error"
+              [options]="selectOptions.status"
+              [(ngModel)]="selectValues.error"
+              name="selectError"
+              variant="error"
+              errorMessage="Debes seleccionar una opción válida">
+            </app-select>
+
+            <app-select
+              label="Estado de Información"
+              placeholder="Información adicional"
+              [options]="selectOptions.status"
+              [(ngModel)]="selectValues.info"
+              name="selectInfo"
+              variant="info"
+              helperText="Selecciona según tus preferencias">
+            </app-select>
+          </div>
+        </div>
+
+        <!-- Tamaños de Select -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Diferentes Tamaños</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+            <app-select
+              label="Tamaño Pequeño"
+              placeholder="Select pequeño..."
+              [options]="selectOptions.sizes"
+              [(ngModel)]="selectValues.small"
+              name="selectSmall"
+              size="sm">
+            </app-select>
+
+            <app-select
+              label="Tamaño Mediano"
+              placeholder="Select mediano..."
+              [options]="selectOptions.sizes"
+              [(ngModel)]="selectValues.medium"
+              name="selectMedium"
+              size="md">
+            </app-select>
+
+            <app-select
+              label="Tamaño Grande"
+              placeholder="Select grande..."
+              [options]="selectOptions.sizes"
+              [(ngModel)]="selectValues.large"
+              name="selectLarge"
+              size="lg">
+            </app-select>
+          </div>
+        </div>
+
+        <!-- Select deshabilitado y requerido -->
+        <div class="tw-mb-6">
+          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados Especiales</h4>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <app-select
+              label="Campo Requerido"
+              placeholder="Este campo es obligatorio"
+              [options]="selectOptions.priorities"
+              [(ngModel)]="selectValues.required"
+              name="selectRequired"
+              [required]="true"
+              helperText="Campo obligatorio">
+            </app-select>
+
+            <app-select
+              label="Campo Deshabilitado"
+              placeholder="Este campo está deshabilitado"
+              [options]="selectOptions.priorities"
+              [(ngModel)]="selectValues.disabled"
+              name="selectDisabled"
+              [disabled]="true">
+            </app-select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Select Nativo (HTML para comparación) -->
+      <div class="tw-mb-8">
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Select Nativo (Comparación)</h3>
         <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
           <div>
             <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
-              País
+              País (HTML Nativo)
             </label>
             <select
               [(ngModel)]="formData.country"
@@ -164,7 +422,7 @@ import { Button, InputComponent } from '@app/components/ui';
 
           <div>
             <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
-              Categoría
+              Categoría (HTML Nativo)
             </label>
             <select
               [(ngModel)]="formData.category"
@@ -503,6 +761,71 @@ export class InputsSectionComponent {
     formLastName: '',
     formEmail: '',
     formPhone: ''
+  };
+
+  textareaValues = {
+    basic: '',
+    comments: '',
+    short: '',
+    long: '',
+    success: 'Contenido válido',
+    error: 'Contenido con error',
+    info: '',
+    small: '',
+    medium: '',
+    large: '',
+    required: '',
+    disabled: 'Contenido deshabilitado'
+  };
+
+  selectValues = {
+    country: '',
+    category: '',
+    success: 'active',
+    error: '',
+    info: '',
+    small: '',
+    medium: '',
+    large: '',
+    required: '',
+    disabled: 'option1'
+  };
+
+  selectOptions = {
+    countries: [
+      { value: 'mx', label: 'México' },
+      { value: 'us', label: 'Estados Unidos' },
+      { value: 'ca', label: 'Canadá' },
+      { value: 'es', label: 'España' },
+      { value: 'ar', label: 'Argentina' },
+      { value: 'co', label: 'Colombia' }
+    ] as SelectOption[],
+    categories: [
+      { value: 'tech', label: 'Tecnología' },
+      { value: 'design', label: 'Diseño' },
+      { value: 'marketing', label: 'Marketing' },
+      { value: 'sales', label: 'Ventas' },
+      { value: 'finance', label: 'Finanzas' }
+    ] as SelectOption[],
+    status: [
+      { value: 'active', label: 'Activo' },
+      { value: 'inactive', label: 'Inactivo' },
+      { value: 'pending', label: 'Pendiente' },
+      { value: 'suspended', label: 'Suspendido' }
+    ] as SelectOption[],
+    sizes: [
+      { value: 'xs', label: 'Extra Pequeño' },
+      { value: 'sm', label: 'Pequeño' },
+      { value: 'md', label: 'Mediano' },
+      { value: 'lg', label: 'Grande' },
+      { value: 'xl', label: 'Extra Grande' }
+    ] as SelectOption[],
+    priorities: [
+      { value: 'low', label: 'Baja Prioridad' },
+      { value: 'medium', label: 'Prioridad Media' },
+      { value: 'high', label: 'Alta Prioridad' },
+      { value: 'urgent', label: 'Urgente' }
+    ] as SelectOption[]
   };
 
   getFormDataJson(): string {

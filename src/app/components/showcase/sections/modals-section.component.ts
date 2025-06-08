@@ -184,23 +184,219 @@ import { BadgeComponent } from '../../ui/badges/badge';
           <app-badge variant="primary">Inmersivo</app-badge>
         </div>
         <div slot="content">
-          <div class="tw-max-w-4xl tw-mx-auto tw-space-y-6">
-            <p class="tw-text-lg tw-text-beige-700 tw-leading-relaxed">
-              El modal fullscreen es ideal para experiencias inmersivas, formularios muy largos,
-              o cuando necesitas mostrar mucho contenido sin distracciones.
-            </p>
-            <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6">
-              <div class="tw-space-y-4">
-                <h4 class="tw-font-semibold tw-text-beige-800">Información Personal</h4>
-                <app-input label="Nombre completo" [(ngModel)]="modalData.fullName"></app-input>
-                <app-input label="Email" type="email" [(ngModel)]="modalData.email"></app-input>
-                <app-input label="Teléfono" type="tel" [(ngModel)]="modalData.phone"></app-input>
+          <div class="tw-max-w-6xl tw-mx-auto tw-space-y-8">
+            <!-- Header Introduction -->
+            <div class="tw-text-center tw-max-w-3xl tw-mx-auto">
+              <p class="tw-text-xl tw-text-beige-700 tw-leading-relaxed tw-mb-2">
+                El modal fullscreen es ideal para experiencias inmersivas, formularios muy largos,
+                o cuando necesitas mostrar mucho contenido sin distracciones.
+              </p>
+              <p class="tw-text-sm tw-text-beige-600">
+                Complete todos los campos requeridos para continuar con el proceso.
+              </p>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="tw-flex tw-justify-center tw-mb-8">
+              <div class="tw-flex tw-items-center tw-space-x-4">
+                <div class="tw-flex tw-items-center tw-space-x-2">
+                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-emerald-green-500 tw-flex tw-items-center tw-justify-center">
+                    <span class="tw-text-white tw-text-sm tw-font-medium">1</span>
+                  </div>
+                  <span class="tw-text-sm tw-font-medium tw-text-emerald-green-600">Información Personal</span>
+                </div>
+                <div class="tw-w-8 tw-h-0.5 tw-bg-beige-300"></div>
+                <div class="tw-flex tw-items-center tw-space-x-2">
+                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-emerald-green-500 tw-flex tw-items-center tw-justify-center">
+                    <span class="tw-text-white tw-text-sm tw-font-medium">2</span>
+                  </div>
+                  <span class="tw-text-sm tw-font-medium tw-text-emerald-green-600">Información Empresarial</span>
+                </div>
+                <div class="tw-w-8 tw-h-0.5 tw-bg-beige-300"></div>
+                <div class="tw-flex tw-items-center tw-space-x-2">
+                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-beige-300 tw-flex tw-items-center tw-justify-center">
+                    <span class="tw-text-beige-600 tw-text-sm tw-font-medium">3</span>
+                  </div>
+                  <span class="tw-text-sm tw-font-medium tw-text-beige-600">Preferencias</span>
+                </div>
               </div>
-              <div class="tw-space-y-4">
-                <h4 class="tw-font-semibold tw-text-beige-800">Empresa</h4>
-                <app-input label="Nombre de empresa" [(ngModel)]="modalData.company"></app-input>
-                <app-input label="Cargo" [(ngModel)]="modalData.position"></app-input>
-                <app-input label="Sitio web" [(ngModel)]="modalData.website"></app-input>
+            </div>
+
+            <!-- Main Form Content -->
+            <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8">
+              <!-- Información Personal -->
+              <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
+                <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
+                  <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-emerald-green-100 tw-flex tw-items-center tw-justify-center">
+                    <span class="tw-text-emerald-green-600 tw-text-lg">👤</span>
+                  </div>
+                  <div>
+                    <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Información Personal</h4>
+                    <p class="tw-text-sm tw-text-beige-600">Datos básicos de contacto</p>
+                  </div>
+                </div>
+                <div class="tw-space-y-4">
+                  <app-input
+                    label="Nombre completo"
+                    placeholder="Ej: Juan Pérez García"
+                    [required]="true"
+                    [(ngModel)]="modalData.fullName">
+                  </app-input>
+                  <app-input
+                    label="Email"
+                    type="email"
+                    placeholder="juan.perez@email.com"
+                    [required]="true"
+                    [(ngModel)]="modalData.email">
+                  </app-input>
+                  <app-input
+                    label="Teléfono"
+                    type="tel"
+                    placeholder="+1 (555) 123-4567"
+                    [(ngModel)]="modalData.phone">
+                  </app-input>
+                  <app-input
+                    label="Fecha de nacimiento"
+                    type="text"
+                    placeholder="DD/MM/AAAA"
+                    [(ngModel)]="modalData.birthDate">
+                  </app-input>
+                </div>
+              </div>
+
+              <!-- Información Empresarial -->
+              <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
+                <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
+                  <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-sky-blue-100 tw-flex tw-items-center tw-justify-center">
+                    <span class="tw-text-sky-blue-600 tw-text-lg">🏢</span>
+                  </div>
+                  <div>
+                    <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Información Empresarial</h4>
+                    <p class="tw-text-sm tw-text-beige-600">Detalles de su empresa</p>
+                  </div>
+                </div>
+                <div class="tw-space-y-4">
+                  <app-input
+                    label="Nombre de empresa"
+                    placeholder="Ej: Innovación S.A."
+                    [required]="true"
+                    [(ngModel)]="modalData.company">
+                  </app-input>
+                  <app-input
+                    label="Cargo"
+                    placeholder="Ej: Director de Marketing"
+                    [(ngModel)]="modalData.position">
+                  </app-input>
+                  <app-input
+                    label="Sitio web"
+                    placeholder="https://miempresa.com"
+                    [(ngModel)]="modalData.website">
+                  </app-input>
+                  <app-input
+                    label="Tamaño de empresa"
+                    placeholder="Ej: 50-100 empleados"
+                    [(ngModel)]="modalData.companySize">
+                  </app-input>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección de Dirección -->
+            <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
+              <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
+                <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-coral-100 tw-flex tw-items-center tw-justify-center">
+                  <span class="tw-text-coral-600 tw-text-lg">📍</span>
+                </div>
+                <div>
+                  <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Dirección</h4>
+                  <p class="tw-text-sm tw-text-beige-600">Información de ubicación</p>
+                </div>
+              </div>
+              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
+                <app-input
+                  label="País"
+                  placeholder="Ej: México"
+                  [(ngModel)]="modalData.country">
+                </app-input>
+                <app-input
+                  label="Estado/Provincia"
+                  placeholder="Ej: CDMX"
+                  [(ngModel)]="modalData.state">
+                </app-input>
+                <app-input
+                  label="Ciudad"
+                  placeholder="Ej: Ciudad de México"
+                  [(ngModel)]="modalData.city">
+                </app-input>
+                <div class="md:tw-col-span-2">
+                  <app-input
+                    label="Dirección completa"
+                    placeholder="Ej: Av. Reforma 123, Col. Centro"
+                    [(ngModel)]="modalData.address">
+                  </app-input>
+                </div>
+                <app-input
+                  label="Código Postal"
+                  placeholder="12345"
+                  [(ngModel)]="modalData.zipCode">
+                </app-input>
+              </div>
+            </div>
+
+            <!-- Sección de Preferencias -->
+            <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
+              <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
+                <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-purple-100 tw-flex tw-items-center tw-justify-center">
+                  <span class="tw-text-purple-600 tw-text-lg">⚙️</span>
+                </div>
+                <div>
+                  <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Preferencias y Notas</h4>
+                  <p class="tw-text-sm tw-text-beige-600">Información adicional opcional</p>
+                </div>
+              </div>
+              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+                <app-input
+                  label="Industria"
+                  placeholder="Ej: Tecnología, Salud, Educación"
+                  [(ngModel)]="modalData.industry">
+                </app-input>
+                <app-input
+                  label="Presupuesto aproximado"
+                  placeholder="Ej: $10,000 - $50,000"
+                  [(ngModel)]="modalData.budget">
+                </app-input>
+                <div class="md:tw-col-span-2">
+                  <app-input
+                    label="Comentarios adicionales"
+                    placeholder="Comparta cualquier información adicional que considere importante..."
+                    [(ngModel)]="modalData.comments">
+                  </app-input>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="tw-bg-gradient-to-r tw-from-emerald-green-50 tw-to-sky-blue-50 tw-rounded-lg tw-p-6 tw-border tw-border-emerald-green-200">
+              <div class="tw-text-center">
+                <h5 class="tw-font-semibold tw-text-beige-800 tw-mb-4">Resumen del Formulario</h5>
+                <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-4">
+                  <div class="tw-text-center">
+                    <div class="tw-text-2xl tw-font-bold tw-text-emerald-green-600">12</div>
+                    <div class="tw-text-sm tw-text-beige-600">Campos Totales</div>
+                  </div>
+                  <div class="tw-text-center">
+                    <div class="tw-text-2xl tw-font-bold tw-text-sky-blue-600">3</div>
+                    <div class="tw-text-sm tw-text-beige-600">Requeridos</div>
+                  </div>
+                  <div class="tw-text-center">
+                    <div class="tw-text-2xl tw-font-bold tw-text-coral-600">4</div>
+                    <div class="tw-text-sm tw-text-beige-600">Secciones</div>
+                  </div>
+                  <div class="tw-text-center">
+                    <div class="tw-text-2xl tw-font-bold tw-text-purple-600">~5min</div>
+                    <div class="tw-text-sm tw-text-beige-600">Tiempo Est.</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -399,7 +595,17 @@ export class ModalsSectionComponent {
     phone: '',
     company: '',
     position: '',
-    website: ''
+    website: '',
+    birthDate: '',
+    companySize: '',
+    country: '',
+    state: '',
+    city: '',
+    address: '',
+    zipCode: '',
+    industry: '',
+    budget: '',
+    comments: ''
   };
 
   // Formulario de contacto

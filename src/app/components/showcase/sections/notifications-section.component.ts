@@ -16,7 +16,7 @@ import { Button } from '@app/components/ui';
       <!-- Tipos de Notificaciones -->
       <div class="tw-mb-8">
         <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Tipos de Notificaciones</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
           <app-button variant="success" (buttonClick)="onShowSuccess()">
             Mostrar Éxito
           </app-button>
@@ -28,6 +28,12 @@ import { Button } from '@app/components/ui';
           </app-button>
           <app-button variant="secondary" (buttonClick)="onShowWarning()">
             Mostrar Advertencia
+          </app-button>
+          <app-button variant="alert" (buttonClick)="onShowErrorWithReport()">
+            Error con Reporte
+          </app-button>
+          <app-button variant="alert-outline" (buttonClick)="onShowErrorWithExternalLink()">
+            Error con Enlace
           </app-button>
         </div>
       </div>
@@ -72,6 +78,34 @@ import { Button } from '@app/components/ui';
               </div>
               <div class="tw-ml-auto tw-pl-3">
                 <button class="tw-text-alert-600 hover:tw-text-alert-500">
+                  <svg class="tw-h-4 tw-w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notificación de Error con Reporte -->
+          <div class="tw-bg-coral-50 tw-border tw-border-coral-200 tw-rounded-lg tw-p-4">
+            <div class="tw-flex tw-items-center">
+              <div class="tw-flex-shrink-0">
+                <svg class="tw-h-5 tw-w-5 tw-text-coral-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <div class="tw-ml-3 tw-flex-1">
+                <h4 class="tw-text-sm tw-font-medium tw-text-coral-800">Error crítico del sistema</h4>
+                <p class="tw-text-sm tw-text-coral-700 tw-mt-1">No se pudo completar la operación. Si el problema persiste, usa el enlace para reportarlo.</p>
+              </div>
+              <div class="tw-ml-auto tw-flex tw-items-center tw-gap-2">
+                <button class="tw-text-xs tw-font-medium tw-underline hover:tw-no-underline tw-text-coral-600 hover:tw-text-coral-700 tw-flex tw-items-center tw-gap-1">
+                  <svg class="tw-w-3 tw-h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                  </svg>
+                  Reportar error
+                </button>
+                <button class="tw-text-coral-600 hover:tw-text-coral-500">
                   <svg class="tw-h-4 tw-w-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                   </svg>
@@ -139,6 +173,7 @@ import { Button } from '@app/components/ui';
           <app-button variant="outline" (buttonClick)="onShowCustomPosition()">
             Posición Personalizada
           </app-button>
+          <!-- Botón para cerrar todas las notificaciones -->
           <app-button variant="alert" (buttonClick)="onDismissAll()">
             Cerrar Todas
           </app-button>
@@ -195,6 +230,7 @@ import { Button } from '@app/components/ui';
             <li><strong>Tipo:</strong> success, error, info, warning</li>
             <li><strong>Persistente:</strong> Requiere acción del usuario para cerrar</li>
             <li><strong>Con Acción:</strong> Incluye botones para acciones adicionales</li>
+            <li><strong>Reporte de Error:</strong> Para errores, incluye enlace para reportar el problema</li>
             <li><strong>Auto-close:</strong> Se cierra automáticamente después del tiempo especificado</li>
           </ul>
         </div>
@@ -262,7 +298,7 @@ import { Button } from '@app/components/ui';
             (click)="showNotificationWithAction()"
             class="btn-outline"
           >
-            Con Acción
+            Con Acción Legacy
           </button>
           <button
             (click)="showPersistentNotification()"
@@ -280,7 +316,7 @@ import { Button } from '@app/components/ui';
             (click)="dismissAllNotifications()"
             class="tw-bg-coral-100 tw-text-coral-700 tw-px-4 tw-py-2 tw-rounded-lg hover:tw-bg-coral-200 tw-transition-all tw-border tw-border-coral-300"
           >
-            Cerrar Todas
+            Cerrar Todas Legacy
           </button>
         </div>
       </div>
@@ -290,6 +326,8 @@ import { Button } from '@app/components/ui';
 export class NotificationsSectionComponent {
   @Output() showSuccess = new EventEmitter<void>();
   @Output() showError = new EventEmitter<void>();
+  @Output() showErrorWithReport = new EventEmitter<void>();
+  @Output() showErrorWithExternalLink = new EventEmitter<void>();
   @Output() showInfo = new EventEmitter<void>();
   @Output() showWarning = new EventEmitter<void>();
   @Output() showWithAction = new EventEmitter<void>();
@@ -317,6 +355,14 @@ export class NotificationsSectionComponent {
     this.showError.emit();
   }
 
+  onShowErrorWithReport() {
+    this.showErrorWithReport.emit();
+  }
+
+  onShowErrorWithExternalLink() {
+    this.showErrorWithExternalLink.emit();
+  }
+
   onShowInfo() {
     this.showInfo.emit();
   }
@@ -338,7 +384,7 @@ export class NotificationsSectionComponent {
   }
 
   onDismissAll() {
-    this.dismissAll.emit();
+    this.dismissAll.emit(); // Emitir evento para cerrar todas las notificaciones
   }
 
   onCloseToast() {

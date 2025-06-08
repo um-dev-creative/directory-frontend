@@ -212,15 +212,16 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
               <div class="tw-space-y-2">
                 <app-input label="Buscar categoría" [(ngModel)]="filters.categorySearch"></app-input>
                 <div class="tw-flex tw-flex-wrap tw-gap-2 tw-mt-2">
-                  <app-badge
-                    *ngFor="let cat of popularCategories"
-                    variant="secondary"
-                    size="sm"
-                    style="tw-cursor-pointer"
-                    (click)="selectCategory(cat)"
-                  >
-                    {{ cat }}
-                  </app-badge>
+                  @for (cat of popularCategories; track cat) {
+                    <app-badge
+                      variant="secondary"
+                      size="sm"
+                      style="tw-cursor-pointer"
+                      (click)="selectCategory(cat)"
+                    >
+                      {{ cat }}
+                    </app-badge>
+                  }
                 </div>
               </div>
             </div>
@@ -248,15 +249,16 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
             <div>
               <h4 class="tw-font-medium tw-text-beige-800 tw-mb-3">✨ Características</h4>
               <div class="tw-flex tw-flex-wrap tw-gap-2">
-                <app-badge
-                  *ngFor="let feature of availableFeatures"
-                  [variant]="isFeatureSelected(feature) ? 'primary' : 'secondary'"
-                  size="sm"
-                  style="tw-cursor-pointer"
-                  (click)="toggleFeature(feature)"
-                >
-                  {{ feature }}
-                </app-badge>
+                @for (feature of availableFeatures; track feature) {
+                  <app-badge
+                    [variant]="isFeatureSelected(feature) ? 'primary' : 'secondary'"
+                    size="sm"
+                    style="tw-cursor-pointer"
+                    (click)="toggleFeature(feature)"
+                  >
+                    {{ feature }}
+                  </app-badge>
+                }
               </div>
             </div>
           </div>
@@ -363,9 +365,11 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         </div>
         <div slot="content">
           <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
-            <div *ngFor="let image of galleryImages" class="tw-aspect-square tw-bg-beige-100 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
-              <span class="tw-text-beige-500">{{ image }}</span>
-            </div>
+            @for (image of galleryImages; track image) {
+              <div class="tw-aspect-square tw-bg-beige-100 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
+                <span class="tw-text-beige-500">{{ image }}</span>
+              </div>
+            }
           </div>
         </div>
         <div slot="footer">

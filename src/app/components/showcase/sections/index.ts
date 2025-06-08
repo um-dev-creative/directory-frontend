@@ -8,3 +8,6 @@ export { SkeletonsSectionComponent } from './skeletons-section.component';
 export { NotificationsSectionComponent } from './notifications-section.component';
 export { LoadingSectionComponent } from './loading-section.component';
 export { IconsSectionComponent } from './icons-section.component';
+export { AlertsSectionComponent } from './alerts-section.component';
+export { TooltipsSectionComponent } from './tooltips-section.component';
+export { AvatarsSectionComponent } from './avatars-section.component';

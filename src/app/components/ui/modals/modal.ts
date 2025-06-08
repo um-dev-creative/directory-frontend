@@ -10,61 +10,69 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
   imports: [CommonModule],
   template: `
     <!-- Modal Backdrop -->
-    <div
-      *ngIf="open"
-      class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-black/40 tw-backdrop-blur-sm tw-transition-opacity tw-duration-300"
-      (click)="onBackdropClick($event)"
-      [attr.aria-modal]="true"
-      [attr.role]="'dialog'"
-      [attr.aria-label]="ariaLabel"
-    >
-      <!-- Modal Dialog -->
+    @if (open) {
       <div
-        #modalDialog
-        [class]="modalClasses"
-        tabindex="-1"
-        (keydown)="onKeyDown($event)"
-        (click)="$event.stopPropagation()"
+        class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-black/40 tw-backdrop-blur-sm tw-transition-opacity tw-duration-300"
+        (click)="onBackdropClick($event)"
+        [attr.aria-modal]="true"
+        [attr.role]="'dialog'"
+        [attr.aria-label]="ariaLabel"
       >
-        <!-- Header -->
-        <div *ngIf="hasHeader" [class]="headerClasses">
-          <div class="tw-flex-1">
-            <ng-content select="[slot=header]"></ng-content>
+        <!-- Modal Dialog -->
+        <div
+          #modalDialog
+          [class]="modalClasses"
+          tabindex="-1"
+          (keydown)="onKeyDown($event)"
+          (click)="$event.stopPropagation()"
+        >
+          <!-- Header -->
+          @if (hasHeader) {
+            <div [class]="headerClasses">
+              <div class="tw-flex-1">
+                <ng-content select="[slot=header]"></ng-content>
+              </div>
+              @if (!disableClose) {
+                <button
+                  class="tw-ml-4 tw-p-1 tw-text-beige-500 hover:tw-text-coral-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-ring-offset-2 tw-rounded-md tw-transition-colors"
+                  (click)="close()"
+                  aria-label="Cerrar modal"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              }
+            </div>
+          }
+
+          <!-- Content -->
+          <div [class]="contentClasses" [style.max-height]="maxContentHeight">
+            <ng-content select="[slot=content],:not([slot])"></ng-content>
           </div>
-          <button
-            *ngIf="!disableClose"
-            class="tw-ml-4 tw-p-1 tw-text-beige-500 hover:tw-text-coral-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-ring-offset-2 tw-rounded-md tw-transition-colors"
-            (click)="close()"
-            aria-label="Cerrar modal"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
 
-        <!-- Content -->
-        <div [class]="contentClasses" [style.max-height]="maxContentHeight">
-          <ng-content select="[slot=content],:not([slot])"></ng-content>
-        </div>
+          <!-- Footer -->
+          @if (hasFooter) {
+            <div [class]="footerClasses">
+              <ng-content select="[slot=footer]"></ng-content>
+            </div>
+          }
 
-        <!-- Footer -->
-        <div *ngIf="hasFooter" [class]="footerClasses">
-          <ng-content select="[slot=footer]"></ng-content>
-        </div>
-
-        <!-- Loading Overlay -->
-        <div *ngIf="loading" class="tw-absolute tw-inset-0 tw-bg-white/80 tw-backdrop-blur-sm tw-flex tw-items-center tw-justify-center tw-z-10">
-          <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
-            <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
-              <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
-          </div>
+          <!-- Loading Overlay -->
+          @if (loading) {
+            <div class="tw-absolute tw-inset-0 tw-bg-white/80 tw-backdrop-blur-sm tw-flex tw-items-center tw-justify-center tw-z-10">
+              <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
+                  <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
+              </div>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    }
   `,
   styles: []
 })
