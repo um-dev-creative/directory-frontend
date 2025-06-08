@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Avatar } from '@app/components/ui';
+import { Avatar, BadgeComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-avatars-section',
   standalone: true,
-  imports: [CommonModule, Avatar],
+  imports: [CommonModule, Avatar, BadgeComponent],
   template: `
     <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
       <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Avatares</h2>
@@ -140,27 +140,48 @@ import { Avatar } from '@app/components/ui';
       <div class="tw-mb-8">
         <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Con Badge</h3>
         <div class="tw-flex tw-items-center tw-gap-4 tw-flex-wrap">
-          <app-avatar
-            size="lg"
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-            alt="Avatar con badge"
-            [showBadge]="true">
-            <div slot="badge" class="tw-w-full tw-h-full tw-bg-emerald-green-500 tw-rounded-full tw-border-2 tw-border-white"></div>
-          </app-avatar>
-          <app-avatar
-            size="lg"
-            initials="MB"
-            alt="Avatar con badge offline"
-            [showBadge]="true">
-            <div slot="badge" class="tw-w-full tw-h-full tw-bg-gray-400 tw-rounded-full tw-border-2 tw-border-white"></div>
-          </app-avatar>
-          <app-avatar
-            size="lg"
-            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
-            alt="Avatar con badge busy"
-            [showBadge]="true">
-            <div slot="badge" class="tw-w-full tw-h-full tw-bg-coral-500 tw-rounded-full tw-border-2 tw-border-white"></div>
-          </app-avatar>
+          <div class="tw-relative">
+            <app-avatar
+              size="lg"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+              alt="Avatar con badge online">
+            </app-avatar>
+            <app-badge
+              variant="success"
+              size="xs"
+              shape="pill"
+              class="tw-absolute tw-bottom-1 tw-right-1">
+              99+
+            </app-badge>
+          </div>
+          <div class="tw-relative">
+            <app-avatar
+              size="lg"
+              initials="MB"
+              alt="Avatar con badge offline">
+            </app-avatar>
+            <app-badge
+              variant="default"
+              size="xs"
+              shape="pill"
+              class="tw-absolute tw-bottom-1 tw-right-1">
+              99+
+            </app-badge>
+          </div>
+          <div class="tw-relative">
+            <app-avatar
+              size="lg"
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+              alt="Avatar con badge busy">
+            </app-avatar>
+            <app-badge
+              variant="error"
+              size="xs"
+              shape="pill"
+              class="tw-absolute tw-bottom-1 tw-right-1">
+              99+
+            </app-badge>
+          </div>
         </div>
       </div>
 
@@ -207,13 +228,19 @@ import { Avatar } from '@app/components/ui';
 &lt;/app-avatar&gt;
 
 &lt;!-- Avatar con badge --&gt;
-&lt;app-avatar
-  src="https://example.com/avatar.jpg"
-  alt="Usuario online"
-  size="lg"
-  [showBadge]="true"&gt;
-  &lt;div slot="badge" class="tw-w-full tw-h-full tw-bg-emerald-green-500 tw-rounded-full tw-border-2 tw-border-white"&gt;&lt;/div&gt;
-&lt;/app-avatar&gt;</code></pre>
+&lt;div class="tw-relative"&gt;
+  &lt;app-avatar
+    src="https://example.com/avatar.jpg"
+    alt="Usuario online"
+    size="lg"&gt;
+  &lt;/app-avatar&gt;
+  &lt;app-badge
+    variant="success"
+    [dot]="true"
+    size="xs"
+    class="tw-absolute tw-bottom-0 tw-right-0 tw-transform tw-translate-x-1/4 tw-translate-y-1/4"&gt;
+  &lt;/app-badge&gt;
+&lt;/div&gt;</code></pre>
       </div>
     </div>
   `

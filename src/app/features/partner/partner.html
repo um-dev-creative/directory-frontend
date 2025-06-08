@@ -1,4 +1,9 @@
-<main class="tw-relative tw-mx-auto">
+<!-- Show registration stepper for new partners -->
+@if (isRegistration) {
+  <app-partner-registration-stepper></app-partner-registration-stepper>
+} @else {
+  <!-- Show existing partner profile -->
+  <main class="tw-relative tw-mx-auto">
   <div class="tw-w-full tw-max-w-[1200px] tw-bg-center tw-mx-auto">
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
       <section class="tw-bg-gradient-to-br tw-from-blue-600 tw-to-blue-400 tw-text-white tw-py-6 tw-rounded-xl tw-shadow-lg tw-my-8">
@@ -148,3 +153,4 @@
     </div>
   </div>
 </main>
+}

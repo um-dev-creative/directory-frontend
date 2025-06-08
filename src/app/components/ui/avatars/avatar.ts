@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '@app/components/ui';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 export type AvatarVariant = 'circular' | 'rounded' | 'square';
@@ -7,7 +8,7 @@ export type AvatarVariant = 'circular' | 'rounded' | 'square';
 @Component({
   selector: 'app-avatar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   template: `
     <div [class]="avatarClasses">
       @if (src && !imageError) {
@@ -22,15 +23,12 @@ export type AvatarVariant = 'circular' | 'rounded' | 'square';
         <span [class]="initialsClasses">{{ displayInitials }}</span>
       } @else {
         <!-- Fallback icon -->
-        <svg [class]="iconClasses" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      }
-
-      @if (showBadge) {
-        <div [class]="badgeClasses">
-          <ng-content select="[slot=badge]"></ng-content>
-        </div>
+        <app-icon
+          [name]="iconName"
+          variant="solid"
+          [class]="iconClasses"
+          [attr.aria-label]="alt"
+        />
       }
     </div>
   `,
@@ -42,8 +40,8 @@ export class Avatar {
   @Input() initials: string = '';
   @Input() size: AvatarSize = 'md';
   @Input() variant: AvatarVariant = 'circular';
-  @Input() showBadge: boolean = false;
   @Input() loading: boolean = false;
+  @Input() iconName: string = 'user'; // Default fallback icon
 
   imageError = false;
 
@@ -99,21 +97,6 @@ export class Avatar {
     };
 
     return `tw-text-emerald-green-400 ${sizeClasses[this.size]}`;
-  }
-
-  get badgeClasses(): string {
-    const baseClasses = 'tw-absolute tw-bottom-0 tw-right-0 tw-transform tw-translate-x-1/4 tw-translate-y-1/4';
-
-    const sizeClasses = {
-      'xs': 'tw-w-2 tw-h-2',
-      'sm': 'tw-w-2.5 tw-h-2.5',
-      'md': 'tw-w-3 tw-h-3',
-      'lg': 'tw-w-4 tw-h-4',
-      'xl': 'tw-w-5 tw-h-5',
-      '2xl': 'tw-w-6 tw-h-6'
-    };
-
-    return `${baseClasses} ${sizeClasses[this.size]}`;
   }
 
   onImageError(): void {

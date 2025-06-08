@@ -17,9 +17,8 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'success' | 'warning
       (mouseenter)="onMouseEnter()"
       (mouseleave)="onMouseLeave()"
       (click)="onClick()"
-      (focus)="onFocus()"
-      (blur)="onBlur()"
-      [attr.tabindex]="trigger === 'focus' ? '0' : null"
+      (focusin)="onFocusIn($event)"
+      (focusout)="onFocusOut($event)"
     >
       <!-- Trigger Content -->
       <ng-content></ng-content>
@@ -116,10 +115,10 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
 
   private getPositionClasses(): string {
     const positionMap = {
-      top: 'tw-bottom-full tw-left-1/2 tw--translate-x-1/2 tw-mb-2',
-      bottom: 'tw-top-full tw-left-1/2 tw--translate-x-1/2 tw-mt-2',
-      left: 'tw-right-full tw-top-1/2 tw--translate-y-1/2 tw-mr-2',
-      right: 'tw-left-full tw-top-1/2 tw--translate-y-1/2 tw-ml-2'
+      top: 'tw-bottom-full tw-left-1/2 -tw-translate-x-1/2 tw-mb-2',
+      bottom: 'tw-top-full tw-left-1/2 -tw-translate-x-1/2 tw-mt-2',
+      left: 'tw-right-full tw-top-1/2 -tw-translate-y-1/2 tw-mr-2',
+      right: 'tw-left-full tw-top-1/2 -tw-translate-y-1/2 tw-ml-2'
     };
     return positionMap[this.position];
   }
@@ -151,10 +150,10 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
 
   private getArrowPositionClasses(): string {
     const positionMap = {
-      top: 'tw-top-full tw-left-1/2 tw--translate-x-1/2 tw--mt-1',
-      bottom: 'tw-bottom-full tw-left-1/2 tw--translate-x-1/2 tw--mb-1',
-      left: 'tw-left-full tw-top-1/2 tw--translate-y-1/2 tw--ml-1',
-      right: 'tw-right-full tw-top-1/2 tw--translate-y-1/2 tw--mr-1'
+      top: 'tw-top-full tw-left-1/2 -tw-translate-x-1/2 -tw-mt-1',
+      bottom: 'tw-bottom-full tw-left-1/2 -tw-translate-x-1/2 -tw-mb-1',
+      left: 'tw-left-full tw-top-1/2 -tw-translate-y-1/2 -tw-ml-1',
+      right: 'tw-right-full tw-top-1/2 -tw-translate-y-1/2 -tw-mr-1'
     };
     return positionMap[this.position];
   }
@@ -226,13 +225,13 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onFocus(): void {
+  onFocusIn(event: FocusEvent): void {
     if (this.trigger === 'focus' && !this.disabled) {
       this.showTooltip();
     }
   }
 
-  onBlur(): void {
+  onFocusOut(event: FocusEvent): void {
     if (this.trigger === 'focus' && !this.disabled) {
       this.hideTooltip();
     }

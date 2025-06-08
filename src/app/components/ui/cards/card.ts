@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient';
+export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient' | 'outlined-blue';
 export type CardSize = 'sm' | 'md' | 'lg' | 'xl';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
@@ -137,9 +137,9 @@ export class CardComponent {
       interactiveClasses.push(
         'tw-cursor-pointer',
         'focus:tw-outline-none',
-        'focus:tw-ring-2',
-        'focus:tw-ring-emerald-green-500',
-        'focus:tw-ring-offset-2'
+        // 'focus:tw-ring-2',
+        // 'focus:tw-ring-emerald-green-500',
+        // 'focus:tw-ring-offset-2'
       );
     }
 
@@ -178,7 +178,7 @@ export class CardComponent {
         ...(this.clickable ? [
           'hover:tw-shadow-xl',
           'hover:tw-shadow-gray-300/50',
-          'hover:tw--translate-y-1'
+          'hover:tw-translate-y-1'
         ] : [])
       ],
       outlined: [
@@ -186,7 +186,7 @@ export class CardComponent {
         'tw-border-gray-300',
         ...(this.clickable ? [
           'hover:tw-border-emerald-green-400',
-          'hover:tw-shadow-md'
+          'hover:tw-shadow-md',
         ] : [])
       ],
       interactive: [
@@ -197,7 +197,7 @@ export class CardComponent {
           'hover:tw-shadow-lg',
           'hover:tw-shadow-emerald-green-500/20',
           'hover:tw-border-emerald-green-300',
-          'hover:tw--translate-y-0.5',
+          'hover:tw-translate-y-0.5',
           'active:tw-translate-y-0',
           'active:tw-shadow-md'
         ] : [])
@@ -214,7 +214,20 @@ export class CardComponent {
         ...(this.clickable ? [
           'hover:tw-shadow-xl',
           'hover:tw-shadow-emerald-green-500/20',
-          'hover:tw--translate-y-1'
+          'hover:tw-translate-y-1'
+        ] : [])
+      ],
+      'outlined-blue': [
+        'tw-my-2',
+        'tw-border',
+        'tw-border-sky-blue-200',
+        // 'tw-border-sky-300',
+        // 'tw-shadow-lg',
+        'tw-bg-gradient-sky',
+        ...(this.clickable ? [
+          'hover:tw-border-sky-blue-400',
+          'hover:tw-bg-sky-blue-50/50',
+          'hover:tw-shadow-md'
         ] : [])
       ]
     };
@@ -259,7 +272,7 @@ export class CardComponent {
   get titleClasses(): string {
     const baseClasses = [
       'tw-text-lg',
-      'tw-font-semibold',
+      'tw-font-bold',
       'tw-text-gray-900',
       'tw-mb-1',
       'tw-leading-tight'
@@ -270,9 +283,10 @@ export class CardComponent {
 
   get subtitleClasses(): string {
     const baseClasses = [
-      'tw-text-sm',
+      'tw-text-md',
+      'tw-font-semibold',
       'tw-text-gray-600',
-      'tw-mb-3',
+      'tw-mb-2',
       'tw-leading-relaxed'
     ];
 

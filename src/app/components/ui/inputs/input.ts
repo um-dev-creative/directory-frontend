@@ -144,13 +144,13 @@ export class InputComponent implements ControlValueAccessor {
       'tw-block',
       'tw-text-sm',
       'tw-font-medium',
-      'tw-mb-2',
+      'tw-my-2',
       'tw-transition-colors'
     ];
 
     const variantClasses = {
-      default: ['tw-text-gray-700'],
-      success: ['tw-text-emerald-green-700'],
+      default: ['tw-text-emerald-green-700'],
+      success: ['tw-text-success-600'],
       error: ['tw-text-coral-600'],
       info: ['tw-text-sky-blue-700']
     };
@@ -166,6 +166,7 @@ export class InputComponent implements ControlValueAccessor {
       'tw-transition-all',
       'tw-duration-200',
       'tw-ease-in-out',
+      'placeholder:tw-text-gray-400',
       'focus:tw-outline-none',
       'focus:tw-ring-2',
       'focus:tw-ring-offset-1',
@@ -179,7 +180,7 @@ export class InputComponent implements ControlValueAccessor {
     // Size classes
     const sizeClasses = {
       sm: ['tw-text-sm', 'tw-px-3', 'tw-py-2', 'tw-h-9'],
-      md: ['tw-text-sm', 'tw-px-4', 'tw-py-3', 'tw-h-11'],
+      md: ['tw-text-md', 'tw-px-4', 'tw-py-3', 'tw-h-11'],
       lg: ['tw-text-base', 'tw-px-5', 'tw-py-4', 'tw-h-13']
     };
 
@@ -189,7 +190,6 @@ export class InputComponent implements ControlValueAccessor {
         'tw-border-gray-300',
         'tw-bg-white',
         'tw-text-gray-900',
-        'placeholder:tw-text-gray-500',
         'hover:tw-border-emerald-green-400',
         'focus:tw-border-emerald-green-500',
         'focus:tw-ring-emerald-green-500/20'
@@ -198,7 +198,6 @@ export class InputComponent implements ControlValueAccessor {
         'tw-border-emerald-green-500',
         'tw-bg-white',
         'tw-text-gray-900',
-        'placeholder:tw-text-gray-500',
         'focus:tw-border-emerald-green-600',
         'focus:tw-ring-emerald-green-500/20'
       ],
@@ -206,7 +205,6 @@ export class InputComponent implements ControlValueAccessor {
         'tw-border-coral-500',
         'tw-bg-white',
         'tw-text-gray-900',
-        'placeholder:tw-text-gray-500',
         'focus:tw-border-coral-600',
         'focus:tw-ring-coral-500/20'
       ],
@@ -214,7 +212,6 @@ export class InputComponent implements ControlValueAccessor {
         'tw-border-sky-blue-400',
         'tw-bg-white',
         'tw-text-gray-900',
-        'placeholder:tw-text-gray-500',
         'focus:tw-border-sky-blue-500',
         'focus:tw-ring-sky-blue-500/20'
       ]
