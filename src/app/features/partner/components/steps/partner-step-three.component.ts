@@ -42,8 +42,8 @@ interface Country {
           [options]="countryOptions"
           [required]="true"
           formControlName="country"
-          [variant]="locationForm.get('country')?.invalid && locationForm.get('country')?.touched ? 'error' : 'default'"
-          [errorMessage]="locationForm.get('country')?.invalid && locationForm.get('country')?.touched ? 'Por favor selecciona un país' : ''"
+          [variant]="getFieldVariant('country')"
+          [errorMessage]="getFieldError('country')"
           helperText="Selecciona el país donde opera tu negocio principal">
         </app-select>
       </div>
@@ -160,6 +160,21 @@ export class PartnerStepThreeComponent {
     });
   }
 
+  getFieldVariant(fieldName: string): 'default' | 'success' | 'error' | 'info' {
+    const field = this.locationForm.get(fieldName);
+    return field && field.invalid && field.touched ? 'error' : 'default';
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.locationForm.get(fieldName);
+    if (field && field.invalid && field.touched) {
+      if (field.errors?.['required']) {
+        return 'Por favor selecciona un país';
+      }
+    }
+    return '';
+  }
+
   onSubmit(): void {
     if (this.locationForm.valid) {
       const formData: StepThreeData = {
@@ -169,9 +184,7 @@ export class PartnerStepThreeComponent {
       this.stepCompleted.emit(formData);
     } else {
       // Mark all fields as touched to show validation errors
-      Object.keys(this.locationForm.controls).forEach(key => {
-        this.locationForm.get(key)?.markAsTouched();
-      });
+      this.locationForm.markAllAsTouched();
     }
   }
 

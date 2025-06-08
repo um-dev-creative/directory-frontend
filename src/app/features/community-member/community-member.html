@@ -1,0 +1,293 @@
+<div class="tw-min-h-screen tw-bg-gray-50 tw-py-8">
+  <div class="tw-max-w-2xl tw-mx-auto tw-px-4">
+    <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-mb-5 tw-text-emerald-green-700">Perfil</h2>
+    <!-- Breadcrumb -->
+    <nav class="tw-text-sm tw-mb-5 tw-text-center">
+      <span class="tw-text-beige-600">Configuración de Cuenta</span>
+      <span class="tw-mx-2">&gt;</span>
+      <span class="tw-text-emerald-green-700 tw-font-medium">Perfil</span>
+    </nav>
+
+    <!-- Avatar Section -->
+    <div class="tw-flex tw-flex-col tw-items-center tw-mb-4 tw-bg-gradient-primary tw-text-white tw-py-8 tw-rounded-xl tw-shadow-soft">
+      <div class="tw-relative tw-mb-4">
+        <app-avatar
+          [src]="avatarPreview || profileData.avatar"
+          [initials]="getAvatarDisplay()"
+          [alt]="'Avatar de ' + profileData.displayName"
+          size="2xl"
+          variant="circular"
+          [loading]="uploadingAvatar">
+        </app-avatar>
+
+        @if (hasAvatar() || avatarPreview) {
+          <button
+            type="button"
+            (click)="removeAvatar()"
+            class="tw-absolute tw--top-2 tw--right-2 tw-bg-coral-500 tw-text-white tw-rounded-full tw-p-1.5 hover:tw-bg-coral-600 tw-transition-colors tw-shadow-md"
+            aria-label="Eliminar avatar">
+            <svg class="tw-w-3 tw-h-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        }
+      </div>
+
+      <!-- Hidden file input -->
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onAvatarSelect($event)"
+        #avatarInput
+        class="tw-hidden" />
+
+      <app-button
+        variant="secondary"
+        size="sm"
+        [disabled]="uploadingAvatar"
+        (buttonClick)="avatarInput.click()">
+        @if (uploadingAvatar) {
+          Subiendo...
+        } @else {
+          Actualizar Foto
+        }
+      </app-button>
+    </div>
+
+    <app-card variant="elevated" size="full">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="tw-space-y-8">
+        <!-- Basic Information -->
+        <div class="tw-space-y-6">
+          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700 tw-mb-6">Información Básica</h3>
+          <app-input
+            label="Dirección de Correo Electrónico"
+            type="email"
+            [variant]="getFieldVariant('email')"
+            [errorMessage]="getFieldError('email')"
+            formControlName="email"
+            style="border: none; padding: 0; background: transparent; ">
+          </app-input>
+          @if (profileData.emailConfirmed) {
+            <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800" style="margin-top: 5px;">
+              <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              Verificado
+            </span>
+          }
+          @else {
+            <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-coral-100 tw-text-coral-800" style="margin-top: 5px;">
+              <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+                No verificado
+              </span>
+          }
+
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+            <app-input
+              label="Nombre"
+              placeholder="Tu nombre"
+              [required]="true"
+              [variant]="getFieldVariant('firstName')"
+              [errorMessage]="getFieldError('firstName')"
+              formControlName="firstName">
+            </app-input>
+
+            <app-input
+              label="Apellido"
+              placeholder="Tu apellido"
+              [required]="true"
+              [variant]="getFieldVariant('lastName')"
+              [errorMessage]="getFieldError('lastName')"
+              formControlName="lastName">
+            </app-input>
+          </div>
+
+          <app-input
+            label="Nombre para Mostrar"
+            placeholder="Como quieres ser conocido"
+            [required]="true"
+            [variant]="getFieldVariant('displayName')"
+            [helperText]="'Tu Nombre para Mostrar es como quieres ser conocido en la comunidad LatinHub.'"
+            [errorMessage]="getFieldError('displayName')"
+            formControlName="displayName">
+          </app-input>
+          <!-- span class="tw-text-xs tw-text-beige-600 tw-block" style="margin-top: 0;">Tu Nombre para Mostrar es como quieres ser conocido en la comunidad LatinHub.</span-->
+        </div>
+
+        <!-- Contact Information -->
+        <div class="tw-space-y-6">
+          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700">Información de Contacto</h3>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+            <app-input
+              label="Número de teléfono"
+              type="tel"
+              placeholder="+58 424 123 4567"
+              [variant]="getFieldVariant('phone')"
+              [errorMessage]="getFieldError('phone')"
+              formControlName="phone"
+              style="border: none; padding: 0; background: transparent;">
+            </app-input>
+
+            <app-input
+              label="Fecha de nacimiento"
+              type="text"
+              placeholder="DD/MM/YYYY"
+              [variant]="getFieldVariant('birthDate')"
+              [errorMessage]="getFieldError('birthDate')"
+              formControlName="birthDate"
+              style="border: none; padding: 0; background: transparent;">
+            </app-input>
+          </div>
+        </div>
+
+        <!-- Notification Preferences -->
+        <div class="tw-space-y-6">
+          <h3 class="tw-text-lg tw-font-semibold tw-border-b  tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700">Preferencias de Notificaciones</h3>
+          <div class="tw-space-y-4">
+            <div class="tw-flex tw-items-center tw-justify-between tw-py-2 tw-bg-beige-50 tw-px-4 tw-rounded-lg">
+              <div>
+                <h4 class="tw-font-medium tw-text-emerald-green-700">Ofertas y Descuentos</h4>
+                <p class="tw-text-sm tw-text-beige-600">Recibe notificaciones sobre nuevas ofertas y descuentos especiales</p>
+              </div>
+              <div class="tw-flex tw-gap-4">
+                <label class="tw-flex tw-items-center">
+                  <input
+                    type="checkbox"
+                    class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-emerald-green-500 tw-border-emerald-green-300 focus:tw-ring-emerald-green-200"
+                    formControlName="notificationsEmail" />
+                  <span class="tw-ml-2 tw-text-sm tw-text-emerald-green-700">Correo</span>
+                </label>
+                <label class="tw-flex tw-items-center">
+                  <input
+                    type="checkbox"
+                    class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-sky-blue-300 tw-border-sky-blue-200 focus:tw-ring-sky-blue-100"
+                    formControlName="notificationsSms" />
+                  <span class="tw-ml-2 tw-text-sm tw-text-sky-blue-700">SMS</span>
+                </label>
+              </div>
+            </div>
+            <div class="tw-flex tw-items-center tw-justify-between tw-py-2 tw-bg-beige-50 tw-px-4 tw-rounded-lg">
+              <div>
+                <h4 class="tw-font-medium tw-text-emerald-green-700">Actualizaciones de Cuenta</h4>
+                <p class="tw-text-sm tw-text-beige-600">Actualizaciones importantes sobre tu cuenta</p>
+              </div>
+              <div class="tw-flex tw-gap-4">
+                <label class="tw-flex tw-items-center">
+                  <input type="checkbox" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-beige-400 tw-bg-beige-200 tw-cursor-not-allowed tw-border-beige-300" [checked]="true" disabled />
+                  <span class="tw-ml-2 tw-text-sm tw-text-beige-500">Correo</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy & Legal -->
+        <div class="tw-space-y-6">
+          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700">Privacidad y Legal</h3>
+          <div class="tw-bg-gradient-soft tw-p-4 tw-rounded-lg tw-flex tw-items-start tw-gap-3 tw-border tw-border-emerald-green-100">
+            <input
+              type="checkbox"
+              id="privacy"
+              class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-emerald-green-500 tw-border-emerald-green-300 focus:tw-ring-emerald-green-200 tw-mt-1"
+              formControlName="privacyOptOut" />
+            <div class="tw-flex-1">
+              <label for="privacy" class="tw-font-semibold tw-block tw-text-emerald-green-700">No vender mi información personal</label>
+              <span class="tw-text-xs tw-text-beige-600">Por ley puedes optar por no participar, pero no vendemos, intercambiamos o alquilamos la información personal de los usuarios a terceros.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="tw-flex tw-justify-between tw-items-center tw-pt-6">
+          <app-button
+            type="button"
+            variant="ghost-alert"
+            (buttonClick)="deleteAccount()">
+            Eliminar Cuenta
+          </app-button>
+
+          <app-button
+            type="submit"
+            variant="primary"
+            [disabled]="profileForm.invalid"
+            [loading]="isSubmitting">
+            Guardar Cambios
+          </app-button>
+        </div>
+      </form>
+    </app-card>
+
+    <!-- Form Status - Development Section (Temporal) -->
+    <div class="tw-mt-8 tw-p-4 tw-bg-gray-50 tw-rounded-lg tw-border tw-border-gray-200">
+      <h3 class="tw-font-semibold tw-mb-3 tw-text-gray-800">Estado del Formulario (Desarrollo):</h3>
+      <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4 tw-text-sm">
+        <div>
+          <p><strong>Válido:</strong> @if (profileForm.valid) { Sí } @else { No }</p>
+          <p><strong>Tocado:</strong> @if (profileForm.touched) { Sí } @else { No }</p>
+          <p><strong>Sucio:</strong> @if (profileForm.dirty) { Sí } @else { No }</p>
+        </div>
+        <div>
+          <p><strong>Estado:</strong> {{ profileForm.status }}</p>
+          <p><strong>Pendiente:</strong> @if (profileForm.pending) { Sí } @else { No }</p>
+          <p><strong>Enviando:</strong> @if (isSubmitting) { Sí } @else { No }</p>
+        </div>
+      </div>
+
+      <div class="tw-mt-4">
+        <p class="tw-font-medium tw-mb-2">Valores del Formulario:</p>
+        <pre class="tw-text-xs tw-bg-white tw-p-3 tw-rounded tw-border tw-overflow-auto tw-max-h-40">{{ getFormValues() }}</pre>
+      </div>
+
+      @if (!profileForm.valid) {
+        <div class="tw-mt-4">
+          <p class="tw-font-medium tw-mb-2 tw-text-red-600">Errores del Formulario:</p>
+          <pre class="tw-text-xs tw-bg-red-50 tw-p-3 tw-rounded tw-border tw-border-red-200 tw-overflow-auto tw-max-h-32">{{ getFormErrors() }}</pre>
+        </div>
+      }
+    </div>
+
+    <!-- Support Section -->
+    <div class="tw-text-center tw-pt-6 tw-border-t tw-border-gray-200 tw-mt-8">
+      <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con tu perfil?</p>
+      <app-report-problem
+        [options]="reportProblemOptions"
+        variant="link"
+        size="md"
+        [showIcon]="true"
+        text="Reportar un problema">
+      </app-report-problem>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación de Cuenta -->
+    <app-modal
+      [(open)]="deleteAccountModalOpen"
+      size="sm"
+      variant="centered"
+      [hasHeader]="true"
+      [hasFooter]="true"
+    >
+      <div slot="header">
+        <h3 class="tw-text-lg tw-font-semibold tw-text-coral-700">¿Eliminar Cuenta?</h3>
+      </div>
+      <div slot="content">
+        <p class="tw-text-gray-700">
+          Esta acción eliminará permanentemente tu cuenta y todos los datos asociados.
+          <strong>Esta acción no se puede deshacer.</strong>
+        </p>
+        <p class="tw-text-sm tw-text-gray-600 tw-mt-2">
+          ¿Estás seguro de que quieres continuar?
+        </p>
+      </div>
+      <div slot="footer">
+        <app-button variant="primary" (buttonClick)="cancelDeleteAccount()">
+          Cancelar
+        </app-button>
+        <app-button variant="alert-outline" (buttonClick)="confirmDeleteAccount()">
+          Eliminar Cuenta
+        </app-button>
+      </div>
+    </app-modal>
+  </div>
+</div>

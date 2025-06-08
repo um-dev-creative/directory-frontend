@@ -4,7 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { StepTwoData } from '../partner-registration-stepper.component';
 import { PartnerRegistrationService } from '../../services/partner-registration.service';
-import { Button, CardComponent, Avatar, IconComponent } from '../../../../components/ui';
+import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-partner-step-two',
@@ -18,7 +18,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
           Imagen de tu Negocio
         </h2>
         <p class="tw-text-beige-600">
-          Agrega un avatar y logo para personalizar tu perfil (opcional)
+          Agrega un avatar para personalizar el perfil de tu negocio
         </p>
       </div>
 
@@ -56,7 +56,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
 
             <!-- Logo Upload Button -->
             <div class="tw-flex tw-justify-center">
-              <div class="tw-w-full tw-max-w-xs tw-mt-0">
+              <div class="tw-w-full tw-max-w-xs tw-mt-0 tw-flex tw-justify-center">
                 <input
                   #logoFileInput
                   type="file"
@@ -67,10 +67,8 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
                 />
                 <app-button
                   variant="info"
-                  size="md"
                   [disabled]="uploadingLogo"
                   [loading]="uploadingLogo"
-                  [fullWidth]="true"
                   (buttonClick)="logoFileInput.click()"
                 >
                   <app-icon name="image" size="sm" class="tw-mr-2"></app-icon>
@@ -98,7 +96,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
-                <span><strong>Logo:</strong> Formato horizontal preferido, fondo transparente ideal</span>
+                <span><strong>Logo:</strong> Formato horizontal preferido</span>
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
@@ -106,7 +104,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
-                <span><strong>Formatos aceptados:</strong> JPG, PNG, GIF</span>
+                <span><strong>Formatos aceptados:</strong> JPG, PNG</span>
               </li>
             </ul>
           </div>

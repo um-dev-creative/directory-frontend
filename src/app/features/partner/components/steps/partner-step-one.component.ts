@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { StepOneData } from '../partner-registration-stepper.component';
 import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent } from '@app/components/ui';
@@ -8,9 +8,9 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
 @Component({
   selector: 'app-partner-step-one',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
   template: `
-    <div class="tw-space-y-6">
+    <form [formGroup]="reactiveForm" (ngSubmit)="onContinue()" class="tw-space-y-6">
       <!-- Step Header -->
       <div class="tw-text-center tw-pb-4 tw-border-b tw-border-beige-200">
         <h2 class="tw-text-xl tw-font-semibold tw-text-emerald-green-700 tw-mb-2">
@@ -28,10 +28,9 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
           label="Nombre del Negocio"
           placeholder="Ej: Restaurante El Buen Sabor"
           [required]="true"
-          [disabled]="isLoading"
-          [variant]="showErrors && !formData.name ? 'error' : 'default'"
-          [errorMessage]="showErrors && !formData.name ? 'El nombre del negocio es requerido' : ''"
-          [(ngModel)]="formData.name"
+          [variant]="getFieldVariant('name')"
+          [errorMessage]="getFieldError('name')"
+          formControlName="name"
         />
 
         <!-- Business Description -->
@@ -39,14 +38,13 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
           label="Descripción del Negocio"
           placeholder="Describe brevemente tu negocio, productos o servicios que ofreces..."
           [required]="true"
-          [disabled]="isLoading"
-          [variant]="showErrors && !formData.description ? 'error' : 'default'"
-          [errorMessage]="showErrors && !formData.description ? 'La descripción del negocio es requerida' : ''"
+          [variant]="getFieldVariant('description')"
+          [errorMessage]="getFieldError('description')"
           [helperText]="'Mínimo 20 caracteres, máximo 500 caracteres'"
           [rows]="4"
           [maxLength]="500"
           [showCharacterCount]="true"
-          [(ngModel)]="formData.description"
+          formControlName="description"
         />
       </div>
 
@@ -68,42 +66,63 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
       <!-- Action Buttons -->
       <div class="tw-flex tw-justify-end tw-pt-4 tw-border-t tw-border-beige-200">
         <app-button
+          type="submit"
           variant="primary"
           size="lg"
-          [disabled]="isLoading"
+          [disabled]="isLoading || reactiveForm.invalid"
           [loading]="isLoading"
-          (buttonClick)="onContinue()"
         >
           Continuar
         </app-button>
       </div>
-    </div>
+    </form>
   `
 })
 export class PartnerStepOneComponent {
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
-  formData: StepOneData = {
-    name: '',
-    description: ''
-  };
+  reactiveForm: FormGroup;
 
-  showErrors = false;
+  constructor(private fb: FormBuilder) {
+    this.reactiveForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]]
+    });
+  }
 
   onContinue(): void {
-    this.showErrors = true;
-
-    if (this.isFormValid()) {
-      this.stepCompleted.emit(this.formData);
+    if (this.reactiveForm.valid) {
+      const formData: StepOneData = {
+        name: this.reactiveForm.get('name')?.value,
+        description: this.reactiveForm.get('description')?.value
+      };
+      this.stepCompleted.emit(formData);
+    } else {
+      this.reactiveForm.markAllAsTouched();
     }
   }
 
-  private isFormValid(): boolean {
-    return !!(
-      this.formData.name?.trim() &&
-      this.formData.description?.trim() &&
-      this.formData.description.trim().length >= 20
-    );
+  getFieldVariant(fieldName: string): 'default' | 'success' | 'error' | 'info' {
+    const field = this.reactiveForm.get(fieldName);
+    return field && field.invalid && field.touched ? 'error' : 'default';
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.reactiveForm.get(fieldName);
+    if (field && field.invalid && field.touched) {
+      if (field.errors?.['required']) {
+        return fieldName === 'name'
+          ? 'El nombre del negocio es requerido'
+          : 'La descripción del negocio es requerida';
+      }
+      if (field.errors?.['minlength']) {
+        return 'La descripción debe tener al menos 20 caracteres';
+      }
+      if (field.errors?.['maxlength']) {
+        return 'La descripción no puede exceder 500 caracteres';
+      }
+    }
+    return '';
   }
 }

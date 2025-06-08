@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'alert' | 'success' | 'info' | 'alert-outline';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'ghost-alert'| 'alert' | 'success' | 'info' | 'alert-outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
@@ -159,6 +159,16 @@ export class Button {
         'active:tw-bg-coral-700',
         'active:tw-scale-95'
       ],
+      'ghost-alert': [
+        'tw-bg-transparent',
+        'tw-text-coral-600',
+        'tw-border-transparent',
+        'hover:tw-bg-coral-50',
+        'hover:tw-text-coral-700',
+        'hover:tw-scale-105',
+        'focus:tw-ring-coral-500',
+        'active:tw-bg-coral-100',
+        'active:tw-scale-95'],
       'alert-outline': [
         'tw-bg-transparent',
         'tw-text-coral-600',

@@ -8,6 +8,7 @@ import { PartnerStepOneComponent } from './steps/partner-step-one.component';
 import { PartnerStepTwoComponent } from './steps/partner-step-two.component';
 import { PartnerStepThreeComponent, StepThreeData } from './steps/partner-step-three.component';
 import { CardComponent } from '../../../components/ui';
+import { ReportProblem, ReportProblemOptions } from '../../../layout/report-problem/report-problem';
 
 export interface StepOneData {
   name: string;
@@ -27,7 +28,8 @@ export interface StepTwoData {
     CardComponent,
     PartnerStepOneComponent,
     PartnerStepTwoComponent,
-    PartnerStepThreeComponent
+    PartnerStepThreeComponent,
+    ReportProblem
   ],
   template: `
     <div class="tw-min-h-screen tw-bg-gray-50 tw-py-8">
@@ -124,6 +126,18 @@ export interface StepTwoData {
             </div>
           </div>
         }
+
+        <!-- Support Section -->
+        <div class="tw-text-center tw-pt-6 tw-border-t tw-border-gray-200 tw-mt-8">
+          <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con el registro de tu negocio?</p>
+          <app-report-problem
+            [options]="reportProblemOptions"
+            variant="link"
+            size="md"
+            [showIcon]="true"
+            text="Reportar un problema">
+          </app-report-problem>
+        </div>
       </div>
     </div>
   `
@@ -136,6 +150,16 @@ export class PartnerRegistrationStepperComponent implements OnDestroy {
   loadingMessage = '';
 
   partnerId: string | null = null;
+
+  reportProblemOptions: ReportProblemOptions = {
+    googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessRegistrationStepper',
+    contextData: {
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      currentPath: '/partner/register',
+      component: 'PartnerRegistrationStepper'
+    }
+  };
 
   steps = [
     {

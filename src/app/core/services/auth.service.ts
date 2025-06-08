@@ -264,7 +264,7 @@ export class AuthService extends ServiceTemplate {
    * Update user profile
    */
   updateProfile(userData: Partial<User>): Observable<boolean> {
-    return this.httpService.put<User>('/auth/profile', userData).pipe(
+    return this.httpService.put<User>('/auth/member', userData).pipe(
       tap(updatedUser => {
         this.storageService.setLocal('user_info', updatedUser);
         this.setAuthenticatedUser(updatedUser);
