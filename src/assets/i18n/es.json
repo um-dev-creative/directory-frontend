@@ -66,6 +66,14 @@
               "title": "Contáctanos",
               "tooltip": "Comunícate con nosotros"
             },
+            "blog": {
+              "title": "Blog",
+              "tooltip": "Comunícate con nosotros"
+            },
+            "about": {
+              "title": "Acerca de",
+              "tooltip": "Comunícate con nosotros"
+            },
             "help": {
               "title": "Ayuda",
               "tooltip": "Obtener asistencia"
