@@ -18,7 +18,25 @@
     "title2": "Site",
     "user_icon": {
       "menu": {
-        "business": {
+        "partner": {
+          "submenu": {
+            "back": {
+              "title": "Mi negocio",
+              "tooltip": "Regresar al menú principal"
+            },
+            "settings": {
+              "title": "Configuración",
+              "tooltip": "Configuración de mi negocio"
+            },
+            "offers": {
+              "title": "Promociones",
+              "tooltip": "Mis promociones"
+            },
+            "products": {
+              "title": "Productos",
+              "tooltip": "Mis productos"
+            }
+          },
           "title": "Mi negocio",
           "tooltip": "Mis negocios administrados"
         },
@@ -30,9 +48,9 @@
           "title": "Perfil",
           "tooltip": "Ajustes para perfil de usuario"
         },
-        "saved": {
-          "title": "Guardado",
-          "tooltip": "Sitios guardados"
+        "favorites": {
+          "title": "Favoritos",
+          "tooltip": "Mis favoritos"
         },
         "signed": {
           "title": "Autenticado como",

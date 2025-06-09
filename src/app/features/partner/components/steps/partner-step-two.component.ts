@@ -39,18 +39,6 @@ import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui
                   [loading]="uploadingLogo"
                   iconName="business">
                 </app-avatar>
-                @if (logoPreview) {
-                  <button
-                    type="button"
-                    (click)="removeLogo()"
-                    class="tw-absolute tw--top-2 tw--right-2 tw-bg-coral-500 tw-text-white tw-rounded-full tw-p-1.5 hover:tw-bg-coral-600 tw-transition-colors tw-shadow-md"
-                    aria-label="Eliminar logo"
-                  >
-                    <svg class="tw-w-4 tw-h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                }
               </div>
             </div>
 
@@ -213,7 +201,6 @@ export class PartnerStepTwoComponent implements OnDestroy {
           error: (error: any) => {
             console.error('Error uploading logo:', error);
             this.uploadingLogo = false;
-            this.removeLogo();
           }
         });
     }
@@ -222,11 +209,6 @@ export class PartnerStepTwoComponent implements OnDestroy {
   removeAvatar(): void {
     this.avatarPreview = null;
     this.formData.avatar = undefined;
-  }
-
-  removeLogo(): void {
-    this.logoPreview = null;
-    this.formData.logo = undefined;
   }
 
   onPrevious(): void {

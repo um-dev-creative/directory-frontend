@@ -178,15 +178,9 @@ export class CommunityMember implements OnInit, OnDestroy {
           error: (error: any) => {
             console.error('Error uploading avatar:', error);
             this.uploadingAvatar = false;
-            this.removeAvatar();
           }
         });
     }
-  }
-
-  removeAvatar(): void {
-    this.avatarPreview = null;
-    this.profileData.avatar = '';
   }
 
   // Métodos para el formulario reactivo
