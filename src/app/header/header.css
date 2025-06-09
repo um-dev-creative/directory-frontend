@@ -1,10 +1,68 @@
+/* Header component styles with brand colors */
 .logo img {
-  @apply tw-h-8 tw-w-auto;
+  height: 2rem;
+  width: auto;
+  transition: transform 0.2s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Menu items hover effects using brand colors */
+.menu-item {
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.menu-item:hover {
+  background: var(--emerald-100);
+  color: var(--emerald-800);
+  transform: translateX(4px);
+}
+
+.menu-item svg {
+  transition: color 0.3s ease;
+}
+
+.menu-item:hover svg {
+  color: var(--emerald-600);
+}
+
+/* Header background with brand colors */
+.header-bg-opaque {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-soft);
+}
+
+.header-bg-transparent {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+}
+
+/* Menu drawer styles */
+.menu-drawer {
+  background: var(--gradient-soft);
+  box-shadow: var(--shadow-soft-lg);
+}
+
+/* Button brand styles */
+.btn-brand-hamburger {
+  background-color: var(--emerald-50);
+  color: var(--emerald-600);
+  transition: all 0.3s ease;
+}
+
+.btn-brand-hamburger:hover {
+  background-color: var(--emerald-100);
+  color: var(--emerald-700);
+  transform: scale(1.05);
 }
 
 /* Versión más pequeña en pantallas móviles */
-@media (max-width: 640px) { /* Breakpoint móvil */
+@media (max-width: 640px) {
   .logo img {
-    @apply tw-h-4; /* Altura mínima para legibilidad */
+    height: 1rem; /* Altura mínima para legibilidad */
   }
 }

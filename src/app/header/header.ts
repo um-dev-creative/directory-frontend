@@ -189,7 +189,9 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get dynamicClasses(): string {
-    return this.isOpaque ? 'tw-bg-white' : 'tw-bg-white/60';
+    return this.isOpaque 
+      ? 'tw-bg-white tw-shadow-lg' 
+      : 'tw-bg-white/90 tw-shadow-md';
   }
 
   get layoutClasses(): string {

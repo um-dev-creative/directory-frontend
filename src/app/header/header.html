@@ -9,8 +9,9 @@
   </div>
 </div>
 <header
-  class="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-40 tw-flex tw-items-center tw-justify-between tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-py-2 sm:tw-py-3 tw-shadow-md tw-backdrop-blur-sm tw-border-b tw-border-slate-200"
+  class="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-40 tw-flex tw-items-center tw-justify-between tw-px-4 sm:tw-px-6 lg:tw-px-8 tw-py-2 sm:tw-py-3 tw-shadow-lg tw-backdrop-blur-sm tw-border-b"
   [ngClass]="[dynamicClasses, layoutClasses]"
+  style="border-color: var(--emerald-200); box-shadow: var(--shadow-soft);"
 >
   <!-- Logo -->
   <div class="logo">
@@ -36,7 +37,8 @@
       @if (validateHeader(HeaderType.USER_AUTH_HEADER)) {
         <div class="tw-relative">
           <button
-            class="tw-relative tw-flex tw-rounded-full tw-bg-gray-100 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-300"
+            class="tw-relative tw-flex tw-rounded-full focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-300"
+            style="background-color: var(--emerald-50);"
             [attr.aria-label]="'Open ' + (isMobile ? 'mobile' : 'desktop') + ' menu'"
             (click)="openMenu()"
           >
@@ -78,12 +80,14 @@
         </app-button>
         <div class="tw-relative">
           <button
-            class="tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-rounded-full tw-p-2 hover:tw-bg-gray-200 focus:tw-ring-2 focus:tw-ring-gray-300 focus:tw-outline-none tw-transition-colors"
+            class="tw-flex tw-items-center tw-justify-center tw-rounded-full tw-p-2 focus:tw-ring-2 focus:tw-outline-none tw-transition-colors hover:tw-scale-105"
+            style="background-color: var(--emerald-50); color: var(--emerald-600);"
             [attr.aria-label]="'Open ' + (isMobile ? 'mobile' : 'desktop') + ' menu'"
             (click)="openMenu()"
           >
             <svg
-              class="tw-w-6 tw-h-6 tw-text-gray-600 hover:tw-text-gray-800 tw-transition-colors"
+              class="tw-w-6 tw-h-6 tw-transition-colors"
+              style="color: var(--emerald-600);"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
@@ -123,17 +127,19 @@
     - Con [ngClass], aplicamos 'tw-translate-x-0' si isMobileMenuOpen es true.
 -->
 <div
-  class="tw-fixed tw-inset-y-0 tw-right-0 tw-z-50 tw-w-80 tw-max-w-full tw-bg-white tw-shadow-lg tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out tw-flex tw-flex-col tw-translate-x-full"
+  class="tw-fixed tw-inset-y-0 tw-right-0 tw-z-50 tw-w-80 tw-max-w-full tw-shadow-xl tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out tw-flex tw-flex-col tw-translate-x-full"
+  style="background: var(--gradient-soft); box-shadow: var(--shadow-soft-lg);"
   [class]="{
       'tw-translate-x-0': isMenuOpen,
       'tw-translate-x-full': !isMenuOpen
     }">
-  <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-border-b tw-border-slate-200">
-    <h2 class="tw-text-lg tw-font-semibold tw-text-slate-900">
+  <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-border-b" style="border-color: var(--emerald-200);">
+    <h2 class="tw-text-lg tw-font-semibold" style="color: var(--emerald-700);">
       Menú
     </h2>
     <button
-      class="tw-flex tw-items-center tw-justify-center tw-w-8 tw-h-8 tw-text-slate-500 hover:tw-text-slate-600"
+      class="tw-flex tw-items-center tw-justify-center tw-w-8 tw-h-8 tw-rounded-full tw-transition-colors hover:tw-scale-105"
+      style="color: var(--emerald-600); background-color: var(--emerald-50);"
       (click)="openMenu()"
     >
       <span class="tw-sr-only">Cerrar menú</span>
@@ -156,16 +162,21 @@
     @if (isMenuOpen) {
       <!-- Menú Principal o Submenú de Soporte -->
       @if (isSupportMenuOpen) {
-        <nav>
-          <ul class="tw-font-semibold tw-text-slate-900">
+        <nav style="padding: 10px;">
+          <ul class="tw-font-semibold" style="color: var(--emerald-700);">
+            <!---suport back-->
             <li><a
               href="#"
               (click)="onSubMenuClick($event, 'back')"
-              class="tw-flex tw-items-center tw-justify-between tw-border-b tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-rounded-md tw-transition-colors"
+              style="color: var(--emerald-700); border-color: var(--emerald-200);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -178,13 +189,25 @@
                 {{ 'menu_header.user_icon.menu.support.submenu.back.title' | translate }}
               </div>
             </a></li>
-            <li><a
+            <!---separator-->
+            <div
+                role="separator"
+                aria-orientation="horizontal"
+                class="tw-mx-[10px] tw-my-2 tw-h-px tw-bg-gradient-to-r"
+                style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
+              ></div>
+            <!---help-->
+              <li><a
               routerLink="/help"
-              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -197,13 +220,18 @@
                 {{ 'menu_header.user_icon.menu.support.submenu.help.title' | translate }}
               </div>
             </a></li>
+            <!---contact us-->
             <li><a
               routerLink="/contact"
-              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -219,16 +247,21 @@
           </ul>
         </nav>
       } @else if (isPartnerMenuOpen) {
-        <nav>
-          <ul class="tw-font-semibold tw-text-slate-900">
+        <nav style="padding: 10px;">
+          <ul class="tw-font-semibold" style="color: var(--emerald-700);">
+            <!---partner back-->
             <li><a
               href="#"
               (click)="onSubMenuClick($event, 'back')"
-              class="tw-flex tw-items-center tw-justify-between tw-border-b tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-rounded-md tw-transition-colors"
+              style="color: var(--emerald-700); border-color: var(--emerald-200);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -241,13 +274,25 @@
                 {{ 'menu_header.user_icon.menu.partner.submenu.back.title' | translate }} (UM DEV Creative)
               </div>
             </a></li>
+            <!---separator-->
+            <div
+                role="separator"
+                aria-orientation="horizontal"
+                class="tw-mx-[10px] tw-my-2 tw-h-px tw-bg-gradient-to-r"
+                style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
+              ></div>
+            <!---partner settings-->
             <li><a
               routerLink="/partner/settings"
-              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -260,13 +305,18 @@
                 {{ 'menu_header.user_icon.menu.partner.submenu.settings.title' | translate }}
               </div>
             </a></li>
+            <!---offers-->
             <li><a
               routerLink="/partner/offers"
-              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -278,13 +328,18 @@
                   {{ 'menu_header.user_icon.menu.partner.submenu.offers.title' | translate }}
               </div>
             </a></li>
+            <!---products-->
             <li><a
               routerLink="/partner/products"
-              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -302,40 +357,53 @@
         </nav>
       } @else {
         @if (validateHeader(HeaderType.USER_AUTH_HEADER)) {
-          <!-- Menú de usuario autenticado -->
-          <div class="tw-border-b" role="none">
+          <!-- Menú de usuario autenticado - Main Header Menu TODO: Mejorar margin y padding-->
+          <div class="tw-mx-[10px] tw-mt-[10px] tw-mb-[2px]">
             <div
-              class="tw-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700"
+              class="tw-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm"
+              style="color: var(--emerald-700);"
               role="menuitem"
               tabindex="-1"
               id="menu-item-0"
             >
               <img
-                class="tw-w-6 tw-h-6 tw-text-gray-600 tw-mr-2 tw-rounded-full"
+                class="tw-w-6 tw-h-6 tw-mr-2 tw-rounded-full tw-ring-2 tw-ring-emerald-300"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt="Profile"
               />
               <div class="tw-flex tw-flex-col tw-gap-1" role="none">
-                <p class="tw-text-gray-500" role="none">{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
+                <p style="color: var(--emerald-600);" role="none">{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
                 <p
-                  class="tw-font-bold tw-text-gray-900 tw-overflow-hidden tw-text-ellipsis tw-whitespace-nowrap tw-max-w-[150px]"
+                  class="tw-font-bold tw-overflow-hidden tw-text-ellipsis tw-whitespace-nowrap tw-max-w-[150px]"
+                  style="color: var(--emerald-800); display: inline-block; overflow: hidden;"
                   role="none"
-                  style="display: inline-block; overflow: hidden;"
                 >
                   {{ userLogger.fullName }}
                 </p>
               </div>
             </div>
           </div>
-          <nav>
-            <ul class="tw-font-semibold tw-text-slate-900">
+          <!---separator-->
+          <div
+                role="separator"
+                aria-orientation="horizontal"
+                class="tw-mx-0 tw-my-0 tw-h-px tw-bg-gradient-to-r"
+                style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
+              ></div>
+          <nav style="padding: 10px;">
+            <ul class="tw-font-semibold" style="color: var(--emerald-700);">
+              <!--favorites-->
               <li><a
                 routerLink="/favorites"
-                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -348,13 +416,18 @@
                   {{ 'menu_header.user_icon.menu.favorites.title' | translate }} (Proximamente)
                 </div>
               </a></li>
+              <!---member profile settings-->
               <li><a
                 routerLink="/member"
-                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -367,11 +440,14 @@
                   {{ 'menu_header.user_icon.menu.profile.title' | translate }}
                 </div>
               </a></li>
-              <!-- if role business owner-->
+              <!-- partner submenu - TODO: if role business owner-->
               <li><a
                 href="#"
                 (click)="onSubMenuClick($event, 'partner')"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <app-avatar
@@ -396,10 +472,13 @@
                   />
                 </svg>
               </a></li>
-              <!-- if role business owner-->
+              <!-- if role is just member-->
               <li><a
                 routerLink="/partner"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
@@ -417,10 +496,14 @@
                   {{ 'menu_header.user_icon.menu.partner.title' | translate }}
                 </div>
               </a></li>
+              <!---support submenu-->
               <li><a
                 href="#"
                 (click)="onSubMenuClick($event, 'support')"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
@@ -454,13 +537,25 @@
                   />
                 </svg>
               </a></li>
+              <!---separator-->
+              <div
+                role="separator"
+                aria-orientation="horizontal"
+                class="tw-mx-2 tw-my-2 tw-h-px tw-bg-gradient-to-r"
+                style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
+              ></div>
+              <!---logout - salir -->
               <li><a
                 (click)="logout()"
-                class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-4 tw-py-2 tw-border-t tw-border-b tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors tw-rounded-md"
+                style="color: var(--coral-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--coral-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--coral-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--coral-500);"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -475,81 +570,99 @@
                   {{ 'menu_header.user_icon.menu.logout.title' | translate }}
                 </div>
               </a></li>
+              <!---separator-->
+              <div
+                role="separator"
+                aria-orientation="horizontal"
+                class="tw-mx-2 tw-my-2 tw-h-px tw-bg-gradient-to-r"
+                style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
+              ></div>
             </ul>
           </nav>
         } @else {
-          <div class="tw-border-b tw-p-4 tw-flex tw-flex-col tw-items-center tw-gap-4" role="none">
-            <button class="
-            tw-font-bold
-            tw-h-10
-            tw-text-sm
-            tw-block
-            tw-w-full
-            tw-max-w-[200px]
-            tw-shadow-lg
-            tw-shadow-indigo-500/40
-            tw-bg-blue-500
-            tw-text-white
-            tw-rounded-full
-            tw-px-4
-            tw-py-2
-            tw-whitespace-nowrap
-            hover:tw-bg-blue-600"
-                    [routerLink]="['/auth']"
-                    [queryParams]="{ ref: 'menu', isRegistering: false }"
+          <!-- Menú de usuario no autenticado - Login/Register Menu - CTA-->
+          <div class="tw-border-b tw-p-4 tw-flex tw-flex-col tw-items-center tw-gap-4" style="border-color: var(--emerald-200);" role="none">
+            <button
+              class="btn-primary tw-font-bold tw-h-10 tw-text-sm tw-block tw-w-full tw-max-w-[200px] tw-rounded-full tw-px-4 tw-py-2 tw-whitespace-nowrap tw-transition-all hover:tw-scale-105"
+              style="background: var(--gradient-primary); color: white; box-shadow: var(--shadow-soft);"
+              [routerLink]="['/auth']"
+              [queryParams]="{ ref: 'menu', isRegistering: false }"
+              onmouseover="this.style.background='var(--gradient-primary-hover)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='var(--shadow-soft-lg)';"
+              onmouseout="this.style.background='var(--gradient-primary)'; this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-soft)';"
             >
               {{ 'menu_header.login_button.title' | translate }}
             </button>
-            <button class="
-            tw-font-bold
-            tw-h-10
-            tw-text-sm
-            tw-block
-            tw-w-full
-            tw-max-w-[200px]
-            tw-shadow-lg
-            tw-shadow-indigo-500/40
-            tw-bg-red-500
-            tw-text-white
-            tw-rounded-full
-            tw-px-4
-            tw-py-2
-            tw-whitespace-nowrap
-            hover:tw-bg-red-600"
-                    [routerLink]="['/auth']"
-                    [queryParams]="{ ref: 'menu', isRegistering: true }"
+            <button
+              class="btn-secondary tw-font-bold tw-h-10 tw-text-sm tw-block tw-w-full tw-max-w-[200px] tw-rounded-full tw-px-4 tw-py-2 tw-whitespace-nowrap tw-transition-all hover:tw-scale-105"
+              style="background-color: var(--coral-500); color: white; box-shadow: var(--shadow-warm);"
+              [routerLink]="['/auth']"
+              [queryParams]="{ ref: 'menu', isRegistering: true }"
+              onmouseover="this.style.backgroundColor='var(--coral-600)'; this.style.transform='translateY(-1px)';"
+              onmouseout="this.style.backgroundColor='var(--coral-500)'; this.style.transform='translateY(0)';"
             >
               {{ 'menu_header.join_now_button.title' | translate }}
             </button>
           </div>
-          <nav>
-            <ul class="tw-font-semibold tw-text-slate-900">
+          <nav style="padding: 10px;">
+            <ul class="tw-font-semibold" style="color: var(--emerald-700);">
+              <!-- about -->
               <li><a
-                routerLink="/help"
-                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                routerLink="/about"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
                     aria-hidden="true"
                   >
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M16.712 4.33a9.027 9.027 0 0 1 1.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 0 0-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 0 1 0 9.424m-4.138-5.976a3.736 3.736 0 0 0-.88-1.388 3.737 3.737 0 0 0-1.388-.88m2.268 2.268a3.765 3.765 0 0 1 0 2.528m-2.268-4.796a3.765 3.765 0 0 0-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 0 1-1.388.88m2.268-2.268 4.138 3.448m0 0a9.027 9.027 0 0 1-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0-3.448-4.138m3.448 4.138a9.014 9.014 0 0 1-9.424 0m5.976-4.138a3.765 3.765 0 0 1-2.528 0m0 0a3.736 3.736 0 0 1-1.388-.88 3.737 3.737 0 0 1-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 0 1-1.652-1.306 9.027 9.027 0 0 1-1.306-1.652m0 0 4.138-3.448M4.33 16.712a9.014 9.014 0 0 1 0-9.424m4.138 5.976a3.765 3.765 0 0 1 0-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 0 1 1.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 0 0-1.652 1.306A9.025 9.025 0 0 0 4.33 7.288"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                   </svg>
-                  {{ 'menu_header.user_icon.menu.support.submenu.help.title' | translate }}
+                  {{ 'menu_header.user_icon.menu.support.submenu.about.title' | translate }}
                 </div>
               </a></li>
+              <!-- blog -->
               <li><a
-                routerLink="/contact"
-                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
+                routerLink="/blog"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                  </svg>
+                  {{ 'menu_header.user_icon.menu.support.submenu.blog.title' | translate }}
+                </div>
+              </a></li>
+              <!-- contact us -->
+              <li><a
+                routerLink="/contact"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
+              >
+                <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
+                  <svg
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -560,6 +673,30 @@
                           d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
                   </svg>
                   {{ 'menu_header.user_icon.menu.support.submenu.contact.title' | translate }}
+                </div>
+              </a></li>
+              <!-- help -->
+              <li><a
+                routerLink="/help"
+                class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+                style="color: var(--emerald-700);"
+                onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
+              >
+                <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
+                  <svg
+                    class="tw-w-6 tw-h-6"
+                    style="color: var(--emerald-600);"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M16.712 4.33a9.027 9.027 0 0 1 1.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 0 0-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 0 1 0 9.424m-4.138-5.976a3.736 3.736 0 0 0-.88-1.388 3.737 3.737 0 0 0-1.388-.88m2.268 2.268a3.765 3.765 0 0 1 0 2.528m-2.268-4.796a3.765 3.765 0 0 0-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 0 1-1.388.88m2.268-2.268 4.138 3.448m0 0a9.027 9.027 0 0 1-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0-3.448-4.138m3.448 4.138a9.014 9.014 0 0 1-9.424 0m5.976-4.138a3.765 3.765 0 0 1-2.528 0m0 0a3.736 3.736 0 0 1-1.388-.88 3.737 3.737 0 0 1-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 0 1-1.652-1.306 9.027 9.027 0 0 1-1.306-1.652m0 0 4.138-3.448M4.33 16.712a9.014 9.014 0 0 1 0-9.424m4.138 5.976a3.765 3.765 0 0 1 0-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 0 1 1.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 0 0-1.652 1.306A9.025 9.025 0 0 0 4.33 7.288"/>
+                  </svg>
+                  {{ 'menu_header.user_icon.menu.support.submenu.help.title' | translate }}
                 </div>
               </a></li>
             </ul>
