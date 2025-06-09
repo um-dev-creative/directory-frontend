@@ -1,0 +1,51 @@
+/* Report Problem Component Styles */
+
+/* Base transitions and focus states */
+.tw-inline-flex:focus {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+.tw-inline-flex:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+/* Link variant hover effects */
+.tw-underline.tw-decoration-dotted:hover {
+  text-decoration-style: solid;
+}
+
+/* Button and card variants hover effects */
+.tw-shadow-sm:hover {
+  transform: translateY(-1px);
+}
+
+/* Icon animation on hover */
+.tw-inline-flex:hover svg {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Card variant specific styles */
+.tw-border-emerald-green-200:hover {
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .tw-inline-flex {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tw-inline-flex,
+  .tw-inline-flex svg,
+  .tw-shadow-sm {
+    transition: none !important;
+    transform: none !important;
+  }
+}

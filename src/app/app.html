@@ -13,8 +13,20 @@
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
     </div>
-  <!-- agregar layout sin footer-->
-  <!-- agregar isLoadingPage aqui -->
+  } @else if (hideFooter$ | async) {
+    <!-- Layout sin footer pero con header -->
+    <div class="app-container">
+      <app-header></app-header>
+      <div class="tw-flex tw-flex-col tw-h-screen tw-pt-[60px]">
+        <div
+          [@routeAnimations]="getRouteAnimationData(outlet)"
+          class="tw-flex-1 tw-relative tw-w-full"
+        >
+          <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+        <!-- Sin footer aquí -->
+      </div>
+    </div>
   } @else {
     <!-- Layout normal con header y footer -->
     <div class="app-container">

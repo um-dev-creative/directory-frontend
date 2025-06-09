@@ -24,7 +24,8 @@ import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/search/search';
-import { Button } from '@app/components/ui';
+import { Button, Avatar } from '@app/components/ui';
+
 
 /**
  * Header component
@@ -38,7 +39,8 @@ import { Button } from '@app/components/ui';
     FormsModule,
     TranslateModule,
     Search,
-    Button
+    Button,
+    Avatar
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
@@ -67,6 +69,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
 
+  isPartnerMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de partners
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
   userLogger = {
@@ -157,12 +160,21 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     this.isSupportMenuOpen = open;
   }
 
-  onSubMenuClick(event: Event, action: 'support' | 'back'): void {
+  openPartnerSubmenu(open: boolean = true): void {
+    this.isPartnerMenuOpen = open;
+  }
+
+  onSubMenuClick(event: Event, action: 'support' | 'back' | 'partner'): void {
     event.preventDefault();
     if (action === 'support') {
       this.openSupportSubMenu(true);
     } else {
       this.openSupportSubMenu(false);
+    }
+    if (action === 'partner') {
+      this.openPartnerSubmenu(true);
+    } else {
+      this.openPartnerSubmenu(false);
     }
   }
 

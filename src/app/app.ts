@@ -37,6 +37,7 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
 export class App implements AfterViewInit, OnInit {
   isInitialized$: Observable<boolean>;
   hideLayout$: Observable<boolean>;
+  hideFooter$: Observable<boolean>;
 
   constructor(
     private readonly store: Store<{ session: SessionState }>,
@@ -53,6 +54,18 @@ export class App implements AfterViewInit, OnInit {
           route = route.firstChild;
         }
         return route.snapshot.data['hideLayout'] || false;
+      })
+    );
+
+    // Observable para detectar si la ruta actual debe ocultar solo el footer
+    this.hideFooter$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => {
+        let route = this.router.routerState.root;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route.snapshot.data['hideFooter'] || false;
       })
     );
   }

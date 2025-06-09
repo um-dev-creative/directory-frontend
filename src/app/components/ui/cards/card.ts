@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient' | 'outlined-blue';
-export type CardSize = 'sm' | 'md' | 'lg' | 'xl';
+export type CardSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
 @Component({
@@ -113,7 +113,8 @@ export class CardComponent {
       sm: ['tw-max-w-sm'],
       md: ['tw-max-w-md'],
       lg: ['tw-max-w-lg'],
-      xl: ['tw-max-w-xl']
+      xl: ['tw-max-w-xl'],
+      full: [] // No max-width restriction, takes full available width
     };
 
     // Border radius classes

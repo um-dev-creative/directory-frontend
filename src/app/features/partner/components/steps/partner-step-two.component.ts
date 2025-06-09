@@ -4,7 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { StepTwoData } from '../partner-registration-stepper.component';
 import { PartnerRegistrationService } from '../../services/partner-registration.service';
-import { Button, CardComponent, Avatar, IconComponent } from '../../../../components/ui';
+import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-partner-step-two',
@@ -18,7 +18,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
           Imagen de tu Negocio
         </h2>
         <p class="tw-text-beige-600">
-          Agrega un avatar y logo para personalizar tu perfil (opcional)
+          Agrega un avatar para personalizar el perfil de tu negocio
         </p>
       </div>
 
@@ -39,24 +39,12 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
                   [loading]="uploadingLogo"
                   iconName="business">
                 </app-avatar>
-                @if (logoPreview) {
-                  <button
-                    type="button"
-                    (click)="removeLogo()"
-                    class="tw-absolute tw--top-2 tw--right-2 tw-bg-coral-500 tw-text-white tw-rounded-full tw-p-1.5 hover:tw-bg-coral-600 tw-transition-colors tw-shadow-md"
-                    aria-label="Eliminar logo"
-                  >
-                    <svg class="tw-w-4 tw-h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                }
               </div>
             </div>
 
             <!-- Logo Upload Button -->
             <div class="tw-flex tw-justify-center">
-              <div class="tw-w-full tw-max-w-xs tw-mt-0">
+              <div class="tw-w-full tw-max-w-xs tw-mt-0 tw-flex tw-justify-center">
                 <input
                   #logoFileInput
                   type="file"
@@ -67,10 +55,8 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
                 />
                 <app-button
                   variant="info"
-                  size="md"
                   [disabled]="uploadingLogo"
                   [loading]="uploadingLogo"
-                  [fullWidth]="true"
                   (buttonClick)="logoFileInput.click()"
                 >
                   <app-icon name="image" size="sm" class="tw-mr-2"></app-icon>
@@ -98,7 +84,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
-                <span><strong>Logo:</strong> Formato horizontal preferido, fondo transparente ideal</span>
+                <span><strong>Logo:</strong> Formato horizontal preferido</span>
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
@@ -106,7 +92,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '../../../../compon
               </li>
               <li class="tw-flex tw-items-start">
                 <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
-                <span><strong>Formatos aceptados:</strong> JPG, PNG, GIF</span>
+                <span><strong>Formatos aceptados:</strong> JPG, PNG</span>
               </li>
             </ul>
           </div>
@@ -215,7 +201,6 @@ export class PartnerStepTwoComponent implements OnDestroy {
           error: (error: any) => {
             console.error('Error uploading logo:', error);
             this.uploadingLogo = false;
-            this.removeLogo();
           }
         });
     }
@@ -224,11 +209,6 @@ export class PartnerStepTwoComponent implements OnDestroy {
   removeAvatar(): void {
     this.avatarPreview = null;
     this.formData.avatar = undefined;
-  }
-
-  removeLogo(): void {
-    this.logoPreview = null;
-    this.formData.logo = undefined;
   }
 
   onPrevious(): void {

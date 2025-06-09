@@ -26,7 +26,8 @@ import { Button } from '../buttons/button';
               placeholder="Ingresa tu nombre"
               helperText="Este campo es requerido"
               [required]="true"
-              [(ngModel)]="basicForm.name">
+              [(ngModel)]="basicForm.name"
+              style="border: none; padding: 0; background: transparent;">
             </app-input>
           </div>
 
@@ -37,7 +38,8 @@ import { Button } from '../buttons/button';
               type="email"
               placeholder="ejemplo@correo.com"
               variant="info"
-              [(ngModel)]="basicForm.email">
+              [(ngModel)]="basicForm.email"
+              style="border: none; padding: 0; background: transparent;">
             </app-input>
           </div>
 
@@ -48,7 +50,8 @@ import { Button } from '../buttons/button';
               type="password"
               placeholder="••••••••"
               [clearable]="true"
-              [(ngModel)]="basicForm.password">
+              [(ngModel)]="basicForm.password"
+              style="border: none; padding: 0; background: transparent;">
             </app-input>
           </div>
 
@@ -59,7 +62,8 @@ import { Button } from '../buttons/button';
               type="tel"
               placeholder="+58 424 123 4567"
               [leadingIcon]="true"
-              [(ngModel)]="basicForm.phone">
+              [(ngModel)]="basicForm.phone"
+              style="border: none; padding: 0; background: transparent;">
               <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
               </svg>
@@ -169,7 +173,8 @@ import { Button } from '../buttons/button';
             placeholder="Buscar productos..."
             [leadingIcon]="true"
             [clearable]="true"
-            [(ngModel)]="iconForm.search">
+            [(ngModel)]="iconForm.search"
+            style="border: none; padding: 0; background: transparent;">
             <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
@@ -181,7 +186,8 @@ import { Button } from '../buttons/button';
             type="url"
             placeholder="https://ejemplo.com"
             [leadingIcon]="true"
-            [(ngModel)]="iconForm.website">
+            [(ngModel)]="iconForm.website"
+            style="border: none; padding: 0; background: transparent;">
             <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
@@ -195,6 +201,7 @@ import { Button } from '../buttons/button';
 
         <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" class="tw-space-y-6">
           <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+
             <app-input
               label="Nombre"
               placeholder="Tu nombre"
@@ -220,7 +227,8 @@ import { Button } from '../buttons/button';
               [required]="true"
               [variant]="getFieldVariant('email')"
               [errorMessage]="getFieldError('email')"
-              formControlName="email">
+              formControlName="email"
+              style="border: none; padding: 0; background: transparent;">
             </app-input>
 
             <app-input
@@ -229,7 +237,8 @@ import { Button } from '../buttons/button';
               placeholder="+58 424 123 4567"
               [variant]="getFieldVariant('phone')"
               [errorMessage]="getFieldError('phone')"
-              formControlName="phone">
+              formControlName="phone"
+              style="border: none; padding: 0; background: transparent;">
             </app-input>
           </div>
 

@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'demo', component: CoreDemoComponent }, // Demo route for testing core services - MOVED TO TOP
   { path: 'brand-showcase', component: BrandShowcase }, // Showcase for brand colors
   { path: 'stage', component: Stage },
-  { path: 'partner/register', component: PartnerRegistrationStepperComponent },
+  { path: 'partner/register', component: PartnerRegistrationStepperComponent, data: { hideFooter: true } },
   { path: 'partner/:id', component: Partner },
   { path: 'partner', redirectTo: 'partner/register', pathMatch: 'full' },
   { path: 'about', loadComponent: () => import('./features/about').then(m => m.AboutComponent) },
@@ -33,9 +33,10 @@ export const routes: Routes = [
 
   // Protected profile route (lazy loaded)
   {
-  path: 'profile',
-  loadComponent: () => import('./features/profile').then(m => m.Profile),
-  canActivate: [authGuard]
+  path: 'member',
+  loadComponent: () => import('./features/community-member').then(m => m.CommunityMember),
+  canActivate: [authGuard],
+  data: { hideFooter: true }
 },
 
   // Default redirect

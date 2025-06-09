@@ -240,26 +240,30 @@ import { BadgeComponent } from '../../ui/badges/badge';
                     label="Nombre completo"
                     placeholder="Ej: Juan Pérez García"
                     [required]="true"
-                    [(ngModel)]="modalData.fullName">
+                    [(ngModel)]="modalData.fullName"
+                    style="border: none; padding: 0; background: transparent;">
                   </app-input>
                   <app-input
                     label="Email"
                     type="email"
                     placeholder="juan.perez@email.com"
                     [required]="true"
-                    [(ngModel)]="modalData.email">
+                    [(ngModel)]="modalData.email"
+                    style="border: none; padding: 0; background: transparent;">
                   </app-input>
                   <app-input
                     label="Teléfono"
                     type="tel"
                     placeholder="+1 (555) 123-4567"
-                    [(ngModel)]="modalData.phone">
+                    [(ngModel)]="modalData.phone"
+                    style="border: none; padding: 0; background: transparent;">
                   </app-input>
                   <app-input
                     label="Fecha de nacimiento"
                     type="text"
                     placeholder="DD/MM/AAAA"
-                    [(ngModel)]="modalData.birthDate">
+                    [(ngModel)]="modalData.birthDate"
+                    style="border: none; padding: 0; background: transparent;">
                   </app-input>
                 </div>
               </div>
