@@ -195,9 +195,55 @@
                 aria-orientation="horizontal"
                 class="tw-mx-[10px] tw-my-2 tw-h-px tw-bg-gradient-to-r"
                 style="background: linear-gradient(90deg, transparent, var(--emerald-200) 20%, var(--emerald-200) 80%, transparent);"
-              ></div>
-            <!---help-->
-              <li><a
+            ></div>
+            <!-- about -->
+            <li><a
+              routerLink="/about"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
+            >
+              <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
+                <svg
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                </svg>
+                {{ 'menu_header.user_icon.menu.support.submenu.about.title' | translate }}
+              </div>
+            </a></li>
+            <!-- blog -->
+            <li><a
+              routerLink="/blog"
+              class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
+              style="color: var(--emerald-700);"
+              onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--emerald-800)';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--emerald-700)';"
+            >
+              <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
+                <svg
+                  class="tw-w-6 tw-h-6"
+                  style="color: var(--emerald-600);"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+                {{ 'menu_header.user_icon.menu.support.submenu.blog.title' | translate }}
+              </div>
+            </a></li>
+            <!--help-->
+            <li><a
               routerLink="/help"
               class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors"
               style="color: var(--emerald-700);"
@@ -482,7 +528,7 @@
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6 tw-text-emerald-800"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -507,7 +553,7 @@
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
                   <svg
-                    class="tw-w-6 tw-h-6 tw-text-gray-600"
+                    class="tw-w-6 tw-h-6 tw-text-emerald-800"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -546,7 +592,7 @@
               ></div>
               <!---logout - salir -->
               <li><a
-                (click)="logout()"
+                (click)="logout(); openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-transition-colors tw-rounded-md"
                 style="color: var(--coral-700);"
                 onmouseover="this.style.backgroundColor='var(--emerald-100)'; this.style.color='var(--coral-800)';"
@@ -587,6 +633,7 @@
               style="background: var(--gradient-primary); color: white; box-shadow: var(--shadow-soft);"
               [routerLink]="['/auth']"
               [queryParams]="{ ref: 'menu', isRegistering: false }"
+              (click)="openMenu()"
               onmouseover="this.style.background='var(--gradient-primary-hover)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='var(--shadow-soft-lg)';"
               onmouseout="this.style.background='var(--gradient-primary)'; this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-soft)';"
             >
@@ -597,6 +644,7 @@
               style="background-color: var(--coral-500); color: white; box-shadow: var(--shadow-warm);"
               [routerLink]="['/auth']"
               [queryParams]="{ ref: 'menu', isRegistering: true }"
+              (click)="openMenu()"
               onmouseover="this.style.backgroundColor='var(--coral-600)'; this.style.transform='translateY(-1px)';"
               onmouseout="this.style.backgroundColor='var(--coral-500)'; this.style.transform='translateY(0)';"
             >
