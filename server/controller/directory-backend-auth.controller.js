@@ -16,7 +16,7 @@ const schemesList = ["http:", "https:"];
 const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 const {getOAuthClient} = require("../proxy/oauth-client");
 const {backboneSessionToken} = require("./backbone.controller");
-const { getUserSession, setUserSession } = require('../shared/user-session-store');
+const { setUserSession } = require('../shared/user-session-store');
 
 const ajv = new Ajv();
 ajv.addFormat('uuid', getRegex())
@@ -37,7 +37,7 @@ const {
   OAUTH_AUTHENTICATION_TYPE,
   OAUTH_USER_ALIAS,
   OAUTH_USER_PASSWORD,
-  API_SERVICE_DIRECTORY_MAP
+  API_SERVICE_DIRECTORY_MAP, getDirectorySessionToken, getUserId
 } = require("../shared/oauth-common-function");
 
 /**
@@ -66,33 +66,6 @@ let getOauthClient = function (oauthClientConfig) {
 };
 
 /**
- * Helper to obtain and cache the user session token for Directory Backend.
- *
- * @param {Object} req - The request object.
- * @returns {Object} - The session token and bearer token.
- */
-async function getDirectorySessionToken(req) {
-  const userId = req.body.alias;
-  let session = getUserSession(userId);
-  if (session && session.directorySession && session.dsBearToken && session.directorySessionExpiresAt > Date.now()) {
-    return { directorySession: session.directorySession, dsBearToken: session.dsBearToken };
-  }
-  // Obtain new tokens
-  const dsBearToken = await getOauthClient(directoryOauthClientConfig).getBearerToken();
-  // Here you might have a call to an endpoint to obtain the specific session token for Directory if applicable
-  // For example, if you need to call an endpoint to get a session token, do it here
-  // const directorySession = await ...
-  // For this example, we assume that the dsBearToken is sufficient
-  setUserSession(userId, {
-    ...session,
-    directorySession: dsBearToken, // Or the actual session token if it exists
-    dsBearToken,
-    directorySessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hour
-  });
-  return { directorySession: dsBearToken, dsBearToken };
-}
-
-/**
  * Proxies API requests to the appropriate backend services.
  *
  * @param {Object} req - The request object.
@@ -103,15 +76,31 @@ const proxyApi = async (req, res, next) => {
   let response = null;
   const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, API_SERVICE_DIRECTORY_MAP);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
+  let sessionData = {
+    directorySession: null,
+    directoryBearerToken: null,
+    directorySessionExpiresAt: null,
+    backboneSession: null,
+    backboneBearerToken: null,
+    backboneSessionExpiresAt: null
+  };
 
   if (validationSchema) {
     try {
-      // Obtain and reuse session and application tokens for Directory Backend
-      const { directorySession, dsBearToken } = await getDirectorySessionToken(req);
       // Get the backbone session token (already cached in backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
+      // Get and reuse session and application tokens for Directory Backend
+      const userId = getUserId(backboneSessionData.backboneSession);
+      const directorySessionData = await getDirectorySessionToken(req, directoryOauthClientConfig);
       // Construct headers
-      const headers = getRequestHeader(req, dsBearToken, backboneSessionData.backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      sessionData.directorySession = directorySessionData.directorySession;
+      sessionData.directoryBearerToken = directorySessionData.directoryBearerToken;
+      sessionData.directorySessionExpiresAt = directorySessionData.directorySessionExpiresAt;
+      sessionData.backboneSession = backboneSessionData.backboneSession;
+      sessionData.backboneBearerToken = backboneSessionData.backboneBearerToken;
+      sessionData.backboneSessionExpiresAt = backboneSessionData.backboneSessionExpiresAt;
+      // Construct headers for the request
+      const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions;
       if (apiURL.indexOf(DS_AUTH_RELATIVE_PATH) > 0) {
@@ -125,13 +114,16 @@ const proxyApi = async (req, res, next) => {
       let axiosResponse = await axios(httpOptions);
       delete axiosResponse.headers[TRANSFER_ENCODING];
       response = axiosResponse.data;
+      directorySessionData.sessionToken = response.token;
       res.set(axiosResponse.headers);
 
       // Include the session-token-bkd in the response headers
       if (backboneSessionData && req.url === INNER_AUTH_PATH) {
         res.set(SESSION_TOKEN_BKD, backboneSessionData.backboneSession);
-        res.set('authorization', dsBearToken);
+        res.set('authorization', directorySessionData.directoryBearerToken);
       }
+      sessionData.directorySession = directorySessionData.directorySession;
+      setUserSession(userId, req.body.alias, sessionData);
     } catch (error) {
       if (error.response != null) {
         response = error.response.data;
@@ -151,18 +143,20 @@ const proxyApi = async (req, res, next) => {
  * Constructs the basic headers for the proxied request.
  *
  * @param {Object} req - The request object.
- * @param authBearToken - The token for the backend services.
- * @param backboneSession - The session token for the backbone services.
+ * @param userSession - The user session object containing tokens.
  * @param {string} defaultAccept - The default Accept header value.
  * @param {string} defaultContentType - The default Content-Type header value.
  * @returns {Object} - The constructed headers.
  */
-const getRequestHeader = function (req, authBearToken, backboneSession, defaultAccept, defaultContentType) {
-  let headers = getAuthBasicHeader(req, authBearToken, backboneSession, defaultAccept);
-  const contentType = req.header(CONTENT_TYPE);
+const getRequestHeader = function (req, userSession, defaultAccept, defaultContentType) {
+  let headers = getAuthBasicHeader(req, userSession, defaultAccept);
+
+  const contentType = req.header(CONTENT_TYPE)?? null;
+
   if (req.url === INNER_AUTH_PATH || req.url === INNER_CREATE_USER_PATH && req.method === POST_METHOD) {
     req.body[PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
   }
+
   if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
     headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
   } else {

@@ -39,7 +39,7 @@ const {
   SESSION_TOKEN_BKD, CONTENT_TYPE, CONTENT_TYPE_DEFAULT, API_INVALID_URL_REQUEST_TITLE,
   BACKBONE_TOKEN_RELATIVE_PATH, DIR_AUTH_TOKEN_PATH, TRANSFER_ENCODING, INNER_AUTH_PATH
 } = require("../config/constants.util");
-const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH} = require("../shared/oauth-common-function");
+const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH, getUserId} = require("../shared/oauth-common-function");
 
 /**
  * Backbone OAuth client configuration.
@@ -77,32 +77,32 @@ let getBackboneClient = function () {
  * @returns {Promise<*>} - The session token.
  */
 const backboneSessionToken = async (req) => {
-  const userId = req.body.alias;
-  // Intenta obtener la sesión existente
-  let session = getUserSession(userId);
-  if (session) {
-    return { 'backboneSession': session.backboneSession, 'bearToken': session.bearToken };
+  const alias = req.body.alias;
+  let sessionData = {};
+  // Check if the session already exists in the store
+  let session = getUserSession(alias);
+  if (session && session.backboneSession && session.backboneBearerToken && session.backboneSessionExpiresAt > Date.now()) {
+    return { backboneSession: session.backboneSession, backboneBearerToken: session.backboneBearerToken, backboneSessionExpiresAt: session.backboneSessionExpiresAt };
   }
 
-  let backboneSession = null;
-  let backboneToken = null;
   if (req.url === INNER_AUTH_PATH) {
-    backboneToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
-    backboneSession = await getBackboneClient().getToken(
+    const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
+    const backboneSession = await getBackboneClient().getToken(
       req.body.alias,
       CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
       APPLICATION_ID,
-      backboneToken
+      backboneBearerToken
     );
-    // Guarda la sesión en el store con expiración (ejemplo: 1 hora)
-    setUserSession(userId, {
+    sessionData = {
       backboneSession: backboneSession?.token,
-      bearToken: backboneToken,
-      expiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
-    });
+      backboneBearerToken: backboneBearerToken,
+      backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+    };
+    // Guarda la sesión en el store con expiración (ejemplo: 1 hora)
+    setUserSession(getUserId(backboneSession?.token), alias, sessionData);
   }
 
-  return { 'backboneSession': backboneSession?.token, 'bearToken': backboneToken };
+  return sessionData;
 };
 
 /**

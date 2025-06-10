@@ -28,7 +28,7 @@ const {
   API_INVALID_URL_REQUEST_TITLE,
   POST_METHOD,
   TRANSFER_ENCODING, PASSWORD_ATTRIBUTE, INNER_AUTH_PATH,
-  BACKBONE_TOKEN_RELATIVE_PATH, DS_AUTH_RELATIVE_PATH, INNER_CREATE_USER_PATH
+  DS_AUTH_RELATIVE_PATH, INNER_CREATE_USER_PATH
 } = require("../config/constants.util");
 const {
   OAUTH_CLIENT_ID,
@@ -38,7 +38,7 @@ const {
   OAUTH_AUTHENTICATION_TYPE,
   OAUTH_USER_ALIAS,
   OAUTH_USER_PASSWORD,
-  API_SERVICE_DIRECTORY_MAP
+  API_SERVICE_DIRECTORY_MAP, getDirectorySessionToken
 } = require("../shared/oauth-common-function");
 
 /**
@@ -66,21 +66,24 @@ let getOauthClient = function (oauthClientConfig) {
   return oauthClient;
 };
 
-async function getDirectorySessionToken(req) {
-  const userId = req.body.alias;
-  let session = getUserSession(userId);
-  if (session && session.directorySession && session.dsBearToken && session.directorySessionExpiresAt > Date.now()) {
-    return { directorySession: session.directorySession, dsBearToken: session.dsBearToken };
-  }
-  const dsBearToken = await getOauthClient(directoryOauthClientConfig).getBearerToken();
-  setUserSession(userId, {
-    ...session,
-    directorySession: dsBearToken,
-    dsBearToken,
-    directorySessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
-  });
-  return { directorySession: dsBearToken, dsBearToken };
-}
+// async function getDirectorySessionToken(req) {
+//   const userId = req.body.alias || req.body.email;
+//   let session = getUserSession(userId);
+//   if (session && session.directorySession && session.dsBearToken && session.directorySessionExpiresAt > Date.now() && session.backboneSessionExpiresAt > Date.now()) {
+//     return { directorySession: session.directorySession, dsBearToken: session.dsBearToken };
+//   }
+//   const dsBearToken = await getOAuthClient(directoryOauthClientConfig).getBearerToken();
+//   return createSessionElement(session, req, dsBearToken);
+// }
+//   const dsBearToken = await getOauthClient(directoryOauthClientConfig).getBearerToken();
+//   setUserSession(userId, {
+//     ...session,
+//     directorySession: dsBearToken,
+//     dsBearToken,
+//     directorySessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+//   });
+//   return { directorySession: dsBearToken, dsBearToken };
+// }
 
 /**
  * Proxies API requests to the appropriate backend services.
@@ -97,11 +100,11 @@ const proxyApi = async (req, res, next) => {
   if (validationSchema) {
     try {
       // Obtener y reutilizar tokens de sesión y de aplicación para Directory Backend
-      const { directorySession, dsBearToken } = await getDirectorySessionToken(req);
+      // const { directorySession, backboneBearerToken, backboneSession } = await getDirectorySessionToken(req, directoryCreateUserProxyConfig);
       // Obtener el token de sesión de backbone (ya cacheado en backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
       // Construir headers
-      const headers = getRequestHeader(req, dsBearToken, backboneSessionData.backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      const headers = getRequestHeader(req, backboneSessionData.backboneBearerToken, backboneSessionData.backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions;
       if (apiURL.indexOf(DS_AUTH_RELATIVE_PATH) > 0) {
@@ -140,14 +143,14 @@ const proxyApi = async (req, res, next) => {
  * Constructs the basic headers for the proxied request.
  *
  * @param {Object} req - The request object.
- * @param authBearToken - The token for the backend services.
+ * @param authBearerToken - The token for the backend services.
  * @param backboneSession - The session token for the backbone services.
  * @param {string} defaultAccept - The default Accept header value.
  * @param {string} defaultContentType - The default Content-Type header value.
  * @returns {Object} - The constructed headers.
  */
-const getRequestHeader = function (req, authBearToken, backboneSession, defaultAccept, defaultContentType) {
-  let headers = getAuthBasicHeader(req, authBearToken, backboneSession, defaultAccept);
+const getRequestHeader = function (req, authBearerToken, backboneSession, defaultAccept, defaultContentType) {
+  let headers = getAuthBasicHeader(req, authBearerToken, backboneSession, defaultAccept);
   const contentType = req.header(CONTENT_TYPE);
   if (req.url === INNER_AUTH_PATH || req.url === INNER_CREATE_USER_PATH && req.method === POST_METHOD) {
     req.body[PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
