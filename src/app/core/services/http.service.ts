@@ -65,7 +65,7 @@ export class HttpService {
   /**
    * DELETE request
    */
-  delete<T>(endpoint: string, options?: HttpOptions): Observable<T> {
+  delete<T>(endpoint: string, options?: HttpOptions, p0?: { headers: { backbone: string; }; }): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}${endpoint}`, {
       headers: this.defaultHeaders,
       ...options

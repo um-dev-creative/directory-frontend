@@ -15,8 +15,14 @@ const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const Ajv = require('ajv');
 const authDirectoryProxyConfig = appConfig.getDirectoryAuthProxyConfig();
-const {getRegex, decodeJwtToken, createRequestOption, getApiEndpoint, getBasicHeader} = require("../shared/common-function");
-const { getUserSession, setUserSession } = require('../shared/user-session-store');
+const {
+  getRegex,
+  decodeJwtToken,
+  createRequestOption,
+  getApiEndpoint,
+  getBasicHeader
+} = require("../shared/common-function");
+const {getUserSession, setUserSession} = require('../shared/user-session-store');
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 
@@ -82,22 +88,27 @@ const backboneSessionToken = async (req) => {
   // Check if the session already exists in the store
   let session = getUserSession(alias);
   if (session && session.backboneSession && session.backboneBearerToken && session.backboneSessionExpiresAt > Date.now()) {
-    return { backboneSession: session.backboneSession, backboneBearerToken: session.backboneBearerToken, backboneSessionExpiresAt: session.backboneSessionExpiresAt };
+    return {
+      backboneSession: session.backboneSession,
+      backboneBearerToken: session.backboneBearerToken,
+      backboneSessionExpiresAt: session.backboneSessionExpiresAt
+    };
   }
 
+  const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
+  sessionData = {
+    backboneSession: null,
+    backboneBearerToken: backboneBearerToken,
+    backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+  };
   if (req.url === INNER_AUTH_PATH) {
-    const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
     const backboneSession = await getBackboneClient().getToken(
       req.body.alias,
       CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
       APPLICATION_ID,
       backboneBearerToken
     );
-    sessionData = {
-      backboneSession: backboneSession?.token,
-      backboneBearerToken: backboneBearerToken,
-      backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
-    };
+    sessionData.backboneSession = backboneSession.token;
     // Guarda la sesión en el store con expiración (ejemplo: 1 hora)
     setUserSession(getUserId(backboneSession?.token), alias, sessionData);
   }
@@ -125,7 +136,7 @@ const proxyApi = async (req, res, next) => {
       // Trace
       logger.info(`[DIS] Proxying request to ${apiURL}`);
       let httpOptions;
-      if(apiURL.indexOf(DIR_AUTH_TOKEN_PATH) > 0) {
+      if (apiURL.indexOf(DIR_AUTH_TOKEN_PATH) > 0) {
         let alias = decodeJwtToken(backboneSession);
         httpOptions = createRequestOption(req.method, apiURL, {alias: alias}, headers);
       } else {
