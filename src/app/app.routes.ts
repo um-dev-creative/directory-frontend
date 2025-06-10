@@ -33,6 +33,8 @@ export const routes: Routes = [
   // Other lazy loaded routes
   { path: 'about', loadComponent: () => import('./features/about').then(m => m.AboutComponent) },
   { path: 'contact', loadComponent: () => import('./features/contact').then(m => m.Contact) },
+  { path: 'blog', loadComponent: () => import('./features/blog').then(m => m.BlogListComponent) },
+  { path: 'blog/:slug', loadComponent: () => import('./features/blog').then(m => m.BlogDetailComponent) },
   { path: 'not-found', component: NotFound, data: { hideLayout: true } },
 
   // Protected routes (require authentication)

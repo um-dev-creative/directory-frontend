@@ -1,4 +1,4 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, provideZoneChangeDetection, LOCALE_ID} from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
@@ -12,6 +12,11 @@ import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
 import {provideCore} from './core/core.module';
 import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
+import {registerLocaleData} from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+// Register Spanish locale for date formatting
+registerLocaleData(localeEs);
 
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
@@ -50,6 +55,9 @@ export const appConfig: ApplicationConfig = {
 
     // Session initialization
     SESSION_INITIALIZER_PROVIDER,
+
+    // Locale configuration
+    { provide: LOCALE_ID, useValue: 'es-ES' },
 
     // Core services and modules
     provideCore()

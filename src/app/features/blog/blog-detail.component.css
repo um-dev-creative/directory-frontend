@@ -1,0 +1,124 @@
+/* Estilos para el contenido del artículo */
+.tw-prose {
+  color: #374151;
+  line-height: 1.75;
+}
+
+.tw-prose h2 {
+  color: var(--emerald-800);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.tw-prose h3 {
+  color: var(--emerald-700);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tw-prose h4 {
+  color: var(--emerald-600);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tw-prose p {
+  margin-bottom: 1.25rem;
+}
+
+.tw-prose ul {
+  margin: 1.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.tw-prose ol {
+  margin: 1.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.tw-prose li {
+  margin-bottom: 0.5rem;
+}
+
+.tw-prose blockquote {
+  border-left: 4px solid var(--emerald-500);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #6b7280;
+  background-color: var(--emerald-50);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.tw-prose strong {
+  color: var(--emerald-800);
+  font-weight: 600;
+}
+
+.tw-prose a {
+  color: var(--emerald-600);
+  text-decoration: underline;
+}
+
+.tw-prose a:hover {
+  color: var(--emerald-700);
+}
+
+/* Focus styles for accessibility */
+button:focus, a:focus {
+  outline: 2px solid var(--emerald-500);
+  outline-offset: 2px;
+}
+
+/* Line clamp utilities for text truncation */
+.tw-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tw-line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hover animation for recent posts cards */
+.tw-group:hover {
+  transform: translateY(-8px);
+}
+
+/* Focus styles for accessibility */
+button:focus, a:focus {
+  outline: 2px solid var(--emerald-500);
+  outline-offset: 2px;
+}
+
+/* Line clamp utilities for text truncation */
+.tw-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tw-line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hover animation for recent posts cards */
+.tw-group:hover {
+  transform: translateY(-8px);
+}

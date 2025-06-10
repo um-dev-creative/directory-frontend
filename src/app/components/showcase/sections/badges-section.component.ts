@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BadgeComponent } from '@app/components/ui';
+import { BadgeComponent,  } from '@app/components/ui';
+import { BadgeExamplesComponent } from '@app/components/ui/badges/badge-examples.component'
+
 
 @Component({
   selector: 'app-badges-section',
   standalone: true,
-  imports: [CommonModule, BadgeComponent],
+  imports: [CommonModule, BadgeComponent, BadgeExamplesComponent],
   template: `
     <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
       <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Badges</h2>
@@ -415,6 +417,11 @@ import { BadgeComponent } from '@app/components/ui';
             <app-badge variant="secondary">Bajo</app-badge>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="tw-mb-8">
+      <div class="tw-bg-beige-50 tw-p-6 tw-rounded-lg tw-border tw-border-beige-200">
+        <app-badge-examples></app-badge-examples>
       </div>
     </div>
   `
