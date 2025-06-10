@@ -31,12 +31,12 @@ class OAuthClient {
    */
   constructor(config) {
     assert.ok(config, "OAuthClient: config is not defined");
-    assert.ok(config.clientId, `OAuthClient: config.clientId is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.clientSecret, `OAuthClient: config.clientSecret is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.grantType, `OAuthClient: config.grantType is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.tokenUrl, `OAuthClient: config.tokenUrl is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.username, `OAuthClient: config.username is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.password, `OAuthClient: config.password is not provided for Auth Type: ${config.authenticationType}`);
+    assert.ok(config.clientId, `OAuthClient: config.clientId is not provided for Auth Type: ${config.clientId}`);
+    assert.ok(config.clientSecret, `OAuthClient: config.clientSecret is not provided for Auth Type: ${config.clientSecret}`);
+    assert.ok(config.grantType, `OAuthClient: config.grantType is not provided for Auth Type: ${config.grantType}`);
+    assert.ok(config.tokenUrl, `OAuthClient: config.tokenUrl is not provided for Auth Type: ${config.tokenUrl}`);
+    assert.ok(config.username, `OAuthClient: config.username is not provided for Auth Type: ${config.username}`);
+    assert.ok(config.password, `OAuthClient: config.password is not provided for Auth Type: ${config.password}`);
 
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;

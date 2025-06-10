@@ -135,15 +135,12 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
   confirmVerificationCode(): void {
     let sessionToken = null;
     let sessionTokenBkd = null;
-    let authorization = null;
     let uuid = null;
 
     if(this.sessionData){
-      sessionToken = this.sessionData.userAuth?.sessionToken;
       sessionTokenBkd = this.sessionData.userAuth?.sessionTokenBkd;
-      authorization = this.sessionData.userAuth?.authorization;
-      uuid = this.jwtPipe.transform(sessionTokenBkd)?.uid || '';
-
+      uuid = this.jwtPipe.transform(sessionTokenBkd)?.uid ?? '';
+    //
     }
     const userRegisterRequest = {
       userId: uuid,
@@ -151,11 +148,9 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     };
 
     this.loader.show();
-    if (sessionToken && sessionTokenBkd && authorization) {
-      this.userRegisterClient.confirmCode(userRegisterRequest, sessionToken, sessionTokenBkd, authorization).pipe(takeUntil(this.subject$))
+      this.userRegisterClient.confirmCode(userRegisterRequest).pipe(takeUntil(this.subject$))
         .subscribe({
           next: (response) => {
-            // if (response.status === 202) {
               this.notificationService.success('Success');
               this.router.navigate([DFC.RelativePath.STAGE_PATH]);
             // }
@@ -167,7 +162,6 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
             this.loader.hide();
           }
         });
-    }
   }
 
   /**

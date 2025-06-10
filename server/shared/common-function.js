@@ -164,18 +164,16 @@ const getBasicHeader = function (req, bearerToken, defaultAccept) {
 /**
  * Constructs the basic headers for the proxied request.
  * @param req - The request object.
- * @param bearerToken - The token for the directory services.
- * @param backboneSession - The session token for the backbone services.
+ * @param sessionData - The session data containing directory and backbone tokens.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultAccept) {
+const getAuthBasicHeader = function (req, sessionData, defaultAccept) {
   let headers = {};
   const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
-  const userId = req.header(FID_USER_ID);
-  const sessionTokenBkd = req.header(SESSION_TOKEN_BKD);
+  const userId = req.body['userId'] || req.header(FID_USER_ID) || null;
   const accept = req.header(ACCEPT);
-  const sessionToken = req.header(SESSION_TOKEN_DIR);
+
   if (fidLoggerTrackingId !== null && isValidUUID(fidLoggerTrackingId)) {
     headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
   } else {
@@ -183,11 +181,11 @@ const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultA
   }
 
   if (userId !== null && isValidUUID(userId)) {
-    headers[FID_USER_ID] = fidLoggerTrackingId;
+    headers[FID_USER_ID] = userId;
   } else {
     headers[FID_USER_ID] = "anonymous";
   }
-  headers[AUTHORIZATION] = BEARER + bearerToken;
+  headers[AUTHORIZATION] = BEARER + sessionData.directoryBearerToken;
 
   if (accept && accept === ACCEPT) {
     headers[ACCEPT] = accept;
@@ -195,16 +193,12 @@ const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultA
     headers[ACCEPT] = defaultAccept
   }
 
-  if (sessionTokenBkd !== null && isValidBearerToken(sessionTokenBkd)) {
-    headers[SESSION_TOKEN_BKD] = sessionTokenBkd;
+  if (sessionData.backboneSession) {
+    headers[SESSION_TOKEN_BKD] = sessionData.backboneSession;
   }
 
-  if (backboneSession) {
-    headers[SESSION_TOKEN_BKD] = backboneSession;
-  }
-
-  if (sessionToken) {
-    headers[SESSION_TOKEN_DIR] = sessionToken;
+  if (sessionData.directorySession) {
+    headers[SESSION_TOKEN_DIR] = sessionData.directorySession;
   }
 
   return headers;
@@ -213,16 +207,14 @@ const getAuthBasicHeader = function (req, bearerToken, backboneSession, defaultA
 /**
  * Constructs the standard headers for the proxied request.
  * @param req - The request object.
- * @param bearToken
+ * @param bearerToken
  * @param sessionToken - The session token for the directory services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getStandardHeader = function (req, bearToken, sessionToken, defaultAccept) {
-  // getAuthBasicHeader: (req, bearerToken, backboneSession, defaultAccept)
+const getStandardHeader = function (req, bearerToken, sessionToken, defaultAccept) {
   return {
-    // [AUTHORIZATION]: BEARER + req.header(AUTHORIZATION) || "",
-    [AUTHORIZATION]: BEARER + bearToken,
+    [AUTHORIZATION]: BEARER + bearerToken,
     [FID_LOGGER_TRACKING_ID]: uuidv4(),
     [FID_USER_ID]: req.header(FID_USER_ID) || "anonymous",
     [ACCEPT]: req.header(ACCEPT) || defaultAccept,
