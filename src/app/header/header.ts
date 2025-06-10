@@ -25,6 +25,7 @@ import {SessionStoreService} from '@app/core/store/session/session-store.service
 import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/search/search';
 import { Button, Avatar } from '@app/components/ui';
+import {AuthClient} from '@app/features/auth/auth.client';
 
 
 /**
@@ -68,6 +69,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   protected sessionData: SessionData | undefined;
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
+  private readonly authClient: AuthClient = inject(AuthClient);
 
   isPartnerMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de partners
   isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
@@ -179,9 +181,13 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   logout(): void {
-    this.sessionStoreService.clearSessionData();
     // Cambiar el header y navegar después de que los efectos de limpiar la sesión se completen
     setTimeout(() => {
+      this.authClient.closeSession(this.sessionData?.userAuth?.sessionTokenBkd).subscribe({
+        next: () => console.debug('User logged out successfully'),
+        error: (error) => console.error('Error logging out:', error)
+      });
+      this.sessionStoreService.clearSessionData();
       this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
       console.debug('User logged out');
       this.router.navigate([DFC.RelativePath.STAGE_PATH]);
@@ -189,8 +195,8 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get dynamicClasses(): string {
-    return this.isOpaque 
-      ? 'tw-bg-white tw-shadow-lg' 
+    return this.isOpaque
+      ? 'tw-bg-white tw-shadow-lg'
       : 'tw-bg-white/90 tw-shadow-md';
   }
 

@@ -208,19 +208,17 @@ const getAuthBasicHeader = function (req, sessionData, defaultAccept) {
  * Constructs the standard headers for the proxied request.
  * @param req - The request object.
  * @param bearerToken
- * @param sessionToken - The session token for the directory services.
+ * @param backboneSessionToken - The session token for the directory services.
  * @param defaultAccept - The default Accept header value.
  * @returns {{}} - The constructed headers.
  */
-const getStandardHeader = function (req, bearerToken, sessionToken, defaultAccept) {
+const getStandardHeader = function (req, bearerToken, backboneSessionToken, defaultAccept) {
   return {
     [AUTHORIZATION]: BEARER + bearerToken,
     [FID_LOGGER_TRACKING_ID]: uuidv4(),
     [FID_USER_ID]: req.header(FID_USER_ID) || "anonymous",
     [ACCEPT]: req.header(ACCEPT) || defaultAccept,
-    [CONTENT_TYPE]: CONTENT_TYPE_DEFAULT,
-    [SESSION_TOKEN_DIR]: sessionToken
-    // [SESSION_TOKEN_BKD]: req.header(SESSION_TOKEN_BKD) || ""
+    [CONTENT_TYPE]: CONTENT_TYPE_DEFAULT
   };
 };
 

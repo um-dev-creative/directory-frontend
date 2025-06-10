@@ -9,25 +9,22 @@ const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 
 const {
-  getRegex, getApiEndpoint, decodeJwtToken, createRequestOption,  getAuthBasicHeader
+  getRegex, getApiEndpoint, decodeJwtToken, createRequestOption, getAuthBasicHeader
 } = require("../shared/common-function");
 
 const schemesList = ["http:", "https:"];
 const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
-const {getOAuthClient} = require("../proxy/oauth-client");
 const {backboneSessionToken} = require("./backbone.controller");
-const { setUserSession } = require('../shared/user-session-store');
+const {setUserSession, removeUserSession} = require('../shared/user-session-store');
 
 const ajv = new Ajv();
 ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
 const {
-  SESSION_TOKEN_BKD,
-  CONTENT_TYPE,
-  CONTENT_TYPE_DEFAULT,
-  API_INVALID_URL_REQUEST_TITLE,
-  POST_METHOD,
-  TRANSFER_ENCODING, PASSWORD_ATTRIBUTE, INNER_AUTH_PATH, DS_AUTH_RELATIVE_PATH, INNER_CREATE_USER_PATH
+  SESSION_TOKEN_BKD, CONTENT_TYPE,  CONTENT_TYPE_DEFAULT,
+  API_INVALID_URL_REQUEST_TITLE, POST_METHOD, TRANSFER_ENCODING,
+  PASSWORD_ATTRIBUTE, INNER_AUTH_PATH, DS_AUTH_RELATIVE_PATH,
+  INNER_CREATE_USER_PATH
 } = require("../config/constants.util");
 const {
   OAUTH_CLIENT_ID,
@@ -52,17 +49,6 @@ const directoryOauthClientConfig = {
   authenticationType: OAUTH_AUTHENTICATION_TYPE,
   username: OAUTH_USER_ALIAS,
   password: OAUTH_USER_PASSWORD
-};
-
-/**
- * Retrieves the OAuth client instance, initializing it if necessary.
- *
- * @returns {Object} - The OAuth client instance.
- */
-let getOauthClient = function (oauthClientConfig) {
-  let oauthClient;
-  oauthClient = getOAuthClient(oauthClientConfig);
-  return oauthClient;
 };
 
 /**
@@ -151,7 +137,7 @@ const proxyApi = async (req, res, next) => {
 const getRequestHeader = function (req, userSession, defaultAccept, defaultContentType) {
   let headers = getAuthBasicHeader(req, userSession, defaultAccept);
 
-  const contentType = req.header(CONTENT_TYPE)?? null;
+  const contentType = req.header(CONTENT_TYPE) ?? null;
 
   if (req.url === INNER_AUTH_PATH || req.url === INNER_CREATE_USER_PATH && req.method === POST_METHOD) {
     req.body[PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
@@ -165,6 +151,22 @@ const getRequestHeader = function (req, userSession, defaultAccept, defaultConte
   return headers;
 };
 
+/**
+ * Closes the user session by removing it from the session store.
+ * This function is called when the user logs out or when the session
+ * needs to be terminated.
+ *
+ * @param req - The request object containing the session token.
+ * @param res - The response object to send the result.
+ */
+function closeSession(req, res) {
+  const backboneToken = req.headers[SESSION_TOKEN_BKD];
+  const userId = getUserId(backboneToken)
+  removeUserSession(userId);
+  res.status(200).send({message: 'Session closed successfully'});
+}
+
 module.exports = {
-  proxyApi
+  proxyApi,
+  closeSession
 };

@@ -9,8 +9,7 @@ const axios = require("axios");
 const logger = appConfig.getLoggerApp();
 const {TRANSFER_ENCODING, SESSION_TOKEN_BKD,
   API_INVALID_URL_REQUEST_TITLE, CONTENT_TYPE_DEFAULT, CONTENT_TYPE,
-  POST_METHOD,
-  PASSWORD_ATTRIBUTE, INNER_REGISTER_PATH
+  POST_METHOD, PASSWORD_ATTRIBUTE, INNER_REGISTER_PATH
 } = require("../config/constants.util");
 const CryptoJS = require("crypto-js");
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
