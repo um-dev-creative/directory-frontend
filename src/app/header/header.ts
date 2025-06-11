@@ -72,7 +72,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   private readonly authClient: AuthClient = inject(AuthClient);
 
   isPartnerMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de partners
-  isSupportMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de soporte
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
   userLogger = {
     alias: '@',
@@ -158,21 +157,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Alternar visibilidad del submenú de soporte
    */
-  openSupportSubMenu(open: boolean = true): void {
-    this.isSupportMenuOpen = open;
-  }
-
   openPartnerSubmenu(open: boolean = true): void {
     this.isPartnerMenuOpen = open;
   }
 
-  onSubMenuClick(event: Event, action: 'support' | 'back' | 'partner'): void {
+  onSubMenuClick(event: Event, action: 'back' | 'partner'): void {
     event.preventDefault();
-    if (action === 'support') {
-      this.openSupportSubMenu(true);
-    } else {
-      this.openSupportSubMenu(false);
-    }
     if (action === 'partner') {
       this.openPartnerSubmenu(true);
     } else {
