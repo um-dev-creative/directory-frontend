@@ -73,6 +73,11 @@ appConfig.bootstrapConfiguration().then(async config => {
   const ssrApp = await initAngularSSR();
   const app = ssrApp || express();
 
+  if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 'loopback, linklocal, uniquelocal');
+  } else {
+    app.set('trust proxy', false); // Do not trust proxy headers in dev
+  }
   app.use(RateLimit({ windowMs: 15 * 60 * 1000, max: 10000 }));
   app.use(httpContext.middleware);
   app.use(compression());

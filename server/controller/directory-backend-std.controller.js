@@ -9,6 +9,7 @@ const {
 } = require("../shared/oauth-common-function");
 const {backboneSessionToken} = require("./backbone.controller");
 const {getUserSession} = require('../shared/user-session-store');
+const constants = require("../config/constants.util");
 
 /**
  * Directory OAuth client configuration.
@@ -36,7 +37,7 @@ const proxyApi = async (req, res) => {
     // Obtener el session-token si existe
     const sessionToken = session?.directorySession;
     // Construir headers correctamente
-    const headers = getStandardHeader(req, dsBearToken, 'application/json');
+    const headers = getStandardHeader(req, dsBearToken, sessionToken,constants.CONTENT_TYPE_DEFAULT);
     if (sessionToken) {
       headers['session-token'] = sessionToken;
     }

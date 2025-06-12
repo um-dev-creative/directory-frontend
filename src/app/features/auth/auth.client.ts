@@ -54,4 +54,15 @@ export class AuthClient extends ServiceTemplate {
         return {headers, body, sessionTokenBkd, authorization};
       }), catchError(this.handlerError));
   }
+
+  /**
+   * Get token from backend services with user and password provided by the user
+   * @param backboneToken - AuthTokenRequest
+   * @return Observable<AuthTokenResponse>
+   */
+  closeSession(backboneToken: any): Observable<any> {
+    return this.httpClient.delete<any>(`${this.CONTENT_PATH}/session-end`,
+      DFC.HttpHeader.STANDARD_TOKEN_BKD(backboneToken))
+      .pipe(catchError(this.handlerError));
+  }
 }

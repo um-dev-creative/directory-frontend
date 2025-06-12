@@ -1,5 +1,7 @@
 const assert = require('assert');
 const axios = require('axios');
+const appConfig = require("../config/app.config");
+const logger = appConfig.getLoggerApp();
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
   JWT: "JWT"
@@ -31,12 +33,12 @@ class OAuthClient {
    */
   constructor(config) {
     assert.ok(config, "OAuthClient: config is not defined");
-    assert.ok(config.clientId, `OAuthClient: config.clientId is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.clientSecret, `OAuthClient: config.clientSecret is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.grantType, `OAuthClient: config.grantType is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.tokenUrl, `OAuthClient: config.tokenUrl is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.username, `OAuthClient: config.username is not provided for Auth Type: ${config.authenticationType}`);
-    assert.ok(config.password, `OAuthClient: config.password is not provided for Auth Type: ${config.authenticationType}`);
+    assert.ok(config.clientId, `OAuthClient: config.clientId is not provided for Auth Type: ${config.clientId}`);
+    assert.ok(config.clientSecret, `OAuthClient: config.clientSecret is not provided for Auth Type: ${config.clientSecret}`);
+    assert.ok(config.grantType, `OAuthClient: config.grantType is not provided for Auth Type: ${config.grantType}`);
+    assert.ok(config.tokenUrl, `OAuthClient: config.tokenUrl is not provided for Auth Type: ${config.tokenUrl}`);
+    assert.ok(config.username, `OAuthClient: config.username is not provided for Auth Type: ${config.username}`);
+    assert.ok(config.password, `OAuthClient: config.password is not provided for Auth Type: ${config.password}`);
 
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
@@ -85,9 +87,12 @@ class OAuthClient {
           url: this.tokenUrl
         };
       }
-
+      logger.debug(`[OAuthClient] Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
+       authenticationType: ${this.authenticationType} and grantType: ${this.grantType}`);
       // Call OAuth service
+      logger.debug(`[OAuthClient] Request options: ${JSON.stringify(options)}`);
       const oauthResponse = await axios(options);
+      logger.debug(`[OAuthClient] Received token response: ${JSON.stringify(oauthResponse.data)}`);
       // Cache token in local variable.
       this.cacheToken = oauthResponse.data.access_token;
       this.lastRequestTime = requestTime;

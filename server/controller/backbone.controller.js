@@ -15,8 +15,14 @@ const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const Ajv = require('ajv');
 const authDirectoryProxyConfig = appConfig.getDirectoryAuthProxyConfig();
-const {getRegex, decodeJwtToken, createRequestOption, getApiEndpoint, getBasicHeader} = require("../shared/common-function");
-const { getUserSession, setUserSession } = require('../shared/user-session-store');
+const {
+  getRegex,
+  decodeJwtToken,
+  createRequestOption,
+  getApiEndpoint,
+  getBasicHeader
+} = require("../shared/common-function");
+const {getUserSession, setUserSession} = require('../shared/user-session-store');
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 
@@ -30,16 +36,17 @@ const BACKBONE_OAUTH_USER_ALIAS = process.env.BACKBONE_AUTH_USER_ALIAS;
 const BACKBONE_OAUTH_USER_PASSWORD = process.env.BACKBONE_AUTH_USER_PASSWORD;
 
 const schemesList = ["http:", "https:"];
-const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
+const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 const ajv = new Ajv();
 ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
 
 const {
   SESSION_TOKEN_BKD, CONTENT_TYPE, CONTENT_TYPE_DEFAULT, API_INVALID_URL_REQUEST_TITLE,
-  BACKBONE_TOKEN_RELATIVE_PATH, DIR_AUTH_TOKEN_PATH, TRANSFER_ENCODING, INNER_AUTH_PATH
+  BACKBONE_TOKEN_RELATIVE_PATH, DIR_AUTH_TOKEN_PATH, TRANSFER_ENCODING, INNER_AUTH_PATH,
+  LOGGER_TAG_BACKBONE_CONTROLLER
 } = require("../config/constants.util");
-const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH} = require("../shared/oauth-common-function");
+const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH, getUserId} = require("../shared/oauth-common-function");
 
 /**
  * Backbone OAuth client configuration.
@@ -77,32 +84,40 @@ let getBackboneClient = function () {
  * @returns {Promise<*>} - The session token.
  */
 const backboneSessionToken = async (req) => {
-  const userId = req.body.alias;
-  // Intenta obtener la sesión existente
-  let session = getUserSession(userId);
-  if (session) {
-    return { 'backboneSession': session.backboneSession, 'bearToken': session.bearToken };
+  const alias = req.body.alias;
+  let sessionData = {};
+  // Check if the session already exists in the store
+  logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- Checking session for alias: ${alias}`);
+  let session = getUserSession(alias);
+  if (session && session.backboneSession && session.backboneBearerToken && session.backboneSessionExpiresAt > Date.now()) {
+    return {
+      backboneSession: session.backboneSession,
+      backboneBearerToken: session.backboneBearerToken,
+      backboneSessionExpiresAt: session.backboneSessionExpiresAt
+    };
   }
-
-  let backboneSession = null;
-  let backboneToken = null;
+  logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- No valid session found for alias: ${alias}, creating a new one.`);
+  const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
+  logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- Obtained Backbone Bearer Token for alias: ${alias}`);
+  sessionData = {
+    backboneSession: null,
+    backboneBearerToken: backboneBearerToken,
+    backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+  };
   if (req.url === INNER_AUTH_PATH) {
-    backboneToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
-    backboneSession = await getBackboneClient().getToken(
+    logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- Creating Backbone session for alias: ${alias}`);
+    const backboneSession = await getBackboneClient().getToken(
       req.body.alias,
       CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
       APPLICATION_ID,
-      backboneToken
+      backboneBearerToken
     );
+    sessionData.backboneSession = backboneSession.token;
     // Guarda la sesión en el store con expiración (ejemplo: 1 hora)
-    setUserSession(userId, {
-      backboneSession: backboneSession?.token,
-      bearToken: backboneToken,
-      expiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
-    });
+    setUserSession(getUserId(backboneSession?.token), alias, sessionData);
   }
-
-  return { 'backboneSession': backboneSession?.token, 'bearToken': backboneToken };
+  logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- Backbone session created for alias: ${alias}`);
+  return sessionData;
 };
 
 /**
@@ -123,9 +138,9 @@ const proxyApi = async (req, res, next) => {
       let backboneSession = await backboneSessionToken(req);
       let headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       // Trace
-      logger.info(`[DIS] Proxying request to ${apiURL}`);
+      logger.info(`${LOGGER_TAG_BACKBONE_CONTROLLER} -- Proxying request to ${apiURL}`);
       let httpOptions;
-      if(apiURL.indexOf(DIR_AUTH_TOKEN_PATH) > 0) {
+      if (apiURL.indexOf(DIR_AUTH_TOKEN_PATH) > 0) {
         let alias = decodeJwtToken(backboneSession);
         httpOptions = createRequestOption(req.method, apiURL, {alias: alias}, headers);
       } else {

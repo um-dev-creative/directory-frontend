@@ -44,6 +44,7 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "express-http-context": "^1.2.4",
     "express-rate-limit": "^7.5.0",
     "jwt-decode": "^4.0.0",
