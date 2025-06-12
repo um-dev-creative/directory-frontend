@@ -149,7 +149,7 @@ export class PartnerRegistrationStepperComponent implements OnDestroy {
   isLoading = false;
   loadingMessage = '';
 
-  partnerId: string | null = null;
+  partnerId: number | null = null;
 
   reportProblemOptions: ReportProblemOptions = {
     googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessRegistrationStepper',
@@ -268,8 +268,8 @@ export class PartnerRegistrationStepperComponent implements OnDestroy {
           this.partnerService.setCurrentPartner(partner);
           this.isLoading = false;
 
-          // Redirect to partner profile
-          this.router.navigate(['/partner', this.partnerId]);
+          // Redirect to partner profile using slug
+          this.router.navigate(['/partner', partner.slug]);
         },
         error: (error: any) => {
           console.error('Error completing registration:', error);

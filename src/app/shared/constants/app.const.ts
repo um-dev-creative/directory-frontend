@@ -91,18 +91,14 @@ export class DirectoryFrontendConst {
     },
     /**
      * Generates HTTP headers with a session token.
-     * @param {string} token - The session token.
-     * @param {string} tokenBkd - The session token bkd.
-     * @param authorization
+     * @param {string} uii - User ID.
      * @returns {Object} The HTTP headers object with the session token.
      */
-    STANDARD_TOKEN_DIR: function (token: string, tokenBkd: string, authorization: string): object {
+    STANDARD_TOKEN_DIR: function (uii: string): object {
       return {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          'session-token': token,
-          'session-token-bkd': tokenBkd,
-          'Authorization': authorization,
+          'uii': uii,
           'Access-Control-Allow-Origin': '*'
         })
       };

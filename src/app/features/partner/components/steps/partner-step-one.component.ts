@@ -30,6 +30,7 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
           [required]="true"
           [variant]="getFieldVariant('name')"
           [errorMessage]="getFieldError('name')"
+          [maxLength]="25"
           formControlName="name"
         />
 
@@ -86,7 +87,7 @@ export class PartnerStepOneComponent {
 
   constructor(private fb: FormBuilder) {
     this.reactiveForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(25)]],
       description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]]
     });
   }
@@ -120,6 +121,9 @@ export class PartnerStepOneComponent {
         return 'La descripción debe tener al menos 20 caracteres';
       }
       if (field.errors?.['maxlength']) {
+        if (fieldName === 'name') {
+          return 'El nombre no puede exceder 25 caracteres';
+        }
         return 'La descripción no puede exceder 500 caracteres';
       }
     }

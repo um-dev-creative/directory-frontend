@@ -18,7 +18,9 @@
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
       <app-banner bannerType="top"></app-banner>
       <app-carousel/>
-      <app-cards/>
+      <app-cards
+        (cardClick)="onCardClick($event)"
+        (imageError)="onImageError($event)"/>
     </div>
   </div>
   <!-- Lista de ítems -->

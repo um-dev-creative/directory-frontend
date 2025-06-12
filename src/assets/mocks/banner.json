@@ -48,13 +48,15 @@
         "desktop": "https://placehold.co/1273x106/e0f3f1/4369cc/png?text=Promos+de+la+Temporada&font=Noto%20Sans",
         "tablet": "https://placehold.co/1125x96/e0f3f1/4369cc/png?text=Promos+de+la+Temporada&font=Noto%20Sans",
         "mobile": "https://placehold.co/1125x262/e0f3f1/4369cc/png?text=Promos+de+la+Temporada&font=Noto%20Sans",
-        "alt": "Promociones de la temporada en LatinHub"
+        "alt": "Promociones de la temporada en LatinHub",
+        "route": "/seasonal-offers"
       },
       "mid": {
         "desktop": "https://placehold.co/2880x240/ffedd5/ef4444/webp?text=%C3%9Anete+a+Nuestra+Comunidad&font=Noto%20Sans",
         "tablet": "https://placehold.co/1536x168/ef4444/ffedd5/webp?text=%C3%9Anete+a+Nuestra+Comunidad&font=Noto%20Sans",
         "mobile": "https://placehold.co/640x280/ffedd5/ef4444/webp?text=%C3%9Anete+a+Nuestra+Comunidad&font=Noto%20Sans",
-        "alt": "Únete a Nuestra Comunidad"
+        "alt": "Únete a Nuestra Comunidad",
+        "route": "/auth"
       }
     }
   }

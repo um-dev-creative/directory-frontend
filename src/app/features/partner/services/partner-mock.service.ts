@@ -12,11 +12,19 @@ export class PartnerMockService {
 
   currentPartner$ = this.currentPartnerSubject.asObservable();
 
+  private generateSlug(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/[^\w]/g, '') // Remove all non-alphanumeric characters (spaces, hyphens, special chars)
+      .trim();
+  }
+
   constructor() {
     // Initialize with some mock data
     this.partners = [
       {
-        id: 'partner-001',
+        id: 1,
+        slug: 'restauranteelbuensabor',
         name: 'Restaurante El Buen Sabor',
         description: 'Restaurante familiar especializado en cocina tradicional mexicana. Ofrecemos desayunos, comidas y cenas preparadas con ingredientes frescos y locales. Ambiente acogedor ideal para familias y eventos especiales.',
         avatar: 'https://via.placeholder.com/200x200/10B981/ffffff?text=RBS',
@@ -26,7 +34,8 @@ export class PartnerMockService {
         status: 'active'
       },
       {
-        id: 'partner-002',
+        id: 2,
+        slug: 'cafedigital',
         name: 'Café Digital',
         description: 'Espacio de coworking y café para profesionales digitales. Ofrecemos café de especialidad, internet de alta velocidad y espacios de trabajo colaborativo.',
         avatar: 'https://via.placeholder.com/200x200/06B6D4/ffffff?text=CD',
@@ -40,7 +49,8 @@ export class PartnerMockService {
 
   createPartner(data: CreatePartnerRequest): Observable<Partner> {
     const newPartner: Partner = {
-      id: `partner-${String(this.currentId++).padStart(3, '0')}`,
+      id: this.currentId++,
+      slug: this.generateSlug(data.name),
       name: data.name,
       description: data.description,
       createdAt: new Date().toISOString(),
@@ -54,7 +64,7 @@ export class PartnerMockService {
     return of(newPartner).pipe(delay(1500));
   }
 
-  updatePartner(id: string, data: UpdatePartnerRequest): Observable<Partner> {
+  updatePartner(id: number, data: UpdatePartnerRequest): Observable<Partner> {
     const partnerIndex = this.partners.findIndex(p => p.id === id);
 
     if (partnerIndex === -1) {
@@ -98,7 +108,7 @@ export class PartnerMockService {
     return of({ url: mockUrl }).pipe(delay(2000));
   }
 
-  getPartner(id: string): Observable<Partner | null> {
+  getPartner(id: number): Observable<Partner | null> {
     const partner = this.partners.find(p => p.id === id);
     console.log('🎯 Mock: Getting partner:', partner);
 

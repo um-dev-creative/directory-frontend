@@ -14,6 +14,7 @@ import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
+import { CardImage } from '@app/cards/services/cards.service';
 
 interface OnAfterViewInit {
 }
@@ -79,4 +80,26 @@ export class Stage implements OnInit, OnAfterViewInit {
     this.changeDetectorRefs.detectChanges();
   }
 
+  /**
+   * Handle card click events from the Cards component
+   */
+  onCardClick(event: {card: CardImage, index: number}): void {
+    console.log('Card clicked:', event.card.title || event.card.alt, 'at position', event.index);
+
+    // Here you can implement navigation, modal opening, analytics tracking, etc.
+    // For example:
+    // this.router.navigate(['/campaign', event.card.id]);
+    // this.analytics.track('campaign_card_clicked', { cardId: event.card.id, position: event.index });
+  }
+
+  /**
+   * Handle image loading errors from the Cards component
+   */
+  onImageError(event: {card: CardImage, index: number}): void {
+    console.warn('Failed to load image for card:', event.card.title || event.card.alt);
+
+    // You could implement fallback logic, error reporting, etc.
+    // For example:
+    // this.errorReportingService.reportImageError(event.card.src);
+  }
 }

@@ -9,7 +9,6 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
 import {LoadingService} from '@app/core/services/loading.service';
-import {AuthService} from '@app/core/services';
 import {NotificationService} from '@app/core/services/notification.service';
 // App Store
 import {loadSession} from '@app/core/store/session/session.action';
@@ -38,7 +37,6 @@ import {DropdownState} from './models/dropdown-state.interface';
 import {AuthPlaceholders} from './models/auth-placeholders.interface';
 // Auth Constants
 import {DEFAULT_COUNTRY_CODE, INITIAL_DROPDOWN_STATE, INITIAL_PLACEHOLDERS} from './auth.constants';
-import {VerifyCodeClient} from '@app/verify-code/verify-code-client.service';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 
 /**
@@ -56,7 +54,6 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly authValidationService = inject(AuthValidationService);
   private readonly authFormService = inject(AuthFormService);
   private readonly placeholderService = inject(PlaceholderService);
-  private readonly verifyCodeClient = inject(VerifyCodeClient);
 
   /**
    * User client services
@@ -69,12 +66,6 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @type {Subject<void>}
    */
   private readonly subject$: Subject<void> = new Subject<void>();
-
-  /**
-   * Core authentication service
-   * @type {AuthService}
-   */
-  private readonly authService: AuthService = inject(AuthService);
 
   /**
    * User client services
