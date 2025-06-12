@@ -3,7 +3,7 @@ const {getApiEndpoint, createRequestOption, getAuthBasicHeader} = require("../sh
 const {API_SERVICE_DIRECTORY_MAP, API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH
 } = require("../shared/oauth-common-function");
 const schemesList = ["http:", "https:"];
-const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
+const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 const constants = require("../config/constants.util");
 const axios = require("axios");
 const logger = appConfig.getLoggerApp();

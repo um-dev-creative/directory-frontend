@@ -13,7 +13,7 @@ const {
 } = require("../shared/common-function");
 
 const schemesList = ["http:", "https:"];
-const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
+const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 const {backboneSessionToken} = require("./backbone.controller");
 
 const ajv = new Ajv();

@@ -1,0 +1,11 @@
+node_modules
+dist
+coverage
+uploads
+*.log
+.git
+.gitignore
+Dockerfile
+README.md
+docs
+public

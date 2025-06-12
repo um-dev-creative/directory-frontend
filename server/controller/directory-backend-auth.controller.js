@@ -13,7 +13,7 @@ const {
 } = require("../shared/common-function");
 
 const schemesList = ["http:", "https:"];
-const domainsList = ["prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
+const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
 const {backboneSessionToken} = require("./backbone.controller");
 const {setUserSession, removeUserSession} = require('../shared/user-session-store');
 
@@ -59,8 +59,10 @@ const directoryOauthClientConfig = {
  * @param {Function} next - The next middleware function.
  */
 const proxyApi = async (req, res, next) => {
+  logger.info(`[DIS] Proxying request to ${req.url}`);
   let response = null;
   const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, API_SERVICE_DIRECTORY_MAP);
+  logger.info(`[DIS] API URL: ${apiURL}`);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
   let sessionData = {
     directorySession: null,
@@ -70,13 +72,15 @@ const proxyApi = async (req, res, next) => {
     backboneBearerToken: null,
     backboneSessionExpiresAt: null
   };
-
+  logger.info(`[DIS] Validation schema: ${validationSchema}`);
   if (validationSchema) {
     try {
+      logger.info(`[DIS] Validating API URL: ${apiURL}`);
       // Get the backbone session token (already cached in backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
       // Get and reuse session and application tokens for Directory Backend
       const userId = getUserId(backboneSessionData.backboneSession);
+      logger.info(`[DIS] User ID: ${userId}`);
       const directorySessionData = await getDirectorySessionToken(req, directoryOauthClientConfig);
       // Construct headers
       sessionData.directorySession = directorySessionData.directorySession;
@@ -97,6 +101,7 @@ const proxyApi = async (req, res, next) => {
         httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
       }
 
+      logger.info(`[DIS] HTTP Options: ${JSON.stringify(httpOptions)}`);
       let axiosResponse = await axios(httpOptions);
       delete axiosResponse.headers[TRANSFER_ENCODING];
       response = axiosResponse.data;
@@ -110,6 +115,7 @@ const proxyApi = async (req, res, next) => {
       }
       sessionData.directorySession = directorySessionData.directorySession;
       setUserSession(userId, req.body.alias, sessionData);
+      logger.info(`[DIS] Session data set for user ${userId}`);
     } catch (error) {
       if (error.response != null) {
         response = error.response.data;
