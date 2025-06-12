@@ -1,5 +1,7 @@
 const assert = require('assert');
 const axios = require('axios');
+const appConfig = require("../config/app.config");
+const logger = appConfig.getLoggerApp();
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
   JWT: "JWT"
@@ -85,9 +87,12 @@ class OAuthClient {
           url: this.tokenUrl
         };
       }
-
+      logger.debug(`[OAuthClient] Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
+       authenticationType: ${this.authenticationType} and grantType: ${this.grantType}`);
       // Call OAuth service
+      logger.debug(`[OAuthClient] Request options: ${JSON.stringify(options)}`);
       const oauthResponse = await axios(options);
+      logger.debug(`[OAuthClient] Received token response: ${JSON.stringify(oauthResponse.data)}`);
       // Cache token in local variable.
       this.cacheToken = oauthResponse.data.access_token;
       this.lastRequestTime = requestTime;
