@@ -1,14 +1,21 @@
-.tw-scrollbar-hide  {
-  overflow: scroll; /* Activa el scroll explícitamente */
-  -ms-overflow-style: none; /* IE y Edge */
+.tw-scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  overscroll-behavior: none;
+  touch-action: pan-x;
 }
 
-.tw-scrollbar-hide ::-webkit-scrollbar {
-  display: none; /* Chrome, Safari y Edge */
+.tw-scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Edge */
 }
 
-.tw-scrollbar-hide  {
-  overscroll-behavior: none; /* Evita el rebote */
-  touch-action: pan-y; /* Desactiva rebotes innecesarios en móviles */
+/* Smooth scrolling for better UX */
+.tw-smooth-scroll {
+  scroll-behavior: smooth; 
+}
+
+/* Focus improvements for accessibility */
+.tw-focus-ring:focus {
+  outline: 2px solid theme('colors.emerald-green.500');
+  outline-offset: 2px;
 }

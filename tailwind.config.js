@@ -160,6 +160,8 @@ module.exports = {
         soft: "0 2px 15px -3px rgba(46, 139, 87, 0.08), 0 10px 20px -2px rgba(46, 139, 87, 0.04)",
         "soft-lg": "0 10px 40px -15px rgba(46, 139, 87, 0.12), 0 20px 25px -5px rgba(46, 139, 87, 0.06)",
         warm: "0 2px 15px -3px rgba(255, 111, 97, 0.08), 0 10px 20px -2px rgba(255, 111, 97, 0.04)",
+        "soft-blue": "0 2px 15px -3px rgba(135, 206, 235, 0.08), 0 10px 20px -2px rgba(135, 206, 235, 0.04)",
+        "soft-blue-lg": "0 10px 40px -15px rgba(135, 206, 235, 0.12), 0 20px 25px -5px rgba(135, 206, 235, 0.06)",
       },
       backgroundImage: {
         // Harmonious gradients with subtle transitions

@@ -12,7 +12,7 @@ export const partnerRoutes: Routes = [
     data: { hideFooter: true }
   },
   {
-    path: ':id',
+    path: ':slug',
     loadComponent: () => import('./partner').then(m => m.Partner)
   }
 ];

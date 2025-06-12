@@ -1,26 +1,99 @@
-<div class="tw-overflow-auto tw-flex tw-scrollbar-hide tw-w-full tw-justify-between">
-  @for (image of cards; track image.src) {
-    <div
-      [class]="$last ?
-        'tw-flex-shrink-0 tw-w-[389px] tw-h-[180px] tw-rounded-[15px] tw-shadow-md tw-relative tw-cursor-pointer' :
-        'tw-flex-shrink-0 tw-w-[389px] tw-h-[180px] tw-rounded-[15px] tw-shadow-md tw-mr-2 tw-relative tw-cursor-pointer'"
-    >
-      <img
-        [src]="image.src"
-        [alt]="image.alt"
-        class="tw-w-full tw-h-full tw-object-cover tw-object-center tw-rounded-lg"
-        loading="lazy"
-        [attr.fetchpriority]="$index === 0 ? 'high' : 'low'"
-      >
+<section
+  role="region"
+  aria-label="Campaign cards">
 
-      <!-- Capa de opacidad negra con hover -->
-      <div class="tw-absolute tw-inset-0 tw-bg-black tw-opacity-0 hover:tw-opacity-50 tw-transition tw-duration-300 tw-ease-in-out tw-rounded-lg">
-        <!-- Flecha visible siempre -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             class="tw-absolute tw-right-4 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-size-6 tw-text-white">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-        </svg>
+  <!-- Loading State -->
+  @if (loading$ | async) {
+    <div class="tw-flex tw-justify-center tw-py-8" role="status" aria-label="Loading campaigns">
+      <div class="tw-flex tw-space-x-4">
+        @for (skeleton of [1,2,3]; track skeleton) {
+          <div class="tw-animate-pulse tw-flex-shrink-0 tw-w-80 lg:tw-w-96 tw-h-44 tw-bg-beige-200 tw-rounded-xl"></div>
+        }
       </div>
     </div>
   }
-</div>
+
+  <!-- Error State -->
+  @if (error$ | async; as error) {
+    <div class="tw-text-center tw-py-8" role="alert">
+      <div class="tw-text-4xl tw-mb-4">⚠️</div>
+      <p class="tw-text-coral-600 tw-mb-4">{{ error }}</p>
+      <button
+        (click)="loadCards()"
+        class="tw-px-4 tw-py-2 tw-bg-emerald-green-600 tw-text-white tw-rounded-lg hover:tw-bg-emerald-green-700 tw-transition tw-duration-200"
+        type="button">
+        Retry
+      </button>
+    </div>
+  }
+
+  <!-- Cards Grid -->
+  @if (cardsData$ | async; as cards) {
+    <div
+      class="tw-overflow-x-auto lg:tw-overflow-visible tw-scrollbar-hide tw-py-6 tw-smooth-scroll"
+      role="group"
+      aria-label="Campaign cards">
+
+      <!-- Mobile: Horizontal scroll, Desktop: Grid with space-between for equilibrium -->
+      <div class="tw-flex tw-gap-4 tw-min-w-max lg:tw-min-w-0 lg:tw-justify-between lg:tw-max-w-full">
+        @for (card of cards; track trackByCardSrc($index, card); let i = $index) {
+          <article
+            class="tw-flex-shrink-0 tw-w-80 lg:tw-w-[calc(33.333%-1rem)] lg:tw-max-w-sm tw-bg-white tw-rounded-xl tw-shadow-md tw-overflow-hidden tw-cursor-pointer tw-transition tw-duration-300 hover:tw-shadow-lg hover:tw-scale-105 focus:tw-outline-none"
+            [attr.aria-label]="card.alt || 'Campaign card ' + (i + 1)"
+            [attr.data-card-index]="i"
+            tabindex="0"
+            role="button"
+            (click)="onCardClick(card, i)"
+            (keydown.enter)="onCardClick(card, i)"
+            (keydown.space)="onCardClick(card, i); $event.preventDefault()">
+
+            <div class="tw-relative tw-h-44 tw-overflow-hidden tw-group">
+              <img
+                [src]="card.src"
+                [alt]="card.alt || 'Campaign image'"
+                class="tw-w-full tw-h-full tw-object-cover tw-transition tw-duration-300 group-hover:tw-scale-110"
+                loading="lazy"
+                [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
+                (error)="onImageError($event, card, i)"
+              >
+
+              <!-- Overlay -->
+              <div class="tw-absolute tw-inset-0 tw-bg-gradient-to-t tw-from-black/40 tw-to-transparent tw-opacity-0 group-hover:tw-opacity-100 tw-transition tw-duration-300">
+                <div class="tw-absolute tw-bottom-4 tw-right-4">
+                  <svg class="tw-w-6 tw-h-6 tw-text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Content (if title or description exist)
+            @if (card.title || card.description) {
+              <div class="tw-p-4">
+                @if (card.title) {
+                  <h3 class="tw-font-semibold tw-text-beige-800 tw-mb-2">{{ card.title }}</h3>
+                }
+                @if (card.description) {
+                  <p class="tw-text-sm tw-text-beige-600">{{ card.description }}</p>
+                }
+              </div>
+            }-->
+          </article>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if ((cardsData$ | async)?.length === 0 && !(loading$ | async) && !(error$ | async)) {
+    <div class="tw-text-center tw-py-12">
+      <div class="tw-text-6xl tw-mb-4">📸</div>
+      <h3 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-2">
+        No campaigns available
+      </h3>
+      <p class="tw-text-beige-600">
+        Check back later for new campaigns
+      </p>
+    </div>
+  }
+</section>

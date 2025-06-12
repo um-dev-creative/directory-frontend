@@ -54,6 +54,7 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
           [value]="value"
           [attr.aria-describedby]="helperText || errorMessage ? inputId + '-description' : null"
           [attr.aria-invalid]="variant === 'error'"
+          [attr.maxlength]="maxLength"
           (input)="onInput($event)"
           (blur)="onBlur()"
           (focus)="onFocus()"
@@ -111,6 +112,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() leadingIcon: boolean = false;
   @Input() trailingIcon: boolean = false;
   @Input() fullWidth: boolean = true;
+  @Input() maxLength?: number;
 
   @Output() inputChange = new EventEmitter<string>();
   @Output() inputFocus = new EventEmitter<void>();
