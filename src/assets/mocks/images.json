@@ -1,16 +1,25 @@
 {
   "images": [
     {
+      "id": "campaign_1",
       "src": "https://placehold.co/1556x720/ffedd5/ef4444/webp?text=Community+First&font=Noto%20Sans",
-      "alt": "campain_1"
+      "alt": "Community First Campaign",
+      "title": "Community First",
+      "description": "Supporting local businesses in our community"
     },
     {
+      "id": "campaign_2",
       "src": "https://placehold.co/1556x720/ef4444/ffedd5/webp?text=Local+Focus&font=Noto%20Sans",
-      "alt": "campain_2"
+      "alt": "Local Focus Campaign",
+      "title": "Local Focus",
+      "description": "Discover amazing local businesses near you"
     },
     {
+      "id": "campaign_3",
       "src": "https://placehold.co/1556x720/ffedd5/ef4444/webp?text=Exclusive+Deals&font=Noto%20Sans",
-      "alt": "campain_3"
+      "alt": "Exclusive Deals Campaign",
+      "title": "Exclusive Deals",
+      "description": "Special offers only for directory members"
     }
   ]
 }

@@ -1,156 +1,266 @@
+<!-- filepath: /Users/ouzcategui/GitHub/directory-frontend/src/app/features/partner/partner.html -->
 <!-- Show registration stepper for new partners -->
 @if (isRegistration) {
   <app-partner-registration-stepper></app-partner-registration-stepper>
 } @else {
   <!-- Show existing partner profile -->
-  <main class="tw-relative tw-mx-auto">
-  <div class="tw-w-full tw-max-w-[1200px] tw-bg-center tw-mx-auto">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <section class="tw-bg-gradient-to-br tw-from-blue-600 tw-to-blue-400 tw-text-white tw-py-6 tw-rounded-xl tw-shadow-lg tw-my-8">
-        <div>
-          <div class="tw-flex tw-flex-col tw-items-center tw-relative">
-            <div class="tw-absolute tw-top-4 tw-left-4">
-              <a href="#" class="tw-flex tw-items-center tw-text-white tw-font-semibold">
-                <!--img src="assets/back-icon.svg" alt="Back" class="tw-w-6 tw-h-6 tw-mr-2"-->
-                <svg
-                  class="tw-w-6 tw-h-6 tw-text-white tw-mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
-                </svg>
-                Back
-              </a>
-            </div>
-            <div class="tw-absolute tw-top-4 tw-right-4 tw-flex tw-space-x-4">
-              <a href="#" >
-                <!--img src="assets/bookmark-icon.png" alt="Bookmark" class="tw-w-6 tw-h-6"-->
-                <svg
-                  class="tw-w-6 tw-h-6 tw-text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
-                </svg>
-              </a>
-              <!-- img src="assets/share-icon.png" alt="Share" class="tw-w-6 tw-h-6"-->
-              <svg
-                class="tw-w-6 tw-h-6 tw-text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
-              </svg>
-            </div>
-            <div class="tw-w-[100px] tw-h-[100px] tw-bg-white tw-rounded-[10px] tw-shadow-md tw-mx-auto tw-flex tw-items-center tw-justify-center tw-p-1 tw-overflow-hidden">
-              <img src="https://storage.spccard.ca/MUJI_LOGO_192x192-min.jpg"
-                   alt="partner-logo"
-                   class="tw-w-full tw-h-full tw-object-contain tw-aspect-square">
-            </div>
-            <div class="tw-flex tw-space-x-4 tw-mt-4">
-                <div class="tw-top-3 tw-left-3 tw-bg-green-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">Online</div>
-                <div class="tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">In-Store</div>
-            </div>
-            <h1 class="tw-text-2xl tw-font-bold tw-mt-4 tw-text-white">MUJI</h1>
-            <p class="tw-text-lg tw-mt-2 tw-text-white">10% off regular-priced merchandise.*</p>
-            <div class="tw-mt-4">
-              <button class="tw-bg-purple-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg">Redeem Online</button>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="tw-py-12">
-        <div class="tw-max-w-[1200px] tw-mx-auto">
-          <div class="tw-flex tw-flex-col tw-items-center tw-text-center">
-            <h2 class="tw-text-3xl tw-font-bold tw-text-gray-900">About Gymshark</h2>
-            <p class="tw-mt-4 tw-text-lg tw-text-gray-700 tw-max-w-2xl">
-              Gymshark makes makes top quality performance wear to workout in. But that’s not even the half of it.
-              They exist to unite the conditioning* community. They do that by providing the tools to help
-              everyone become their personal best: the clothing you’ll sweat in, the content you’ll find
-              inspiration in and the community you’ll feel you belong in. They’re a global family over
-              10 million strong. They say their community is ‘not united by our goals, but by the things we
-              do to achieve them’ <a (click)="openModal()" class="tw-font-bold tw-text-black tw-cursor-pointer hover:tw-text-gray-700">
-              ...more
-            </a>
-            </p>
-            <p class="tw-mt-2 tw-text-sm tw-text-gray-600 tw-italic">
-              *Conditioning is everything we do today to prepare for tomorrow.
-            </p>
-          </div>
-        </div>
-        <!-- Modal directo en el componente sin usar un componente separado -->
-        <!-- Modal using @if instead of *ngIf -->
-        @if (showModal) {
-          <div class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center">
-            <div class="tw-fixed tw-inset-0 tw-bg-black tw-opacity-50" (click)="closeModal()"></div>
-            <div class="tw-relative tw-bg-white tw-rounded-lg tw-shadow-xl tw-w-full tw-max-w-md tw-mx-4 tw-z-10">
-              <div class="tw-p-6">
-                <h3 class="tw-text-xl tw-font-semibold tw-text-gray-900 tw-mb-4">About Gymshark</h3>
-                <div class="tw-space-y-4 tw-text-base tw-text-gray-600">
-                  <p>
-                    Gymshark makes top quality performance wear to workout in. But that's not even the half of it.
-                    They exist to unite the conditioning* community. They do that by providing the tools to help
-                    everyone become their personal best: the clothing you'll sweat in, the content you'll find
-                    inspiration in and the community you'll feel you belong in.
-                  </p>
-                  <p>
-                    They're a global family over 10 million strong. They say their community is 'not united by our goals, but by the things we
-                    do to achieve them'.
-                  </p>
-                  <p>
-                    Founded in 2012 by then teenager Ben Francis and a group of his high-school friends, Gymshark has grown from a screen printing operation in a garage, into one of the fastest growing and most recognizable brands in fitness.
-                  </p>
-                  <p>
-                    In 2020, General Atlantic acquired a 21% stake in Gymshark, valuing the brand at over £1 billion, officially giving it "unicorn" status.
-                  </p>
-                  <p class="tw-mt-6 tw-text-sm tw-text-gray-500 tw-italic">
-                    *Conditioning is everything we do today to prepare for tomorrow.
-                  </p>
+  @if (isLoading) {
+    <!-- Loading State -->
+    <main class="tw-relative tw-mx-auto tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-beige-50">
+      <div class="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+        <div class="tw-animate-spin tw-rounded-full tw-h-12 tw-w-12 tw-border-b-2 tw-border-emerald-500"></div>
+        <p class="tw-text-gray-600">Cargando perfil del partner...</p>
+      </div>
+    </main>
+  } @else if (partnerProfile) {
+    <!-- Partner Profile Content -->
+    <main class="tw-relative tw-mx-auto tw-bg-beige-50 tw-min-h-screen">
+      <div class="tw-w-full tw-max-w-[1200px] tw-mx-auto">
+
+        <!-- Hero Section with Brand Colors -->
+        <section class="tw-bg-gradient-to-br tw-from-emerald-700 tw-to-emerald-500 tw-text-white tw-py-8 tw-rounded-b-2xl tw-shadow-xl">
+          <div class="tw-px-4">
+            <div class="tw-flex tw-flex-col tw-items-center tw-relative">
+
+              <!-- Navigation Icons -->
+              <div class="tw-absolute tw-top-4 tw-left-4">
+                <button (click)="goBack()" class="tw-flex tw-items-center tw-text-white tw-font-semibold tw-transition-colors hover:tw-text-beige-100">
+                  <svg class="tw-w-6 tw-h-6 tw-text-white tw-mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+                  </svg>
+                  Atrás
+                </button>
+              </div>
+
+              <div class="tw-absolute tw-top-4 tw-right-4 tw-flex tw-space-x-3">
+                <button (click)="toggleBookmark()" class="tw-transition-transform hover:tw-scale-110">
+                  <svg class="tw-w-6 tw-h-6" [class]="partnerProfile.isBookmarked ? 'tw-text-coral-300 tw-fill-coral-300' : 'tw-text-white'"
+                       fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
+                  </svg>
+                </button>
+
+                <button (click)="sharePartner()" class="tw-transition-transform hover:tw-scale-110">
+                  <svg class="tw-w-6 tw-h-6 tw-text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Partner Logo -->
+              <div class="tw-w-[120px] tw-h-[120px] tw-bg-white tw-rounded-xl tw-shadow-lg tw-mx-auto tw-flex tw-items-center tw-justify-center tw-p-3 tw-overflow-hidden tw-mb-4">
+                <img [src]="partnerProfile.logo" [alt]="partnerProfile.name + ' logo'"
+                     class="tw-w-full tw-h-full tw-object-contain tw-aspect-square">
+              </div>
+
+              <!-- Availability Badges -->
+              <div class="tw-flex tw-space-x-3 tw-mb-4">
+                @for (channel of partnerProfile.availableChannels; track channel) {
+                  <div class="tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-semibold tw-shadow-md"
+                       [class]="channel === 'online' ? 'tw-bg-sky-300 tw-text-sky-900' : 'tw-bg-coral-300 tw-text-coral-900'">
+                    {{ channel === 'online' ? 'En línea' : 'En tienda' }}
+                  </div>
+                }
+              </div>
+
+              <!-- Partner Name & Rating -->
+              <h1 class="tw-text-3xl tw-font-bold tw-text-white tw-mb-2 tw-text-center">{{ partnerProfile.name }}</h1>
+              <!--div class="tw-flex tw-items-center tw-space-x-2 tw-mb-4">
+                <div class="tw-flex tw-space-x-1">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <svg class="tw-w-4 tw-h-4" [class]="star <= partnerProfile.rating ? 'tw-text-yellow-300 tw-fill-yellow-300' : 'tw-text-gray-300'"
+                         fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  }
                 </div>
-                <div class="tw-mt-6 tw-flex tw-justify-end">
-                  <button (click)="closeModal()" class="tw-bg-gray-800 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-gray-700">
-                    Close
+                <span class="tw-text-white tw-text-sm">{{ partnerProfile.rating }} ({{ partnerProfile.reviewCount }} reseñas)</span>
+              </div-->
+
+              <!-- Short Description -->
+              <p class="tw-text-lg tw-text-center tw-text-white tw-mb-6 tw-max-w-md">{{ partnerProfile.shortDescription }}</p>
+
+              <!-- Terms and Conditions Toggle -->
+              @if (partnerProfile.termsAndConditions) {
+                <button (click)="toggleTermsAndConditions()" class="tw-text-white tw-text-xs tw-font-bold tw-mb-4 tw-transition-colors hover:tw-text-beige-100 tw-flex tw-items-center tw-space-x-1">
+                  <span class="tw-text-white tw-font-bold">
+                    {{ showTermsAndConditions ? '−' : '+' }}
+                  </span>
+                  <span>TÉRMINOS Y CONDICIONES</span>
+                </button>
+
+                <!-- Expanded Terms and Conditions -->
+                @if (showTermsAndConditions) {
+                  <div class="tw-bg-white tw-bg-opacity-10 tw-backdrop-blur-sm tw-rounded-lg tw-p-4 tw-mb-4 tw-w-full tw-max-w-6xl tw-mx-auto">
+                    <p class="tw-text-white tw-text-xs tw-leading-relaxed tw-text-center">{{ partnerProfile.termsAndConditions }}</p>
+                  </div>
+                }
+              }
+
+              <!-- CTA Button -->
+              <div class="tw-flex tw-space-x-3">
+                @if (partnerProfile.availableChannels.includes('online')) {
+                  <button (click)="redeemOnline()"
+                          class="tw-bg-coral-500 hover:tw-bg-coral-600 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-font-semibold tw-transition-colors tw-shadow-lg">
+                    Redimir en línea
+                  </button>
+                }
+                @if (partnerProfile.availableChannels.includes('in-store')) {
+                  <button class="tw-bg-white tw-text-emerald-600 tw-px-6 tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-beige-100 tw-transition-colors tw-shadow-lg">
+                    Ver ubicaciones
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="tw-py-12 tw-px-4">
+          <div class="tw-max-w-4xl tw-mx-auto">
+            <div class="tw-p-8">
+              <div class="tw-flex tw-flex-col tw-items-center tw-text-center">
+                <h2 class="tw-text-3xl tw-font-bold tw-text-gray-900 tw-mb-6">Acerca de {{ partnerProfile.name }}</h2>
+                <p class="tw-text-lg tw-text-gray-700 tw-max-w-3xl tw-leading-relaxed tw-mb-4">
+                  {{ partnerProfile.description }}
+                  @if (partnerProfile.description.length > 300) {
+                    <button (click)="openModal()" class="tw-ml-2 tw-font-semibold tw-text-emerald-600 tw-cursor-pointer hover:tw-text-emerald-700 tw-underline">
+                      Ver más
+                    </button>
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="tw-py-12 tw-px-4 tw-bg-gradient-to-r tw-from-beige-100 tw-to-beige-50">
+          <div class="tw-max-w-4xl tw-mx-auto">
+            <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-text-center tw-mb-8">Beneficios exclusivos</h3>
+            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+              @for (benefit of partnerProfile.benefits; track benefit) {
+                <div class="tw-bg-white tw-rounded-lg tw-p-4 tw-shadow-sm tw-border-l-4 tw-border-emerald-500">
+                  <div class="tw-flex tw-items-center">
+                    <svg class="tw-w-5 tw-h-5 tw-text-emerald-500 tw-mr-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="tw-text-gray-800">{{ benefit }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <!-- Redemption Instructions -->
+        <section class="tw-py-12 tw-px-4">
+          <div class="tw-max-w-4xl tw-mx-auto">
+            <div class="tw-bg-sky-50 tw-rounded-xl tw-p-8 tw-border tw-border-sky-200">
+              <h3 class="tw-text-xl tw-font-bold tw-text-sky-900 tw-mb-4 tw-flex tw-items-center">
+                <svg class="tw-w-6 tw-h-6 tw-mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Cómo redimir tu beneficio
+              </h3>
+              <p class="tw-text-sky-800">{{ partnerProfile.redemptionInstructions }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Categories -->
+        @if (partnerProfile.categories && partnerProfile.categories.length > 0) {
+          <section class="tw-py-12 tw-px-4">
+            <div class="tw-max-w-6xl tw-mx-auto">
+              <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-8 tw-text-center">Más de {{ partnerProfile.name }}</h3>
+                Otras ofertas dentro de la misma categoria
+            </div>
+          </section>
+        }
+
+        <!-- Similar Partners Section -->
+        @if (similarPartners && similarPartners.length > 0) {
+          <section class="tw-py-12 tw-px-4">
+            <div class="tw-max-w-6xl tw-mx-auto">
+              <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-8 tw-text-center">
+                También te puede interesar
+              </h3>
+              <app-offer-slider></app-offer-slider>
+            </div>
+          </section>
+        }
+
+        <!-- Modal for full description -->
+        @if (showModal) {
+          <div class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-p-4">
+            <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-transition-opacity" (click)="closeModal()"></div>
+            <div class="tw-relative tw-bg-white tw-rounded-xl tw-shadow-2xl tw-w-full tw-max-w-2xl tw-max-h-[80vh] tw-overflow-y-auto">
+              <div class="tw-p-6">
+                <div class="tw-flex tw-justify-between tw-items-center tw-mb-4">
+                  <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900">Acerca de {{ partnerProfile.name }}</h3>
+                  <button (click)="closeModal()" class="tw-text-gray-400 hover:tw-text-gray-600 tw-transition-colors">
+                    <svg class="tw-w-6 tw-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="tw-prose tw-prose-gray tw-max-w-none">
+                  <p class="tw-text-gray-700 tw-leading-relaxed">{{ partnerProfile.description }}</p>
+
+                  @if (partnerProfile.location) {
+                    <div class="tw-mt-6 tw-p-4 tw-bg-gray-50 tw-rounded-lg">
+                      <h4 class="tw-font-semibold tw-text-gray-900 tw-mb-2">Ubicación</h4>
+                      <p class="tw-text-gray-700">{{ partnerProfile.location.address }}, {{ partnerProfile.location.city }}, {{ partnerProfile.location.country }}</p>
+                    </div>
+                  }
+
+                  @if (partnerProfile.socialMedia) {
+                    <div class="tw-mt-6">
+                      <h4 class="tw-font-semibold tw-text-gray-900 tw-mb-3">Síguenos</h4>
+                      <div class="tw-flex tw-space-x-4">
+                        @if (partnerProfile.socialMedia.instagram) {
+                          <a href="#" class="tw-text-pink-600 hover:tw-text-pink-700">{{ partnerProfile.socialMedia.instagram }}</a>
+                        }
+                        @if (partnerProfile.socialMedia.facebook) {
+                          <a href="#" class="tw-text-blue-600 hover:tw-text-blue-700">{{ partnerProfile.socialMedia.facebook }}</a>
+                        }
+                        @if (partnerProfile.socialMedia.twitter) {
+                          <a href="#" class="tw-text-blue-400 hover:tw-text-blue-500">{{ partnerProfile.socialMedia.twitter }}</a>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div class="tw-mt-8 tw-flex tw-justify-end">
+                  <button (click)="closeModal()"
+                          class="tw-bg-emerald-600 hover:tw-bg-emerald-700 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-font-semibold tw-transition-colors">
+                    Cerrar
                   </button>
                 </div>
               </div>
             </div>
           </div>
         }
-      </section>
-      <section class="tw-py-12">
-        <div class="tw-max-w-[1200px] tw-mx-auto tw-px-2">
-          <!-- Título de la sección -->
-          <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-6 text-center">
-            More for Gymshark
-          </h3>
-          <!--app-offer-slider></app-offer-slider-->
+      </div>
+    </main>
+  } @else {
+    <!-- Error state or no partner found -->
+    <main class="tw-relative tw-mx-auto tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-beige-50">
+      <div class="tw-text-center">
+        <div class="tw-mb-4">
+          <svg class="tw-w-16 tw-h-16 tw-text-gray-400 tw-mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+          </svg>
         </div>
-      </section>
-      <section class="tw-py-12">
-        <div class="tw-max-w-[1200px] tw-mx-auto tw-px-2">
-          <!-- Título de la sección -->
-          <h3 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-6 text-center">
-            You might also like
-          </h3>
-          <app-offer-slider></app-offer-slider>
-        </div>
-      </section>
-    </div>
-  </div>
-</main>
+        <h2 class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mb-2">Partner no encontrado</h2>
+        <p class="tw-text-gray-600 tw-mb-6">Lo sentimos, no pudimos encontrar la información de este partner.</p>
+        <button (click)="goBack()"
+                class="tw-bg-emerald-600 hover:tw-bg-emerald-700 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-font-semibold tw-transition-colors">
+          Volver
+        </button>
+      </div>
+    </main>
+  }
 }

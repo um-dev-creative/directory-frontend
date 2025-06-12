@@ -1,67 +1,83 @@
-import {Component, inject, OnInit, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BannerService, BannerData, BannerImage, Category } from './services/banner.service';
 
-interface Category {
-  name: string;
-  image: string;
-}
-interface BannerImage {
-  desktop: string;
-  tablet: string;
-  mobile: string;
-  alt: string;
-}
-interface BannerData {
-  title: string;
-  categories: Category[];
-  banners: {
-    top?: BannerImage;
-    mid?: BannerImage;
-  };
-}
 @Component({
   selector: 'app-banner',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './banner.html',
-  styleUrls: ['./banner.css'],
-  imports: [CommonModule, RouterModule]
+  styleUrls: ['./banner.css']
 })
-export class Banner implements OnInit {
+export class Banner implements OnInit, OnDestroy {
   @Input() bannerType?: 'top' | 'mid';
 
-  bannerData: BannerData = {
-    title: '',
-    categories: [] as Category[],
-    banners: {},
-  };
+  bannerData$ = new BehaviorSubject<BannerData | null>(null);
+  loading$ = new BehaviorSubject<boolean>(false);
+  error$ = new BehaviorSubject<string | null>(null);
 
-  private readonly httpClient: HttpClient = inject(HttpClient);
+  private destroy$ = new Subject<void>();
 
-  constructor() {}
+  constructor(private readonly bannerService: BannerService) {}
 
-  get title(): string {
-    return this.bannerData?.title || '';
+  ngOnInit(): void {
+    this.loadBannerData();
   }
 
-  get categories(): Category[] {
-    return this.bannerData?.categories || [];
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get currentBanner(): BannerImage | null {
-    if (!this.bannerType || !this.bannerData?.banners) return null;
-    return this.bannerData.banners[this.bannerType] || null;
+    const data = this.bannerData$.value;
+    if (!this.bannerType || !data?.banners) return null;
+    return data.banners[this.bannerType] || null;
   }
 
-  ngOnInit() {
-    this.httpClient.get<{ banner: BannerData}>('assets/mocks/banner.json')
+  get title(): string {
+    return this.bannerData$.value?.title || '';
+  }
+
+  get categories(): Category[] {
+    return this.bannerData$.value?.categories || [];
+  }
+
+  getRouteForBanner(): string[] {
+    const banner = this.currentBanner;
+    if (banner?.route) {
+      return [banner.route];
+    }
+    // Default routes based on banner type
+    return this.bannerType === 'top' ? ['/seasonal-offers'] : ['/auth'];
+  }
+
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.src = 'https://placehold.co/1200x400/f3f4f6/6b7280/webp?text=Banner+Not+Available';
+    }
+  }
+
+  private loadBannerData(): void {
+    this.loading$.next(true);
+    this.error$.next(null);
+
+    this.bannerService.getBannerData()
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.bannerData = data.banner;
+          this.bannerData$.next(data);
+          this.loading$.next(false);
         },
         error: (error) => {
-          console.error('Error loading banner data:', error);
-        },
+          this.error$.next('Failed to load banner. Please try again.');
+          this.loading$.next(false);
+          console.error('Banner loading error:', error);
+        }
       });
   }
 }

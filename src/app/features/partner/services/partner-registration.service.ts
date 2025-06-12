@@ -14,7 +14,8 @@ export interface UpdatePartnerRequest {
 }
 
 export interface Partner {
-  id: string;
+  id: number;
+  slug: string;
   name: string;
   description: string;
   avatar?: string;
@@ -40,10 +41,18 @@ export class PartnerRegistrationService {
 
   constructor(private http: HttpClient) {}
 
+  private generateSlug(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/[^\w]/g, '') // Remove all non-alphanumeric characters (spaces, hyphens, special chars)
+      .trim();
+  }
+
   createPartner(data: CreatePartnerRequest): Observable<Partner> {
     if (this.useMockData) {
       const newPartner: Partner = {
-        id: `partner-${String(this.currentId++).padStart(3, '0')}`,
+        id: this.currentId++,
+        slug: this.generateSlug(data.name),
         name: data.name,
         description: data.description,
         createdAt: new Date().toISOString(),
@@ -59,7 +68,7 @@ export class PartnerRegistrationService {
     return this.http.post<Partner>(`${this.apiUrl}`, data);
   }
 
-  updatePartner(id: string, data: UpdatePartnerRequest): Observable<Partner> {
+  updatePartner(id: number, data: UpdatePartnerRequest): Observable<Partner> {
     if (this.useMockData) {
       const partnerIndex = this.mockPartners.findIndex(p => p.id === id);
 

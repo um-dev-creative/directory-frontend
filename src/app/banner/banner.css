@@ -2,6 +2,36 @@
   cursor: pointer;
 }
 
+/* Focus states for accessibility */
+.clickable-pointer:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for images */
+.clickable-pointer img {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.clickable-pointer:hover img {
+  transform: scale(1.02);
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.tw-animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Bounce animation */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -12,21 +42,23 @@
 }
 
 .bounce-hover {
-  transition: all 0.3s ease-in-out; /* Transición suave para otros cambios */
+  transition: all 0.3s ease-in-out;
 }
 
 .bounce-hover:hover {
-  animation: bounce 0.5s ease-in-out infinite; /* Animación al hacer hover */
+  animation: bounce 0.5s ease-in-out infinite;
 }
 
+/* Zoom animation */
 .zoom-hover {
   transition: transform 0.3s ease-in-out;
 }
 
 .zoom-hover:hover {
-  transform: scale(1.1); /* Incrementa un 10% el tamaño */
+  transform: scale(1.1);
 }
 
+/* Shake animation */
 @keyframes shake {
   0%, 100% {
     transform: translateX(0);
@@ -41,5 +73,22 @@
 
 .shake-hover:hover {
   animation: shake 0.5s ease-in-out;
+}
+
+/* Responsive image handling */
+picture img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Scrollbar hide for categories */
+.tw-scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tw-scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
