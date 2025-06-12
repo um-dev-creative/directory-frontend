@@ -31,6 +31,14 @@ export interface PartnerProfile {
     email: string;
     phone?: string;
   };
+  offers: {
+    id: number;
+    name: string; // Cambiar de title a name
+    image: string;
+    discount: string;
+    isOnline: boolean;
+    isInStore: boolean;
+  }[];
   isBookmarked: boolean;
   status: 'active' | 'inactive';
 }
@@ -81,6 +89,24 @@ export class PartnerProfileService {
         email: 'contact@muji.com',
         phone: '+1-800-123-4567'
       },
+      offers: [
+        {
+          id: 101,
+          name: 'Descuento en Hogar',
+          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
+          discount: '10% OFF',
+          isOnline: true,
+          isInStore: true
+        },
+        {
+          id: 102,
+          name: 'Envío Gratis',
+          image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=300&fit=crop',
+          discount: 'Free Shipping',
+          isOnline: true,
+          isInStore: false
+        }
+      ],
       isBookmarked: false,
       status: 'active'
     },
@@ -111,6 +137,7 @@ export class PartnerProfileService {
       contact: {
         email: 'support@gymshark.com'
       },
+      offers: [],
       isBookmarked: true,
       status: 'active'
     },
@@ -140,6 +167,16 @@ export class PartnerProfileService {
       contact: {
         email: 'support@starbucks.com'
       },
+      offers: [
+        {
+          id: 301,
+          name: '20% en Bebidas',
+          image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+          discount: '20% OFF',
+          isOnline: false,
+          isInStore: true
+        }
+      ],
       isBookmarked: false,
       status: 'active'
     },
@@ -175,6 +212,16 @@ export class PartnerProfileService {
         email: 'members@nike.com',
         phone: '+1-800-806-6453'
       },
+      offers: [
+        {
+          id: 401,
+          name: '25% en Calzado',
+          image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop',
+          discount: '25% OFF',
+          isOnline: true,
+          isInStore: true
+        }
+      ],
       isBookmarked: false,
       status: 'active'
     },
@@ -206,6 +253,16 @@ export class PartnerProfileService {
         email: 'hello@uumdc.com',
         phone: '+1-555-123-4567'
       },
+      offers: [
+        {
+          id: 501,
+          name: '30% en Desarrollo Web',
+          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
+          discount: '30% OFF',
+          isOnline: true,
+          isInStore: false
+        }
+      ],
       isBookmarked: true,
       status: 'active'
     }

@@ -1,18 +1,22 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OfferSliderClient } from '@app/offer-slider/offer-slider.client';
 import { Observable } from 'rxjs';
 import { Offer } from '@app/shared/models/offer.model';
+import { BadgeComponent, IconComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-offer-slider',
   imports: [
-    CommonModule
+    CommonModule,
+    BadgeComponent,
+    IconComponent
   ],
   templateUrl: './offer-slider.html',
   styleUrls: ['./offer-slider.css']
 })
 export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
+  @Input() offers: Offer[] | null = null;
   offers$: Observable<Offer[]>;
   isMobile$: Observable<boolean>;
 
@@ -29,7 +33,9 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.offerSliderClient.loadOffers();
+    if (!this.offers) {
+      this.offerSliderClient.loadOffers();
+    }
   }
 
   ngAfterViewInit() {
