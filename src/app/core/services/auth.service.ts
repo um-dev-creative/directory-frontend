@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpService } from './http.service';
-import { StorageService } from './storage.service';
+import { StorageMockService } from './storage-mock.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
 import { ServiceTemplate } from './service-template';
@@ -48,7 +48,7 @@ export class AuthService extends ServiceTemplate {
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly storageService: StorageService,
+    private readonly storageService: StorageMockService,
     private readonly logger: LoggerService,
     private readonly notificationService: NotificationService,
     private readonly router: Router

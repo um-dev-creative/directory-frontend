@@ -3,10 +3,10 @@
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/drb/api/v1"
+        "startWith": "/drb/api/v1/gen"
       },
       "urlRewrite": {
-        "from": "/drb/api/v1",
+        "from": "/drb/api/v1/gen",
         "to": "/directory-backend/api/v1"
       }
     }
@@ -39,10 +39,10 @@
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/drb/api/v1/verify-code"
+        "startWith": "/drb/api/v1/auth/verify-code"
       },
       "urlRewrite": {
-        "from": "/drb/api/v1/verify-code",
+        "from": "/drb/api/v1/auth/verify-code",
         "to": "/directory-backend/api/v1/user-register"
       }
     }

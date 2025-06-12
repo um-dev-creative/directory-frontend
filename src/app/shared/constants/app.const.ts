@@ -19,6 +19,7 @@ export class DirectoryFrontendConst {
     BACKBONE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
+    GEN_PATH: '/gen',
     VERIFY_CODE_PATH: '/verify-code',
     USER_CREATE_PATH: '/create-user',
     STAGE_PATH: '/stage',
@@ -92,6 +93,7 @@ export class DirectoryFrontendConst {
      * Generates HTTP headers with a session token.
      * @param {string} token - The session token.
      * @param {string} tokenBkd - The session token bkd.
+     * @param authorization
      * @returns {Object} The HTTP headers object with the session token.
      */
     STANDARD_TOKEN_DIR: function (token: string, tokenBkd: string, authorization: string): object {

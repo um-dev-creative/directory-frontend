@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
@@ -6,10 +6,12 @@ import {Store} from '@ngrx/store';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
-import { Button, InputComponent, Avatar, CardComponent, ModalComponent } from '@app/components/ui';
-import { Subject, takeUntil } from 'rxjs';
-import { UserService } from './services/user.service';
-import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
+import {Avatar, Button, CardComponent, InputComponent, ModalComponent} from '@app/components/ui';
+import {Subject, takeUntil} from 'rxjs';
+import {UserMockService} from './services/user-mock.service';
+import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
+import {UserClient} from '@app/user/user.client';
+import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 
 @Component({
   selector: 'app-community-member',
@@ -17,7 +19,7 @@ import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/
   imports: [CommonModule, ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent],
   templateUrl: './community-member.html',
   animations: [],
-  providers: [BackboneJwtPipe]
+  providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 
 export class CommunityMember implements OnInit, OnDestroy {
@@ -25,8 +27,16 @@ export class CommunityMember implements OnInit, OnDestroy {
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
   private readonly store: Store<{ session: SessionState }> = inject(Store);
   private readonly formBuilder = inject(FormBuilder);
-  private readonly userService = inject(UserService);
-  private destroy$ = new Subject<void>();
+  private readonly userMockService = inject(UserMockService);
+  private readonly destroy$ = new Subject<void>();
+  private readonly userClient = inject(UserClient);
+  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
+  private readonly directoryJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
+  /** Function to log information */
+  protected logInfo: (...arg: any) => void;
+
+  /** Function to log errors */
+  protected logError: (...arg: any) => void;
 
   protected sessionData: SessionData | undefined;
   protected isAuthenticated = false;
@@ -36,6 +46,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   protected uploadingAvatar = false;
   protected avatarPreview: string | null = null;
   protected deleteAccountModalOpen = false;
+
 
   // Opciones para el componente ReportProblem
   protected reportProblemOptions: ReportProblemOptions = {};
@@ -63,6 +74,8 @@ export class CommunityMember implements OnInit, OnDestroy {
   };
 
   constructor() {
+    this.logInfo = (...arg: any) => console.info(arg);
+    this.logError = (...arg: any) => console.error(arg);
     this.initializeForm();
   }
 
@@ -73,7 +86,10 @@ export class CommunityMember implements OnInit, OnDestroy {
       lastName: [this.profileData.lastName, [Validators.required, Validators.minLength(2)]],
       displayName: [this.profileData.displayName, [Validators.required, Validators.minLength(2)]],
       phone: [this.profileData.phone],
-      birthDate: [{value: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`, disabled: true}],
+      birthDate: [{
+        value: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
+        disabled: true
+      }],
       notificationsEmail: [this.profileData.notifications.email],
       notificationsSms: [this.profileData.notifications.sms],
       privacyOptOut: [this.profileData.privacyOptOut]
@@ -83,7 +99,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.select('session').subscribe(sessionState => {
       this.sessionData = sessionState.sessionData;
-      if (this.sessionData && this.sessionData.userAuth?.fullName) {
+      if (this.sessionData.userAuth?.fullName) {
         this.isAuthenticated = true;
         this.userFullName = this.sessionData.userAuth.fullName;
         // Usar datos reales si están disponibles
@@ -102,6 +118,7 @@ export class CommunityMember implements OnInit, OnDestroy {
       // Actualizar opciones del componente ReportProblem
       this.updateReportProblemOptions();
     });
+    this.loadProfileData();
     this.processSessionData();
   }
 
@@ -115,6 +132,44 @@ export class CommunityMember implements OnInit, OnDestroy {
       email: this.profileData.email,
       displayName: this.profileData.displayName
     });
+  }
+
+  loadProfileData(): void {
+    const userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.uid;
+    if (userId) {
+      this.userClient.getUserById(userId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (userData: any) => {
+            this.profileData = {
+              ...this.profileData,
+            };
+            const isVerified = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.vcCompleted;
+            this.profileData.firstName = userData.firstName;
+            this.profileData.lastName = userData.lastName;
+            // PENDING - Include displayName in userData and in the API response
+            // this.profileData.displayName = userData.displayName || `${userData.firstName} ${userData.lastName}`;
+            // PENDING - Include phone in userData and in the API response
+            // this.profileData.phone = userData.phone || '';
+            this.profileData.birthDate = userData.dateOfBirth;
+            this.profileData.email = userData.email;
+            this.profileData.emailConfirmed = isVerified == 'true' || false;
+            // PENDING - Include notificationEmail and notificationSms in userData and in the API response
+            // this.profileData.notifications = {
+            //   email: userData.notificationEmail || false,
+            //   sms: userData.notificationSms || false
+            // };
+            // PENDING - Include privacyOptOut in userData and in the API response
+            // this.profileData.privacyOptOut = userData.privacyOptOut || false;
+
+            this.updateFormWithSessionData();
+            this.logInfo('Profile data loaded:', this.profileData);
+          },
+          error: (error: any) => {
+            this.logError('Error loading profile data:', error);
+          }
+        });
+    }
   }
 
   private updateReportProblemOptions(): void {
@@ -131,7 +186,7 @@ export class CommunityMember implements OnInit, OnDestroy {
     };
   }
 
-  private processSessionData(): void  {
+  private processSessionData(): void {
     if (this.sessionData?.token) {
       this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
     } else {
@@ -168,7 +223,7 @@ export class CommunityMember implements OnInit, OnDestroy {
       reader.readAsDataURL(file);
 
       // Upload file
-      this.userService.uploadAvatar(file)
+      this.userMockService.uploadAvatar(file)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response: any) => {

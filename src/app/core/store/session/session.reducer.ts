@@ -9,15 +9,15 @@ const _sessionReducer = createReducer(
     return {...state, sessionData, isInitialized: isInitialized ?? state.isInitialized};
   }),
   on(clearSession, (state) => {
-    console.debug('🔒 Session cleared');
+    console.debug('🔒 Session cleared from the Local Storage');
     return {
       ...initialState,
       isInitialized: true
     };
   }),
   on(loadSession, (state) => {
-    if (isSessionStorageAvailable()) {
-      const storedSession = sessionStorage.getItem('currentSession');
+    if (isLocalStorageAvailable()) {
+      const storedSession = localStorage.getItem('currentSession');
       if (storedSession) {
         const sessionData: SessionData = JSON.parse(storedSession);
         console.debug('🔓 Session loaded:', sessionData?.userAuth?.email);
@@ -33,11 +33,11 @@ const _sessionReducer = createReducer(
   })
 );
 
-const isSessionStorageAvailable = () => {
+const isLocalStorageAvailable = () => {
   try {
     const testKey = '__test__';
-    sessionStorage.setItem(testKey, testKey);
-    sessionStorage.removeItem(testKey);
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
     return true;
   } catch (e) {
     return false;

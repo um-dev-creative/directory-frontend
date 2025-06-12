@@ -1,12 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { StorageService } from '../services/storage.service';
+import {inject, Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private readonly storageService: StorageService) {}
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+  private sessionData: SessionData | undefined;
+
+  constructor() {
+    this.store.select('session').subscribe(sessionState => {
+      this.sessionData = sessionState.sessionData;
+    });
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Skip auth header for certain requests
@@ -14,13 +22,13 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    // Get token from storage
-    const token = this.storageService.getLocal<string>('auth_token');
+    // Get bearerToken from storage
+    const bearerToken = this.sessionData?.userAuth?.authorization;
 
-    if (token) {
+    if (bearerToken) {
       // Clone the request and add the authorization header
       const authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`)
+        headers: req.headers.set('Authorization', `Bearer ${bearerToken}`)
       });
 
       return next.handle(authReq);

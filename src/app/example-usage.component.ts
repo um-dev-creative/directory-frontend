@@ -8,7 +8,7 @@ import {
   LoggerService,
   LoadingService,
   NotificationService,
-  StorageService,
+  StorageMockService,
   ThemeService
 } from './core/services';
 
@@ -95,7 +95,7 @@ export class ExampleUsageComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private loadingService: LoadingService,
     private notificationService: NotificationService,
-    private storageService: StorageService,
+    private storageService: StorageMockService,
     public themeService: ThemeService
   ) {}
 
