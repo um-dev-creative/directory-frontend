@@ -3,8 +3,9 @@
     @apply tw-m-[7px] tw-mx-[16px];
   }
 }
-.container {
-  @apply tw-p-[22px] tw-pb-[7px];
+
+.container-center {
+  @apply tw-px-[22px] tw-pt-[22px] tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center;
 }
 
 @keyframes shake {

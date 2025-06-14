@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Button } from "../components/ui/buttons/button";
 
 interface Trend {
   title: string;
@@ -11,7 +12,7 @@ interface Trend {
 
 @Component({
   selector: 'app-trend-carousel',
-  imports: [],
+  imports: [Button],
   templateUrl: './trend-carousel.html',
   styleUrl: './trend-carousel.css'
 })

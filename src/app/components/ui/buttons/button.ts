@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'ghost-alert'| 'alert' | 'success' | 'info' | 'alert-outline';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
   selector: 'app-button',
@@ -80,7 +80,9 @@ export class Button {
     const sizeClasses = {
       sm: ['tw-text-xs', 'tw-px-3', 'tw-py-1.5', 'tw-h-8', 'tw-min-w-[80px]'],
       md: ['tw-text-sm', 'tw-px-4', 'tw-py-2', 'tw-h-10', 'tw-min-w-[100px]'],
-      lg: ['tw-text-base', 'tw-px-6', 'tw-py-3', 'tw-h-12', 'tw-min-w-[120px]']
+      lg: ['tw-text-base', 'tw-px-6', 'tw-py-3', 'tw-h-12', 'tw-min-w-[120px]'],
+      xl: ['tw-text-base', 'tw-px-8', 'tw-py-4', 'tw-h-12', 'tw-min-w-[180px]'],
+      xxl: ['tw-text-base', 'tw-px-8', 'tw-py-4', 'tw-h-12', 'tw-min-w-[280px]']
     };
 
     // Variant classes using brand colors

@@ -129,8 +129,8 @@
         @if (partnerProfile.categories && partnerProfile.offers.length > 0) {
           <section class="tw-py-6 tw-px-4">
             <div class="tw-max-w-6xl tw-mx-auto">
-              <h3 class="tw-text-2xl tw-font-bold tw-text-emerald-800 tw-mb-8 tw-text-center">Más de {{ partnerProfile.name }}</h3>
-                <app-offer-slider [offers]="partnerProfile.offers"></app-offer-slider>
+              <!-- Title now comes from the component -->
+                <app-offer-slider [offers]="partnerProfile.offers" [sliderTitle]="'Más de ' + partnerProfile.name"></app-offer-slider>
             </div>
           </section>
         }
@@ -139,10 +139,8 @@
         @if (similarPartners && similarPartners.length > 0) {
           <section class="tw-py-6 tw-px-4">
             <div class="tw-max-w-6xl tw-mx-auto">
-              <h3 class="tw-text-2xl tw-font-bold tw-text-emerald-800 tw-mb-8 tw-text-center">
-                También te puede interesar
-              </h3>
-              <app-offer-slider></app-offer-slider>
+              <!-- Title now comes from the component -->
+              <app-offer-slider [sliderTitle]="'También te puede interesar'"></app-offer-slider>
             </div>
           </section>
         }

@@ -47,7 +47,7 @@
 @if (currentBanner && !(loading$ | async) && !(error$ | async)) {
   @switch (bannerType) {
     @case ('top') {
-      <section class="tw-pb-4 tw-flex tw-justify-center tw-rounded-[15px]" role="banner" aria-label="Promotional banner">
+      <section class="tw-flex tw-justify-center tw-rounded-[15px]" role="banner" aria-label="Promotional banner">
         <a
           [routerLink]="getRouteForBanner()"
           class="clickable-pointer tw-block tw-focus:tw-outline-none tw-focus:tw-ring-2 tw-focus:tw-ring-blue-500 tw-focus:tw-ring-offset-2 tw-rounded-lg"
@@ -76,13 +76,13 @@
     }
     @case ('mid') {
       <section
-        class="tw-flex tw-justify-center tw-items-center tw-rounded-[5px] tw-overflow-hidden tw-w-full tw-h-full"
+        class="tw-flex tw-justify-center tw-items-center tw-rounded-[5px] tw-overflow-visible tw-w-full tw-h-full"
         role="banner"
         aria-label="Secondary promotional banner"
       >
         <a
           [routerLink]="getRouteForBanner()"
-          class="clickable-pointer shake-hover tw-relative tw-w-full tw-h-full tw-block tw-focus:tw-outline-none tw-focus:tw-ring-2 tw-focus:tw-ring-blue-500 tw-focus:tw-ring-offset-2 tw-rounded-lg"
+          class="clickable-pointer tw-relative tw-w-full tw-h-full tw-block tw-focus:tw-outline-none tw-focus:tw-ring-2 tw-focus:tw-ring-blue-500 tw-focus:tw-ring-offset-2 tw-rounded-lg tw-transition-transform tw-duration-300 hover:tw-scale-110"
           [attr.aria-label]="'Navigate to ' + currentBanner.alt"
           role="link"
         >

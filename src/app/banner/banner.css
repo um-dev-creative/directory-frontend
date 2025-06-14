@@ -2,12 +2,6 @@
   cursor: pointer;
 }
 
-/* Focus states for accessibility */
-.clickable-pointer:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
 /* Smooth transitions for images */
 .clickable-pointer img {
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;

@@ -1,6 +1,6 @@
 <div class="tw-mt-4 tw-mb-6">
   <div>
-    <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Tendencia</h2>
+      <h1 class="tw-text-3xl tw-font-bold tw-text-center tw-text-emerald-800 tw-my-5">Tendencia</h1>
   </div>
   <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-cursor-pointer">
     <!-- Botón Izquierdo -->
@@ -58,30 +58,12 @@
       </svg>
     </button>
   </div>
-  <div class="tw-flex tw-justify-center tw-mt-[30px]">
-    <button
-      (click)="navigateToDeals()"
-      class="tw-bg-transparent
-        tw-border tw-border-gray-400
-        tw-text-gray-700
-        tw-font-semibold
-        tw-py-2 tw-px-6
-        tw-rounded-full
-        tw-w-[228px] md:tw-w-[280px]
-        tw-my-2
-        tw-transition-all
-        tw-duration-300
-        tw-ease-in-out
-        hover:tw-border-gray-600
-        hover:tw-text-gray-900
-        hover:tw-bg-gray-200
-        hover:tw-scale-105
-        hover:tw-shadow-md
-        active:tw-scale-95
-        active:tw-bg-gray-50"
-    >
-      VER TODO
-    </button>
+  <div class="tw-flex tw-justify-center tw-my-7">
+    <app-button
+      variant="outline"
+      size="xxl"
+      (buttonClick)="navigateToDeals()"
+    >VER TODO</app-button>
   </div>
 </div>
 

@@ -103,6 +103,7 @@ import { Button } from '@app/components/ui';
           </app-button>
           <app-button
             variant="info"
+            [fullWidth]="true"
             (buttonClick)="onShowInfoNotification()"
           >
             Botón Info

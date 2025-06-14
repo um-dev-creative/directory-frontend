@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 import { OfferSliderClient } from '@app/offer-slider/offer-slider.client';
 import { Observable } from 'rxjs';
 import { Offer } from '@app/shared/models/offer.model';
@@ -17,6 +18,7 @@ import { BadgeComponent, IconComponent } from '@app/components/ui';
 })
 export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   @Input() offers: Offer[] | null = null;
+  @Input() sliderTitle: string = 'Los mas reclamados';
   offers$: Observable<Offer[]>;
   isMobile$: Observable<boolean>;
 
@@ -27,7 +29,12 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   private startX = 0;
   private scrollStartPosition = 0;
 
-  constructor(private readonly offerSliderClient: OfferSliderClient, private readonly renderer: Renderer2) {
+  constructor(
+    private readonly offerSliderClient: OfferSliderClient,
+    private readonly renderer: Renderer2,
+    private readonly router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: Object
+  ) {
     this.offers$ = this.offerSliderClient.offers$;
     this.isMobile$ = this.offerSliderClient.isMobile$;
   }
@@ -48,6 +55,31 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
 
   scrollRight() {
     this.offerContainer?.nativeElement.scrollBy({ left: 220, behavior: 'smooth' });
+  }
+
+  onOfferClick(offer: Offer): void {
+    if (!offer) {
+      console.warn('No offer provided to onOfferClick');
+      return;
+    }
+
+    // Si la oferta tiene un link interno, navegamos a él
+    if (offer.internalLink) {
+      if (offer.internalLink.startsWith('http')) {
+        // Es un link externo
+        if (isPlatformBrowser(this.platformId)) {
+          window.open(offer.internalLink, '_blank', 'noopener,noreferrer');
+        }
+      } else {
+        // Es un link interno de la aplicación
+        this.router.navigateByUrl(offer.internalLink);
+      }
+    } else {
+      // Si no hay link, por lo menos logueamos la oferta
+      console.log('Offer clicked:', offer);
+      // Aquí podrías agregar navegación por defecto, como ir a una página de detalles
+      // this.router.navigate(['/offers', offer.id]);
+    }
   }
 
   private setupScroll() {

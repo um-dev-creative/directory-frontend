@@ -1,9 +1,10 @@
 @if (isMobile$ | async) {
   <!-- Mobile Carousel -->
+    <h1 class="tw-text-3xl tw-font-bold tw-text-center tw-text-emerald-800 tw-my-5">{{ sliderTitle }}</h1>
     <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-overflow-hidden">
       @for (offer of offers ?? (offers$ | async); track offer.id) {
         <!-- Carrusel -->
-        <div class="app-view-container tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded-xl tw-border tw-border-sky-blue-200 tw-shadow-soft-blue tw-mb-4 tw-bg-white hover:tw-shadow-soft-blue-lg tw-transition-all tw-duration-200 tw-cursor-pointer">
+        <div class="app-view-container tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded-xl tw-border tw-border-sky-blue-200 tw-shadow-soft-blue tw-mb-4 tw-bg-white hover:tw-shadow-soft-blue-lg tw-transition-all tw-duration-200 tw-cursor-pointer" (click)="onOfferClick(offer)">
           <!-- Icon Container -->
           <div class="tw-w-16 tw-h-16 tw-border-2 tw-border-sky-blue-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
             <img [src]="offer.image" [alt]="offer.name" class="tw-w-[38px] tw-h-[38px] tw-object-cover tw-aspect-square">
@@ -24,6 +25,7 @@
     </div>
 } @else {
   <!-- Desktop version -->
+  <h1 class="tw-text-3xl tw-font-bold tw-text-center tw-text-emerald-800 tw-my-5">{{ sliderTitle }}</h1>
   <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto">
     <!-- Flecha izquierda -->
     @if (((offers ?? (offers$ | async))?.length ?? 0) > 4) {
@@ -48,7 +50,7 @@
         <!-- Tarjetas de ofertas -->
         @for (offer of offers ?? (offers$ | async); track offer.id) {
           <div class="tw-px-2 tw-py-7">
-            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border tw-border-sky-blue-200 tw-rounded-xl tw-shadow-soft-blue hover:tw-shadow-soft-blue-lg hover:tw-border-sky-blue-600 tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer tw-transition-all tw-duration-200 hover:tw-scale-[1.02]">
+            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border tw-border-sky-blue-200 tw-rounded-xl tw-shadow-soft-blue hover:tw-shadow-soft-blue-lg hover:tw-border-sky-blue-600 tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer tw-transition-all tw-duration-200 hover:tw-scale-[1.02]" (click)="onOfferClick(offer)">
 
               <!-- Contenedor Principal -->
               <div class="tw-w-full tw-relative">
