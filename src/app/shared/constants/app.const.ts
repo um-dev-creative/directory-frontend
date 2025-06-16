@@ -19,11 +19,12 @@ export class DirectoryFrontendConst {
     BACKBONE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
-    GEN_PATH: '/gen',
+    GENERAL_PATH: '/general',
     VERIFY_CODE_PATH: '/verify-code',
     USER_CREATE_PATH: '/create-user',
     STAGE_PATH: '/stage',
-    STAGE_UI_PATH: 'stage'
+    STAGE_UI_PATH: 'stage',
+    ASSETS_i18_PATH: '/assets/i18n/',
   };
 
   /**
@@ -88,6 +89,20 @@ export class DirectoryFrontendConst {
           'Access-Control-Allow-Origin': '*'
         })
       };
+    },
+    /**
+     * Generates HTTP headers with a session token.
+     * @param {string} token - The session token.
+     * @param {string} bearerToken - The bearer token.
+     * @returns {Object} The HTTP headers object with the session token.
+     */
+    STANDARD_SESSION_HEADER: function (token: string, bearerToken: string): object {
+      return new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerToken}`,
+          'session-token': token,
+          'Access-Control-Allow-Origin': '*'
+      });
     },
     /**
      * Generates HTTP headers with a session token.

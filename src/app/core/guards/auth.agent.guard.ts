@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LoggerService } from '@app/core/services';
-import {StorageMockService} from '@app/core/services';
+import { LoggerService, StorageMockService } from '@app/core/services';
 
 @Injectable({
   providedIn: 'root'

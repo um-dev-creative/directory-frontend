@@ -3,6 +3,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
+import {DFC} from '@shared/constants/app.const';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -21,14 +22,22 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.headers.get('skip-auth') === 'true') {
       return next.handle(req);
     }
-
+    if (req.url.includes(DFC.RelativePath.ASSETS_i18_PATH)) {
+      // Skip auth header for Backbone and Directory Backend requests
+      return next.handle(req);
+    }
     // Get bearerToken from storage
     const bearerToken = this.sessionData?.userAuth?.authorization;
+    const directorySessionToken = this.sessionData?.userAuth?.sessionToken;
 
-    if (bearerToken) {
-      // Clone the request and add the authorization header
+    if (bearerToken && directorySessionToken) {
+      // Clone the request and add the authorization header correctamente
       const authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${bearerToken}`)
+        setHeaders: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerToken}`,
+          'session-token': directorySessionToken
+        }
       });
 
       return next.handle(authReq);

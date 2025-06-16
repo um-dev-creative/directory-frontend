@@ -3,10 +3,10 @@
     {
       "applicationName": "directory-backend",
       "matchOn": {
-        "startWith": "/drb/api/v1/gen"
+        "startWith": "/drb/api/v1/general"
       },
       "urlRewrite": {
-        "from": "/drb/api/v1/gen",
+        "from": "/drb/api/v1/general",
         "to": "/directory-backend/api/v1"
       }
     }

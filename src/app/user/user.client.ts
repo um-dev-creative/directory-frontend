@@ -12,7 +12,7 @@ export class UserClient extends ServiceTemplate {
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
   private readonly USER_CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
-    DFC.RelativePath.GEN_PATH + DFC.RelativePath.USERS_PATH;
+    DFC.RelativePath.GENERAL_PATH + DFC.RelativePath.USERS_PATH;
   /** Function to log errors */
 
 
@@ -20,9 +20,9 @@ export class UserClient extends ServiceTemplate {
     super();
   }
 
-  getUserById(userId: string): Observable<any> {
+  findUserById(userId: string): Observable<any> {
     this.logInfo(`UserClient.getUserById:: ${this.USER_CONTENT_PATH}/${userId}`);
-    return this.httpClient.get(`${this.USER_CONTENT_PATH}/${userId}`).pipe(catchError(this.handlerError));
+    return this.httpClient.get<any>(`${this.USER_CONTENT_PATH}/${userId}`).pipe(catchError(this.handlerError));
   }
 
   createUser(user: any): Observable<any> {

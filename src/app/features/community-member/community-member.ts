@@ -129,6 +129,13 @@ export class CommunityMember implements OnInit, OnDestroy {
 
   private updateFormWithSessionData(): void {
     this.profileForm.patchValue({
+      firstName: this.profileData.firstName,
+      lastName: this.profileData.lastName,
+      phone: this.profileData.phone,
+      notificationsEmail: this.profileData.notifications.email,
+      notificationsSms: this.profileData.notifications.sms,
+      privacyOptOut: this.profileData.privacyOptOut,
+      birthDate: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
       email: this.profileData.email,
       displayName: this.profileData.displayName
     });
@@ -137,14 +144,14 @@ export class CommunityMember implements OnInit, OnDestroy {
   loadProfileData(): void {
     const userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.uid;
     if (userId) {
-      this.userClient.getUserById(userId)
+      this.userClient.findUserById(userId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (userData: any) => {
             this.profileData = {
               ...this.profileData,
             };
-            const isVerified = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.vcCompleted;
+            const isVerified = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted;
             this.profileData.firstName = userData.firstName;
             this.profileData.lastName = userData.lastName;
             // PENDING - Include displayName in userData and in the API response

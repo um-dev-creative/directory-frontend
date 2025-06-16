@@ -3,8 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { LoggerService } from '../services/logger.service';
-import { NotificationService } from '../services/notification.service';
+import { LoggerService, NotificationService } from '@app/core/services';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -18,7 +17,13 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.logger.error('HTTP Error occurred', error);
+        if (error.error instanceof ProgressEvent) {
+          // Verifica si el error es un problema de red o de tipo de contenido
+          console.error('Network or parsing error:', error.message);
+          return throwError(() => new Error('Network error or invalid response format'));
+        }
+
+        this.logger.error('HTTP Error occurred', error.message, error);
 
         let errorMessage = 'An unexpected error occurred';
         let shouldRedirect = false;
