@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CardsService, CardImage } from './services/cards.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cards',
@@ -22,7 +23,7 @@ export class Cards implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private currentFocusIndex = -1;
 
-  constructor(private readonly cardsService: CardsService) {}
+  constructor(private readonly cardsService: CardsService, private readonly router: Router) {}
 
   ngOnInit(): void {
     this.loadCards();
@@ -107,6 +108,13 @@ export class Cards implements OnInit, OnDestroy {
   onCardClick(card: CardImage, index: number): void {
     this.currentFocusIndex = index;
     this.cardClick.emit({ card, index });
+    if (card.link) {
+      if (/^https?:\/\//.test(card.link)) {
+        window.open(card.link, '_blank');
+      } else {
+        this.router.navigate([card.link]);
+      }
+    }
   }
 
   onImageError(event: Event, card: CardImage, index: number): void {

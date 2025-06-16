@@ -9,6 +9,7 @@ export interface CardImage {
   id?: string;
   title?: string;
   description?: string;
+  link?: string; // Permite enlaces opcionales en las tarjetas
 }
 
 interface CardsData {

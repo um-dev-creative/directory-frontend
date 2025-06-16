@@ -1,12 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, inject, PLATFORM_ID} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-
-interface Slide {
-  desktop: string;
-  tablet: string;
-  mobile: string;
-  alt: string;
-}
+import { Router } from '@angular/router';
+import { Slide, CAROUSEL_SLIDES } from '../../assets/mocks/carousel-slides.mock';
 
 @Component({
   selector: 'app-carousel',
@@ -17,31 +12,15 @@ interface Slide {
 })
 export class Carousel implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly router = inject(Router);
+
+  // Inputs configurables
   @Input() index: number = 0;
   currentSlide = 0;
   isAutoPlaying = true;
   private autoplayInterval?: any;
 
-  slides: Slide[] = [
-    {
-      desktop: "https://storage.spccard.ca/HomepageBanner_W_TimHortons_01062025_EN.webp",
-      tablet: "https://storage.spccard.ca/HomepageBanner_T_TimHortons_01062025_EN.webp",
-      mobile: "https://storage.spccard.ca/HomepageBanner_M_TimHortons_01062025_EN.webp",
-      alt: "Save 20% after 2pm at Tim Hortons"
-    },
-    {
-      desktop: "https://storage.spccard.ca/W_WebBanner_FrostWeek_12202024_EN.png",
-      tablet: "https://storage.spccard.ca/T_WebBanner_FrostWeek_12202024_EN.png",
-      mobile: "https://storage.spccard.ca/M_WebBanner_FrostWeek_12202024_EN.png",
-      alt: "Winter Campus Tour"
-    },
-    {
-      desktop: "https://storage.spccard.ca/HomepageBanner_W_StudentSnapshots_Generic_EN.png",
-      tablet: "https://storage.spccard.ca/HomepageBanner_T_StudentSnapshots_Generic_EN.png",
-      mobile: "https://storage.spccard.ca/HomepageBanner_M_StudentSnapshots_Generic_EN.png",
-      alt: "Capture your SPC moment"
-    }
-  ];
+  slides: Slide[] = CAROUSEL_SLIDES;
 
   ngOnInit() {
     this.startAutoplay();
@@ -89,5 +68,18 @@ export class Carousel implements OnInit, OnDestroy {
   resumeAutoplay(): void {
     this.isAutoPlaying = true;
     this.startAutoplay();
+  }
+
+  onSlideClick(): void {
+    const currentSlideObj = this.slides[this.currentSlide];
+    if (currentSlideObj && currentSlideObj.link) {
+      if (currentSlideObj.link.startsWith('http')) {
+        if (isPlatformBrowser(this.platformId)) {
+          window.open(currentSlideObj.link, '_blank', 'noopener,noreferrer');
+        }
+      } else {
+        this.router.navigateByUrl(currentSlideObj.link);
+      }
+    }
   }
 }

@@ -1,50 +1,58 @@
 [
   {
-    "title": "UFile",
-    "description": "UFile ONLINE FREE for Students*",
-    "image": "https://storage.spccard.ca/TrendingCard_UFile_022025_EN.webp",
-    "brandLogo": "https://storage.spccard.ca/ufile_logo_2020-01-23-203600_2020-01-27-221026.png"
+    "title": "TaxHelper Pro",
+    "description": "TaxHelper Pro ONLINE FREE for Students*",
+    "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/auth"
   },
   {
-    "title": "Levi's",
+    "title": "DenimCraft",
     "description": "15% off regular and sale price. Select locations only.*",
-    "image": "https://storage.spccard.ca/Levis_WeeklyFeature_April2024.png",
-    "brandLogo": "https://storage.spccard.ca/levis%20logo%5B1%5D_2019-08-02-132119.png"
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://storage.spccard.ca/levis%20logo%5B1%5D_2019-08-02-132119.png",
+    "internalLink": "/offers/levis"
   },
   {
-    "title": "e.l.f. Cosmetics",
+    "title": "GlowUp Beauty",
     "description": "20% off $45+*",
-    "image": "https://storage.spccard.ca/EN_Weeklyfeature_03-01-2024_ELF.webp",
-    "brandLogo": "https://storage.spccard.ca/ELF-logo-192x192.webp"
+    "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/offers/elf-cosmetics"
   },
   {
-    "title": "Samsung",
-    "description": "Save up to 10% on select Samsung products.*",
-    "image": "https://storage.spccard.ca/newnew_Samsung-676x490.png",
-    "brandLogo": "https://storage.spccard.ca/samsung-192.webp"
+    "title": "TechNova",
+    "description": "Save up to 10% on select TechNova products.*",
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/offers/samsung"
   },
   {
-    "title": "UFile",
-    "description": "UFile ONLINE FREE for Students*",
-    "image": "https://storage.spccard.ca/TrendingCard_UFile_022025_EN.webp",
-    "brandLogo": "https://storage.spccard.ca/ufile_logo_2020-01-23-203600_2020-01-27-221026.png"
+    "title": "FileMaster",
+    "description": "FileMaster ONLINE FREE for Students*",
+    "image": "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/offers/ufile-2"
   },
   {
-    "title": "Levi's",
+    "title": "UrbanThreads",
     "description": "15% off regular and sale price. Select locations only.*",
-    "image": "https://storage.spccard.ca/Levis_WeeklyFeature_April2024.png",
-    "brandLogo": "https://storage.spccard.ca/levis%20logo%5B1%5D_2019-08-02-132119.png"
+    "image": "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://storage.spccard.ca/levis%20logo%5B1%5D_2019-08-02-132119.png",
+    "internalLink": "/offers/levis-2"
   },
   {
-    "title": "e.l.f. Cosmetics",
+    "title": "BeautyBliss",
     "description": "20% off $45+*",
-    "image": "https://storage.spccard.ca/EN_Weeklyfeature_03-01-2024_ELF.webp",
-    "brandLogo": "https://storage.spccard.ca/ELF-logo-192x192.webp"
+    "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/offers/elf-cosmetics-2"
   },
   {
-    "title": "Samsung",
-    "description": "Save up to 10% on select Samsung products.*",
-    "image": "https://storage.spccard.ca/newnew_Samsung-676x490.png",
-    "brandLogo": "https://storage.spccard.ca/samsung-192.webp"
+    "title": "PixelWave",
+    "description": "Save up to 10% on select PixelWave products.*",
+    "image": "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600&h=400&fit=crop&auto=format",
+    "brandLogo": "https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?w=192&h=192&fit=crop&auto=format",
+    "internalLink": "/offers/samsung-2"
   }
 ]

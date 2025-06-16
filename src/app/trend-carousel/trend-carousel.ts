@@ -1,17 +1,19 @@
 import { Component, OnInit, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Button } from "../components/ui/buttons/button";
 
 interface Trend {
   title: string;
   description: string;
   image: string;
   brandLogo: string;
+  internalLink: string;
 }
 
 @Component({
   selector: 'app-trend-carousel',
-  imports: [],
+  imports: [Button],
   templateUrl: './trend-carousel.html',
   styleUrl: './trend-carousel.css'
 })
@@ -48,5 +50,18 @@ export class TrendCarousel implements OnInit {
 
   navigateToDeals(): void {
     this.router.navigate(['/deals']);
+  }
+
+  /** Maneja el clic en una tarjeta del carrusel */
+  onCardClick(trend: Trend): void {
+    if (trend.internalLink) {
+      // Navegar a la ruta interna especificada en el trend
+      this.router.navigate([trend.internalLink]);
+    } else {
+      // Fallback: navegar a una página de detalle con el título como parámetro
+      console.warn('No internal link provided for trend:', trend.title);
+      // Opcional: podrías navegar a una página de detalle genérica
+      // this.router.navigate(['/trend-detail'], { queryParams: { title: trend.title } });
+    }
   }
 }

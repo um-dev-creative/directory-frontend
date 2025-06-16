@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import { Button } from '@app/components/ui';
 interface Product {
   id: number;
   name: string;
@@ -14,7 +15,7 @@ interface Product {
 
 @Component({
   selector: 'app-product-list',
-  imports: [ CommonModule ],
+  imports: [ CommonModule, RouterModule, Button ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })

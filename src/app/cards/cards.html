@@ -30,7 +30,7 @@
   <!-- Cards Grid -->
   @if (cardsData$ | async; as cards) {
     <div
-      class="tw-overflow-x-auto lg:tw-overflow-visible tw-scrollbar-hide tw-py-6 tw-smooth-scroll"
+      class="tw-overflow-x-auto lg:tw-overflow-visible tw-scrollbar-hide tw-mt-4 tw-pb-6 tw-smooth-scroll"
       role="group"
       aria-label="Campaign cards">
 
@@ -38,15 +38,14 @@
       <div class="tw-flex tw-gap-4 tw-min-w-max lg:tw-min-w-0 lg:tw-justify-between lg:tw-max-w-full">
         @for (card of cards; track trackByCardSrc($index, card); let i = $index) {
           <article
-            class="tw-flex-shrink-0 tw-w-80 lg:tw-w-[calc(33.333%-1rem)] lg:tw-max-w-sm tw-bg-white tw-rounded-xl tw-shadow-md tw-overflow-hidden tw-cursor-pointer tw-transition tw-duration-300 hover:tw-shadow-lg hover:tw-scale-105 focus:tw-outline-none"
+            class="tw-flex-shrink-0 tw-w-80 lg:tw-w-[calc(33.333%-1rem)] lg:tw-max-w-sm tw-bg-white tw-rounded-xl tw-shadow-soft tw-overflow-hidden tw-cursor-pointer tw-transition tw-duration-300 hover:tw-shadow-lg hover:tw-scale-100 focus:tw-outline-none"
             [attr.aria-label]="card.alt || 'Campaign card ' + (i + 1)"
             [attr.data-card-index]="i"
             tabindex="0"
-            role="button"
+            role="link"
             (click)="onCardClick(card, i)"
             (keydown.enter)="onCardClick(card, i)"
             (keydown.space)="onCardClick(card, i); $event.preventDefault()">
-
             <div class="tw-relative tw-h-44 tw-overflow-hidden tw-group">
               <img
                 [src]="card.src"
