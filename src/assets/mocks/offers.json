@@ -7,7 +7,8 @@
       "discount": "Save 15% off $99+ at Footlocker.ca.*",
       "isOnline": true,
       "isInStore": true,
-      "isLatinHubPlus": true
+      "isLatinHubPlus": true,
+      "internalLink": "/partner/nike"
     },
     {
       "id": 1002,
@@ -16,7 +17,8 @@
       "discount": "Save 25% off Regular Priced Products +15% OFF Sale.*",
       "isOnline": true,
       "isInStore": false,
-      "isLatinHubPlus": false
+      "isLatinHubPlus": false,
+      "internalLink": "/partner/muji"
     },
     {
       "id": 1003,
@@ -25,7 +27,8 @@
       "discount": "Save 10% off H&M with SPC",
       "isOnline": false,
       "isInStore": true,
-      "isLatinHubPlus": false
+      "isLatinHubPlus": false,
+      "internalLink": "/partner/strarbucks"
     },
     {
       "id": 1004,
@@ -34,7 +37,8 @@
       "discount": "3 Months Free of Uber One for New Members*",
       "isOnline": false,
       "isInStore": true,
-      "isLatinHubPlus": false
+      "isLatinHubPlus": false,
+      "internalLink": "/partner/umdvcreative"
     },
     {
       "id": 1005,
@@ -43,16 +47,18 @@
       "discount": "Get $20 off first 4 online grocery orders of $100 or more",
       "isOnline": true,
       "isInStore": false,
-      "isLatinHubPlus": false
+      "isLatinHubPlus": false,
+      "internalLink": "/partner/walmart"
     },
     {
       "id": 1006,
-      "name": "Psycho Bunny",
+      "name": "Gymshark",
       "image": "https://storage.spccard.ca/PB_Icon_3Color_Stroke_White%2BPink.jpeg",
       "discount": "15% off*",
       "isOnline": true,
       "isInStore": false,
-      "isLatinHubPlus": false
+      "isLatinHubPlus": false,
+      "internalLink": "/partner/gymshark"
     }
   ]
 }

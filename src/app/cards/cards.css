@@ -1,8 +1,6 @@
 .tw-scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  overscroll-behavior: none;
-  touch-action: pan-x;
 }
 
 .tw-scrollbar-hide::-webkit-scrollbar {
@@ -11,11 +9,5 @@
 
 /* Smooth scrolling for better UX */
 .tw-smooth-scroll {
-  scroll-behavior: smooth; 
-}
-
-/* Focus improvements for accessibility */
-.tw-focus-ring:focus {
-  outline: 2px solid theme('colors.emerald-green.500');
-  outline-offset: 2px;
+  scroll-behavior: smooth;
 }

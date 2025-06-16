@@ -2,72 +2,6 @@
 .footer-container {
   background-color: #fafafa;
   border-top: 1px solid #e5e7eb;
-  margin-top: 3rem;
-  position: relative;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-/* Simplified Single Row Layout */
-.footer-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  text-align: center;
-}
-
-.footer-logo {
-  height: 2rem;
-  width: auto;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-}
-
-.footer-logo:hover {
-  opacity: 1;
-}
-
-.footer-description {
-  font-size: 0.875rem;
-  color: #6b7280;
-  max-width: 400px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* Simplified Links - Single Row */
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer-link {
-  font-size: 0.875rem;
-  color: #6b7280;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}
-
-.footer-link:hover {
-  color: #059669;
-  background-color: rgba(5, 150, 105, 0.05);
-}
-
-/* Clean and Minimal Footer Styles */
-.footer-container {
-  background-color: #fafafa;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 3rem;
   position: relative;
 }
 
@@ -176,24 +110,24 @@
   .footer-content {
     padding: 1.5rem 1rem;
   }
-  
+
   .footer-main {
     gap: 1rem;
   }
-  
+
   .footer-links {
     gap: 1rem;
     font-size: 0.8125rem;
   }
-  
+
   .footer-logo {
     height: 1.5rem;
   }
-  
+
   .footer-description {
     font-size: 0.8125rem;
   }
-  
+
   .footer-bottom {
     gap: 0.5rem;
     padding-top: 0.75rem;

@@ -30,38 +30,38 @@
   </div>
   <div class="container">
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-text-emerald-800">Los mas reclamados</h2>
-      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
-      <app-offer-slider/>
+      <!-- Title now comes from the component -->
+      <app-offer-slider [sliderTitle]="'Los mas reclamados'"/>
 
     </div>
   </div>
   @if (!isAuthenticated) {
-      <app-banner bannerType="mid"></app-banner>
+      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+        <app-banner bannerType="mid"></app-banner>
+      </div>
   }
   <div class="container">
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-text-emerald-800">Moda</h2>
-      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
-      <app-offer-slider/>
+      <!-- Title now comes from the component -->
+      <app-offer-slider [sliderTitle]="'Moda'"/>
 
     </div>
   </div>
   <div class="container">
     <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-center  tw-text-emerald-800">Tecnologia</h2>
-      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
-      <app-offer-slider/>
+      <!-- Title now comes from the component -->
+      <app-offer-slider [sliderTitle]="'Tecnologia'"/>
     </div>
   </div>
   @if (!isAuthenticated) {
-    <app-banner bannerType="mid"></app-banner>
+      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+        <app-banner bannerType="mid"></app-banner>
+      </div>
   }
   <div class="container">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-text-emerald-800">Hogar</h2>
-      <!-- app-offer-slider [trends]="trends" [title]="'Tendencias'"></app-offer-slider-->
-      <app-offer-slider/>
+      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+      <!-- Title now comes from the component -->
+      <app-offer-slider [sliderTitle]="'Hogar'"/>
     </div>
   </div>
 </main>
