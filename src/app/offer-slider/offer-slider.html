@@ -4,15 +4,15 @@
     <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-overflow-hidden">
       @for (offer of offers ?? (offers$ | async); track offer.id) {
         <!-- Carrusel -->
-        <div class="app-view-container tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded-xl tw-border tw-border-sky-blue-200 tw-shadow-soft-blue tw-mb-4 tw-bg-white hover:tw-shadow-soft-blue-lg tw-transition-all tw-duration-200 tw-cursor-pointer" (click)="onOfferClick(offer)">
+        <div class="app-view-container tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded-xl tw-border-2 tw-border-gray-200 tw-shadow-soft-blue tw-mb-4 tw-bg-white hover:tw-shadow-soft-lg tw-transition-all tw-duration-200 tw-cursor-pointer" (click)="onOfferClick(offer)">
           <!-- Icon Container -->
-          <div class="tw-w-16 tw-h-16 tw-border-2 tw-border-sky-blue-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
+          <div class="tw-w-16 tw-h-16 tw-border-2 tw-border-gray-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
             <img [src]="offer.image" [alt]="offer.name" class="tw-w-[38px] tw-h-[38px] tw-object-cover tw-aspect-square">
           </div>
           <!-- Content Container -->
           <div class="content-container tw-flex-1">
-            <div class="title tw-text-lg tw-font-semibold tw-text-sky-blue-700 tw-mb-1">{{ offer.name }}</div>
-            <div class="description tw-text-sm tw-text-sky-blue-600 tw-line-clamp-2">{{ offer.discount }}</div>
+            <div class="title tw-text-lg tw-font-semibold tw-text-gray-700 tw-mb-1">{{ offer.name }}</div>
+            <div class="description tw-text-sm tw-text-gray-600 tw-line-clamp-2">{{ offer.discount }}</div>
           </div>
 
           <!-- Pill Container -->
@@ -32,9 +32,9 @@
       <button
         (click)="scrollLeft()"
         aria-label="Anterior"
-        class="tw-absolute tw-left-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-sky-blue-200 tw-transition-all tw-duration-200 hover:tw-bg-sky-blue-50 hover:tw-shadow-soft-lg hover:tw-border-sky-blue-400 group"
+        class="tw-absolute tw-left-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-gray-200 tw-transition-all tw-duration-200 :tw-bg-gray-50 hover:tw-shadow-soft-lg hover:tw-border-gray-400 group"
       >
-        <app-icon name="chevron-left" class="tw-w-6 tw-h-6 tw-text-sky-blue-600 group-hover:tw-text-sky-blue-800 tw-transition-colors tw-duration-200"></app-icon>
+        <app-icon name="chevron-left" class="tw-w-6 tw-h-6 tw-text-gray-600 group-hover:tw-text-gray-800 tw-transition-colors tw-duration-200"></app-icon>
       </button>
     }
     <!-- Contenedor del carrusel -->
@@ -50,21 +50,21 @@
         <!-- Tarjetas de ofertas -->
         @for (offer of offers ?? (offers$ | async); track offer.id) {
           <div class="tw-px-2 tw-py-7">
-            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border tw-border-sky-blue-200 tw-rounded-xl tw-shadow-soft-blue hover:tw-shadow-soft-blue-lg hover:tw-border-sky-blue-600 tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer tw-transition-all tw-duration-200 hover:tw-scale-[1.02]" (click)="onOfferClick(offer)">
+            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border-2 tw-border-gray-200 tw-rounded-xl tw-shadow-soft hover:tw-shadow-soft-lg hover:tw-border-gray-600 tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer tw-transition-all tw-duration-200 hover:tw-scale-[1.02]" (click)="onOfferClick(offer)">
 
               <!-- Contenedor Principal -->
               <div class="tw-w-full tw-relative">
                 <!-- logo del partner -->
                 <div class="tw-w-full tw-flex tw-justify-center">
-                  <div class="tw-w-[90px] tw-h-[90px] tw-border-2 tw-border-sky-blue-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
+                  <div class="tw-w-[90px] tw-h-[90px] tw-border-2 tw-border-gray-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
                     <img [src]="offer.image" [alt]="offer.name" class="tw-w-[50px] tw-h-[50px] tw-object-cover tw-aspect-square">
                   </div>
                 </div>
                 <!-- Icono de Favorito (Bookmark) -->
-                <div class="tw-absolute tw-top-0 tw-right-0 tw-border-2 tw-border-sky-blue-200 tw-rounded-lg tw-p-1.5 tw-bg-white hover:tw-bg-sky-blue-50 tw-transition-colors tw-duration-200 tw-cursor-pointer">
+                <div class="tw-absolute tw-top-0 tw-right-0 tw-border-2 tw-border-gray-200 tw-rounded-lg tw-p-1.5 tw-bg-white hover:tw-bg-gray-50 tw-transition-colors tw-duration-200 tw-cursor-pointer">
                   <svg
                     alt="Bookmark"
-                    class="tw-w-5 tw-h-5 tw-text-sky-blue-500 hover:tw-text-sky-blue-600 tw-transition-colors tw-duration-200"
+                    class="tw-w-5 tw-h-5 tw-text-gray-500 hover:tw-text-gray-600 tw-transition-colors tw-duration-200"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -87,8 +87,8 @@
 
               <!-- Información de la Oferta -->
               <div class="tw-mt-4">
-                <div class="tw-text-lg tw-text-sky-blue-800 tw-font-semibold">{{ offer.name }}</div>
-                <p class="tw-text-sm tw-text-sky-blue-800 tw-truncate tw-w-full tw-overflow-hidden tw-whitespace-normal tw-break-words">
+                <div class="tw-text-lg tw-text-gray-800 tw-font-semibold">{{ offer.name }}</div>
+                <p class="tw-text-sm tw-text-gray-800 tw-truncate tw-w-full tw-overflow-hidden tw-whitespace-normal tw-break-words">
                   {{ offer.discount }}
                 </p>
               </div>
@@ -103,9 +103,9 @@
       <button
         (click)="scrollRight()"
         aria-label="Siguiente"
-        class="tw-absolute tw-right-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-sky-blue-200 tw-transition-all tw-duration-200 hover:tw-bg-sky-blue-50 hover:tw-shadow-soft-lg hover:tw-border-sky-blue-400 group"
+        class="tw-absolute tw-right-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-gray-200 tw-transition-all tw-duration-200 hover:tw-bg-gray-50 hover:tw-shadow-soft-lg hover:tw-border-gray-400 group"
       >
-        <app-icon name="chevron-right" class="tw-w-6 tw-h-6 tw-text-sky-blue-600 group-hover:tw-text-sky-blue-800 tw-transition-colors tw-duration-200"></app-icon>
+        <app-icon name="chevron-right" class="tw-w-6 tw-h-6 tw-text-gray-600 group-hover:tw-text-gray-800 tw-transition-colors tw-duration-200"></app-icon>
       </button>
     }
   </div>

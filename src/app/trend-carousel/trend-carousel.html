@@ -7,24 +7,24 @@
     <button
       (mouseenter)="startScroll('left')"
       (mouseleave)="stopScroll()"
-      class="tw-absolute tw-left-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition tw-hidden md:tw-flex"
+      class="tw-hidden md:tw-flex tw-absolute tw-left-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-20 tw-bg-white tw-border tw-border-gray-200 hover:tw-border-emerald-500 tw-w-12 tw-h-12 tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg hover:tw-shadow-xl tw-transition-all tw-duration-300 hover:tw-scale-105 hover:tw-bg-emerald-50 tw-group"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="tw-w-5 tw-h-5 tw-text-gray-600 group-hover:tw-text-emerald-600 tw-transition-colors tw-duration-300">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
       </svg>
     </button>
 
     <!-- Contenedor del Carrusel -->
-    <div #carousel class="overflow-container tw-overflow-x-auto tw-hide-scrollbar tw-scroll-smooth tw-w-full px-0 md:tw-px-[40px]">
+    <div #carousel class="overflow-container tw-overflow-x-auto tw-hide-scrollbar tw-scroll-smooth tw-w-full tw-py-5 tw-px-0 md:tw-px-16">
       <ul class="tw-flex tw-h-[410px] tw-w-max">
-        @for (trend of trends; track trend) {
-          <li class="tw-w-[320px] tw-h-[404px] tw-flex-shrink-0 tw-rounded-2xl tw-bg-white tw-shadow-md hover:tw-shadow-md tw-transition tw-flex tw-flex-col tw-items-center tw-justify-between tw-p-[10px] tw-mr-8">
+        @for (trend of trends; track trend; let isLast = $last) {
+          <li [class]="'tw-w-[320px] tw-h-[404px] tw-flex-shrink-0 tw-rounded-2xl tw-bg-white tw-shadow-md hover:tw-shadow-lg tw-transition-all tw-flex tw-flex-col tw-items-center tw-justify-between tw-p-[10px] tw-ml-1 ' + (isLast ? 'tw-mr-1' : 'tw-mr-2 md:tw-mr-6')" (click)="onCardClick(trend)">
             <!-- Imagen principal -->
-            <div class="shake-hover tw-relative tw-inline-block tw-w-[300px] tw-h-[246px] tw-overflow-hidden tw-rounded-[8.5px] tw-mx-auto"
+            <div class="hover:tw-scale-105 tw-relative tw-inline-block tw-w-[300px] tw-h-[246px] tw-overflow-hidden tw-rounded-[8.5px] tw-mx-auto"
                  [style.backgroundImage]="'url(' + trend.image + ')'"
                  style="background-size: cover; background-position: center;">
               <!-- Etiqueta (pill) superior izquierda -->
-              <div class="tw-absolute tw-top-3 tw-left-3 tw-bg-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">
+              <div class="tw-absolute tw-top-3 tw-left-3 tw-bg-sky-blue-600 tw-text-white tw-text-xs tw-font-bold tw-px-2 tw-py-1 tw-rounded">
                 Online
               </div>
             </div>
@@ -51,9 +51,9 @@
     <button
       (mouseenter)="startScroll('right')"
       (mouseleave)="stopScroll()"
-      class="tw-absolute tw-right-0 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white/90 hover:tw-bg-white tw-w-[45px] tw-h-[100%] tw-flex tw-items-center tw-justify-center tw-transition tw-hidden md:tw-flex"
+      class="tw-hidden md:tw-flex tw-absolute tw-right-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-20 tw-bg-white tw-border tw-border-gray-200 hover:tw-border-emerald-500 tw-w-12 tw-h-12 tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg hover:tw-shadow-xl tw-transition-all tw-duration-300 hover:tw-scale-105 hover:tw-bg-emerald-50 tw-group"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="tw-w-6 tw-h-6 tw-text-gray-700 hover:tw-text-black">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="tw-w-5 tw-h-5 tw-text-gray-600 group-hover:tw-text-emerald-600 tw-transition-colors tw-duration-300">
         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
       </svg>
     </button>
