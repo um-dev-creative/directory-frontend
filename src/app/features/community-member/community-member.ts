@@ -141,6 +141,22 @@ export class CommunityMember implements OnInit, OnDestroy {
     });
   }
 
+  // Helper to convert yyyy-MM-dd to {month, day, year}
+  private parseDateOfBirth(dateString: string): { month: string, day: string, year: string } | null {
+    if (!dateString) return null;
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const [year, month, day] = dateString.split('-');
+    const monthIndex = parseInt(month, 10) - 1;
+    return {
+      month: months[monthIndex] || '',
+      day: day,
+      year: year
+    };
+  }
+
   loadProfileData(): void {
     const userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.uid;
     if (userId) {
@@ -148,26 +164,21 @@ export class CommunityMember implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (userData: any) => {
-            this.profileData = {
-              ...this.profileData,
-            };
             const isVerified = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted;
             this.profileData.firstName = userData.firstName;
             this.profileData.lastName = userData.lastName;
-            // PENDING - Include displayName in userData and in the API response
-            // this.profileData.displayName = userData.displayName || `${userData.firstName} ${userData.lastName}`;
-            // PENDING - Include phone in userData and in the API response
-            // this.profileData.phone = userData.phone || '';
-            this.profileData.birthDate = userData.dateOfBirth;
+            this.profileData.displayName = userData.displayName ?? `${userData.firstName} ${userData.lastName}`;
+            this.profileData.phone = userData.phone ?? '';
+            // Convert dateOfBirth from yyyy-MM-dd to {month, day, year}
+            this.profileData.birthDate = this.parseDateOfBirth(userData.dateOfBirth)?? {month: '', day: '', year: ''};
             this.profileData.email = userData.email;
             this.profileData.emailConfirmed = isVerified == 'true' || false;
-            // PENDING - Include notificationEmail and notificationSms in userData and in the API response
-            // this.profileData.notifications = {
-            //   email: userData.notificationEmail || false,
-            //   sms: userData.notificationSms || false
-            // };
+            this.profileData.notifications = {
+              email: userData.notificationEmail ?? false,
+              sms: userData.notificationSms ?? false
+            };
             // PENDING - Include privacyOptOut in userData and in the API response
-            // this.profileData.privacyOptOut = userData.privacyOptOut || false;
+            this.profileData.privacyOptOut = userData.privacyDataOutActive ?? false;
 
             this.updateFormWithSessionData();
             this.logInfo('Profile data loaded:', this.profileData);
