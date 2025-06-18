@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { StorageService } from '../services/storage.service';
+import { StorageMockService } from '../services/storage-mock.service';
 import { LoggerService } from '../services/logger.service';
 import { NotificationService } from '../services/notification.service';
 
@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
 
   constructor(
     private readonly router: Router,
-    private readonly storageService: StorageService,
+    private readonly storageService: StorageMockService,
     private readonly logger: LoggerService,
     private readonly notificationService: NotificationService
   ) {}

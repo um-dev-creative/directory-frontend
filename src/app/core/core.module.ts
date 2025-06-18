@@ -8,7 +8,7 @@ import {
   LoggerService,
   LoadingService,
   NotificationService,
-  StorageService,
+  StorageMockService,
   ThemeService
 } from './services';
 
@@ -36,7 +36,7 @@ export function provideCoreServices(): Provider[] {
     LoggerService,
     LoadingService,
     NotificationService,
-    StorageService,
+    StorageMockService,
     ThemeService
   ];
 }

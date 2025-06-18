@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StorageService } from './storage.service';
+import { StorageMockService } from './storage-mock.service';
 
 export interface Theme {
   name: string;
@@ -26,7 +26,7 @@ export class ThemeService {
   public currentTheme$: Observable<Theme> = this.currentThemeSubject.asObservable();
   public isDarkMode$: Observable<boolean> = this.isDarkModeSubject.asObservable();
 
-  constructor(private readonly storageService: StorageService) {
+  constructor(private readonly storageService: StorageMockService) {
     this.initializeTheme();
   }
 

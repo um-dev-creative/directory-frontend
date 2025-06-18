@@ -45,7 +45,11 @@ async function initAngularSSR() {
     const app = express();
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
 
-    app.get('*', async (req, res) => {
+    app.get('*', async (req, res, next) => {
+      // Evitar interferir con rutas de API/backend
+      if (req.url.startsWith('/api') || req.url.startsWith('/drb')) {
+        return next();
+      }
       try {
         const html = await serverModule.renderApplication(bootstrap, {
           document: getIndexHtml(),
@@ -86,10 +90,12 @@ appConfig.bootstrapConfiguration().then(async config => {
 
   // Rutas backend
   if (ssrApp) {
+    app.use("/", require("./server/routes/directory-backend-std.routes"));
     app.use("/", require("./server/routes/directory-backend-auth.routes"));
     app.use("/", require("./server/routes/backbone.routes"));
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
     app.get("/*", (req, res) => {
+      logger.info(`SSR request for: ${req.url}`);
       res.sendFile(path.join(DIST_FOLDER, 'browser', 'index.html'));
     });
   }

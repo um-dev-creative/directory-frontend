@@ -89,6 +89,7 @@ const proxyApi = async (req, res, next) => {
       sessionData.backboneSession = backboneSessionData.backboneSession;
       sessionData.backboneBearerToken = backboneSessionData.backboneBearerToken;
       sessionData.backboneSessionExpiresAt = backboneSessionData.backboneSessionExpiresAt;
+      logger.info(`[DIS] Session data: ${JSON.stringify(sessionData)}`);
       // Construct headers for the request
       const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
       logger.info(`[DIS] Proxying request to ${apiURL}`);
@@ -101,7 +102,6 @@ const proxyApi = async (req, res, next) => {
         httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
       }
 
-      logger.info(`[DIS] HTTP Options: ${JSON.stringify(httpOptions)}`);
       let axiosResponse = await axios(httpOptions);
       delete axiosResponse.headers[TRANSFER_ENCODING];
       response = axiosResponse.data;

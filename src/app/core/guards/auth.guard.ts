@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { SessionData, SessionState } from '@app/core/store/session/session.state';
 import { take, filter, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { LoggerService, StorageService } from '../services';
+import { LoggerService, StorageMockService } from '../services';
 
 // Helper function to validate authentication data
 function isValidAuthData(sessionData: SessionData | undefined): boolean {
@@ -32,7 +32,7 @@ function checkAuthState(targetUrl: string): Observable<boolean> {
   const store = inject(Store<{ session: SessionState }>);
   const router = inject(Router);
   const logger = inject(LoggerService);
-  const storage = inject(StorageService);
+  const storage = inject(StorageMockService);
 
   console.log(`[Guard] Checking authentication state for URL: ${targetUrl}`);
 

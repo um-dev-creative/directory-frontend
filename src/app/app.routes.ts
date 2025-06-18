@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 import {NotFound} from '@app/layout/not-found';
 import {VerifyCode} from '@app/verify-code/verify-code';
-import {authGuard} from './core/guards/auth.guard';
+import {authGuard} from '@app/core/guards';
 import {CoreDemoComponent} from './core-demo.component';
 import {BrandShowcase} from './components/brand-showcase';
 

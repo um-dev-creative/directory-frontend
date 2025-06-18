@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { StorageService } from '../services/storage.service';
-import { LoggerService } from '../services/logger.service';
+import { LoggerService, StorageMockService } from '@app/core/services';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(
     private readonly router: Router,
-    private readonly storageService: StorageService,
+    private readonly storageService: StorageMockService,
     private readonly logger: LoggerService
   ) {}
 

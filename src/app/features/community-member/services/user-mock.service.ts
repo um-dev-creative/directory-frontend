@@ -5,7 +5,7 @@ import { Observable, of, delay } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserMockService {
   private readonly apiUrl = '/api/users';
 
   // For testing - set to true to use mock data
