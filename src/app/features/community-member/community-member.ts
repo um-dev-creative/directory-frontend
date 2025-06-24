@@ -1,3 +1,40 @@
+/**
+ * CommunityMember Component
+ *
+ * This component manages the user profile view and update functionality for community members.
+ * It provides a reactive form for editing user profile data, handles avatar uploads, and manages account deletion.
+ *
+ * Main Features:
+ * - Loads and displays user profile data from the backend.
+ * - Allows users to update their profile information (name, display name, phone, notification preferences, privacy opt-out).
+ * - Handles avatar upload and preview.
+ * - Provides a modal for account deletion confirmation.
+ * - Integrates with the session store to keep profile data in sync with authentication state.
+ * - Uses RxJS for asynchronous operations and state management.
+ *
+ * Key Methods:
+ * - ngOnInit: Initializes the component, loads session and profile data.
+ * - loadProfileData: Fetches user profile data from the backend.
+ * - onSubmitProfileUpdate: Submits updated profile data and reloads the user profile.
+ * - onAvatarSelect: Handles avatar file selection and upload.
+ * - deleteAccount/cancelDeleteAccount/confirmDeleteAccount: Manage account deletion modal and logic.
+ * - getFieldError/getFieldVariant: Helpers for form validation and error display.
+ *
+ * Dependencies:
+ * - Angular ReactiveFormsModule for form handling.
+ * - NgRx Store for session state.
+ * - UserClient for backend API calls.
+ * - UserMockService for avatar upload simulation.
+ * - HeaderService for UI header management.
+ * - BackboneJwtPipe and DirectoryBackendJwtPipe for JWT parsing.
+ *
+ * Usage:
+ * <app-community-member></app-community-member>
+ *
+ * Author: [Your Name or Team]
+ * Date: [2025-06-24]
+ */
+
 import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -15,6 +52,7 @@ import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe'
 import {switchMap} from 'rxjs/operators';
 import {NotificationService} from '@app/core/services';
 import {UserDetailUpdateRequest} from '@app/user/user-detail-update-request';
+import {ProfileData} from '@shared/models/profile-data.model';
 
 @Component({
   selector: 'app-community-member',
@@ -36,20 +74,20 @@ export class CommunityMember implements OnInit, OnDestroy {
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   private readonly directoryJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
   private readonly notificationService: NotificationService = inject(NotificationService);
-  /** Function to log information */
-  protected logInfo: (...arg: any) => void;
 
+  profileForm!: FormGroup;
+  /** Function to log information */
+  logInfo: (...arg: any) => void;
   /** Function to log errors */
-  protected logError: (...arg: any) => void;
+  logError: (...arg: any) => void;
 
   protected sessionData: SessionData | undefined;
   protected isAuthenticated = false;
   protected userFullName: string | undefined;
-  protected profileForm!: FormGroup;
-  protected isSubmitting = false;
-  protected uploadingAvatar = false;
   protected avatarPreview: string | null = null;
-  protected deleteAccountModalOpen = false;
+  isSubmitting = false;
+  uploadingAvatar = false;
+  deleteAccountModalOpen = false;
 
   private userId: string = '';
   private roles: [] = [];
@@ -59,7 +97,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   protected reportProblemOptions: ReportProblemOptions = {};
 
   // Mock data para el perfil
-  protected profileData: ProfileData = {
+  profileData: ProfileData = {
     email: '',
     firstName: '',
     lastName: '',
@@ -87,23 +125,9 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.initializeForm();
   }
 
-  private initializeForm(): void {
-    this.profileForm = this.formBuilder.group({
-      email: [{value: this.profileData.email, disabled: true}, [Validators.required, Validators.email]],
-      firstName: [this.profileData.firstName, [Validators.required, Validators.minLength(2)]],
-      lastName: [this.profileData.lastName, [Validators.required, Validators.minLength(2)]],
-      displayName: [this.profileData.displayName, [Validators.required, Validators.minLength(2)]],
-      phone: [this.profileData.phone],
-      birthDate: [{
-        value: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
-        disabled: true
-      }],
-      notificationsEmail: [this.profileData.notifications.email],
-      notificationsSms: [this.profileData.notifications.sms],
-      privacyOptOut: [this.profileData.privacyOptOut]
-    });
-  }
-
+  /**
+   * Initializes the component, subscribes to session state, loads profile data, and sets up the UI header.
+   */
   ngOnInit(): void {
     this.store.select('session').subscribe(sessionState => {
       this.sessionData = sessionState.sessionData;
@@ -130,41 +154,17 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.processSessionData();
   }
 
+  /**
+   * Cleans up subscriptions when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private updateFormWithSessionData(): void {
-    this.profileForm.patchValue({
-      firstName: this.profileData.firstName,
-      lastName: this.profileData.lastName,
-      phone: this.profileData.phone,
-      notificationsEmail: this.profileData.notifications.email,
-      notificationsSms: this.profileData.notifications.sms,
-      privacyOptOut: this.profileData.privacyOptOut,
-      birthDate: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
-      email: this.profileData.email,
-      displayName: this.profileData.displayName
-    });
-  }
-
-  // Helper to convert yyyy-MM-dd to {month, day, year}
-  private parseDateOfBirth(dateString: string): { month: string, day: string, year: string } | null {
-    if (!dateString) return null;
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    const [year, month, day] = dateString.split('-');
-    const monthIndex = parseInt(month, 10) - 1;
-    return {
-      month: months[monthIndex] || '',
-      day: day,
-      year: year
-    };
-  }
-
+  /**
+   * Loads the user profile data from the backend and updates the form.
+   */
   loadProfileData(): void {
     this.userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd ?? "")?.uid ?? "";
     this.roles = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd ?? "")?.roles ?? [];
@@ -185,42 +185,26 @@ export class CommunityMember implements OnInit, OnDestroy {
     }
   }
 
-  private updateReportProblemOptions(): void {
-    this.reportProblemOptions = {
-      userEmail: this.profileData.email,
-      userDisplayName: this.profileData.displayName,
-      contextData: {
-        formStatus: this.profileForm?.valid ? 'valid' : 'invalid',
-        hasAvatar: this.hasAvatar(),
-        isAuthenticated: this.isAuthenticated
-      },
-      // Puedes personalizar la URL del Google Form aquí
-      googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=CommunityMemberProfile'
-    };
-  }
-
-  private processSessionData(): void {
-    if (this.sessionData?.token) {
-      this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-    } else {
-      this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-    }
-    this.changeDetectorRefs.detectChanges();
-  }
-
-  // Getter para obtener las iniciales
-  protected getAvatarDisplay(): string {
+  /**
+   * Returns the initials of the user's first and last name for avatar display.
+   */
+  getAvatarDisplay(): string {
     const firstInitial = this.profileData.firstName?.charAt(0) || '';
     const lastInitial = this.profileData.lastName?.charAt(0) || '';
     return firstInitial + lastInitial;
   }
 
-  // Verificar si tiene avatar
-  protected hasAvatar(): boolean {
+  /**
+   * Returns true if the user has an avatar image set.
+   */
+  hasAvatar(): boolean {
     return !!(this.profileData.avatar && this.profileData.avatar.trim() !== '');
   }
 
-  // Avatar upload functionality
+  /**
+   * Handles avatar file selection, previews the image, and uploads it.
+   * @param event File input change event
+   */
   onAvatarSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -252,12 +236,20 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   // Métodos para el formulario reactivo
+  /**
+   * Returns the variant for a form field ('default' or 'error') based on its validation state.
+   * @param fieldName Name of the form field
+   */
   protected getFieldVariant(fieldName: string): 'default' | 'error' {
     const field = this.profileForm.get(fieldName);
     return field && field.invalid && (field.dirty || field.touched) ? 'error' : 'default';
   }
 
-  protected getFieldError(fieldName: string): string {
+  /**
+   * Returns the error message for a form field if it is invalid and touched.
+   * @param fieldName Name of the form field
+   */
+  getFieldError(fieldName: string): string {
     const field = this.profileForm.get(fieldName);
     if (field?.errors && (field.dirty || field.touched)) {
       if (field.errors['required']) {
@@ -274,7 +266,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Submits the profile update form
+   * Submits the profile update form, updates the user, and reloads the profile data.
    */
   onSubmitProfileUpdate() {
     if (this.profileForm.invalid) return;
@@ -309,11 +301,17 @@ export class CommunityMember implements OnInit, OnDestroy {
     }
   }
 
-  protected deleteAccount(): void {
+  /**
+   * Opens the delete account confirmation modal.
+   */
+  deleteAccount(): void {
     this.deleteAccountModalOpen = true;
   }
 
-  protected confirmDeleteAccount(): void {
+  /**
+   * Confirms account deletion, simulates API call, and closes the modal.
+   */
+  confirmDeleteAccount(): void {
     console.log('Account deletion confirmed');
     // Aquí puedes agregar la lógica para eliminar la cuenta
     // Por ejemplo, llamar a un servicio para eliminar la cuenta del usuario
@@ -326,15 +324,24 @@ export class CommunityMember implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  protected cancelDeleteAccount(): void {
+  /**
+   * Cancels account deletion and closes the modal.
+   */
+  cancelDeleteAccount(): void {
     this.deleteAccountModalOpen = false;
   }
 
-  protected getFormValues(): string {
+  /**
+   * Returns the current form values as a formatted JSON string.
+   */
+  getFormValues(): string {
     return JSON.stringify(this.profileForm.value, null, 2);
   }
 
-  protected getFormErrors(): string {
+  /**
+   * Returns the current form errors as a formatted JSON string.
+   */
+  getFormErrors(): string {
     const errors: any = {};
     Object.keys(this.profileForm.controls).forEach(key => {
       const control = this.profileForm.get(key);
@@ -345,6 +352,9 @@ export class CommunityMember implements OnInit, OnDestroy {
     return JSON.stringify(errors, null, 2);
   }
 
+  /**
+   * Constructs and returns the user update request object from the form values.
+   */
   getUserUpdateRequest(): UserDetailUpdateRequest {
     const formValue = this.profileForm.getRawValue();
     const tempRole = this.roles.toString().substring(1, this.roles.toString().length - 1);
@@ -362,7 +372,11 @@ export class CommunityMember implements OnInit, OnDestroy {
     };
   }
 
-  setProfileData (data: any) {
+  /**
+   * Updates the local profileData object with the provided user data.
+   * @param data User data object
+   */
+  setProfileData(data: any) {
     this.profileData.firstName = data.firstName;
     this.profileData.lastName = data.lastName;
     this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;
@@ -378,4 +392,90 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.profileData.privacyOptOut = data.privacyDataOutActive ?? false;
     this.updateFormWithSessionData();
   }
+
+  /**
+   * Sets the UI header type based on session state.
+   */
+  private processSessionData(): void {
+    if (this.sessionData?.token) {
+      this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+    } else {
+      this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+    }
+    this.changeDetectorRefs.detectChanges();
+  }
+
+  /**
+   * Updates the form with the current profileData values.
+   */
+  private updateFormWithSessionData(): void {
+    this.profileForm.patchValue({
+      firstName: this.profileData.firstName,
+      lastName: this.profileData.lastName,
+      phone: this.profileData.phone,
+      notificationsEmail: this.profileData.notifications.email,
+      notificationsSms: this.profileData.notifications.sms,
+      privacyOptOut: this.profileData.privacyOptOut,
+      birthDate: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
+      email: this.profileData.email,
+      displayName: this.profileData.displayName
+    });
+  }
+
+  /**
+   * Parses a date string in yyyy-MM-dd format and returns an object with month, day, and year.
+   * @param dateString Date string in yyyy-MM-dd format
+   */
+  private parseDateOfBirth(dateString: string): { month: string, day: string, year: string } | null {
+    if (!dateString) return null;
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const [year, month, day] = dateString.split('-');
+    const monthIndex = parseInt(month, 10) - 1;
+    return {
+      month: months[monthIndex] || '',
+      day: day,
+      year: year
+    };
+  }
+
+  /**
+   * Updates the ReportProblem component options with the current user and form state.
+   */
+  private updateReportProblemOptions(): void {
+    this.reportProblemOptions = {
+      userEmail: this.profileData.email,
+      userDisplayName: this.profileData.displayName,
+      contextData: {
+        formStatus: this.profileForm?.valid ? 'valid' : 'invalid',
+        hasAvatar: this.hasAvatar(),
+        isAuthenticated: this.isAuthenticated
+      },
+      // Puedes personalizar la URL del Google Form aquí
+      googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=CommunityMemberProfile'
+    };
+  }
+
+  /**
+   * Initializes the profile form with default or loaded values.
+   */
+  private initializeForm(): void {
+    this.profileForm = this.formBuilder.group({
+      email: [{value: this.profileData.email, disabled: true}, [Validators.required, Validators.email]],
+      firstName: [this.profileData.firstName, [Validators.required, Validators.minLength(2)]],
+      lastName: [this.profileData.lastName, [Validators.required, Validators.minLength(2)]],
+      displayName: [this.profileData.displayName, [Validators.required, Validators.minLength(2)]],
+      phone: [this.profileData.phone],
+      birthDate: [{
+        value: `${this.profileData.birthDate.day}/${this.profileData.birthDate.month}/${this.profileData.birthDate.year}`,
+        disabled: true
+      }],
+      notificationsEmail: [this.profileData.notifications.email],
+      notificationsSms: [this.profileData.notifications.sms],
+      privacyOptOut: [this.profileData.privacyOptOut]
+    });
+  }
 }
+

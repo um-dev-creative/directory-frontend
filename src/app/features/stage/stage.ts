@@ -47,9 +47,10 @@ export class Stage implements OnInit, OnAfterViewInit {
    * Session data
    * @type {SessionData | undefined}
    */
-  protected sessionData: SessionData | undefined;
-  protected isAuthenticated = false;
   protected userFullName: string | undefined;
+
+  sessionData: SessionData | undefined;
+   isAuthenticated = false;
 
 
   constructor() {

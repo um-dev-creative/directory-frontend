@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {of} from 'rxjs';
 import {Router} from '@angular/router';
-import {SessionData} from '@app/core/store/session/session.state';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {SessionStoreService} from './session-store.service';
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
@@ -12,7 +12,7 @@ import {Store} from '@ngrx/store';
   template: ''
 })
 class SessionStoreServiceTest extends SessionStoreService {
-  constructor(store: Store<{ session: SessionData }>) {
+  constructor(store: Store<{ session: SessionState }>) {
     super(store);
   }
 }

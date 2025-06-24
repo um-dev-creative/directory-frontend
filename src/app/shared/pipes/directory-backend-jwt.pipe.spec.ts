@@ -18,8 +18,14 @@ describe('DirectoryBackendJwtPipe', () => {
   it('should decode a valid JWT token', () => {
     const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     const expectedPayload: DirectoryBackendJwtPayload = {
-      userId: '1234567890',
-      name: 'John Doe',
+      uid: '1234567890',
+      vcCompleted: 'true',
+      exp: 1516239022,
+      sub: '1234567890',
+      iss: 'https://example.com',
+      jti: '1234567890',
+      nbf: 1516239022,
+      aud: 'https://example.com',
       iat: 1516239022
     };
 
