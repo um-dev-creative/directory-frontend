@@ -12,6 +12,9 @@ import {UserMockService} from './services/user-mock.service';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 import {UserClient} from '@app/user/user.client';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
+import {switchMap} from 'rxjs/operators';
+import {NotificationService} from '@app/core/services';
+import {UserDetailUpdateRequest} from '@app/user/user-detail-update-request';
 
 @Component({
   selector: 'app-community-member',
@@ -32,6 +35,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   private readonly userClient = inject(UserClient);
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   private readonly directoryJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
+  private readonly notificationService: NotificationService = inject(NotificationService);
   /** Function to log information */
   protected logInfo: (...arg: any) => void;
 
@@ -47,21 +51,25 @@ export class CommunityMember implements OnInit, OnDestroy {
   protected avatarPreview: string | null = null;
   protected deleteAccountModalOpen = false;
 
+  private userId: string = '';
+  private roles: [] = [];
+
 
   // Opciones para el componente ReportProblem
   protected reportProblemOptions: ReportProblemOptions = {};
 
   // Mock data para el perfil
-  protected profileData = {
-    email: 'omairys.15@gmail.com',
-    firstName: 'Omairys',
-    lastName: 'Uzcátegui',
-    displayName: 'Omairys',
-    phone: '(416) 858-0276',
+  protected profileData: ProfileData = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    displayName: '',
+    phoneId: '',
+    phone: '',
     birthDate: {
-      month: 'February',
-      day: '06',
-      year: '1987'
+      month: '',
+      day: '',
+      year: ''
     },
     // avatar: null,
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', // URL de un avatar de ejemplo
@@ -158,28 +166,15 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   loadProfileData(): void {
-    const userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd || "")?.uid;
-    if (userId) {
-      this.userClient.findUserById(userId)
+    this.userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd ?? "")?.uid ?? "";
+    this.roles = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd ?? "")?.roles ?? [];
+
+    if (this.userId && this.userId !== '' && this.roles && this.roles.length > 0) {
+      this.userClient.findUserById(this.userId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (userData: any) => {
-            const isVerified = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted;
-            this.profileData.firstName = userData.firstName;
-            this.profileData.lastName = userData.lastName;
-            this.profileData.displayName = userData.displayName ?? `${userData.firstName} ${userData.lastName}`;
-            this.profileData.phone = userData.phone ?? '';
-            // Convert dateOfBirth from yyyy-MM-dd to {month, day, year}
-            this.profileData.birthDate = this.parseDateOfBirth(userData.dateOfBirth)?? {month: '', day: '', year: ''};
-            this.profileData.email = userData.email;
-            this.profileData.emailConfirmed = isVerified == 'true' || false;
-            this.profileData.notifications = {
-              email: userData.notificationEmail ?? false,
-              sms: userData.notificationSms ?? false
-            };
-            // PENDING - Include privacyOptOut in userData and in the API response
-            this.profileData.privacyOptOut = userData.privacyDataOutActive ?? false;
-
+            this.setProfileData(userData);
             this.updateFormWithSessionData();
             this.logInfo('Profile data loaded:', this.profileData);
           },
@@ -264,7 +259,7 @@ export class CommunityMember implements OnInit, OnDestroy {
 
   protected getFieldError(fieldName: string): string {
     const field = this.profileForm.get(fieldName);
-    if (field && field.errors && (field.dirty || field.touched)) {
+    if (field?.errors && (field.dirty || field.touched)) {
       if (field.errors['required']) {
         return 'Este campo es requerido';
       }
@@ -278,22 +273,39 @@ export class CommunityMember implements OnInit, OnDestroy {
     return '';
   }
 
-  protected onSubmit(): void {
-    if (this.profileForm.valid) {
-      this.isSubmitting = true;
-      console.log('Form submitted:', this.profileForm.value);
-
-      // Simular llamada a API
-      setTimeout(() => {
-        this.isSubmitting = false;
-        console.log('Profile updated successfully');
-      }, 2000);
-    } else {
-      console.log('Form is invalid');
-      // Marcar todos los campos como touched para mostrar errores
-      Object.keys(this.profileForm.controls).forEach(key => {
-        this.profileForm.get(key)?.markAsTouched();
-      });
+  /**
+   * Submits the profile update form
+   */
+  onSubmitProfileUpdate() {
+    if (this.profileForm.invalid) return;
+    this.isSubmitting = true;
+    const updateRequest = this.getUserUpdateRequest();
+    if (this.userId) {
+      this.userClient.updateUser(this.userId, updateRequest)
+        .pipe(
+          takeUntil(this.destroy$),
+          switchMap((response) => {
+            if (response.status === 202) {
+              // Only fetch updated data if update was accepted
+              return this.userClient.findUserById(this.userId);
+            } else {
+              throw new Error('Update not accepted');
+            }
+          })
+        )
+        .subscribe({
+          next: (userData: any) => {
+            // Update local profile data and form
+            this.setProfileData(userData);
+            this.updateFormWithSessionData();
+            this.isSubmitting = false;
+            this.notificationService.success('User updated successfully');
+          },
+          error: (err) => {
+            this.logError('Failed to update or reload user', err);
+            this.isSubmitting = false;
+          }
+        });
     }
   }
 
@@ -326,10 +338,44 @@ export class CommunityMember implements OnInit, OnDestroy {
     const errors: any = {};
     Object.keys(this.profileForm.controls).forEach(key => {
       const control = this.profileForm.get(key);
-      if (control && control.errors) {
+      if (control?.errors) {
         errors[key] = control.errors;
       }
     });
     return JSON.stringify(errors, null, 2);
+  }
+
+  getUserUpdateRequest(): UserDetailUpdateRequest {
+    const formValue = this.profileForm.getRawValue();
+    const tempRole = this.roles.toString().substring(1, this.roles.toString().length - 1);
+    return {
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      displayName: formValue.displayName,
+      notificationEmail: formValue.notificationsEmail,
+      notificationSms: formValue.notificationsSms,
+      privacyDataOutActive: formValue.privacyOptOut,
+      phoneId: this.profileData.phoneId ?? '',
+      phoneNumber: formValue.phone ?? '',
+      roleId: tempRole,
+      active: 'true'
+    };
+  }
+
+  setProfileData (data: any) {
+    this.profileData.firstName = data.firstName;
+    this.profileData.lastName = data.lastName;
+    this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;
+    this.profileData.phoneId = data.phoneId;
+    this.profileData.phone = data.phoneNumber ?? '';
+    this.profileData.birthDate = this.parseDateOfBirth(data.dateOfBirth) ?? {month: '', day: '', year: ''};
+    this.profileData.email = data.email;
+    this.profileData.emailConfirmed = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted == 'true' || false;
+    this.profileData.notifications = {
+      email: data.notificationEmail ?? false,
+      sms: data.notificationSms ?? false
+    };
+    this.profileData.privacyOptOut = data.privacyDataOutActive ?? false;
+    this.updateFormWithSessionData();
   }
 }
