@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ServiceTemplate} from '@app/core/services/service-template';
 import {DFC} from '@app/shared/constants/app.const';
+import { UserDetailUpdateRequest } from './user-detail-update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,17 @@ export class UserClient extends ServiceTemplate {
   createUser(user: any): Observable<any> {
     this.logInfo(`UserClient.createUser:: ${this.CONTENT_PATH}`);
     return this.httpClient.post(this.CONTENT_PATH + DFC.RelativePath.USER_CREATE_PATH, user, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+  }
+
+  /**
+   * Updates user details
+   * @param userId The ID of the user to update
+   * @param updateRequest The update payload
+   */
+  updateUser(userId: string, updateRequest: UserDetailUpdateRequest): Observable<any> {
+    this.logInfo(`UserClient.updateUser:: ${this.USER_CONTENT_PATH}/${userId}`);
+    this.logInfo(`UserClient.updateUser:: updateRequest: ${JSON.stringify(updateRequest)}`);
+    return this.httpClient.put<any>(`${this.USER_CONTENT_PATH}/${userId}`, updateRequest, {headers: DFC.HttpHeader.STANDARD, observe: 'response' as 'body'})
+      .pipe(catchError(this.handlerError));
   }
 }

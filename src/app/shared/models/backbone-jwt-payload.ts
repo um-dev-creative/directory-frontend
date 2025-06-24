@@ -14,4 +14,6 @@ export interface BackboneJwtPayload extends JwtPayload {
     lastname?: string;
     /** Email */
     email?: string;
+    /** User roles */
+    roles?: [];
 }

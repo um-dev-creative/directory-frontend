@@ -4,24 +4,26 @@ import {SessionData} from './session.state';
 describe('App Actions', () => {
     it('should create setSharedData action with correct type and payload', () => {
         const data: SessionData = {userAuth: {
-                alias: 'testAlias',
-                fullName: '',
-                sessionTokenBkd: '',
-                sessionToken: '',
-                features: []
-            },
+            alias: 'testAlias',
+            fullName: '',
+            sessionTokenBkd: '',
+            sessionToken: '',
+            features: [],
+            email: '',
+            authorization: ''
+          },
             token: 'true'
         };
-        const action = saveSession({data: data, token:  'de07c1fd-7451-46b5-81e4-8c1ba3ba5263'});
+        const action = saveSession({sessionData: data, isInitialized: true});
         expect(action.type).toBe('[Session] Save session');
-        expect(action.data).toEqual(data);
+        expect(action.sessionData).toEqual(data);
     });
 
     it('should handle empty data payload', () => {
         const data: SessionData = new SessionData();
-        const action = saveSession({data: data, token:  'de07c1fd-7451-46b5-81e4-8c1ba3ba5263'});
+        const action = saveSession({sessionData: data, isInitialized: true});
         expect(action.type).toBe('[Session] Save session');
-        expect(action.data).toEqual(data);
+        expect(action.sessionData).toEqual(data);
     });
 
 });

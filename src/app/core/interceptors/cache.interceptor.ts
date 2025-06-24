@@ -16,12 +16,8 @@ export class CacheInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Only cache GET requests
-    if (req.method !== 'GET') {
-      return next.handle(req);
-    }
-
     // Skip caching if requested
-    if (req.headers.get('cache-control') === 'no-cache') {
+    if (req.method !== 'GET' || req.headers.get('cache-control') === 'no-cache') {
       return next.handle(req);
     }
 
@@ -75,7 +71,9 @@ export class CacheInterceptor implements HttpInterceptor {
       timestamp: Date.now()
     };
 
-    this.cache.set(url, entry);
+    if (this.cache.has(url) && url.indexOf('/api/v1/general/users/') !== -1) {
+      this.cache.set(url, entry);
+    }
 
     // Cleanup old entries (keep cache size reasonable)
     if (this.cache.size > 50) {

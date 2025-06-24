@@ -137,10 +137,10 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     let sessionTokenBkd = null;
     let uuid = null;
 
-    if(this.sessionData){
+    if (this.sessionData) {
       sessionTokenBkd = this.sessionData.userAuth?.sessionTokenBkd;
       uuid = this.jwtPipe.transform(sessionTokenBkd)?.uid ?? '';
-    //
+      //
     }
     const userRegisterRequest = {
       userId: uuid,
@@ -148,20 +148,20 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     };
 
     this.loader.show();
-      this.userRegisterClient.confirmCode(userRegisterRequest).pipe(takeUntil(this.subject$))
-        .subscribe({
-          next: (response) => {
-              this.notificationService.success('Success');
-              this.router.navigate([DFC.RelativePath.STAGE_PATH]);
-            // }
-            this.loader.hide();
-          },
-          error: (error) => {
-            this.setErrorFound('verify-code', error);
-            this.notificationService.error('Error');
-            this.loader.hide();
-          }
-        });
+    this.userRegisterClient.confirmCode(userRegisterRequest).pipe(takeUntil(this.subject$))
+      .subscribe({
+        next: (response) => {
+          this.notificationService.success('Success');
+          this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+          // }
+          this.loader.hide();
+        },
+        error: (error) => {
+          this.setErrorFound('verify-code', error);
+          this.notificationService.error('Error');
+          this.loader.hide();
+        }
+      });
   }
 
   /**

@@ -1,47 +1,95 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {Stage} from './stage';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {DebugElement} from '@angular/core';
-import {App} from '@app/app';
-import {of} from 'rxjs';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import {HeaderService} from '@app/header/header.service';
+import {ChangeDetectorRef} from '@angular/core';
+import {CardImage} from '@app/cards/services/cards.service';
+
+// Mocks
+class MockHeaderService {
+  setHeaderType = jasmine.createSpy();
+}
+class MockChangeDetectorRef {
+  detectChanges = jasmine.createSpy();
+}
+class MockStore {
+  select = jasmine.createSpy().and.returnValue({
+    subscribe: (fn: (state: any) => void) => fn({ sessionData: { userAuth: { fullName: 'Test User' }, token: 'token' } })
+  });
+}
 
 describe('Stage', () => {
   let component: Stage;
   let fixture: ComponentFixture<Stage>;
-  let debugElement: DebugElement;
-  let mockRouter: Router;
-  let mockStore: any;
+  let headerService: MockHeaderService;
+  let store: MockStore;
+  let changeDetectorRef: MockChangeDetectorRef;
 
   beforeEach(async () => {
-    mockStore = {
-      select: jasmine.createSpy().and.returnValue(of({
-        logged: false,
-        userAuth: {alias: 'testAlias', fullName: 'Pepe Perez'}
-      })),
-      dispatch: jasmine.createSpy()
-    };
     await TestBed.configureTestingModule({
-      imports: [
-        Stage,
-        BrowserAnimationsModule
-      ],
+      declarations: [Stage],
       providers: [
-        App,
-        {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])},
-        {provide: Router, useValue: mockRouter}
+        { provide: HeaderService, useClass: MockHeaderService },
+        { provide: Store, useClass: MockStore },
+        { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Stage);
-    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
+    headerService = TestBed.inject(HeaderService) as any;
+    store = TestBed.inject(Store) as any;
+    changeDetectorRef = TestBed.inject(ChangeDetectorRef) as any;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should set isAuthenticated to true if user is authenticated', () => {
+    component.ngOnInit();
+    expect(component.isAuthenticated).toBeTrue();
+  });
+
+  it('should set isAuthenticated to false if user is not authenticated', () => {
+    spyOn(store, 'select').and.returnValue({
+      subscribe: (fn: (state: any) => void) => fn({ sessionData: {} })
+    });
+    component.ngOnInit();
+    expect(component.isAuthenticated).toBeFalse();
+  });
+
+  it('should call setHeaderType with USER_AUTH_HEADER if token exists', () => {
+    component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
+    component['processSessionData']();
+    expect(headerService.setHeaderType).toHaveBeenCalledWith('USER_AUTH_HEADER');
+  });
+
+  it('should call setHeaderType with GENERAL_HEADER if token does not exist', () => {
+    component.sessionData = { userAuth: { fullName: 'Test User' } } as any;
+    component['processSessionData']();
+    expect(headerService.setHeaderType).toHaveBeenCalledWith('GENERAL_HEADER');
+  });
+
+  it('should call detectChanges after processing session data', () => {
+    component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
+    component['processSessionData']();
+    expect(changeDetectorRef.detectChanges).toHaveBeenCalled();
+  });
+
+  it('should log card click event', () => {
+    spyOn(console, 'log');
+    const card: CardImage = { title: 'Card Title', alt: 'Alt', src: '', id: '1' } as any;
+    component.onCardClick({ card, index: 2 });
+    expect(console.log).toHaveBeenCalledWith('Card clicked:', 'Card Title', 'at position', 2);
+  });
+
+  it('should log image error event', () => {
+    spyOn(console, 'warn');
+    const card: CardImage = { title: 'Card Title', alt: 'Alt', src: '', id: '1' } as any;
+    component.onImageError({ card, index: 1 });
+    expect(console.warn).toHaveBeenCalledWith('Failed to load image for card:', 'Card Title');
+  });
 });
+

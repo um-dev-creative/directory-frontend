@@ -11,16 +11,31 @@ const proxyApi = async (req, res, next) => {
   let response = null;
   try {
     const apiURL = getApiEndpoint(req.url, directoryVerifyCodeProxyConfig, API_SERVICE_DIRECTORY_MAP);
-    const httpOptions = {
-      method: req.method,
-      url: apiURL,
-      headers: {
-        'Authorization': req.headers['authorization'],
-        'session-token': req.headers['session-token'],
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    };
+    let httpOptions;
+    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH' && req.body) {
+      httpOptions = {
+        method: req.method,
+        url: apiURL,
+        headers: {
+          'Authorization': req.headers['authorization'],
+          'session-token': req.headers['session-token'],
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        data: req.body,
+      };
+    } else {
+      httpOptions = {
+        method: req.method,
+        url: apiURL,
+        headers: {
+          'Authorization': req.headers['authorization'],
+          'session-token': req.headers['session-token'],
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+      };
+    }
 
     const axiosResponse = await axios(httpOptions);
     response = axiosResponse.data;
