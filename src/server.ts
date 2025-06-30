@@ -5,6 +5,7 @@ import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import bootstrap from './main.server';
 import rateLimit from 'express-rate-limit';
+import type { RequestHandler } from 'express';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -17,12 +18,14 @@ app.disable("x-powered-by");
 const commonEngine = new CommonEngine();
 
 // Set up rate limiter: maximum of 100 requests per 15 minutes
-const limiter = rateLimit({
+const limiter: RequestHandler = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // max 100 requests per windowMs
 });
 
-app.use(limiter);
+// Apply rate limiter only to API routes
+app.use('/api', limiter);
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.

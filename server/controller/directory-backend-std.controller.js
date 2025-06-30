@@ -38,7 +38,13 @@ const proxyApi = async (req, res, next) => {
     }
 
     const axiosResponse = await axios(httpOptions);
-    response = axiosResponse.data;
+    response = {
+      headers: {
+        statusText: axiosResponse.statusText,
+        status: axiosResponse.status
+      },
+      data: axiosResponse.data
+    };
     res.status(axiosResponse.status);
   } catch (error) {
     if (error.response != null) {

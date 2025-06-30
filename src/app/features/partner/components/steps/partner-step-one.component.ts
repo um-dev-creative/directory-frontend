@@ -1,9 +1,15 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, Output, EventEmitter, Input, inject, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { StepOneData } from '../partner-registration-stepper.component';
-import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent } from '@app/components/ui';
+import {StepOneData} from '../partner-registration-stepper.component';
+import {InputComponent, Button, CardComponent, TextareaComponent, IconComponent} from '@app/components/ui';
+import {BusinessClient} from '@app/core/services/business/business.client';
+import {BusinessCreateRequest} from '@shared/models/business.model';
+import {Store} from '@ngrx/store';
+import {SessionData, SessionState} from '@core/store/session/session.state';
+import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
+import {Subject, switchMap, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-partner-step-one',
@@ -79,28 +85,65 @@ import { InputComponent, Button, CardComponent, TextareaComponent, IconComponent
     </form>
   `
 })
-export class PartnerStepOneComponent {
+export class PartnerStepOneComponent implements OnInit {
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
-  reactiveForm: FormGroup;
+  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
+  private readonly businessClient: BusinessClient = inject(BusinessClient);
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+  private readonly destroy$ = new Subject<void>();
+  private readonly fb: FormBuilder = inject(FormBuilder);
 
-  constructor(private fb: FormBuilder) {
+  private userId: string = '';
+  protected sessionData: SessionData | undefined;
+
+  reactiveForm: FormGroup;
+  /** Function to log information */
+  logInfo: (...arg: any) => void;
+  /** Function to log errors */
+  logError: (...arg: any) => void;
+
+  constructor() {
+    this.logInfo = (...arg: any) => console.info(arg);
+    this.logError = (...arg: any) => console.error(arg);
     this.reactiveForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(25)]],
       description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]]
     });
   }
 
+  ngOnInit(): void {
+    this.store.select('session').subscribe(sessionState => {
+      this.sessionData = sessionState.sessionData;
+      this.userId = this.backboneJwtPipe.transform(this.sessionData?.userAuth?.sessionTokenBkd ?? "")?.uid ?? "";
+    });
+  }
+
   onContinue(): void {
     if (this.reactiveForm.valid) {
+      this.logInfo('Form data is valid, proceeding with business creation');
       const formData: StepOneData = {
         name: this.reactiveForm.get('name')?.value,
         description: this.reactiveForm.get('description')?.value
       };
-      this.stepCompleted.emit(formData);
-    } else {
-      this.reactiveForm.markAllAsTouched();
+      this.logInfo('Form data:', formData);
+      this.businessClient.create(this.getBusinessData(formData)).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (response) => {
+          // TODO: Change to status code #202
+          if (response.headers.status === 202) {
+            this.logInfo('Business created successfully:', response);
+            this.reactiveForm.markAllAsTouched();
+            // Emit the form data to the parent component
+            this.stepCompleted.emit(formData);
+          } else {
+            this.logError('Unexpected response status:', response.status);
+          }
+        },
+        error: (error) => {
+          this.logError('Error creating business:', error);
+        }
+      });
     }
   }
 
@@ -128,5 +171,18 @@ export class PartnerStepOneComponent {
       }
     }
     return '';
+  }
+
+  private getBusinessData(formData: any): BusinessCreateRequest {
+    return {
+      name: formData.name,
+      description: formData.description,
+      userId: this.userId,
+      categoryId: '3536c5be-e56a-4a22-8f3c-d36da4a86f61', // This should be set based on your application logic,
+      email: null,
+      customerServiceEmail: null,
+      orderManagementEmail: null,
+      website: '' // Optional, can be added later
+    }
   }
 }
