@@ -7,15 +7,12 @@ const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst"
 const constants = require("../config/constants.util");
 const axios = require("axios");
 const logger = appConfig.getLoggerApp();
-const {TRANSFER_ENCODING, SESSION_TOKEN_BKD,
-  API_INVALID_URL_REQUEST_TITLE, CONTENT_TYPE_DEFAULT, CONTENT_TYPE,
-  POST_METHOD, PASSWORD_ATTRIBUTE, INNER_REGISTER_PATH
-} = require("../config/constants.util");
 const CryptoJS = require("crypto-js");
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const directoryRegisterProxyConfig = appConfig.getDirectoryVerifyCodeProxyConfig()
 const { getUserSession } = require('../shared/user-session-store');
+const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_REGISTER}] :::`;
 
 /**
  * Registers the proxy API for Directory service.
@@ -35,15 +32,15 @@ const registerProxyApi = async (req, res, next) => {
       const sessionData = getUserSession(req.body['userId']);
 
       const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
-      logger.info(`[DIS] Proxying request to ${apiURL}`);
+      logger.info(`${LOGGER_TAG_ID} Proxying request to ${apiURL}`);
       let httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
       let axiosResponse = await axios(httpOptions);
-      delete axiosResponse.headers[TRANSFER_ENCODING];
+      delete axiosResponse.headers[constants.TRANSFER_ENCODING];
       response = axiosResponse.data;
       res.set(axiosResponse.headers);
       // Include the session-token-bkd in the response headers
       if (sessionData.backboneSession && req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH) {
-        res.set(SESSION_TOKEN_BKD, sessionData.backboneSession);
+        res.set(constants.SESSION_TOKEN_BKD, sessionData.backboneSession);
       }
     } catch (error) {
       if (error.response != null) {
@@ -51,12 +48,12 @@ const registerProxyApi = async (req, res, next) => {
         res.status(error.response.status);
       } else if (error.errors != null) {
         response = error;
-        res.status(500);
+        res.status(constants.HTTP_STATUS_CODE_500_SERVER_ERROR);
       }
     }
     res.send(response);
   } else {
-    res.send(API_INVALID_URL_REQUEST_TITLE);
+    res.send(constants.API_INVALID_URL_REQUEST_TITLE);
   }
 }
 
@@ -71,15 +68,15 @@ const registerProxyApi = async (req, res, next) => {
  */
 const getRequestHeader = function (req, sessionData, defaultAccept, defaultContentType) {
   let headers = getAuthBasicHeader(req, sessionData, defaultAccept);
-  const contentType = req.header(CONTENT_TYPE);
+  const contentType = req.header(constants.CONTENT_TYPE);
 
-  if (req.url === INNER_REGISTER_PATH && req.method === POST_METHOD) {
-    req.body[PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
+  if (req.url === constants.INNER_REGISTER_PATH && req.method === constants.POST_METHOD) {
+    req.body[constants.PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
   }
-  if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
-    headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
+  if (contentType !== null && contentType === constants.CONTENT_TYPE_DEFAULT) {
+    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_DEFAULT;
   } else {
-    headers[CONTENT_TYPE] = defaultContentType;
+    headers[constants.CONTENT_TYPE] = defaultContentType;
   }
   return headers;
 };

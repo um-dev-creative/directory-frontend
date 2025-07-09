@@ -2,6 +2,8 @@ const assert = require('assert');
 const axios = require('axios');
 const appConfig = require("../config/app.config");
 const logger = appConfig.getLoggerApp();
+const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_OAUTH_CLIENT}] :::`;
+const constants = require('../config/constants.util.js');
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
   JWT: "JWT"
@@ -32,13 +34,13 @@ class OAuthClient {
    * @param {string} config.password - The password.
    */
   constructor(config) {
-    assert.ok(config, "OAuthClient: config is not defined");
-    assert.ok(config.clientId, `OAuthClient: config.clientId is not provided for Auth Type: ${config.clientId}`);
-    assert.ok(config.clientSecret, `OAuthClient: config.clientSecret is not provided for Auth Type: ${config.clientSecret}`);
-    assert.ok(config.grantType, `OAuthClient: config.grantType is not provided for Auth Type: ${config.grantType}`);
-    assert.ok(config.tokenUrl, `OAuthClient: config.tokenUrl is not provided for Auth Type: ${config.tokenUrl}`);
-    assert.ok(config.username, `OAuthClient: config.username is not provided for Auth Type: ${config.username}`);
-    assert.ok(config.password, `OAuthClient: config.password is not provided for Auth Type: ${config.password}`);
+    assert.ok(config, `${LOGGER_TAG_ID} config is not defined`);
+    assert.ok(config.clientId, `${LOGGER_TAG_ID} config.clientId is not provided for Auth Type: ${config.clientId}`);
+    assert.ok(config.clientSecret, `${LOGGER_TAG_ID} config.clientSecret is not provided for Auth Type: ${config.clientSecret}`);
+    assert.ok(config.grantType, `${LOGGER_TAG_ID} config.grantType is not provided for Auth Type: ${config.grantType}`);
+    assert.ok(config.tokenUrl, `${LOGGER_TAG_ID} config.tokenUrl is not provided for Auth Type: ${config.tokenUrl}`);
+    assert.ok(config.username, `${LOGGER_TAG_ID} config.username is not provided for Auth Type: ${config.username}`);
+    assert.ok(config.password, `${LOGGER_TAG_ID} config.password is not provided for Auth Type: ${config.password}`);
 
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
@@ -60,7 +62,7 @@ class OAuthClient {
       if(this.authenticationType === AuthenticationType.OPAQUE) {
         options = {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': constants.CONTENT_TYPE_X_FORM_URLENCODED,
           },
           data: new URLSearchParams({
             client_id: this.clientId,
@@ -73,9 +75,9 @@ class OAuthClient {
         };
       } else  {
         options = {
-          method: "POST",
+          method: constants.POST_METHOD,
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': constants.CONTENT_TYPE_X_FORM_URLENCODED,
           },
           data: {
             grant_type: this.grantType,
@@ -87,12 +89,12 @@ class OAuthClient {
           url: this.tokenUrl
         };
       }
-      logger.debug(`[OAuthClient] Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
+      logger.debug(`${LOGGER_TAG_ID} Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
        authenticationType: ${this.authenticationType} and grantType: ${this.grantType}`);
       // Call OAuth service
-      logger.debug(`[OAuthClient] Request options: ${JSON.stringify(options)}`);
+      logger.debug(`${LOGGER_TAG_ID} Request options: ${JSON.stringify(options)}`);
       const oauthResponse = await axios(options);
-      logger.debug(`[OAuthClient] Received token response: ${JSON.stringify(oauthResponse.data)}`);
+      logger.debug(`${LOGGER_TAG_ID} Received token response: ${JSON.stringify(oauthResponse.data)}`);
       // Cache token in local variable.
       this.cacheToken = oauthResponse.data.access_token;
       this.lastRequestTime = requestTime;

@@ -1,10 +1,6 @@
 const Agent = require('agentkeepalive');
 const HttpsAgent = require('agentkeepalive').HttpsAgent;
-
-const {ACCEPT, CONTENT_TYPE_DEFAULT, NOT_FOUND_REQUEST_CODE, NOT_FOUND_REQUEST_TITLE, NOT_FOUND_REQUEST_DETAIL,
-  NOT_FOUND_REQUEST_CODE_VALUE, AUTHORIZATION, FID_USER_ID, FID_LOGGER_TRACKING_ID, BEARER, SESSION_TOKEN_BKD,
-  SESSION_TOKEN_DIR, BEARER_TOKEN_REGEX, CONTENT_TYPE
-} = require("../config/constants.util");
+const constants = require('../config/constants.util.js');
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const {createErrorResponse} = require("./error-util");
 const {v4: uuidv4} = require('uuid');
@@ -47,7 +43,7 @@ function decodeJwtToken(jwtSession) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     let jwtPayload = JSON.parse(jsonPayload);
-    return jwtPayload.alias;
+    return jwtPayload?.alias || jwtPayload?.sub;
   }
   return undefined;
 }
@@ -69,7 +65,7 @@ let createRequestOption = function (method, url, body, headers) {
     headers: headers,
     httpAgent: keepaliveAgent,
     httpsAgent: keepaliveHttpsAgent,
-    responseType: headers[ACCEPT] === CONTENT_TYPE_DEFAULT ? 'blob' : 'json'
+    responseType: headers[constants.ACCEPT] === constants.CONTENT_TYPE_DEFAULT ? 'blob' : 'json'
   }
 };
 
@@ -115,15 +111,16 @@ let getApiEndpoint = function (path, oAuthProxyConfig, API_SERVICE_MAP) {
     return apiURL + finalPath;
   } else {
 
-    throw createErrorResponse(NOT_FOUND_REQUEST_CODE,
-      NOT_FOUND_REQUEST_TITLE,
-      NOT_FOUND_REQUEST_DETAIL,
-      NOT_FOUND_REQUEST_CODE_VALUE);
+    throw createErrorResponse(
+      constants.HTTP_STATUS_CODE_404_NOT_FOUND,
+      constants.NOT_FOUND_REQUEST_TITLE,
+      constants.NOT_FOUND_REQUEST_DETAIL,
+      constants.NOT_FOUND_REQUEST_CODE_VALUE);
   }
 };
 
 function isValidBearerToken(token) {
-  return BEARER_TOKEN_REGEX.test(token);
+  return constants.BEARER_TOKEN_REGEX.test(token);
 }
 
 /**
@@ -135,31 +132,30 @@ function isValidBearerToken(token) {
  */
 const getBasicHeader = function (req, bearerToken, defaultAccept) {
   let headers = {};
-  const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
-  const userId = req.header(FID_USER_ID);
-  const accept = req.header(ACCEPT);
-  const uuidValid =  isValidUUID(fidLoggerTrackingId);
+  const fidLoggerTrackingId = req.header(constants.FID_LOGGER_TRACKING_ID);
+  const userId = req.header(constants.FID_USER_ID);
+  const accept = req.header(constants.ACCEPT);
+  const uuidValid = isValidUUID(fidLoggerTrackingId);
   if (fidLoggerTrackingId !== null && uuidValid) {
-    headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
+    headers[constants.FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
   } else {
-    headers[FID_LOGGER_TRACKING_ID] = uuidv4();
+    headers[constants.FID_LOGGER_TRACKING_ID] = uuidv4();
   }
   if (userId !== null && uuidValid) {
-    headers[FID_USER_ID] = fidLoggerTrackingId;
+    headers[constants.FID_USER_ID] = fidLoggerTrackingId;
   } else {
-    headers[FID_USER_ID] = "anonymous";
+    headers[constants.FID_USER_ID] = constants.FID_USER_ID_ANONYMOUS;
   }
-  headers[AUTHORIZATION] = BEARER + bearerToken;
+  headers[constants.AUTHORIZATION] = constants.BEARER + bearerToken;
 
-  if (accept && accept === ACCEPT) {
-    headers[ACCEPT] = accept;
+  if (accept && accept === constants.ACCEPT) {
+    headers[constants.ACCEPT] = accept;
   } else {
-    headers[ACCEPT] = defaultAccept
+    headers[constants.ACCEPT] = defaultAccept
   }
 
   return headers;
 };
-
 
 /**
  * Constructs the basic headers for the proxied request.
@@ -170,35 +166,35 @@ const getBasicHeader = function (req, bearerToken, defaultAccept) {
  */
 const getAuthBasicHeader = function (req, sessionData, defaultAccept) {
   let headers = {};
-  const fidLoggerTrackingId = req.header(FID_LOGGER_TRACKING_ID);
-  const userId = req.body['userId'] || req.header(FID_USER_ID) || null;
-  const accept = req.header(ACCEPT);
+  const fidLoggerTrackingId = req.header(constants.FID_LOGGER_TRACKING_ID);
+  const userId = req.body['userId'] || req.header(constants.FID_USER_ID) || null;
+  const accept = req.header(constants.ACCEPT);
 
   if (fidLoggerTrackingId !== null && isValidUUID(fidLoggerTrackingId)) {
-    headers[FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
+    headers[constants.FID_LOGGER_TRACKING_ID] = fidLoggerTrackingId;
   } else {
-    headers[FID_LOGGER_TRACKING_ID] = uuidv4();
+    headers[constants.FID_LOGGER_TRACKING_ID] = uuidv4();
   }
 
   if (userId !== null && isValidUUID(userId)) {
-    headers[FID_USER_ID] = userId;
+    headers[constants.FID_USER_ID] = userId;
   } else {
-    headers[FID_USER_ID] = "anonymous";
+    headers[constants.FID_USER_ID] = constants.FID_USER_ID_ANONYMOUS;
   }
-  headers[AUTHORIZATION] = BEARER + sessionData.directoryBearerToken;
+  headers[constants.AUTHORIZATION] = constants.BEARER + sessionData.directoryBearerToken;
 
-  if (accept && accept === ACCEPT) {
-    headers[ACCEPT] = accept;
+  if (accept && accept === constants.ACCEPT) {
+    headers[constants.ACCEPT] = accept;
   } else {
-    headers[ACCEPT] = defaultAccept
+    headers[constants.ACCEPT] = defaultAccept
   }
 
   if (sessionData.backboneSession) {
-    headers[SESSION_TOKEN_BKD] = sessionData.backboneSession;
+    headers[constants.SESSION_TOKEN_BKD] = sessionData.backboneSession;
   }
 
   if (sessionData.directorySession) {
-    headers[SESSION_TOKEN_DIR] = sessionData.directorySession;
+    headers[constants.SESSION_TOKEN_DIR] = sessionData.directorySession;
   }
 
   return headers;
@@ -214,12 +210,54 @@ const getAuthBasicHeader = function (req, sessionData, defaultAccept) {
  */
 const getStandardHeader = function (req, bearerToken, backboneSessionToken, defaultAccept) {
   return {
-    [AUTHORIZATION]: BEARER + bearerToken,
-    [FID_LOGGER_TRACKING_ID]: uuidv4(),
-    [FID_USER_ID]: req.header(FID_USER_ID) || "anonymous",
-    [ACCEPT]: req.header(ACCEPT) || defaultAccept,
-    [CONTENT_TYPE]: CONTENT_TYPE_DEFAULT
+    [constants.AUTHORIZATION]: constants.BEARER + bearerToken,
+    [constants.FID_LOGGER_TRACKING_ID]: uuidv4(),
+    [constants.FID_USER_ID]: req.header(constants.FID_USER_ID) || constants.FID_USER_ID_ANONYMOUS,
+    [constants.ACCEPT]: req.header(constants.ACCEPT) || defaultAccept,
+    [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_DEFAULT
   };
 };
 
-module.exports = {decodeJwtToken, createRequestOption, getRegex, getApiEndpoint, getBasicHeader, getAuthBasicHeader, getStandardHeader};
+/**
+ * Constructs a simplified response object based on the provided response and content parameters.
+ *
+ * @param {Object} res - The response object from which status and statusText are taken.
+ * @param {*} content - Optional content to include in the data field of the response.
+ * @returns {Object} A response object containing headers (statusText, status) and an optional data field.
+ */
+const simpleResponse = (res, content) => {
+  if (res.data || content) {
+    return (content === null) ?
+      {
+        headers: {
+          statusText: res.statusText,
+          status: res.status
+        },
+        data: res.data
+      } :
+      {
+        headers: {
+          statusText: res.statusText,
+          status: res.status
+        },
+        data: content
+      };
+  }
+  return {
+    headers: {
+      statusText: res.statusText,
+      status: res.status
+    }
+  };
+};
+
+module.exports = {
+  decodeJwtToken,
+  createRequestOption,
+  getRegex,
+  getApiEndpoint,
+  getBasicHeader,
+  getAuthBasicHeader,
+  getSimpleResponse: simpleResponse,
+  getStandardHeader
+};

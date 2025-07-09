@@ -6,6 +6,15 @@ export interface SessionState {
 export class SessionData {
   userAuth!: UserAuth;
   token!: string;
+  business?: BusinessData;
+}
+
+export class BusinessData {
+  id!: string;
+  name!: string;
+  description!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
 }
 
 export class UserAuth {

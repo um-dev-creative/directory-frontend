@@ -3,7 +3,7 @@ import {ServiceTemplate} from '@app/core/services/service-template';
 import {HttpClient} from '@angular/common/http';
 import {DFC} from '@shared/constants/app.const';
 import {catchError, Observable} from 'rxjs';
-import {BusinessCreateRequest, BusinessCreateResponse} from '@shared/models/business.model';
+import {BusinessCreateRequest} from '@shared/models/business.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,10 @@ export class BusinessClient extends ServiceTemplate {
   constructor() {
     super();
   }
-
+  /**
+   * Retrieves the business profile for the current user.
+   * @returns An observable containing the business profile data.
+   */
   create(businessCreateRequest: BusinessCreateRequest): Observable<any> {
     this.logInfo(`BusinessClient.create:: ${this.CONTENT_PATH}`);
     return this.httpClient.post<any>(this.BUSINESS_CONTENT_PATH, businessCreateRequest,

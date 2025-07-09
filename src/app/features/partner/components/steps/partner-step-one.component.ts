@@ -7,9 +7,11 @@ import {InputComponent, Button, CardComponent, TextareaComponent, IconComponent}
 import {BusinessClient} from '@app/core/services/business/business.client';
 import {BusinessCreateRequest} from '@shared/models/business.model';
 import {Store} from '@ngrx/store';
-import {SessionData, SessionState} from '@core/store/session/session.state';
+import {BusinessData, SessionData, SessionState} from '@core/store/session/session.state';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Subject, switchMap, takeUntil} from 'rxjs';
+import {AuthClient} from '@app/features/auth/auth.client';
+import {NotificationService} from '@core/services';
 
 @Component({
   selector: 'app-partner-step-one',
@@ -89,8 +91,10 @@ export class PartnerStepOneComponent implements OnInit {
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
+  private readonly notificationService: NotificationService = inject(NotificationService);
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   private readonly businessClient: BusinessClient = inject(BusinessClient);
+  private readonly authClient: AuthClient = inject(AuthClient);
   private readonly store: Store<{ session: SessionState }> = inject(Store);
   private readonly destroy$ = new Subject<void>();
   private readonly fb: FormBuilder = inject(FormBuilder);
@@ -128,17 +132,64 @@ export class PartnerStepOneComponent implements OnInit {
         description: this.reactiveForm.get('description')?.value
       };
       this.logInfo('Form data:', formData);
-      this.businessClient.create(this.getBusinessData(formData)).pipe(takeUntil(this.destroy$)).subscribe({
+      this.businessClient.create(this.getBusinessData(formData)).pipe(
+        takeUntil(this.destroy$),
+        switchMap((response) => {
+            this.logInfo('Business creation response:', response);
+            // TODO: Change to status code #202
+            if (response.headers.status === 201) {
+              this.logInfo('Business created successfully with ID:', response.body);
+              // let businessData: BusinessData = {
+              //   id: response.body.id,
+              //   name: response.body.name,
+              //   description: response.body.description,
+              //   createdAt: new Date(response.body.createdAt),
+              //   updatedAt: new Date(response.body.updatedAt)
+              // }
+
+              let sessionDataNew = {
+                ...this.sessionData,
+                userAuth: {
+                  alias: this.sessionData?.userAuth?.alias ?? '',
+                  email: this.sessionData?.userAuth?.email ?? '',
+                  fullName: this.sessionData?.userAuth?.fullName ?? '',
+                  sessionToken: this.sessionData?.userAuth?.sessionToken ?? '',
+                  sessionTokenBkd: response.body ?? this.sessionData?.userAuth?.sessionTokenBkd,
+                  authorization: this.sessionData?.userAuth,
+                  features: this.sessionData?.userAuth?.features ?? [],
+                },
+                businessId: response.body // Assuming the response body contains the business ID
+              };
+              this.notificationService.success('Business created successfully');
+
+              this.store.dispatch({
+                type: '[Session] Update Business Data',
+                payload: sessionDataNew
+              });
+              this.logInfo('Business created successfully:', response);
+              // Mark all form controls as touched to show validation errors
+              this.reactiveForm.markAllAsTouched();
+              // Emit the form data to the parent component
+              this.stepCompleted.emit(formData);
+              return response;
+            }
+
+            if(response.status === 409) {
+              this.logError('Business already exists for this user');
+              this.notificationService.error('Ya tienes un negocio creado. Por favor, edítalo si deseas realizar cambios.');
+              throw new Error('Business already exists for this user');
+            } else {
+              this.logError('Unexpected response status:', response.status);
+              throw new Error(`Unexpected response status: ${response.status}`);
+            }
+          })
+      ).subscribe({
         next: (response) => {
-          // TODO: Change to status code #202
-          if (response.headers.status === 202) {
-            this.logInfo('Business created successfully:', response);
-            this.reactiveForm.markAllAsTouched();
-            // Emit the form data to the parent component
-            this.stepCompleted.emit(formData);
-          } else {
-            this.logError('Unexpected response status:', response.status);
-          }
+          this.logInfo('Business created successfully:', response);
+              // Mark all form controls as touched to show validation errors
+          this.reactiveForm.markAllAsTouched();
+              // Emit the form data to the parent component
+          this.stepCompleted.emit(formData);
         },
         error: (error) => {
           this.logError('Error creating business:', error);
