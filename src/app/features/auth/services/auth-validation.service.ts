@@ -33,7 +33,8 @@ export class AuthValidationService {
       phoneNumber: '',
       dateOfBirth: null,
       email: '',
-      lastname: ''
+      lastname: '',
+      displayName: ''
     });
     return user.isValidDate(day, month, year);
   }

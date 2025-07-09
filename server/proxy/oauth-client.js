@@ -2,8 +2,8 @@ const assert = require('assert');
 const axios = require('axios');
 const appConfig = require("../config/app.config");
 const logger = appConfig.getLoggerApp();
-const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_OAUTH_CLIENT}] :::`;
 const constants = require('../config/constants.util.js');
+const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_OAUTH_CLIENT}] :::`;
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
   JWT: "JWT"

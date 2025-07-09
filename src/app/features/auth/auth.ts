@@ -347,6 +347,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       lastname: this.registerData.lastName,
       dateOfBirth: this.registerData.birthdayFull,
       phoneNumber: this.registerData.phoneNumber,
+      displayName: `${this.registerData.firstName} ${this.registerData.lastName}`.trim(),
     });
 
     if (userToRegister.isValid()) {
@@ -450,6 +451,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       lastname: this.registerData.lastName,
       dateOfBirth: this.registerData.birthdayFull,
       phoneNumber: this.registerData.phoneNumber,
+      displayName: `${this.registerData.firstName} ${this.registerData.lastName}`.trim(),
     });
 
     this.validateDateOfBirth(userToValidate);
