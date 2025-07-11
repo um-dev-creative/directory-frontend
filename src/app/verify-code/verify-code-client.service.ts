@@ -10,7 +10,7 @@ import {catchError, Observable} from 'rxjs';
 export class VerifyCodeClient extends ServiceTemplate {
   private readonly httpClient: HttpClient = inject(HttpClient);
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
-    DFC.RelativePath.VERIFY_CODE_PATH;
+    DFC.RelativePath.AUTH_PATH + DFC.RelativePath.VERIFY_CODE_PATH;
 
   constructor() { super(); }
 

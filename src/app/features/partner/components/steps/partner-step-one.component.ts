@@ -12,6 +12,7 @@ import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Subject, switchMap, takeUntil} from 'rxjs';
 import {AuthClient} from '@app/features/auth/auth.client';
 import {NotificationService} from '@core/services';
+import {SessionStoreService} from '@core/store/session/session-store.service';
 
 @Component({
   selector: 'app-partner-step-one',
@@ -92,6 +93,11 @@ export class PartnerStepOneComponent implements OnInit {
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
   private readonly notificationService: NotificationService = inject(NotificationService);
+  /**
+   * Partner services for session data management
+   * @type {SessionStoreService}
+   */
+  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   private readonly businessClient: BusinessClient = inject(BusinessClient);
   private readonly authClient: AuthClient = inject(AuthClient);
@@ -135,64 +141,65 @@ export class PartnerStepOneComponent implements OnInit {
       this.businessClient.create(this.getBusinessData(formData)).pipe(
         takeUntil(this.destroy$),
         switchMap((response) => {
-            this.logInfo('Business creation response:', response);
-            // TODO: Change to status code #202
-            if (response.headers.status === 201) {
-              this.logInfo('Business created successfully with ID:', response.body);
-              // let businessData: BusinessData = {
-              //   id: response.body.id,
-              //   name: response.body.name,
-              //   description: response.body.description,
-              //   createdAt: new Date(response.body.createdAt),
-              //   updatedAt: new Date(response.body.updatedAt)
-              // }
+          this.logInfo('Business creation response:', response);
+          // TODO: Change to status code #202
+          if (response.headers.status === 201) {
+            this.logInfo('Business created successfully with ID:', response.body);
+            // let businessData: BusinessData = {
+            //   id: response.body.id,
+            //   name: response.body.name,
+            //   description: response.body.description,
+            //   createdAt: new Date(response.body.createdAt),
+            //   updatedAt: new Date(response.body.updatedAt)
+            // }
 
-              let sessionDataNew = {
-                ...this.sessionData,
-                userAuth: {
-                  alias: this.sessionData?.userAuth?.alias ?? '',
-                  email: this.sessionData?.userAuth?.email ?? '',
-                  fullName: this.sessionData?.userAuth?.fullName ?? '',
-                  sessionToken: this.sessionData?.userAuth?.sessionToken ?? '',
-                  sessionTokenBkd: response.body ?? this.sessionData?.userAuth?.sessionTokenBkd,
-                  authorization: this.sessionData?.userAuth,
-                  features: this.sessionData?.userAuth?.features ?? [],
-                },
-                businessId: response.body // Assuming the response body contains the business ID
-              };
-              this.notificationService.success('Business created successfully');
+            let sessionDataNew = {
+              ...this.sessionData,
+              userAuth: {
+                alias: this.sessionData?.userAuth?.alias ?? '',
+                email: this.sessionData?.userAuth?.email ?? '',
+                fullName: this.sessionData?.userAuth?.fullName ?? '',
+                sessionToken: this.sessionData?.userAuth?.sessionToken ?? '',
+                sessionTokenBkd: response.data?.token ?? this.sessionData?.userAuth?.sessionTokenBkd,
+                authorization: this.sessionData?.userAuth?.authorization??'',
+                features: this.sessionData?.userAuth?.features ?? [],
+              },
+              token: this.sessionData?.token ?? '',
+            };
+            this.notificationService.success('Business created successfully');
 
-              this.store.dispatch({
-                type: '[Session] Update Business Data',
-                payload: sessionDataNew
-              });
-              this.logInfo('Business created successfully:', response);
-              // Mark all form controls as touched to show validation errors
-              this.reactiveForm.markAllAsTouched();
-              // Emit the form data to the parent component
-              this.stepCompleted.emit(formData);
-              return response;
-            }
+            this.sessionStoreService.saveSessionData(sessionDataNew);
+            this.logInfo('Business created successfully:', response);
+            // Mark all form controls as touched to show validation errors
+            this.reactiveForm.markAllAsTouched();
+            // Emit the form data to the parent component
+            this.stepCompleted.emit(formData);
+            return response;
+          }
 
-            if(response.status === 409) {
-              this.logError('Business already exists for this user');
-              this.notificationService.error('Ya tienes un negocio creado. Por favor, edítalo si deseas realizar cambios.');
-              throw new Error('Business already exists for this user');
-            } else {
-              this.logError('Unexpected response status:', response.status);
-              throw new Error(`Unexpected response status: ${response.status}`);
-            }
-          })
+          if (response.status === 409) {
+            this.logError('Business already exists for this user');
+            this.notificationService.error('Ya tienes un negocio creado. Por favor, edítalo si deseas realizar cambios.');
+            throw new Error('Business already exists for this user');
+          } else {
+            this.logError('Unexpected response status:', response.status);
+            throw new Error(`Unexpected response status: ${response.status}`);
+          }
+        })
       ).subscribe({
         next: (response) => {
           this.logInfo('Business created successfully:', response);
-              // Mark all form controls as touched to show validation errors
+          // Mark all form controls as touched to show validation errors
           this.reactiveForm.markAllAsTouched();
-              // Emit the form data to the parent component
+          // Emit the form data to the parent component
           this.stepCompleted.emit(formData);
         },
         error: (error) => {
-          this.logError('Error creating business:', error);
+          if (error.status === 409) {
+            this.notificationService.error('Ya existe un negocio con el nombre ingresado. Por favor, Ingresar otro nombre.');
+          } else {
+            this.logError('Error creating business:', error);
+          }
         }
       });
     }

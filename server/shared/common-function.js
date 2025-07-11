@@ -233,14 +233,16 @@ const simpleResponse = (res, content) => {
           statusText: res.statusText,
           status: res.status
         },
-        data: res.data
+        data:  res.data
       } :
       {
         headers: {
           statusText: res.statusText,
           status: res.status
         },
-        data: content
+        data: {
+          token: content
+        }
       };
   }
   return {

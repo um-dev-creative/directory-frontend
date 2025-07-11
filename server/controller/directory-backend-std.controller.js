@@ -27,7 +27,7 @@ const proxyApi = async (req, res) => {
   try {
     const apiURL = getApiEndpoint(req.url, directoryVerifyCodeProxyConfig, API_SERVICE_DIRECTORY_MAP);
     const sessionToken = req.headers[constants.SESSION_TOKEN_DIR] || '';
-    const authHeader = req.headers[constants.AUTHORIZATION] || '';
+    const authHeader = req.headers[constants.AUTHORIZATION.toLowerCase()] || '';
     let httpOptions = createHttpOptions(req, authHeader, sessionToken, apiURL);
 
     const axiosResponse = await axios(httpOptions);
