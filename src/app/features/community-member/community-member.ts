@@ -47,11 +47,11 @@ import {Avatar, Button, CardComponent, InputComponent, ModalComponent} from '@ap
 import {Subject, takeUntil} from 'rxjs';
 import {UserMockService} from './services/user-mock.service';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
-import {UserClient} from '@app/user/user.client';
+import {UserClient} from '@core/services/user/user.client';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 import {switchMap} from 'rxjs/operators';
 import {NotificationService} from '@app/core/services';
-import {UserDetailUpdateRequest} from '@app/user/user-detail-update-request';
+import {UserDetailUpdateRequest} from '@shared/models/user-detail-update-request';
 import {ProfileData} from '@shared/models/profile-data.model';
 
 @Component({
@@ -173,8 +173,12 @@ export class CommunityMember implements OnInit, OnDestroy {
       this.userClient.findUserById(this.userId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (userData: any) => {
-            this.setProfileData(userData);
+          next: (response: any) => {
+            if (!response.headers.status || response.headers.status !== 200) {
+              this.logError('Unexpected response status:', response.status);
+              return;
+            }
+            this.setProfileData(response.data);
             this.updateFormWithSessionData();
             this.logInfo('Profile data loaded:', this.profileData);
           },

@@ -3,8 +3,12 @@ export class User {
   email: string;
   firstname: string;
   lastname: string;
+  displayName: string;
   dateOfBirth: Date;
   phoneNumber?: string;
+  notificationEmail?: boolean;
+  notificationSms?: boolean;
+  privacyDataOutputActive?: boolean;
 
   constructor(data: {
     password: string;
@@ -13,6 +17,10 @@ export class User {
     dateOfBirth: Date | null;
     email: string;
     lastname: string
+    displayName: string;
+    notificationEmail?: boolean;
+    notificationSms?: boolean;
+    privacyDataOutputActive?: boolean;
   }) {
     this.password = data.password || '';
     this.email = data.email || '';
@@ -20,6 +28,10 @@ export class User {
     this.lastname = data.lastname || '';
     this.dateOfBirth = data.dateOfBirth || new Date();
     this.phoneNumber = data.phoneNumber || '';
+    this.displayName = data.displayName || `${data.firstname} ${data.lastname}`;
+    this.notificationEmail = data.notificationEmail ?? true;
+    this.notificationSms = data.notificationSms ?? true;
+    this.privacyDataOutputActive = data.privacyDataOutputActive ?? true;
   }
 
   // Método para formatear la fecha de nacimiento (returns 'YYYY-MM-DD')
@@ -75,8 +87,12 @@ export class User {
       email: this.email,
       firstname: this.firstname,
       lastname: this.lastname,
+      displayName: this.displayName,
       dateOfBirth: this.dateOfBirth,
       phoneNumber: this.phoneNumber,
+      notificationEmail: this.notificationEmail,
+      notificationSms: this.notificationSms,
+      privacyDataOutputActive: this.privacyDataOutputActive
     };
   }
 }

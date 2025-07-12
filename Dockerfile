@@ -26,7 +26,7 @@ FROM base AS deps
 # into this layer.
 COPY package.json .
 COPY pnpm-lock.yaml .
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile --prod
+RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
 ################################################################################
 # Create a stage for building the application.
@@ -41,7 +41,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install -
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN npm run build:ssr
+RUN pnpm build:ssr
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies

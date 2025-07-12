@@ -66,10 +66,13 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   private scrollListener!: () => void;
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly store: Store<{ session: SessionState }> = inject(Store);
+  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   protected sessionData: SessionData | undefined;
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
   private readonly authClient: AuthClient = inject(AuthClient);
+
+  private businessAssigned: any = []; // Indica si el usuario tiene un negocio asignado
 
   isPartnerMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de partners
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
@@ -111,6 +114,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+        this.businessAssigned = this.backboneJwtPipe.transform(this.sessionData?.userAuth.sessionTokenBkd ?? "")?.roles||[];
         console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
       }
     });
@@ -204,5 +208,13 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   validateHeader(headerType: HeaderType): boolean {
     console.debug('Validating header type:', this.headerType);
     return (this.headerType as HeaderType) === headerType;
+  }
+
+  get hasBusiness(): boolean {
+
+    if (!this.businessAssigned || this.businessAssigned.length === 0) {
+      return false;
+    }
+    return this.businessAssigned === '[9a232260-a2e3-4990-b062-b6966efb25f8]';
   }
 }

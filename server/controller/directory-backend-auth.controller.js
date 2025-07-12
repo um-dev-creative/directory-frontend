@@ -3,10 +3,12 @@ const CryptoJS = require("crypto-js");
 const axios = require('axios');
 const appConfig = require('../config/app.config');
 const constants = require('../config/constants.util.js');
+const oauthCommonFunction = require("../shared/oauth-common-function");
 const directoryAuthProxyConfig = appConfig.getDirectoryAuthProxyConfig();
 const logger = appConfig.getLoggerApp();
 const cKey = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_KEY);
 const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
+const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_AUTH}] :::`;
 
 const {
   getRegex, getApiEndpoint, decodeJwtToken, createRequestOption, getAuthBasicHeader
@@ -20,35 +22,19 @@ const {setUserSession, removeUserSession} = require('../shared/user-session-stor
 const ajv = new Ajv();
 ajv.addFormat('uuid', getRegex())
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
-const {
-  SESSION_TOKEN_BKD, CONTENT_TYPE,  CONTENT_TYPE_DEFAULT,
-  API_INVALID_URL_REQUEST_TITLE, POST_METHOD, TRANSFER_ENCODING,
-  PASSWORD_ATTRIBUTE, INNER_AUTH_PATH, DS_AUTH_RELATIVE_PATH,
-  INNER_CREATE_USER_PATH
-} = require("../config/constants.util");
-const {
-  OAUTH_CLIENT_ID,
-  OAUTH_CLIENT_SECRET,
-  OAUTH_GRANT_TYPE,
-  OAUTH_TOKEN_URL,
-  OAUTH_AUTHENTICATION_TYPE,
-  OAUTH_USER_ALIAS,
-  OAUTH_USER_PASSWORD,
-  API_SERVICE_DIRECTORY_MAP, getDirectorySessionToken, getUserId
-} = require("../shared/oauth-common-function");
 
 /**
  * Directory OAuth client configuration.
  * @type {{password: string, clientId: string, tokenUrl: string, clientSecret: string, authenticationType: string, grantType: string, username: string}}
  */
 const directoryOauthClientConfig = {
-  clientId: OAUTH_CLIENT_ID,
-  clientSecret: OAUTH_CLIENT_SECRET,
-  grantType: OAUTH_GRANT_TYPE,
-  tokenUrl: OAUTH_TOKEN_URL,
-  authenticationType: OAUTH_AUTHENTICATION_TYPE,
-  username: OAUTH_USER_ALIAS,
-  password: OAUTH_USER_PASSWORD
+  clientId: oauthCommonFunction.OAUTH_CLIENT_ID,
+  clientSecret: oauthCommonFunction.OAUTH_CLIENT_SECRET,
+  grantType: oauthCommonFunction.OAUTH_GRANT_TYPE,
+  tokenUrl: oauthCommonFunction.OAUTH_TOKEN_URL,
+  authenticationType: oauthCommonFunction.OAUTH_AUTHENTICATION_TYPE,
+  username: oauthCommonFunction.OAUTH_USER_ALIAS,
+  password: oauthCommonFunction.OAUTH_USER_PASSWORD
 };
 
 /**
@@ -56,13 +42,12 @@ const directoryOauthClientConfig = {
  *
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
- * @param {Function} next - The next middleware function.
  */
-const proxyApi = async (req, res, next) => {
-  logger.info(`[DIS] Proxying request to ${req.url}`);
+const proxyApi = async (req, res) => {
+  logger.info(`${LOGGER_TAG_ID} Proxying request to ${req.url}`);
   let response = null;
-  const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, API_SERVICE_DIRECTORY_MAP);
-  logger.info(`[DIS] API URL: ${apiURL}`);
+  const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, oauthCommonFunction.API_SERVICE_DIRECTORY_MAP);
+  logger.info(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
   let sessionData = {
     directorySession: null,
@@ -72,16 +57,16 @@ const proxyApi = async (req, res, next) => {
     backboneBearerToken: null,
     backboneSessionExpiresAt: null
   };
-  logger.info(`[DIS] Validation schema: ${validationSchema}`);
+  logger.info(`${LOGGER_TAG_ID} Validation schema: ${validationSchema}`);
   if (validationSchema) {
     try {
-      logger.info(`[DIS] Validating API URL: ${apiURL}`);
+      logger.info(`${LOGGER_TAG_ID} Validating API URL: ${apiURL}`);
       // Get the backbone session token (already cached in backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
       // Get and reuse session and application tokens for Directory Backend
-      const userId = getUserId(backboneSessionData.backboneSession);
-      logger.info(`[DIS] User ID: ${userId}`);
-      const directorySessionData = await getDirectorySessionToken(req, directoryOauthClientConfig);
+      const userId = oauthCommonFunction.getUserId(backboneSessionData.backboneSession);
+      logger.info(`${LOGGER_TAG_ID} User ID: ${userId}`);
+      const directorySessionData = await oauthCommonFunction.getDirectorySessionToken(req, directoryOauthClientConfig);
       // Construct headers
       sessionData.directorySession = directorySessionData.directorySession;
       sessionData.directoryBearerToken = directorySessionData.directoryBearerToken;
@@ -89,45 +74,45 @@ const proxyApi = async (req, res, next) => {
       sessionData.backboneSession = backboneSessionData.backboneSession;
       sessionData.backboneBearerToken = backboneSessionData.backboneBearerToken;
       sessionData.backboneSessionExpiresAt = backboneSessionData.backboneSessionExpiresAt;
-      logger.info(`[DIS] Session data: ${JSON.stringify(sessionData)}`);
+      logger.info(`${LOGGER_TAG_ID} Session data: ${JSON.stringify(sessionData)}`);
       // Construct headers for the request
       const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
-      logger.info(`[DIS] Proxying request to ${apiURL}`);
+      logger.info(`${LOGGER_TAG_ID} Proxying request to ${apiURL}`);
       let httpOptions;
-      if (apiURL.indexOf(DS_AUTH_RELATIVE_PATH) > 0) {
+      if (apiURL.indexOf(constants.DS_AUTH_RELATIVE_PATH) > 0) {
         let alias = decodeJwtToken(backboneSessionData.backboneSession);
-        let pAlias = req.body[PASSWORD_ATTRIBUTE];
+        let pAlias = req.body[constants.PASSWORD_ATTRIBUTE];
         httpOptions = createRequestOption(req.method, apiURL, {alias: alias, password: pAlias}, headers);
       } else {
         httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
       }
 
       let axiosResponse = await axios(httpOptions);
-      delete axiosResponse.headers[TRANSFER_ENCODING];
+      delete axiosResponse.headers[constants.TRANSFER_ENCODING];
       response = axiosResponse.data;
       directorySessionData.sessionToken = response.token;
       res.set(axiosResponse.headers);
 
       // Include the session-token-bkd in the response headers
-      if (backboneSessionData && req.url === INNER_AUTH_PATH) {
-        res.set(SESSION_TOKEN_BKD, backboneSessionData.backboneSession);
-        res.set('authorization', directorySessionData.directoryBearerToken);
+      if (backboneSessionData && req.url === constants.INNER_AUTH_PATH) {
+        res.set(constants.SESSION_TOKEN_BKD, backboneSessionData.backboneSession);
+        res.set(constants.AUTHORIZATION, directorySessionData.directoryBearerToken);
       }
       sessionData.directorySession = directorySessionData.directorySession;
       setUserSession(userId, req.body.alias, sessionData);
-      logger.info(`[DIS] Session data set for user ${userId}`);
+      logger.info(`${LOGGER_TAG_ID} Session data set for user ${userId}`);
     } catch (error) {
       if (error.response != null) {
         response = error.response.data;
         res.status(error.response.status);
       } else if (error.errors != null) {
         response = error;
-        res.status(500);
+        res.status(constants.HTTP_STATUS_CODE_500_SERVER_ERROR);
       }
     }
     res.send(response);
   } else {
-    res.send(API_INVALID_URL_REQUEST_TITLE);
+    res.send(constants.API_INVALID_URL_REQUEST_TITLE);
   }
 };
 
@@ -143,16 +128,18 @@ const proxyApi = async (req, res, next) => {
 const getRequestHeader = function (req, userSession, defaultAccept, defaultContentType) {
   let headers = getAuthBasicHeader(req, userSession, defaultAccept);
 
-  const contentType = req.header(CONTENT_TYPE) ?? null;
+  const contentType = req.header(constants.CONTENT_TYPE) ?? null;
 
-  if (req.url === INNER_AUTH_PATH || req.url === INNER_CREATE_USER_PATH && req.method === POST_METHOD) {
-    req.body[PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
+  if (req.url === constants.INNER_AUTH_PATH ||
+    req.url === constants.INNER_CREATE_USER_PATH &&
+    req.method === constants.POST_METHOD) {
+    req.body[constants.PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
   }
 
-  if (contentType !== null && contentType === CONTENT_TYPE_DEFAULT) {
-    headers[CONTENT_TYPE] = CONTENT_TYPE_DEFAULT;
+  if (contentType !== null && contentType === constants.CONTENT_TYPE_DEFAULT) {
+    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_DEFAULT;
   } else {
-    headers[CONTENT_TYPE] = defaultContentType;
+    headers[constants.CONTENT_TYPE] = defaultContentType;
   }
   return headers;
 };
@@ -166,10 +153,10 @@ const getRequestHeader = function (req, userSession, defaultAccept, defaultConte
  * @param res - The response object to send the result.
  */
 function closeSession(req, res) {
-  const backboneToken = req.headers[SESSION_TOKEN_BKD];
-  const userId = getUserId(backboneToken)
+  const backboneToken = req.headers[constants.SESSION_TOKEN_BKD];
+  const userId = oauthCommonFunction.getUserId(backboneToken)
   removeUserSession(userId);
-  res.status(200).send({message: 'Session closed successfully'});
+  res.status(constants.HTTP_STATUS_CODE_200_OK).send({message: 'Session closed successfully'});
 }
 
 module.exports = {

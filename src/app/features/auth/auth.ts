@@ -18,7 +18,7 @@ import {SessionStoreService} from '@app/core/store/session/session-store.service
 import {App} from '@app/app';
 import {AuthClient} from './auth.client';
 import {HeaderService} from '@app/header/header.service';
-import {UserClient} from '@app/user/user.client';
+import {UserClient} from '@core/services/user/user.client';
 // Shared
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {DFC} from '@app/shared/constants/app.const';
@@ -347,6 +347,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       lastname: this.registerData.lastName,
       dateOfBirth: this.registerData.birthdayFull,
       phoneNumber: this.registerData.phoneNumber,
+      displayName: `${this.registerData.firstName} ${this.registerData.lastName}`.trim(),
     });
 
     if (userToRegister.isValid()) {
@@ -450,6 +451,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       lastname: this.registerData.lastName,
       dateOfBirth: this.registerData.birthdayFull,
       phoneNumber: this.registerData.phoneNumber,
+      displayName: `${this.registerData.firstName} ${this.registerData.lastName}`.trim(),
     });
 
     this.validateDateOfBirth(userToValidate);

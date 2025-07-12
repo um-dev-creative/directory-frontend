@@ -19,6 +19,7 @@ export class DirectoryFrontendConst {
     BACKBONE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
+    BUSINESS_PATH: '/businesses',
     GENERAL_PATH: '/general',
     VERIFY_CODE_PATH: '/verify-code',
     USER_CREATE_PATH: '/create-user',

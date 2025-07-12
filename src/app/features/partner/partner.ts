@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { OfferSlider } from '@app/offer-slider/offer-slider';
-import { PartnerRegistrationStepperComponent } from './components/partner-registration-stepper.component';
-import { PartnerProfileService, PartnerProfile } from './services/partner-profile.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subject, takeUntil} from 'rxjs';
+import {OfferSlider} from '@app/offer-slider/offer-slider';
+import {PartnerRegistrationStepperComponent} from './components/partner-registration-stepper.component';
+import {PartnerProfile, PartnerProfileService} from './services/partner-profile.service';
+
 // import {Modal} from '@app/modal/modal';
 
 @Component({
@@ -28,7 +29,9 @@ export class Partner implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private partnerProfileService: PartnerProfileService
-  ) {}  ngOnInit(): void {
+  ) {}
+
+  ngOnInit(): void {
     // Check if this is a registration flow or viewing a partner profile
     this.route.paramMap.subscribe(params => {
       this.partnerSlug = params.get('slug');
@@ -51,7 +54,9 @@ export class Partner implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }  private loadPartnerProfile(partnerSlug: string): void {
+  }
+
+  private loadPartnerProfile(partnerSlug: string): void {
     this.isLoading = true;
 
     this.partnerProfileService.getPartnerBySlug(partnerSlug)

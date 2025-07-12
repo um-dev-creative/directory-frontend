@@ -2,7 +2,7 @@ import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing'
 import {CommunityMember} from './community-member';
 import {ReactiveFormsModule} from '@angular/forms';
 import {of, throwError} from 'rxjs';
-import {UserClient} from '@app/user/user.client';
+import {UserClient} from '@core/services/user/user.client';
 import {Store} from '@ngrx/store';
 import {HeaderService} from '@app/header/header.service';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
@@ -31,7 +31,7 @@ class MockStore {
       userAuth: {
         fullName: 'John Doe',
         email: 'john@example.com',
-        sessionToken: 'token',
+        backboneSessionToken: 'token',
         sessionTokenBkd: 'tokenBkd'
       },
       token: 'token'

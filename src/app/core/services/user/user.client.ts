@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ServiceTemplate} from '@app/core/services/service-template';
 import {DFC} from '@app/shared/constants/app.const';
-import { UserDetailUpdateRequest } from './user-detail-update-request';
+import {UserDetailUpdateRequest} from '@shared/models/user-detail-update-request';
 
 @Injectable({
   providedIn: 'root'
