@@ -53,6 +53,10 @@ import {switchMap} from 'rxjs/operators';
 import {NotificationService} from '@app/core/services';
 import {UserDetailUpdateRequest} from '@shared/models/user-detail-update-request';
 import {ProfileData} from '@shared/models/profile-data.model';
+import {AuthClient} from '@app/features/auth/auth.client';
+import {SessionStoreService} from '@core/store/session/session-store.service';
+import {DFC} from '@shared/constants/app.const';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-community-member',
@@ -62,37 +66,61 @@ import {ProfileData} from '@shared/models/profile-data.model';
   animations: [],
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
-
 export class CommunityMember implements OnInit, OnDestroy {
-  private readonly headerService: HeaderService = inject(HeaderService);
-  private readonly changeDetectorRefs = inject(ChangeDetectorRef);
-  private readonly store: Store<{ session: SessionState }> = inject(Store);
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly userMockService = inject(UserMockService);
-  private readonly destroy$ = new Subject<void>();
-  private readonly userClient = inject(UserClient);
-  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
-  private readonly directoryJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
-  private readonly notificationService: NotificationService = inject(NotificationService);
 
+  /** Pipe to decode Backbone JWT */
+  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
+  /** Pipe to decode Directory Backend JWT */
+  private readonly directoryJwtPipe: DirectoryBackendJwtPipe = inject(DirectoryBackendJwtPipe);
+
+  /** Client service for authentication-related API calls */
+  private readonly authClient: AuthClient = inject(AuthClient);
+  /** Client service for user-related API calls */
+  private readonly userClient = inject(UserClient);
+  /** Service to manage the UI header */
+  private readonly headerService: HeaderService = inject(HeaderService);
+  /** Mock service for user-related operations */
+  private readonly userMockService = inject(UserMockService);
+  /** Service for displaying notifications */
+  private readonly notificationService: NotificationService = inject(NotificationService);
+  /** Service to manage session state */
+  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
+
+  /** Store for session state */
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+  /** Reactive form for user profile */
   profileForm!: FormGroup;
+  private readonly formBuilder = inject(FormBuilder);
+  /** Subject to manage component destruction */
+  private readonly destroy$ = new Subject<void>();
+  /** Change detector reference for manual change detection */
+  private readonly changeDetectorRefs = inject(ChangeDetectorRef);
+  /** Router for navigation */
+  private readonly router: Router = inject(Router);
   /** Function to log information */
   logInfo: (...arg: any) => void;
   /** Function to log errors */
   logError: (...arg: any) => void;
 
+  /** Session data from the store */
   protected sessionData: SessionData | undefined;
+  /** Indicates if the user is authenticated */
   protected isAuthenticated = false;
+  /** Full name of the user */
   protected userFullName: string | undefined;
+  /** Preview URL for the avatar image */
   protected avatarPreview: string | null = null;
+  /** Indicates if the form is currently submitting */
   isSubmitting = false;
+  /** Indicates if an avatar is being uploaded */
   uploadingAvatar = false;
+  /** Indicates if the delete account modal is open */
   deleteAccountModalOpen = false;
 
+  /** User ID and roles for the current user */
   private userId: string = '';
+  /** Roles assigned to the user */
   private roles: [] = [];
-
-
   // Opciones para el componente ReportProblem
   protected reportProblemOptions: ReportProblemOptions = {};
 
@@ -119,6 +147,10 @@ export class CommunityMember implements OnInit, OnDestroy {
     }
   };
 
+  /**
+   * Constructor for the CommunityMember component.
+   * Initializes logging functions and sets up the profile form.
+   */
   constructor() {
     this.logInfo = (...arg: any) => console.info(arg);
     this.logError = (...arg: any) => console.error(arg);
@@ -270,9 +302,15 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Submits the profile update form, updates the user, and reloads the profile data.
+   * Submits the profile update form for the user. Validates the form, sends the update request
+   * to the server, and processes the response. If the update is successful, fetches the updated
+   * user data and updates the local profile data and form. Displays success or error notifications
+   * based on the result of the operation.
+   *
+   * @return {void} This method does not return any value, it performs side-effects such as sending
+   *                 network requests, updating the profile data, and triggering notifications.
    */
-  onSubmitProfileUpdate() {
+  onSubmitProfileUpdate(): void {
     if (this.profileForm.invalid) return;
     this.isSubmitting = true;
     const updateRequest = this.getUserUpdateRequest();
@@ -306,44 +344,69 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Opens the delete account confirmation modal.
+   * Initiates the process of deleting a user account by opening a confirmation modal.
+   *
+   * @return {void} This method does not return any value.
    */
   deleteAccount(): void {
     this.deleteAccountModalOpen = true;
   }
 
   /**
-   * Confirms account deletion, simulates API call, and closes the modal.
+   * Confirms the deletion of a user's account by invoking a service to handle the account removal process.
+   * It provides success and error notifications based on the operation's result and manages the state of the deletion modal.
+   *
+   * @return {void} No return value. The method performs side effects such as logging, state updates, and triggering notifications.
    */
   confirmDeleteAccount(): void {
     console.log('Account deletion confirmed');
-    // Aquí puedes agregar la lógica para eliminar la cuenta
-    // Por ejemplo, llamar a un servicio para eliminar la cuenta del usuario
 
-    // Simular llamada a API
-    setTimeout(() => {
-      console.log('Account deleted successfully');
-      this.deleteAccountModalOpen = false;
-      // Redirigir al usuario o mostrar mensaje de confirmación
-    }, 1000);
+    this.userClient.deleteUser(this.userId).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (response: any) => {
+          if (response && response.status === 204) {
+            this.notificationService.success('Account deleted successfully');
+            // Clear session data and redirect to the home page
+            this.logout();
+          } else {
+            this.notificationService.error('Failed to delete account');
+          }
+          this.deleteAccountModalOpen = false;
+        },
+        error: (error: any) => {
+          this.logError('Error deleting account:', error);
+          this.deleteAccountModalOpen = false;
+          this.notificationService.error('Error deleting account');
+        }
+      }
+    )
   }
 
   /**
-   * Cancels account deletion and closes the modal.
+   * Cancels the account deletion process by closing the delete account modal.
+   *
+   * @return {void} Does not return any value.
    */
   cancelDeleteAccount(): void {
     this.deleteAccountModalOpen = false;
   }
 
   /**
-   * Returns the current form values as a formatted JSON string.
+   * Retrieves the current values of a profile form as a JSON string.
+   *
+   * @return {string} The stringified JSON representation of the form values, formatted with two spaces for readability.
    */
   getFormValues(): string {
     return JSON.stringify(this.profileForm.value, null, 2);
   }
 
   /**
-   * Returns the current form errors as a formatted JSON string.
+   * Retrieves and formats the validation errors of all controls
+   * in the profile form as a JSON string.
+   *
+   * @return {string} A JSON string representing the validation errors
+   *                  of the form controls, with each control's key
+   *                  associated with its respective errors. Returns an
+   *                  empty JSON string if there are no errors.
    */
   getFormErrors(): string {
     const errors: any = {};
@@ -357,7 +420,10 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Constructs and returns the user update request object from the form values.
+   * Constructs a user update request object by extracting values from a profile form and additional properties.
+   *
+   * @return {UserDetailUpdateRequest} An object containing updated user details such as first name,
+   * last name, display name, notification preferences, privacy options, phone information, role IDs, and active status.
    */
   getUserUpdateRequest(): UserDetailUpdateRequest {
     const formValue = this.profileForm.getRawValue();
@@ -371,16 +437,29 @@ export class CommunityMember implements OnInit, OnDestroy {
       privacyDataOutActive: formValue.privacyOptOut,
       phoneId: this.profileData.phoneId ?? '',
       phoneNumber: formValue.phone ?? '',
-      roleId: tempRole,
+      roleIds: [tempRole],
       active: 'true'
     };
   }
 
   /**
-   * Updates the local profileData object with the provided user data.
-   * @param data User data object
+   * Updates the profile data object with the provided data.
+   *
+   * @param {Object} data - The data object containing profile details.
+   * @param {string} data.firstName - The first name of the user.
+   * @param {string} data.lastName - The last name of the user.
+   * @param {string} [data.displayName] - The display name of the user. If not provided, it will default to a combination of the first and last names.
+   * @param {string} data.phoneId - The phone ID associated with the user.
+   * @param {string} [data.phoneNumber] - The phone number of the user. Defaults to an empty string if not provided.
+   * @param {Object} [data.dateOfBirth] - The date of birth of the user. If not provided or invalid, defaults to an object with empty month, day, and year values.
+   * @param {string} data.email - The email address of the user.
+   * @param {boolean} [data.notificationEmail=false] - Indicates if email notifications are enabled. Defaults to false.
+   * @param {boolean} [data.notificationSms=false] - Indicates if SMS notifications are enabled. Defaults to false.
+   * @param {boolean} [data.privacyDataOutActive=false] - Specifies if privacy opt-out is active. Defaults to false.
+   *
+   * @return {void} This method does not return a value.
    */
-  setProfileData(data: any) {
+  setProfileData(data: any): void {
     this.profileData.firstName = data.firstName;
     this.profileData.lastName = data.lastName;
     this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;
@@ -427,8 +506,10 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Parses a date string in yyyy-MM-dd format and returns an object with month, day, and year.
-   * @param dateString Date string in yyyy-MM-dd format
+   * Parses a date string in the format "YYYY-MM-DD" and returns an object containing the month, day, and year.
+   *
+   * @param {string} dateString - The date string to parse in the format "YYYY-MM-DD".
+   * @return {{month: string, day: string, year: string} | null} An object with the parsed month, day, and year, or null if the input is invalid.
    */
   private parseDateOfBirth(dateString: string): { month: string, day: string, year: string } | null {
     if (!dateString) return null;
@@ -446,7 +527,11 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Updates the ReportProblem component options with the current user and form state.
+   * Updates the configuration object for reporting problems.
+   * This method populates the `reportProblemOptions` object with the user's email, display name,
+   * form validation status, avatar information, authentication status, and a customizable Google Form URL.
+   *
+   * @return {void} This method does not return any value.
    */
   private updateReportProblemOptions(): void {
     this.reportProblemOptions = {
@@ -463,7 +548,13 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes the profile form with default or loaded values.
+   * Initializes the profile form with default values and validation rules.
+   * Populates the form fields with the data from `this.profileData`. Some fields
+   * are prefilled and disabled based on the given data.
+   *
+   * Validation rules include checks for required fields, minimum lengths, and proper email format.
+   *
+   * @return {void} This method does not return a value.
    */
   private initializeForm(): void {
     this.profileForm = this.formBuilder.group({
@@ -480,6 +571,18 @@ export class CommunityMember implements OnInit, OnDestroy {
       notificationsSms: [this.profileData.notifications.sms],
       privacyOptOut: [this.profileData.privacyOptOut]
     });
+  }
+
+  private logout(): void {
+    // Cambiar el header y navegar después de que los efectos de limpiar la sesión se completen
+    this.authClient.closeSession(this.sessionData?.userAuth?.sessionTokenBkd).subscribe({
+      next: () => console.debug('User logged out successfully'),
+      error: (error) => console.error('Error logging out:', error)
+    });
+    this.sessionStoreService.clearSessionData();
+    this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+    console.debug('User logged out');
+    this.router.navigate([DFC.RelativePath.STAGE_PATH]);
   }
 }
 

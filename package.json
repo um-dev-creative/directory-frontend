@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start-dev": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken hvs.CAESILNCf5861gN-smr3OBgQMEAGw2xHmIX9e6QaXLn-WlVuGh4KHGh2cy5sNmg5WWVDOUVxdkpzU280OTJ2MUk2cGs --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode DEBUG_MODE",
+    "start-dev-windows": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken %VAULT_TOKEN% --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode %DEBUG_MODE%",
+    "start-dev-linux": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken $VAULT_TOKEN --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/dev --debugMode $DEBUG_MODE",
     "build": "ng build",
     "build:ssr": "ng build && ng run directory-frontend:server",
     "watch": "ng build --watch --configuration development",
     "watch:ssr": "ng build --watch --configuration development && ng run directory-frontend:server --watch",
-    "dev": "concurrently \"npm run watch:ssr\" \"npm run start-dev\"",
+    "dev-windows": "concurrently \"npm run watch:ssr\" \"npm run start-dev-windows\"",
+    "dev-linux": "concurrently \"npm run watch:ssr\" \"npm run start-dev-linux\"",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
     "serve:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs"
   },

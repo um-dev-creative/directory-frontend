@@ -7,7 +7,7 @@ export interface UserDetailUpdateRequest {
   privacyDataOutActive: boolean;
   phoneId: string;
   phoneNumber: string;
-  roleId: string;
+  roleIds: string[];
   active: string;
 }
 
