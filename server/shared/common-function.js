@@ -249,7 +249,8 @@ const simpleResponse = (res, content) => {
     headers: {
       statusText: res.statusText,
       status: res.status
-    }
+    },
+    data: null
   };
 };
 
