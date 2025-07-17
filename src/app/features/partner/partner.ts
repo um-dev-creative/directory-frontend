@@ -105,6 +105,16 @@ export class Partner implements OnInit, OnDestroy {
       });
   }
 
+  editPartner(): void {
+    if (!this.partnerProfile) return;
+
+    // Navigate to partner settings page using the partner slug
+    this.router.navigate(['/partner/settings', 'general'])
+      .catch(error => {
+        console.error('Error navigating to partner settings:', error);
+      });
+  }
+
   goBack(): void {
     this.router.navigate(['/partners']);
   }

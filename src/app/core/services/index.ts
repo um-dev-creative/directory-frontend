@@ -3,5 +3,7 @@ export * from './http.service';
 export * from './logger.service';
 export * from './loading.service';
 export * from './notification.service';
+export * from './partner-category.service';
 export * from './storage-mock.service';
 export * from './theme.service';
+export * from './timezone.service';

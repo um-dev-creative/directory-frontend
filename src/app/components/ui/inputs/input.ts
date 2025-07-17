@@ -60,6 +60,13 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
           (focus)="onFocus()"
         />
 
+        <!-- Character Count Inside Input -->
+        @if (showCharacterCount && maxLength) {
+          <div class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-xs tw-text-gray-400 tw-pointer-events-none">
+            {{ characterCountDisplay }}
+          </div>
+        }
+
         <!-- Trailing Icon -->
         @if (trailingIcon) {
           <div
@@ -113,6 +120,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() trailingIcon: boolean = false;
   @Input() fullWidth: boolean = true;
   @Input() maxLength?: number;
+  @Input() showCharacterCount: boolean = false;
 
   @Output() inputChange = new EventEmitter<string>();
   @Output() inputFocus = new EventEmitter<void>();
@@ -224,7 +232,7 @@ export class InputComponent implements ControlValueAccessor {
     if (this.leadingIcon) {
       iconClasses.push('tw-pl-10');
     }
-    if (this.trailingIcon || this.clearable) {
+    if (this.trailingIcon || this.clearable || (this.showCharacterCount && this.maxLength)) {
       iconClasses.push('tw-pr-10');
     }
 
@@ -255,6 +263,11 @@ export class InputComponent implements ControlValueAccessor {
     };
 
     return [...baseClasses, ...variantClasses[this.variant]].join(' ');
+  }
+
+  get characterCountDisplay(): string {
+    const currentLength = this.value?.length || 0;
+    return `${currentLength}/${this.maxLength}`;
   }
 
   onInput(event: Event): void {
