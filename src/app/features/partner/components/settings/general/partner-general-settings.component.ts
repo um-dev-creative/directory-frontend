@@ -7,6 +7,12 @@ import { TextareaComponent } from '@app/components/ui/inputs/textarea';
 import { SelectComponent } from '@app/components/ui/inputs/select';
 import { IconComponent } from '@app/components/ui/icons/icon';
 import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
+import {
+  PartnerCategoryService,
+  PartnerCategory,
+  TimezoneService,
+  Timezone
+} from '@app/core/services';
 
 
 interface PartnerGeneralData {
@@ -33,6 +39,10 @@ export class PartnerGeneralSettingsComponent implements OnInit {
   isSubmitting = false;
   uploadingImage = false;
   imagePreview: string | null = null;
+  categories: PartnerCategory[] = [];
+  loadingCategories = false;
+  timezones: Timezone[] = [];
+  loadingTimezones = false;
 
   reportProblemOptions: ReportProblemOptions = {
     googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessGeneralSettings',
@@ -56,75 +66,11 @@ export class PartnerGeneralSettingsComponent implements OnInit {
     timezone: 'EST'
   };
 
-  categories = [
-    // Comercio y Retail (más común)
-    { value: 'restaurant', label: 'Restaurante' },
-    { value: 'grocery', label: 'Supermercado/Bodega' },
-    { value: 'convenience', label: 'Tienda de Conveniencia' },
-    { value: 'clothing', label: 'Ropa y Accesorios' },
-    { value: 'pharmacy', label: 'Farmacia' },
-    { value: 'electronics', label: 'Electrónicos' },
-    { value: 'beauty', label: 'Belleza y Cuidado Personal' },
-    { value: 'home', label: 'Hogar y Jardín' },
-    { value: 'automotive', label: 'Automotriz' },
-    { value: 'sports', label: 'Deportes y Recreación' },
-    // Servicios (muy común en comunidad latina)
-    { value: 'construction', label: 'Construcción' },
-    { value: 'cleaning', label: 'Servicios de Limpieza' },
-    { value: 'landscaping', label: 'Jardinería y Paisajismo' },
-    { value: 'maintenance', label: 'Mantenimiento y Reparaciones' },
-    { value: 'transportation', label: 'Transporte' },
-    { value: 'catering', label: 'Catering y Eventos' },
-    { value: 'childcare', label: 'Cuidado Infantil' },
-    { value: 'eldercare', label: 'Cuidado de Adultos Mayores' },
-    { value: 'translation', label: 'Traducción e Interpretación' },
-    // Servicios Profesionales
-    { value: 'legal', label: 'Servicios Legales' },
-    { value: 'accounting', label: 'Contabilidad y Finanzas' },
-    { value: 'insurance', label: 'Seguros' },
-    { value: 'realestate', label: 'Bienes Raíces' },
-    { value: 'consulting', label: 'Consultoría' },
-    { value: 'technology', label: 'Tecnología' },
-    { value: 'marketing', label: 'Marketing y Publicidad' },
-    // Salud y Bienestar
-    { value: 'healthcare', label: 'Servicios de Salud' },
-    { value: 'dental', label: 'Servicios Dentales' },
-    { value: 'fitness', label: 'Fitness y Gimnasios' },
-    { value: 'spa', label: 'Spa y Wellness' },
-    // Entretenimiento y Cultura
-    { value: 'entertainment', label: 'Entretenimiento' },
-    { value: 'music', label: 'Música y Eventos' },
-    { value: 'education', label: 'Educación y Capacitación' },
-    { value: 'travel', label: 'Viajes y Turismo' },
-    // Manufactura y Distribución
-    { value: 'manufacturing', label: 'Manufactura' },
-    { value: 'wholesale', label: 'Distribución/Mayoreo' },
-    { value: 'import_export', label: 'Importación/Exportación' },
-    { value: 'food_production', label: 'Producción de Alimentos' },
-    // Tradicional/Especializado
-    { value: 'bakery', label: 'Panadería' },
-    { value: 'barber', label: 'Barbería/Peluquería' },
-    { value: 'mechanic', label: 'Taller Mecánico' },
-    { value: 'laundry', label: 'Lavandería' },
-    { value: 'money_services', label: 'Servicios Financieros/Remesas' },
-    // Otros
-    { value: 'other', label: 'Otro' }
-  ];
-
-  timezones = [
-    { value: 'PST', label: '(GMT -8:00) Hora del Pacífico (EE.UU. y Canadá)' },
-    { value: 'CST', label: '(GMT -6:00) Hora Central (EE.UU. y Canadá), Ciudad de México' },
-    { value: 'EST', label: '(GMT -5:00) Hora del Este (EE.UU. y Canadá), Bogotá, Lima' },
-    { value: 'MST', label: '(GMT -7:00) Hora de la Montaña (EE.UU. y Canadá)' },
-    { value: 'COT', label: '(GMT -5:00) Hora de Colombia' },
-    { value: 'PET', label: '(GMT -5:00) Hora de Perú' },
-    { value: 'ECT', label: '(GMT -5:00) Hora de Ecuador' },
-    { value: 'VET', label: '(GMT -4:00) Hora de Venezuela' }
-  ];
-
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private partnerCategoryService: PartnerCategoryService,
+    private timezoneService: TimezoneService
   ) {
     this.generalForm = this.fb.group({
       partnerName: [this.partnerData.partnerName, [Validators.required, Validators.maxLength(25)]],
@@ -137,7 +83,38 @@ export class PartnerGeneralSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Initialize form with partner data
+    this.loadCategories();
+    this.loadTimezones();
+  }
+
+  private loadCategories(): void {
+    this.loadingCategories = true;
+    this.partnerCategoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.loadingCategories = false;
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+        this.loadingCategories = false;
+        // Fallback: podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
+  private loadTimezones(): void {
+    this.loadingTimezones = true;
+    this.timezoneService.getTimezones().subscribe({
+      next: (timezones) => {
+        this.timezones = timezones;
+        this.loadingTimezones = false;
+      },
+      error: (error) => {
+        console.error('Error loading timezones:', error);
+        this.loadingTimezones = false;
+        // Fallback: podrías mostrar un mensaje de error al usuario
+      }
+    });
   }
 
   goBack(): void {
@@ -233,5 +210,51 @@ export class PartnerGeneralSettingsComponent implements OnInit {
 
     // Fallback to first two characters if no meaningful words found
     return partnerName.substring(0, 2).toUpperCase();
+  }
+
+  /**
+   * Busca categorías basado en un término de búsqueda
+   * @param searchTerm Término de búsqueda
+   */
+  searchCategories(searchTerm: string): void {
+    if (!searchTerm || searchTerm.trim().length === 0) {
+      this.loadCategories();
+      return;
+    }
+
+    this.loadingCategories = true;
+    this.partnerCategoryService.searchCategories(searchTerm).subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.loadingCategories = false;
+      },
+      error: (error) => {
+        console.error('Error searching categories:', error);
+        this.loadingCategories = false;
+      }
+    });
+  }
+
+  /**
+   * Busca zonas horarias basado en un término de búsqueda
+   * @param searchTerm Término de búsqueda
+   */
+  searchTimezones(searchTerm: string): void {
+    if (!searchTerm || searchTerm.trim().length === 0) {
+      this.loadTimezones();
+      return;
+    }
+
+    this.loadingTimezones = true;
+    this.timezoneService.searchTimezones(searchTerm).subscribe({
+      next: (timezones) => {
+        this.timezones = timezones;
+        this.loadingTimezones = false;
+      },
+      error: (error) => {
+        console.error('Error searching timezones:', error);
+        this.loadingTimezones = false;
+      }
+    });
   }
 }
