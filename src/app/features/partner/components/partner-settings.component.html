@@ -1,0 +1,54 @@
+<div class="partner-settings-container">
+  <div class="settings-header">
+    <h1 class="settings-title">Configuración de Negocio</h1>
+    <p class="settings-subtitle">Gestiona tu página y promociones desde aquí</p>
+  </div>
+
+  <div class="settings-grid">
+    @for (option of settingsOptions; track option.route) {
+      <div
+        class="settings-card"
+        [class]="'settings-card--' + option.color + (option.disabled ? ' settings-card--disabled' : '')"
+        (click)="handleOptionClick(option)"
+        role="button"
+        [tabindex]="option.disabled ? -1 : 0"
+        (keydown.enter)="handleOptionClick(option)"
+        (keydown.space)="handleOptionClick(option)"
+      >
+      <div class="card-content">
+        <div class="card-icon">
+          @if (option.icon === 'settings') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 0 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.964m11.49-9.642 1.149-.964M7.501 19.795l.75-1.3m7.5-12.99.75-1.3m-6.063 16.658.26-1.477m2.605-14.772.26-1.477m0 17.726-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205 12 12m6.894 5.785-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+            </svg>
+          } @else if (option.icon === 'target') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.99 14.993 6-6m6 3.001c0 1.268-.63 2.39-1.593 3.069a3.746 3.746 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043 3.745 3.745 0 0 1-3.068 1.593c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 0 1-3.296-1.043 3.746 3.746 0 0 1-1.043-3.297 3.746 3.746 0 0 1-1.593-3.068c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.297 3.745 3.745 0 0 1 3.296-1.042 3.745 3.745 0 0 1 3.068-1.594c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.297 3.746 3.746 0 0 1 1.593 3.068ZM9.74 9.743h.008v.007H9.74v-.007Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          } @else if (option.icon === 'location') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+            </svg>
+          } @else if (option.icon === 'package') {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" [attr.stroke]="option.disabled ? '#9CA3AF' : 'currentColor'" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+          } @else {
+            <span class="icon">{{ option.icon }}</span>
+          }
+        </div>
+        <div class="card-text">
+          <h3 class="card-title" [class.disabled]="option.disabled">{{ option.title }}</h3>
+          <p class="card-description" [class.disabled]="option.disabled">{{ option.description }}</p>
+        </div>
+        <div class="card-arrow" [class.disabled]="option.disabled">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" [attr.stroke]="option.disabled ? '#9CA3AF' : 'currentColor'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9,18 15,12 9,6"></polyline>
+          </svg>
+        </div>
+      </div>
+      </div>
+    }
+  </div>
+</div>

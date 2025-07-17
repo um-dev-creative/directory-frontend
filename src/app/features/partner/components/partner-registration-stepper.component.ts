@@ -7,8 +7,8 @@ import { PartnerRegistrationService, Partner } from '../services/partner-registr
 import { PartnerStepOneComponent } from './steps/partner-step-one.component';
 import { PartnerStepTwoComponent } from './steps/partner-step-two.component';
 import { PartnerStepThreeComponent, StepThreeData } from './steps/partner-step-three.component';
-import { CardComponent } from '../../../components/ui';
-import { ReportProblem, ReportProblemOptions } from '../../../layout/report-problem/report-problem';
+import { CardComponent } from '@app/components/ui';
+import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
 
 export interface StepOneData {
   name: string;

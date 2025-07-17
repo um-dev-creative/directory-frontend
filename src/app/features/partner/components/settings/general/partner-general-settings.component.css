@@ -1,0 +1,28 @@
+/* Partner General Settings Component Styles */
+
+/* Custom scrollbar for development section */
+.tw-overflow-auto::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.tw-overflow-auto::-webkit-scrollbar-track {
+  background: var(--beige-100);
+  border-radius: 3px;
+}
+
+.tw-overflow-auto::-webkit-scrollbar-thumb {
+  background: var(--beige-400);
+  border-radius: 3px;
+}
+
+.tw-overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: var(--beige-500);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tw-grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}

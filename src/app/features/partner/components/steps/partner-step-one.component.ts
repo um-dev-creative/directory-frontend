@@ -40,6 +40,7 @@ import {SessionStoreService} from '@core/store/session/session-store.service';
           [variant]="getFieldVariant('name')"
           [errorMessage]="getFieldError('name')"
           [maxLength]="25"
+          [showCharacterCount]="true"
           formControlName="name"
         />
 
