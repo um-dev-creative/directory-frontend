@@ -8,7 +8,7 @@ const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_MULTIMEDIA}] ::
 
 const logger = appConfig.getLoggerApp();
 const {
-  API_SERVICE_DIRECTORY_MAP, getSessionElement, getDirectorySessionToken
+  API_SERVICE_DIRECTORY_MAP
 } = require("../shared/oauth-common-function");
 const oauthCommonFunction = require("../shared/oauth-common-function");
 const {decode} = require("jsonwebtoken");
