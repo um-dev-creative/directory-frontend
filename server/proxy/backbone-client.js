@@ -1,6 +1,9 @@
 const assert = require('assert');
 const axios = require('axios');
 const constants = require("../config/constants.util");
+const appConfig = require("../config/app.config");
+const logger = appConfig.getLoggerApp();
+const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_MULTIMEDIA}] :::`;
 
 /**
  * BackboneClient class to interact with the backbone API to get the
@@ -13,9 +16,11 @@ class BackboneClient {
    * @param config - Configuration object for the backbone API.
    */
   constructor(config) {
+    logger.debug(`${LOGGER_TAG_ID} Initializing BackboneClient with config: ${JSON.stringify(config)}`);
     assert.ok(config, "BackboneClient: config is not defined");
     assert.ok(config.url, "BackboneClient: config.url is not defined");
     this.url = config.url;
+    logger.debug(`${LOGGER_TAG_ID} BackboneClient initialized with URL: ${this.url}`);
   }
 
   /**
@@ -27,21 +32,23 @@ class BackboneClient {
    * @returns {Promise<any>} - Promise object represents the token.
    */
   getToken = async (email, password, applicationId, bearerToken) => {
+    logger.debug(`${LOGGER_TAG_ID} getToken called with email: ${email}, applicationId: ${applicationId}`);
     let options = {
       method: constants.POST_METHOD,
       headers: {
-        'Content-Type': constants.CONTENT_TYPE_DEFAULT,
-        'Authorization': constants.BEARER + bearerToken
+        [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_APPLICATION_JSON,
+        [constants.AUTHORIZATION]: constants.BEARER + bearerToken
       },
       data: {
-        'email': email,
-        'password': password,
-        'applicationId': applicationId
+        [constants.EMAIL_ATTRIBUTE]: email,
+        [constants.PASSWORD_ATTRIBUTE]: password,
+        [constants.APPLICATION_ID_ATTRIBUTE]: applicationId
       },
       url: this.url
     }
-
+    logger.debug(`${LOGGER_TAG_ID} Options for getToken: ${JSON.stringify(options)}`);
     const backboneResponse = await axios(options);
+    logger.debug(`${LOGGER_TAG_ID} Response from getToken: ${JSON.stringify(backboneResponse.data)}`);
     return backboneResponse.data;
   };
 
@@ -54,12 +61,13 @@ class BackboneClient {
    * @throws {Error} Throws an error if the HTTP request fails.
    */
   getNewToken = async (bearToken, sessionTokenBkd) => {
+    logger.debug(`${LOGGER_TAG_ID} getNewToken called with bearToken: ${bearToken}, sessionTokenBkd: ${sessionTokenBkd}`);
     let options = {
       method: constants.GET_METHOD,
       headers: {
-        'Content-Type': constants.CONTENT_TYPE_DEFAULT,
-        'Authorization': constants.BEARER + bearToken,
-        'session-token': sessionTokenBkd
+        [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_APPLICATION_JSON,
+        [constants.AUTHORIZATION]: constants.BEARER + bearToken,
+        [constants.SESSION_TOKEN_DIR]: sessionTokenBkd
       },
       url: this.url
     }
@@ -67,7 +75,7 @@ class BackboneClient {
       const backboneResponse = await axios(options);
       return backboneResponse.data;
     } catch (error) {
-      console.error("Error in getNewToken:", error);
+      logger.error(`${LOGGER_TAG_ID} Error in getNewToken: ${error.message}`);
       throw error;
     }
   };

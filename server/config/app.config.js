@@ -6,6 +6,7 @@ let directoryProxyConfig = {};
 let directoryAuthProxyConfig = {};
 let directoryCreateUserProxyConfig = {};
 let directoryVerifyCodeProxyConfig = {};
+let directoryUserProfileImageProxyConfig = {};
 const fs = require('fs');
 const {format} = require('logform');
 const winston = require('winston');
@@ -86,7 +87,12 @@ let loadSecretsIntoEnv = function (vaultUrl, vaultToken, vaultPath, isDebugMode)
  * @returns {Object} - A Winston logger instance.
  */
 module.exports.getLoggerApp = function () {
+    const argv = require('yargs').argv;
+    const debugMode = argv.debugMode === 'true' || process.env.ENABLE_DEBUG === 'true';
+    const logLevel = debugMode ? 'debug' : 'info';
+
     return winston.createLogger({
+        level: logLevel,
         format: format.combine(
             format.json(),
             format.timestamp(),
@@ -107,10 +113,12 @@ module.exports.createDirectoryProxyConfig = function () {
     directoryAuthProxyConfig = config['directoryBackendAuthProxyConfig'];
     directoryVerifyCodeProxyConfig = config['directoryBackendVerifyCodeProxyConfig'];
     directoryCreateUserProxyConfig = config['directoryBackendCreateUserProxyConfig'];
+    directoryUserProfileImageProxyConfig = config['directoryBackendUserProfileImageProxyConfig'];
     logger.info("[DS] - Proxy Config [Directory]: " + JSON.stringify(directoryProxyConfig));
     logger.info("[DS] - Proxy Config [Directory Auth]: " + JSON.stringify(directoryAuthProxyConfig));
     logger.info("[DS] - Proxy Config [Directory Register]: " + JSON.stringify(directoryVerifyCodeProxyConfig));
     logger.info("[DS] - Proxy Config [Directory Create User]: " + JSON.stringify(directoryCreateUserProxyConfig));
+    logger.info("[DS] - Proxy Config [Directory User Image Profile]: " + JSON.stringify(directoryUserProfileImageProxyConfig));
 };
 
 /**
@@ -142,7 +150,11 @@ module.exports.getDirectoryCreateUserProxyConfig = function () {
 
 module.exports.getDirectoryVerifyCodeProxyConfig = function () {
   return directoryVerifyCodeProxyConfig;
-}
+};
+
+module.exports.getDirectoryUserProfileImageProxyConfig = function () {
+  return directoryUserProfileImageProxyConfig;
+};
 
 let printVaultValues = function (vaultValues) {
     logger.info("<><><><><><><><><><><><><><> Vault values <><><><><><><><><><><><><><>");

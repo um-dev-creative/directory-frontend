@@ -13,6 +13,7 @@ const cors = require('cors');
 const RateLimit = require('express-rate-limit');
 const httpContext = require('express-http-context');
 const appConfig = require('./server/config/app.config');
+const constants = require('./server/config/constants.util.js');
 
 const PORT = process.env.PORT || '7001';
 const DIST_FOLDER = path.join(process.cwd(), 'dist/directory-frontend');
@@ -85,13 +86,28 @@ appConfig.bootstrapConfiguration().then(async config => {
   app.use(RateLimit({ windowMs: 15 * 60 * 1000, max: 10000 }));
   app.use(httpContext.middleware);
   app.use(compression());
-  app.use(bodyParser.json({ limit: '50mb' }));
   app.use(cors());
 
   // Rutas backend
   if (ssrApp) {
+    // Ensure JSON requests are parsed correctly
+    app.use(express.json({
+      limit: '5mb', // Allow larger JSON payloads
+      // Only parse JSON requests
+      type: (req) => req.is(constants.CONTENT_TYPE_APPLICATION_JSON) && !req.url.toString().startsWith(constants.INNER_D_IMAGE_PATH),
+    }));
+
+    // Ensure body-parser skips multipart/form-data requests
+    app.use((req, res, next) => {
+      if (req.is(constants.CONTENT_TYPE_MULTIPART_FORM_DATA)) {
+        // Skip JSON parsing for multipart requests
+        return next();
+      }
+      next();
+    });
     app.use("/", require("./server/routes/directory-backend-std.routes"));
     app.use("/", require("./server/routes/directory-backend-auth.routes"));
+    app.use("/", require("./server/routes/multimedia.routes"));
     app.use("/", require("./server/routes/backbone.routes"));
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
     app.get("/*", (req, res) => {

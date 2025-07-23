@@ -19,6 +19,8 @@ export class DirectoryFrontendConst {
     BACKBONE_BASE_URL: 'bkd/api/v1',
     AUTH_PATH: '/auth',
     USERS_PATH: '/users',
+    PROFILE_PATH: '/profile',
+    D_IMAGE_PATH: '/d-image',
     BUSINESS_PATH: '/businesses',
     GENERAL_PATH: '/general',
     VERIFY_CODE_PATH: '/verify-code',
@@ -76,6 +78,11 @@ export class DirectoryFrontendConst {
       'Access-Control-Allow-Origin': '*',
       'responseType': 'arraybuffer',
       'Accept': 'application/octet-stream'
+    }),
+    FORM_DATA: new HttpHeaders({
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
+      'responseType': 'application/json'
     }),
     /**
      * Generates HTTP headers with a session token.

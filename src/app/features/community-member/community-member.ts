@@ -255,16 +255,18 @@ export class CommunityMember implements OnInit, OnDestroy {
       };
       reader.readAsDataURL(file);
 
-      // Upload file
-      this.userMockService.uploadAvatar(file)
-        .pipe(takeUntil(this.destroy$))
+      // Upload file using FormData
+      const formData = new FormData();
+      formData.append('imageData', file, file.name);
+
+      this.userClient.uploadProfileImage(formData).pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response: any) => {
-            this.profileData.avatar = response.url;
+          next: () => {
             this.uploadingAvatar = false;
+            // this.refreshUserProfile(); // Refresh profile to get the updated image
           },
-          error: (error: any) => {
-            console.error('Error uploading avatar:', error);
+          error: (err) => {
+            console.error('Error uploading avatar:', err);
             this.uploadingAvatar = false;
           }
         });
@@ -585,4 +587,3 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.router.navigate([DFC.RelativePath.STAGE_PATH]);
   }
 }
-

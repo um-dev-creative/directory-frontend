@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpRequest} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ServiceTemplate} from '@app/core/services/service-template';
 import {DFC} from '@app/shared/constants/app.const';
@@ -12,6 +12,10 @@ export class UserClient extends ServiceTemplate {
   private readonly httpClient: HttpClient = inject(HttpClient);
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
+
+  private readonly PROFILE_IMAGE_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
+    DFC.RelativePath.D_IMAGE_PATH + DFC.RelativePath.USERS_PATH + DFC.RelativePath.PROFILE_PATH;
+
   private readonly USER_CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.GENERAL_PATH + DFC.RelativePath.USERS_PATH;
 
@@ -71,5 +75,22 @@ export class UserClient extends ServiceTemplate {
     this.logInfo(`UserClient.deleteUser:: ${this.USER_CONTENT_PATH}/${userId}`);
     return this.httpClient.delete<any>(`${this.USER_CONTENT_PATH}/${userId}`, {headers: DFC.HttpHeader.STANDARD, observe: 'response' as 'body'})
       .pipe(catchError(this.handlerError));
+  }
+
+  /**
+   * Uploads a profile image for the user.
+   *
+   * @param {FormData} formData - The image data to be uploaded, encapsulated in a FormData object.
+   * @return {Observable<any>} An observable that emits the server response or an error if the upload fails.
+   */
+  uploadProfileImage(formData: FormData): Observable<any> {
+
+    this.logInfo(`UserClient.uploadProfileImage:: ${this.PROFILE_IMAGE_PATH}`);
+    const req = new HttpRequest('POST', this.PROFILE_IMAGE_PATH, formData, {
+      reportProgress: true,
+      responseType: 'json',
+    });
+
+    return this.httpClient.request(req).pipe(catchError(this.handlerError));
   }
 }

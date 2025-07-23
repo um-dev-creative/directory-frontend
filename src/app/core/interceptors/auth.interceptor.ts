@@ -31,14 +31,22 @@ export class AuthInterceptor implements HttpInterceptor {
     const directorySessionToken = this.sessionData?.userAuth?.sessionToken;
 
     if (bearerToken && directorySessionToken) {
-      // Clone the request and add the authorization header correctamente
-      const authReq = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${bearerToken}`,
-          'session-token': directorySessionToken
-        }
-      });
+      // Clone the request and add the authorization header correctly
+      let authReq;
+      if (req.body instanceof FormData) {
+        authReq = req.clone({
+          headers: req.headers
+            .set('session-token', directorySessionToken)
+        });
+      } else {
+        authReq = req.clone({
+          setHeaders: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${bearerToken}`,
+            'session-token': directorySessionToken
+          }
+        });
+      }
 
       return next.handle(authReq);
     }

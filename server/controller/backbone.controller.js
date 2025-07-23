@@ -87,16 +87,16 @@ const sessionToken = async (req) => {
       backboneSessionExpiresAt: session.backboneSessionExpiresAt
     };
   }
-  logger.info(`${LOGGER_TAG_ID} No valid session found for alias: ${alias}, creating a new one.`);
+  logger.debug(`${LOGGER_TAG_ID} No valid session found for alias: ${alias}, creating a new one.`);
   const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
-  logger.info(`${LOGGER_TAG_ID} Obtained Backbone Bearer Token for alias: ${alias}`);
+  logger.debug(`${LOGGER_TAG_ID} Obtained Backbone Bearer Token for alias: ${alias}`);
   sessionData = {
     backboneSession: null,
     backboneBearerToken: backboneBearerToken,
     backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
   };
-  if (req.url === constants.INNER_AUTH_PATH) {
-    logger.info(`${LOGGER_TAG_ID} Creating Backbone session for alias: ${alias}`);
+  if (req.url === constants.INNER_ACCESS_TOKEN_PATH) {
+    logger.debug(`${LOGGER_TAG_ID} Creating Backbone session for alias: ${alias}`);
     const backboneSession = await getBackboneClient(constants.BACKBONE_TOKEN_RELATIVE_PATH).getToken(
       req.body.alias,
       CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
@@ -122,10 +122,12 @@ const sessionToken = async (req) => {
  */
 const renewToken = async (userId) => {
   try {
+    logger.debug(`${LOGGER_TAG_ID} Renewing Backbone session for user: ${userId}`);
     let sessionData = userSessionStore.getUserSession(userId);
     const response = await getBackboneClient(constants.BACKBONE_TOKEN_RENEW_RELATIVE_PATH)
       .getNewToken(sessionData.backboneBearerToken, sessionData.backboneSession);
     if (response) {
+      logger.debug(`${LOGGER_TAG_ID} Successfully renewed Backbone session for user: ${userId}`);
       sessionData.backboneSession = response.token;
       userSessionStore.setUserSession(userId, null, sessionData);
       return response.token;
@@ -149,36 +151,44 @@ const proxyApi = async (req, res) => {
   const apiURL = commonFunction.getApiEndpoint(req.url);
   if (schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname)) {
     try {
+      logger.info(`${LOGGER_TAG_ID} Proxying request to ${req.url}`);
       // Get the (keycloak) OAuth client token
       let authBearToken = await getOAuthClient(authDirectoryProxyConfig).getBearerToken();
       // Get the backbone session token
       let backboneSession = await sessionToken(req);
-      let headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
+      let headers = getRequestHeader(req, authBearToken, backboneSession, constants.CONTENT_TYPE_APPLICATION_JSON, constants.CONTENT_TYPE_APPLICATION_JSON);
       // Trace
       logger.info(`${LOGGER_TAG_ID} Proxying request to ${apiURL}`);
       let httpOptions;
       if (apiURL.indexOf(constants.DS_TOKEN_RELATIVE_PATH) > 0) {
+        logger.info(`${LOGGER_TAG_ID} Requesting Backbone session token for alias: ${req.body.alias}`);
         let alias = commonFunction.decodeJwtToken(backboneSession);
         httpOptions = commonFunction.createRequestOption(req.method, apiURL, {alias: alias}, headers);
       } else {
+        logger.info(`${LOGGER_TAG_ID} Requesting Backbone session token for alias: ${req.body.alias}`);
         httpOptions = commonFunction.createRequestOption(req.method, apiURL, req.body, headers);
       }
 
+      logger.info(`${LOGGER_TAG_ID} HTTP Options: ${JSON.stringify(httpOptions)}`);
       let axiosResponse = await axios(httpOptions);
 
+      logger.info(`${LOGGER_TAG_ID} Received response from ${apiURL}: ${axiosResponse.status}`);
       delete axiosResponse.headers[constants.TRANSFER_ENCODING];
       response = axiosResponse.data;
       res.set(axiosResponse.headers);
 
+      logger.info(`${LOGGER_TAG_ID} Response data: ${JSON.stringify(response)}`);
       // Include the session-token-bkd in the response headers
       if (backboneSession && req.url === API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH) {
         res.set(constants.SESSION_TOKEN_BKD, backboneSession);
       }
     } catch (error) {
       if (error.response != null) {
+        logger.error(`${LOGGER_TAG_ID} Error proxying request: ${error.response.data}`);
         response = error.response.data;
         res.status(error.response.status);
       } else if (error.errors != null) {
+        logger.error(`${LOGGER_TAG_ID} Validation errors: ${JSON.stringify(error.errors)}`);
         response = error;
         res.status(500);
       }
@@ -203,8 +213,8 @@ const getRequestHeader = function (req, authBearToken, backboneSession, defaultA
   let headers = commonFunction.getBasicHeader(req, authBearToken, defaultAccept);
   const contentType = req.header(constants.CONTENT_TYPE);
 
-  if (contentType !== null && contentType === constants.CONTENT_TYPE_DEFAULT) {
-    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_DEFAULT;
+  if (contentType !== null && contentType === constants.CONTENT_TYPE_APPLICATION_JSON) {
+    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_APPLICATION_JSON;
   } else {
     headers[constants.CONTENT_TYPE] = defaultContentType;
   }

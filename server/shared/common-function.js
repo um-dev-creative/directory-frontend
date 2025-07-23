@@ -65,7 +65,7 @@ let createRequestOption = function (method, url, body, headers) {
     headers: headers,
     httpAgent: keepaliveAgent,
     httpsAgent: keepaliveHttpsAgent,
-    responseType: headers[constants.ACCEPT] === constants.CONTENT_TYPE_DEFAULT ? 'blob' : 'json'
+    responseType: headers[constants.ACCEPT] === constants.CONTENT_TYPE_APPLICATION_JSON ? 'json' : 'blob'
   }
 };
 
@@ -214,7 +214,7 @@ const getStandardHeader = function (req, bearerToken, backboneSessionToken, defa
     [constants.FID_LOGGER_TRACKING_ID]: uuidv4(),
     [constants.FID_USER_ID]: req.header(constants.FID_USER_ID) || constants.FID_USER_ID_ANONYMOUS,
     [constants.ACCEPT]: req.header(constants.ACCEPT) || defaultAccept,
-    [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_DEFAULT
+    [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_APPLICATION_JSON
   };
 };
 

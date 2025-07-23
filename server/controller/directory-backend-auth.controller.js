@@ -47,7 +47,7 @@ const proxyApi = async (req, res) => {
   logger.info(`${LOGGER_TAG_ID} Proxying request to ${req.url}`);
   let response = null;
   const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, oauthCommonFunction.API_SERVICE_DIRECTORY_MAP);
-  logger.info(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
+  logger.debug(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
   let sessionData = {
     directorySession: null,
@@ -57,10 +57,10 @@ const proxyApi = async (req, res) => {
     backboneBearerToken: null,
     backboneSessionExpiresAt: null
   };
-  logger.info(`${LOGGER_TAG_ID} Validation schema: ${validationSchema}`);
+  logger.debug(`${LOGGER_TAG_ID} Validation schema: ${validationSchema}`);
   if (validationSchema) {
     try {
-      logger.info(`${LOGGER_TAG_ID} Validating API URL: ${apiURL}`);
+      logger.debug(`${LOGGER_TAG_ID} Validating API URL: ${apiURL}`);
       // Get the backbone session token (already cached in backbone.controller.js)
       const backboneSessionData = await backboneSessionToken(req);
       // Get and reuse session and application tokens for Directory Backend
@@ -74,10 +74,10 @@ const proxyApi = async (req, res) => {
       sessionData.backboneSession = backboneSessionData.backboneSession;
       sessionData.backboneBearerToken = backboneSessionData.backboneBearerToken;
       sessionData.backboneSessionExpiresAt = backboneSessionData.backboneSessionExpiresAt;
-      logger.info(`${LOGGER_TAG_ID} Session data: ${JSON.stringify(sessionData)}`);
+      logger.debug(`${LOGGER_TAG_ID} Session data: ${JSON.stringify(sessionData)}`);
       // Construct headers for the request
-      const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_DEFAULT, constants.CONTENT_TYPE_DEFAULT);
-      logger.info(`${LOGGER_TAG_ID} Proxying request to ${apiURL}`);
+      const headers = getRequestHeader(req, sessionData, constants.CONTENT_TYPE_APPLICATION_JSON, constants.CONTENT_TYPE_APPLICATION_JSON);
+      logger.debug(`${LOGGER_TAG_ID} Proxying request to ${apiURL}`);
       let httpOptions;
       if (apiURL.indexOf(constants.DS_AUTH_RELATIVE_PATH) > 0) {
         let alias = decodeJwtToken(backboneSessionData.backboneSession);
@@ -87,6 +87,7 @@ const proxyApi = async (req, res) => {
         httpOptions = createRequestOption(req.method, apiURL, req.body, headers);
       }
 
+      logger.debug(`${LOGGER_TAG_ID} HTTP Options: ${JSON.stringify(httpOptions)}`);
       let axiosResponse = await axios(httpOptions);
       delete axiosResponse.headers[constants.TRANSFER_ENCODING];
       response = axiosResponse.data;
@@ -94,24 +95,30 @@ const proxyApi = async (req, res) => {
       res.set(axiosResponse.headers);
 
       // Include the session-token-bkd in the response headers
-      if (backboneSessionData && req.url === constants.INNER_AUTH_PATH) {
+      if (backboneSessionData && req.url === constants.INNER_ACCESS_TOKEN_PATH) {
+        logger.debug(`${LOGGER_TAG_ID} Setting session token headers for user ${userId}`);
         res.set(constants.SESSION_TOKEN_BKD, backboneSessionData.backboneSession);
         res.set(constants.AUTHORIZATION, directorySessionData.directoryBearerToken);
       }
+      logger.debug(`${LOGGER_TAG_ID} Response data: ${JSON.stringify(response)}`);
       sessionData.directorySession = directorySessionData.directorySession;
       setUserSession(userId, req.body.alias, sessionData);
-      logger.info(`${LOGGER_TAG_ID} Session data set for user ${userId}`);
+      logger.debug(`${LOGGER_TAG_ID} Session data set for user ${userId}`);
     } catch (error) {
       if (error.response != null) {
+        logger.error(`${LOGGER_TAG_ID} Error in proxied request: ${error.message}`);
         response = error.response.data;
         res.status(error.response.status);
       } else if (error.errors != null) {
+        logger.error(`${LOGGER_TAG_ID} Validation errors: ${error.errors}`);
         response = error;
         res.status(constants.HTTP_STATUS_CODE_500_SERVER_ERROR);
       }
     }
+    logger.info(`${LOGGER_TAG_ID} Sending response: ${JSON.stringify(response)}`);
     res.send(response);
   } else {
+    logger.error(`${LOGGER_TAG_ID} Invalid API URL request: ${req.url}`);
     res.send(constants.API_INVALID_URL_REQUEST_TITLE);
   }
 };
@@ -128,19 +135,24 @@ const proxyApi = async (req, res) => {
 const getRequestHeader = function (req, userSession, defaultAccept, defaultContentType) {
   let headers = getAuthBasicHeader(req, userSession, defaultAccept);
 
+  logger.debug(`${LOGGER_TAG_ID} Headers before content type: ${JSON.stringify(headers)}`);
   const contentType = req.header(constants.CONTENT_TYPE) ?? null;
 
-  if (req.url === constants.INNER_AUTH_PATH ||
+  if (req.url === constants.INNER_ACCESS_TOKEN_PATH ||
+    logic.isValidUUID(req.body[constants.APPLICATION_ID_ATTRIBUTE]) ||
     req.url === constants.INNER_CREATE_USER_PATH &&
     req.method === constants.POST_METHOD) {
     req.body[constants.PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
   }
 
-  if (contentType !== null && contentType === constants.CONTENT_TYPE_DEFAULT) {
-    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_DEFAULT;
+  if (contentType !== null && contentType === constants.CONTENT_TYPE_APPLICATION_JSON) {
+    logger.debug(`${LOGGER_TAG_ID} Setting Content-Type to application/json`);
+    headers[constants.CONTENT_TYPE] = constants.CONTENT_TYPE_APPLICATION_JSON;
   } else {
+    logger.debug(`${LOGGER_TAG_ID} Setting Content-Type to default: ${defaultContentType}`);
     headers[constants.CONTENT_TYPE] = defaultContentType;
   }
+  logger.info(`${LOGGER_TAG_ID} Final headers: ${JSON.stringify(headers)}`);
   return headers;
 };
 
@@ -155,6 +167,7 @@ const getRequestHeader = function (req, userSession, defaultAccept, defaultConte
 function closeSession(req, res) {
   const backboneToken = req.headers[constants.SESSION_TOKEN_BKD];
   const userId = oauthCommonFunction.getUserId(backboneToken)
+  logger.info(`${LOGGER_TAG_ID} Closing session for user ID: ${userId}`);
   removeUserSession(userId);
   res.status(constants.HTTP_STATUS_CODE_200_OK).send({message: 'Session closed successfully'});
 }
