@@ -64,7 +64,7 @@ const uploadProfileImage = async (req, res) => {
 
     const headers = {
       [constants.SESSION_TOKEN_DIR]: req.headers[constants.SESSION_TOKEN_DIR],
-      [constants.AUTHORIZATION]: `${constants.BEARER}${directorySessionData.directoryBearerToken}`,
+      [constants.AUTHORIZATION]: constants.BEARER.concat(directorySessionData.directoryBearerToken),
       ...formData.getHeaders(),
     };
 
