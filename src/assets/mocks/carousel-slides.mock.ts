@@ -8,24 +8,24 @@ export interface Slide {
 
 export const CAROUSEL_SLIDES: Slide[] = [
   {
-    desktop: "https://storage.spccard.ca/HomepageBanner_W_TimHortons_01062025_EN.webp",
-    tablet: "https://storage.spccard.ca/HomepageBanner_T_TimHortons_01062025_EN.webp",
-    mobile: "https://storage.spccard.ca/HomepageBanner_M_TimHortons_01062025_EN.webp",
-    alt: "Save 20% after 2pm at Tim Hortons",
+    desktop: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_W_slide1.webp",
+    tablet: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_T_slide1.webp",
+    mobile: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_M_slide1.webp",
+    alt: "Big annual super sale",
     link: "/auth/login"
   },
   {
-    desktop: "https://storage.spccard.ca/W_WebBanner_FrostWeek_12202024_EN.png",
-    tablet: "https://storage.spccard.ca/T_WebBanner_FrostWeek_12202024_EN.png",
-    mobile: "https://storage.spccard.ca/M_WebBanner_FrostWeek_12202024_EN.png",
-    alt: "Winter Campus Tour",
+    desktop: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_W_slide2.webp",
+    tablet: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_T_slide2.webp",
+    mobile: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_M_slide2.webp",
+    alt: "Feliz Regreso a Clases",
     link: "/deals"
   },
   {
-    desktop: "https://storage.spccard.ca/HomepageBanner_W_StudentSnapshots_Generic_EN.png",
-    tablet: "https://storage.spccard.ca/HomepageBanner_T_StudentSnapshots_Generic_EN.png",
-    mobile: "https://storage.spccard.ca/HomepageBanner_M_StudentSnapshots_Generic_EN.png",
-    alt: "Capture your SPC moment",
+    desktop: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_W_slide3.webp",
+    tablet: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_T_slide3.webp",
+    mobile: "https://prx-qa.tst/latinhub/media/assets/HomepageBanner_M_slide3.webp",
+    alt: "Ofertas especiales de Verano",
     link: "https://www.instagram.com/latinhub.info/"
   }
 ];
