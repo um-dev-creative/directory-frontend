@@ -14,13 +14,13 @@
   "promotions": [
     {
       "title": "Get the SPC App",
-      "image": "https://storage.spccard.ca/BottomBanner_App_M_GenericRebrand_2024_EN.webp",
-      "url": "https://spccard.ca/"
+      "image": "https://prx-qa.tst/latinhub/media/assets/BottomBanner_Left.webp",
+      "url": "https://www.instagram.com/latinhub.info/"
     },
     {
       "title": "Our Student Resource Hub",
-      "image": "https://storage.spccard.ca/BottomBanner_Blog_M_GenericRebrand_2024_EN.webp",
-      "url": "http://blog.spccard.ca/"
+      "image": "https://prx-qa.tst/latinhub/media/assets/BottomBanner_Right.webp",
+      "url": "https://latinhubinfo.wordpress.com/"
     }
   ]
 }
