@@ -2,17 +2,17 @@ import {Component, Output, EventEmitter, Input, inject, OnInit} from '@angular/c
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {StepOneData} from '../partner-registration-stepper.component';
+import {StepOneData} from '@app/features/partner';
 import {InputComponent, Button, CardComponent, TextareaComponent, IconComponent} from '@app/components/ui';
 import {BusinessClient} from '@app/core/services/business/business.client';
 import {BusinessCreateRequest} from '@shared/models/business.model';
 import {Store} from '@ngrx/store';
-import {BusinessData, SessionData, SessionState} from '@core/store/session/session.state';
+import { SessionData, SessionState} from '@core/store/session/session.state';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Subject, switchMap, takeUntil} from 'rxjs';
 import {AuthClient} from '@app/features/auth/auth.client';
-import {NotificationService} from '@core/services';
 import {SessionStoreService} from '@core/store/session/session-store.service';
+import {NotificationService} from '@core/services/notification.service';
 
 @Component({
   selector: 'app-partner-step-one',
