@@ -1,7 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {jwtDecode} from "jwt-decode";
 import {BackboneJwtPayload} from "@shared/models/backbone-jwt-payload";
-import {LoggerService} from '@app/core/services';
+import {LoggerService} from '@core/services/logger.service';
 
 /**
  * Pipe to decode a JWT token.

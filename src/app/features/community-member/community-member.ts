@@ -254,20 +254,25 @@ export class CommunityMember implements OnInit, OnDestroy {
         this.avatarPreview = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+      // Upload file using FormData
+      const formData = new FormData();
+      formData.append('imageData', file, file.name);
 
-      // Upload file
-      this.userMockService.uploadAvatar(file)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (response: any) => {
-            this.profileData.avatar = response.url;
-            this.uploadingAvatar = false;
-          },
-          error: (error: any) => {
-            console.error('Error uploading avatar:', error);
-            this.uploadingAvatar = false;
+      this.userClient.uploadProfileImage(formData).pipe(
+        takeUntil(this.destroy$)).subscribe({
+        next: (response: any) => {
+          if (response.status !== 200) {
+            throw new Error('Failed to upload avatar');
           }
-        });
+          // Update profile data with new avatar URL
+          this.profileData.avatar = 'https://prx-qa.tst/latinhub/media/' + response.data.imageUrl;
+          this.uploadingAvatar = false;
+        },
+        error: (err) => {
+          console.error('Error uploading avatar:', err);
+          this.uploadingAvatar = false;
+        }
+      });
     }
   }
 
@@ -460,6 +465,8 @@ export class CommunityMember implements OnInit, OnDestroy {
    * @return {void} This method does not return a value.
    */
   setProfileData(data: any): void {
+    // Default avatar if not provided
+    const avatar = data.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.profileImageRef}` : this.profileData.avatar;
     this.profileData.firstName = data.firstName;
     this.profileData.lastName = data.lastName;
     this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;
@@ -467,6 +474,7 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.profileData.phone = data.phoneNumber ?? '';
     this.profileData.birthDate = this.parseDateOfBirth(data.dateOfBirth) ?? {month: '', day: '', year: ''};
     this.profileData.email = data.email;
+    this.profileData.avatar = avatar;
     this.profileData.emailConfirmed = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted == 'true' || false;
     this.profileData.notifications = {
       email: data.notificationEmail ?? false,
@@ -477,7 +485,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   }
 
   /**
-   * Sets the UI header type based on session state.
+   * Sets the UI header type based on the session state.
    */
   private processSessionData(): void {
     if (this.sessionData?.token) {
@@ -585,4 +593,3 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.router.navigate([DFC.RelativePath.STAGE_PATH]);
   }
 }
-

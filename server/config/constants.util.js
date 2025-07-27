@@ -1,15 +1,22 @@
 const PASSWORD_ATTRIBUTE = 'password';
-const SESSION_TOKEN_BKD = 'session-token-bkd';
+const EMAIL_ATTRIBUTE = 'email';
+const APPLICATION_ID_ATTRIBUTE = 'applicationId';
+
 const SESSION_TOKEN_DIR = 'session-token';
-const AUTHORIZATION = 'Authorization';
-const CONTENT_TYPE = 'Content-Type';
-const FID_USER_ID = 'FID-USER-ID';
-const FID_USER_ID_ANONYMOUS = 'anonymous';
+const SESSION_TOKEN_BKD = 'session-token-bkd';
+
 const BEARER = 'Bearer ';
 const ACCEPT = 'Accept';
-const CONTENT_TYPE_DEFAULT = 'application/json';
-const CONTENT_TYPE_X_FORM_URLENCODED = 'application/x-www-form-urlencoded';
+const AUTHORIZATION = 'Authorization';
+const CONTENT_TYPE = 'Content-Type';
 const TRANSFER_ENCODING = 'transfer-encoding'
+
+const FID_USER_ID = 'FID-USER-ID';
+const FID_USER_ID_ANONYMOUS = 'anonymous';
+
+const CONTENT_TYPE_APPLICATION_JSON = 'application/json';
+const CONTENT_TYPE_X_FORM_URLENCODED = 'application/x-www-form-urlencoded';
+const CONTENT_TYPE_MULTIPART_FORM_DATA = 'multipart/form-data';
 
 const GET_METHOD = 'GET';
 const PUT_METHOD = 'PUT';
@@ -37,28 +44,36 @@ const API_FAILURE_REQUEST_CODE_VALUE = 'DIS-FRONT-AP-FAIL';
 const API_FAILURE_REQUEST_TITLE = 'Error in Downstream API.';
 const API_FAILURE_REQUEST_DETAIL = 'Error in Downstream API, an non 2xx response was thrown when proxying downstream API.';
 
-const INNER_AUTH_PATH = '/drb/api/v1/auth/access-token';
-const INNER_VERIFY_CODE_PATH = '/drb/api/v1/verify-code';
-const INNER_CREATE_USER_PATH = '/drb/api/v1/auth/create-user';
+const INNER_API_V1_PATH = '/drb/api/v1';
+const INNER_BACKBONE_PATH = '/bkd/api/v1';
+const INNER_AUTH_PATH = `${INNER_API_V1_PATH}/auth`;
+const INNER_GENERAL_PATH = `${INNER_API_V1_PATH}/general`;
+const INNER_D_IMAGE_PATH = `${INNER_API_V1_PATH}/d-image`;
+const INNER_VERIFY_CODE_PATH = `${INNER_API_V1_PATH}/verify-code`;
+const INNER_CREATE_USER_PATH = `${INNER_AUTH_PATH}/create-user`;
+const INNER_ACCESS_TOKEN_PATH = `${INNER_AUTH_PATH}/access-token`;
 
 const BACKBONE_TOKEN_RELATIVE_PATH = '/backbone/api/v1/session/token';
 const BACKBONE_TOKEN_RENEW_RELATIVE_PATH = '/backbone/api/v1/session/renew';
 
 const DS_CREATE_USER_PATH = '/api/v1/users';
 const DS_AUTH_RELATIVE_PATH = '/api/v1/auth';
+const DS_CREATE_BUSINESS = '/api/v1/businesses';
 const DS_TOKEN_RELATIVE_PATH = '/api/v1/session/token';
 const DS_VERIFY_CODE_RELATIVE_PATH = '/api/v1/user-register';
-const DS_CREATE_BUSINESS = '/api/v1/businesses';
 
+const LOGGER_TAG_OAUTH_CLIENT = 'OATCLT';
 const LOGGER_TAG_BACKBONE_CONTROLLER = 'BKNCTR';
 const LOGGER_TAG_DIRECTORY_BACKEND_AUTH = 'DRBAUTH';
 const LOGGER_TAG_DIRECTORY_BACKEND_REGISTER = 'DRBREG';
 const LOGGER_TAG_DIRECTORY_BACKEND_STANDARD = 'DRBSTD';
+const LOGGER_TAG_DIRECTORY_BACKEND_MULTIMEDIA = 'DRBMTD';
 const LOGGER_TAG_DIRECTORY_BACKEND_CREATE_USER = 'DRBCUS';
-const LOGGER_TAG_OAUTH_CLIENT = 'OATCLT';
 
 module.exports = {
   PASSWORD_ATTRIBUTE,
+  APPLICATION_ID_ATTRIBUTE,
+  EMAIL_ATTRIBUTE,
   AUTHORIZATION,
   BEARER,
   SESSION_TOKEN_DIR,
@@ -80,8 +95,9 @@ module.exports = {
   API_FAILURE_REQUEST_DETAIL,
 
   // Content types
+  CONTENT_TYPE_MULTIPART_FORM_DATA,
   CONTENT_TYPE_X_FORM_URLENCODED,
-  CONTENT_TYPE_DEFAULT,
+  CONTENT_TYPE_APPLICATION_JSON,
   CONTENT_TYPE,
 
   FID_USER_ID,
@@ -102,8 +118,12 @@ module.exports = {
 
   TRANSFER_ENCODING,
   INNER_AUTH_PATH,
+  INNER_D_IMAGE_PATH,
+  INNER_GENERAL_PATH,
+  INNER_BACKBONE_PATH,
   INNER_VERIFY_CODE_PATH,
   INNER_CREATE_USER_PATH,
+  INNER_ACCESS_TOKEN_PATH,
 
   // Directory services paths
   DS_CREATE_BUSINESS,
@@ -122,5 +142,6 @@ module.exports = {
   LOGGER_TAG_DIRECTORY_BACKEND_AUTH,
   LOGGER_TAG_DIRECTORY_BACKEND_REGISTER,
   LOGGER_TAG_DIRECTORY_BACKEND_STANDARD,
+  LOGGER_TAG_DIRECTORY_BACKEND_MULTIMEDIA,
   LOGGER_TAG_DIRECTORY_BACKEND_CREATE_USER
 }

@@ -55,11 +55,15 @@ class OAuthClient {
    * Retrieves the bearer token.
    * @returns {Promise<string>} The bearer token.
    */
-  getBearerToken = async() => {
+  getBearerToken = async () => {
+    logger.debug(`${LOGGER_TAG_ID} getBearerToken called with clientId:
+    ${this.clientId}, authenticationType: ${this.authenticationType}, grantType: ${this.grantType}`);
     const requestTime = new Date().getTime();
-    if(this.cacheToken === undefined || this.cacheToken === "" || (requestTime - this.lastRequestTime) / 1000 > this.tokenCachePeriod) {
+    if (this.cacheToken === undefined || this.cacheToken === "" || (requestTime - this.lastRequestTime) / 1000 > this.tokenCachePeriod) {
+      logger.debug(`${LOGGER_TAG_ID} Cache token is either undefined or expired. Requesting new token.`);
       let options = {};
-      if(this.authenticationType === AuthenticationType.OPAQUE) {
+      if (this.authenticationType === AuthenticationType.OPAQUE) {
+        logger.debug(`${LOGGER_TAG_ID} Using OPAQUE authentication type`);
         options = {
           headers: {
             'Content-Type': constants.CONTENT_TYPE_X_FORM_URLENCODED,
@@ -68,12 +72,13 @@ class OAuthClient {
             client_id: this.clientId,
             client_secret: this.clientSecret,
             grant_type: this.grantType,
-            username:this.username,
-            password:this.password
+            username: this.username,
+            password: this.password
           }),
           url: this.tokenUrl
         };
-      } else  {
+      } else {
+        logger.debug(`${LOGGER_TAG_ID} Using JWT authentication type`);
         options = {
           method: constants.POST_METHOD,
           headers: {
@@ -83,11 +88,12 @@ class OAuthClient {
             grant_type: this.grantType,
             client_id: this.clientId,
             client_secret: this.clientSecret,
-            username:this.username,
-            password:this.password
+            username: this.username,
+            password: this.password
           },
           url: this.tokenUrl
         };
+        logger.debug(`${LOGGER_TAG_ID} Using JWT authentication type with data: ${JSON.stringify(options.data)}`);
       }
       logger.debug(`${LOGGER_TAG_ID} Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
        authenticationType: ${this.authenticationType} and grantType: ${this.grantType}`);
@@ -100,6 +106,7 @@ class OAuthClient {
       this.lastRequestTime = requestTime;
       return this.cacheToken;
     } else {
+      logger.debug(`${LOGGER_TAG_ID} Returning cached token: ${this.cacheToken}`);
       return this.cacheToken;
     }
   };
@@ -110,6 +117,6 @@ class OAuthClient {
  * @param {Object} oauthClientConfig - The OAuth client configuration.
  * @returns {OAuthClient} The OAuth client instance.
  */
-module.exports.getOAuthClient = function(oauthClientConfig) {
+module.exports.getOAuthClient = function (oauthClientConfig) {
   return new OAuthClient(oauthClientConfig);
 }

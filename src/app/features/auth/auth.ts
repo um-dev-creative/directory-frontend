@@ -5,8 +5,8 @@ import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Spinner} from '@app/shared/components/spinner/spinner';
 import {Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {concatMap, Observable, of, Subject, switchMap} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
 import {LoadingService} from '@app/core/services/loading.service';
 import {NotificationService} from '@app/core/services/notification.service';
@@ -288,7 +288,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.phoneNumber = '';
     this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
-    console.debug ('Country selected:', country);
+    console.debug('Country selected:', country);
   }
 
   /**
@@ -386,7 +386,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     const email = this.isRegistering ? this.registerData.email : this.loginData.email;
     const password = this.isRegistering ? this.registerData.password : this.loginData.password;
 
-    console.debug('Login Data:', { email, password: '***' });
+    console.debug('Login Data:', {email, password: '***'});
     this.authenticateUser(email, password);
   }
 
@@ -462,10 +462,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.validatePhoneNumber();
 
     this.isRegistrationFormValid = userToValidate.isValid() &&
-                                   this.isFullDateValid &&
-                                   this.isEmailValid &&
-                                   this.isPasswordValid &&
-                                   this.isValidPhoneNumber;
+      this.isFullDateValid &&
+      this.isEmailValid &&
+      this.isPasswordValid &&
+      this.isValidPhoneNumber;
 
     console.debug('Is Registration Form Valid:', this.isRegistrationFormValid);
   }
@@ -475,7 +475,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param user - The user to validate.
    */
   private validateDateOfBirth(user: User): void {
-    const { birthDay: day, birthMonth: month, birthYear: year } = this.registerData;
+    const {birthDay: day, birthMonth: month, birthYear: year} = this.registerData;
 
     if (day && month && year) {
       const validationResult = this.authValidationService.validateDateOfBirth(day, month, year);
@@ -503,55 +503,91 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param password - The user's password.
    */
   private authenticateUser(email: string, password: string): void {
-    let userAuth = new UserAuth();
     this.loader.show('auth'); // Usando una key específica para auth
-    this.authClient.getToken(email, password).pipe(takeUntil(this.subject$))
-      .subscribe({
-        next: (response: any) => {
-          const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
-          const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(response.body.token);
-          if (decodedTokenBackbone && decodedTokenDirectory) {
-            userAuth = {
-              alias: decodedTokenBackbone.alias??'',
-              email: decodedTokenBackbone.email??'',
-              fullName: `${decodedTokenBackbone.firstname} ${decodedTokenBackbone.lastname}`.trim(),
-              sessionTokenBkd: response.sessionTokenBkd,
-              sessionToken: response.body.token,
-              authorization: response.authorization,
-              features: []
-            };
-            if (decodedTokenBackbone?.uid) {
-              this.sessionData = {userAuth, token: decodedTokenBackbone?.uid};
-              this.sessionStoreService.saveSessionData(this.sessionData);
+    this.authClient.getToken(email, password).pipe(takeUntil(this.subject$), concatMap((response: any) => {
+        console.debug('Authentication response:', response);
 
-              // Verificar que el estado se guardó correctamente
-              this.sessionStoreService.session$.subscribe(sessionData => {
-                console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
-              });
-              this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-              this.clearForm();
+        const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
+        let resull: any;
+        this.saveSession({userDetail: null, userDetailResponse: response});
 
-              if(decodedTokenDirectory.vcCompleted === 'true') {
-                this.router.navigate([DFC.RelativePath.STAGE_PATH]);
-              } else {
-                this.router.navigate(['/veracode']);
-              }
-            }
-          }
+        if (decodedTokenBackbone?.uid) {
+          resull = this.userClient.findUserById(decodedTokenBackbone.uid)
+            .pipe(map((userDetail: any) => userDetail || null),
+              concatMap((userDetail: any): Observable<{ userDetail: any, userDetailResponse: any }> => {
+                return of({userDetail, userDetailResponse: response});
+              })
+            );
+        }
+        return resull;
+      })
+    ).subscribe({
+      next: (resultSet: any) => {
+        const userAuth = this.saveSession(resultSet);
+          this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+          this.clearForm();
+          this.router.navigate([userAuth.verifiedComplete ? DFC.RelativePath.STAGE_PATH : '/veracode']);
           this.loader.hide('auth');
-        },
-        error: (error: any) => {
-          this.isErrorFound = true;
-          if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
-              error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
-            this.notificationService.error('Invalid credentials. Please check your email and password.');
-          } else {
-            this.notificationService.error('Login failed. Please try again later.');
-          }
-          console.error('Error authenticating user:', error);
-          this.loader.hide('auth');
-        },
-      });
+      },
+      error: (error: any) => {
+        this.isErrorFound = true;
+        if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
+          error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
+          this.notificationService.error('Invalid credentials. Please check your email and password.');
+        } else {
+          this.notificationService.error('Login failed. Please try again later.');
+        }
+        console.error('Error authenticating user:', error);
+        this.loader.hide('auth');
+      }
+    });
+
+    // .subscribe({
+    //   next: (response: any) => {
+    //     const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
+    //     const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(response.body.token);
+    //     if (decodedTokenBackbone && decodedTokenDirectory) {
+    //       userAuth = {
+    //         alias: decodedTokenBackbone.alias??'',
+    //         email: decodedTokenBackbone.email??'',
+    //         fullName: `${decodedTokenBackbone.firstname} ${decodedTokenBackbone.lastname}`.trim(),
+    //         sessionTokenBkd: response.sessionTokenBkd,
+    //         sessionToken: response.body.token,
+    //         authorization: response.authorization,
+    //         features: []
+    //       };
+    //       if (decodedTokenBackbone?.uid) {
+    //         this.sessionData = {userAuth, token: decodedTokenBackbone?.uid};
+    //         this.sessionStoreService.saveSessionData(this.sessionData);
+    //
+    //         // Verificar que el estado se guardó correctamente
+    //         this.sessionStoreService.session$.subscribe(sessionData => {
+    //           console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
+    //         });
+    //         this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
+    //         this.clearForm();
+    //
+    //         if(decodedTokenDirectory.vcCompleted === 'true') {
+    //           this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+    //         } else {
+    //           this.router.navigate(['/veracode']);
+    //         }
+    //       }
+    //     }
+    //     this.loader.hide('auth');
+    //   },
+    //   error: (error: any) => {
+    //     this.isErrorFound = true;
+    //     if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
+    //         error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
+    //       this.notificationService.error('Invalid credentials. Please check your email and password.');
+    //     } else {
+    //       this.notificationService.error('Login failed. Please try again later.');
+    //     }
+    //     console.error('Error authenticating user:', error);
+    //     this.loader.hide('auth');
+    //   },
+    // });
   }
 
   /**
@@ -578,4 +614,32 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.isPasswordValid = true;
   }
 
+  private saveSession(data: { userDetail: any, userDetailResponse: any }): UserAuth {
+    const avatar = data?.userDetail?.data?.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.userDetail.data.profileImageRef}` :
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
+    const decodedTokenBackbone = this.backboneJwtPipe.transform(data.userDetailResponse.sessionTokenBkd);
+    const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(data.userDetailResponse.body.token);
+    if (!decodedTokenBackbone || !decodedTokenBackbone?.uid || !decodedTokenDirectory) {
+      throw new Error('Invalid token format');
+    }
+    const userAuth = {
+      alias: decodedTokenBackbone.alias ?? '',
+      email: decodedTokenBackbone.email ?? '',
+      fullName: `${decodedTokenBackbone.firstname} ${decodedTokenBackbone.lastname}`.trim(),
+      sessionTokenBkd: data.userDetailResponse.sessionTokenBkd,
+      sessionToken: data.userDetailResponse.body.token,
+      authorization: data.userDetailResponse.authorization,
+      features: [],
+      verifiedComplete: decodedTokenDirectory.vcCompleted === 'true',
+      avatarUrl: avatar
+    };
+    this.sessionData = {userAuth, token: decodedTokenBackbone?.uid};
+    this.sessionStoreService.saveSessionData(this.sessionData);
+
+    this.sessionStoreService.session$.subscribe(sessionData => {
+      console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
+    });
+
+    return userAuth;
+  }
 }

@@ -23,6 +23,18 @@
       }
     }
   ],
+  "directoryBackendUserProfileImageProxyConfig": [
+    {
+      "applicationName": "directory-backend",
+      "matchOn": {
+        "startWith": "/drb/api/v1/d-image/users/profile"
+      },
+      "urlRewrite": {
+        "from": "/drb/api/v1/d-image/users/profile",
+        "to": "/directory-backend/api/v1/profile/image"
+      }
+    }
+  ],
   "directoryBackendCreateUserProxyConfig": [
     {
       "applicationName": "directory-backend",

@@ -24,33 +24,40 @@ const {
  */
 const proxyApi = async (req, res) => {
   let response = null;
+  logger.info(`${LOGGER_TAG_ID} Proxying request to ${req.url}`);
   try {
     const apiURL = getApiEndpoint(req.url, directoryVerifyCodeProxyConfig, API_SERVICE_DIRECTORY_MAP);
     const sessionToken = req.headers[constants.SESSION_TOKEN_DIR] || '';
     const authHeader = req.headers[constants.AUTHORIZATION.toLowerCase()] || '';
     let httpOptions = createHttpOptions(req, authHeader, sessionToken, apiURL);
 
+    logger.debug(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
     const axiosResponse = await axios(httpOptions);
-
+    logger.debug(`${LOGGER_TAG_ID} API response status: ${axiosResponse.status}`);
     if (httpOptions.url.endsWith(constants.DS_CREATE_BUSINESS) &&
       httpOptions.method === constants.POST_METHOD &&
       axiosResponse.status === constants.HTTP_STATUS_CODE_201_CREATED) {
       let newToken = await backboneRenewToken(req.body.userId);
-      logger.info(`${LOGGER_TAG_ID} Directory Backend API call successful: ${req.method} ${apiURL}`);
+      logger.debug(`${LOGGER_TAG_ID} Directory Backend API call successful: ${req.method} ${apiURL}`);
       response = getSimpleResponse(axiosResponse, newToken);
     } else {
       response = getSimpleResponse(axiosResponse, null);
     }
+    logger.debug(`${LOGGER_TAG_ID} Response: ${JSON.stringify(response)}`);
     res.status(axiosResponse.status);
   } catch (error) {
+    logger.error(`${LOGGER_TAG_ID} Error during API request: ${error.message}`);
     if (error.response != null) {
+      logger.error(`${LOGGER_TAG_ID} API response error: ${error.response.status} - ${error.response.data}`);
       response = error.response.data;
       res.status(error.response.status);
     } else if (error.errors != null) {
+      logger.error(`${LOGGER_TAG_ID} API errors: ${JSON.stringify(error.errors)}`);
       response = error;
       res.status(constants.HTTP_STATUS_CODE_500_SERVER_ERROR);
     }
   }
+  logger.debug(`${LOGGER_TAG_ID} Sending response: ${JSON.stringify(response)}`);
   res.send(response);
 };
 
@@ -72,10 +79,10 @@ const createHttpOptions = (req, authHeader, sessionTokenHeader, apiURL) => {
       method: req.method,
       url: apiURL,
       headers: {
-        'Authorization': authHeader,
-        'session-token': sessionTokenHeader,
-        'Content-Type': constants.CONTENT_TYPE_DEFAULT,
-        'Accept': constants.CONTENT_TYPE_DEFAULT
+        [constants.AUTHORIZATION]: authHeader,
+        [constants.SESSION_TOKEN_DIR]: sessionTokenHeader,
+        [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_APPLICATION_JSON,
+        [constants.ACCEPT]: constants.CONTENT_TYPE_APPLICATION_JSON
       },
       data: req.body,
     };
@@ -84,10 +91,10 @@ const createHttpOptions = (req, authHeader, sessionTokenHeader, apiURL) => {
       method: req.method,
       url: apiURL,
       headers: {
-        'Authorization': authHeader,
-        'session-token': sessionTokenHeader,
-        'Content-Type': constants.CONTENT_TYPE_DEFAULT,
-        'Accept': constants.CONTENT_TYPE_DEFAULT
+        [constants.AUTHORIZATION]: authHeader,
+        [constants.SESSION_TOKEN_DIR]: sessionTokenHeader,
+        [constants.CONTENT_TYPE]: constants.CONTENT_TYPE_APPLICATION_JSON,
+        [constants.ACCEPT]: constants.CONTENT_TYPE_APPLICATION_JSON
       },
     };
   }

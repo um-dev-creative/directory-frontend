@@ -25,6 +25,9 @@ export class UserAuth {
   sessionTokenBkd!: string;
   authorization!: string;
   features!: string[];
+  // Optional field for user avatar URL
+  verifiedComplete?: boolean;
+  avatarUrl?: string;
 }
 
 export const initialState: SessionState = {
@@ -36,7 +39,9 @@ export const initialState: SessionState = {
       sessionToken: '',
       sessionTokenBkd: '',
       authorization: '',
-      features: []
+      features: [],
+      verifiedComplete: false,
+      avatarUrl: ''
     },
     token: ''
   },

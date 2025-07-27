@@ -79,6 +79,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   userLogger = {
     alias: '@',
     fullName: '',
+    avatarUrl: ''
   }
 
   constructor(
@@ -112,7 +113,8 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       if (this.sessionData?.userAuth) {
         this.userLogger.alias = this.sessionData.userAuth.alias;
         this.userLogger.fullName = this.sessionData.userAuth.fullName;
-        this.userLogger.fullName = this.sessionData.userAuth.fullName;
+        this.userLogger.avatarUrl = this.sessionData.userAuth?.avatarUrl ||
+          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
         this.businessAssigned = this.backboneJwtPipe.transform(this.sessionData?.userAuth.sessionTokenBkd ?? "")?.roles||[];
         console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
