@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { environment } from '../environments/environment';
+import { environment } from '@env/environment';
 
 // Core Services
 import {
@@ -11,7 +11,8 @@ import {
   NotificationService,
   StorageMockService,
   ThemeService
-} from './core/services';
+} from '@core/services';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-example-usage',
@@ -42,7 +43,7 @@ import {
 
       <!-- Storage Example -->
       <div class="storage-example">
-        <input #nameInput placeholder="Enter your name" />
+        <input #nameInput placeholder="Enter your name"/>
         <button (click)="saveName(nameInput.value)">Save Name</button>
         <button (click)="loadName()">Load Name</button>
         <p *ngIf="savedName">Saved Name: {{ savedName }}</p>
@@ -54,6 +55,9 @@ import {
       </div>
     </div>
   `,
+  imports: [
+    AsyncPipe
+  ],
   styles: [`
     .example-container {
       padding: 20px;
