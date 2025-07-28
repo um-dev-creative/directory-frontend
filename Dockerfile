@@ -73,4 +73,4 @@ EXPOSE 7001
 # Run the application.
 CMD node server.js --ssl --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt \
   --port $PORT --configuration $APP_PROFILE --vaultToken $VAULT_TOKEN \
-  --vaultUrl $VAULT_URI --vaultPath $VAULT_PATH --DEBUG_MODE $IS_DEBUG_ENABLED
+  --vaultUrl $VAULT_URI --vaultPath $VAULT_PATH --DEBUG_MODE $IS_DEBUG_ENABLED --ENVM $ENVM

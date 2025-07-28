@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BannerService, BannerData, BannerImage, Category } from './services/banner.service';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-banner',
@@ -18,8 +19,9 @@ export class Banner implements OnInit, OnDestroy {
   bannerData$ = new BehaviorSubject<BannerData | null>(null);
   loading$ = new BehaviorSubject<boolean>(false);
   error$ = new BehaviorSubject<string | null>(null);
+  imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly bannerService: BannerService) {}
 

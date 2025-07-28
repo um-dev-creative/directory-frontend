@@ -30,7 +30,7 @@ export interface BannerData {
 })
 export class BannerService {
   private readonly apiUrl = 'assets/mocks/banner.json';
-  private cache$ = new Map<string, Observable<BannerData>>();
+  private readonly cache$ = new Map<string, Observable<BannerData>>();
 
   constructor(private readonly http: HttpClient) {}
 

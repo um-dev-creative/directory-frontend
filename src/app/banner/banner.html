@@ -57,14 +57,14 @@
           <picture>
             <source
               media="(min-width: 1024px)"
-              [srcset]="currentBanner.desktop"
+              [srcset]="imageBucketUrl+currentBanner.desktop"
             >
             <source
               media="(min-width: 768px)"
-              [srcset]="currentBanner.tablet"
+              [srcset]="imageBucketUrl+currentBanner.tablet"
             >
             <img
-              [src]="currentBanner.mobile"
+              [src]="imageBucketUrl+currentBanner.mobile"
               [alt]="currentBanner.alt"
               class="tw-rounded-lg tw-shadow-md tw-w-full tw-h-auto"
               loading="lazy"
@@ -89,14 +89,14 @@
           <picture>
             <source
               media="(min-width: 1024px)"
-              [srcset]="currentBanner.desktop"
+              [srcset]="imageBucketUrl+currentBanner.desktop"
             >
             <source
               media="(min-width: 768px)"
-              [srcset]="currentBanner.tablet"
+              [srcset]="imageBucketUrl+currentBanner.tablet"
             >
             <img
-              [src]="currentBanner.mobile"
+              [src]="imageBucketUrl+currentBanner.mobile"
               [alt]="currentBanner.alt"
               class="tw-w-full tw-rounded-lg tw-shadow-md tw-h-auto"
               loading="lazy"

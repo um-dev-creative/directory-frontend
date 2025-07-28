@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 // Core Services
 import {
@@ -17,6 +18,9 @@ import {
   template: `
     <div class="example-container">
       <h2>Core Services Example</h2>
+
+      <!-- Environment Variable Display -->
+      <p>API URL: {{ apiUrl }}</p>
 
       <!-- Theme Toggle -->
       <button (click)="toggleTheme()" class="theme-btn">
@@ -89,6 +93,7 @@ export class ExampleUsageComponent implements OnInit, OnDestroy {
   isLoading = false;
   savedName = '';
   globalLoading$ = this.loadingService.globalLoading$;
+  apiUrl = environment.apiUrl;
 
   constructor(
     private httpService: HttpService,
