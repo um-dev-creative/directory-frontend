@@ -14,12 +14,12 @@
   "promotions": [
     {
       "title": "Get the SPC App",
-      "image": "https://prx-qa.tst/latinhub/media/assets/BottomBanner_Left.webp",
+      "image": "BottomBanner_Left.webp",
       "url": "https://www.instagram.com/latinhub.info/"
     },
     {
       "title": "Our Student Resource Hub",
-      "image": "https://prx-qa.tst/latinhub/media/assets/BottomBanner_Right.webp",
+      "image": "BottomBanner_Right.webp",
       "url": "https://latinhubinfo.wordpress.com/"
     }
   ]

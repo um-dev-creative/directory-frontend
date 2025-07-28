@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {environment} from '@env/environment';
 interface DownloadButton {
   platform: string;
   image: string;
@@ -24,6 +25,7 @@ interface PromoSectionData {
 })
 export class PromoSection implements OnInit {
   promo: PromoSectionData | null = null;
+  imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
 
   constructor(private readonly http: HttpClient) {}
 

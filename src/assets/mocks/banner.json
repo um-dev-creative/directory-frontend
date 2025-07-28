@@ -45,16 +45,16 @@
     ],
     "banners": {
       "top": {
-        "desktop": "https://prx-qa.tst/latinhub/media/assets/W_OfferBanner_Summer.png",
-        "tablet": "https://prx-qa.tst/latinhub/media/assets/T_OfferBanner_Summer.png",
-        "mobile": "https://prx-qa.tst/latinhub/media/assets/M_OfferBanner_Summer.png",
+        "desktop": "W_OfferBanner_Summer.png",
+        "tablet": "T_OfferBanner_Summer.png",
+        "mobile": "M_OfferBanner_Summer.png",
         "alt": "Promociones de la temporada en LatinHub",
         "route": "/seasonal-offers"
       },
       "mid": {
-        "desktop": "https://prx-qa.tst/latinhub/media/assets/Banner-Join_W_Generic.webp",
-        "tablet": "https://prx-qa.tst/latinhub/media/assets/Banner-Join_T_Generic.webp",
-        "mobile":  "https://prx-qa.tst/latinhub/media/assets/Banner-Join_M_Generic.webp",
+        "desktop": "Banner-Join_W_Generic.webp",
+        "tablet": "Banner-Join_T_Generic.webp",
+        "mobile":  "Banner-Join_M_Generic.webp",
         "alt": "Únete a Nuestra Comunidad",
         "route": "/auth"
       }

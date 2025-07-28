@@ -2,7 +2,7 @@
   "images": [
     {
       "id": "campaign_1",
-      "src": "https://prx-qa.tst/latinhub/media/assets/SecondaryBanner_Card1.png",
+      "src": "SecondaryBanner_Card1.png",
       "alt": "Community First Campaign",
       "title": "Community First",
       "description": "Supporting local businesses in our community",
@@ -10,7 +10,7 @@
     },
     {
       "id": "campaign_2",
-      "src": "https://prx-qa.tst/latinhub/media/assets/SecondaryBanner_Card2.png",
+      "src": "SecondaryBanner_Card2.png",
       "alt": "Local Focus Campaign",
       "title": "Local Focus",
       "description": "Discover amazing local businesses near you",
@@ -18,7 +18,7 @@
     },
     {
       "id": "campaign_3",
-      "src": "https://prx-qa.tst/latinhub/media/assets/SecondaryBanner_Card3.png",
+      "src": "SecondaryBanner_Card3.png",
       "alt": "Exclusive Deals Campaign",
       "title": "Exclusive Deals",
       "description": "Special offers only for directory members",

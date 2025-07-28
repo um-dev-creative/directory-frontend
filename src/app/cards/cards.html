@@ -48,7 +48,7 @@
             (keydown.space)="onCardClick(card, i); $event.preventDefault()">
             <div class="tw-relative tw-h-44 tw-overflow-hidden tw-group">
               <img
-                [src]="card.src"
+                [src]="imageBucketUrl + card.src"
                 [alt]="card.alt || 'Campaign image'"
                 class="tw-w-full tw-h-full tw-object-cover tw-transition tw-duration-300 group-hover:tw-scale-110"
                 loading="lazy"

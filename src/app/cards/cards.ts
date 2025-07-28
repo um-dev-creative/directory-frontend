@@ -4,6 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CardsService, CardImage } from './services/cards.service';
 import { Router } from '@angular/router';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-cards',
@@ -19,6 +20,8 @@ export class Cards implements OnInit, OnDestroy {
   cardsData$ = new BehaviorSubject<CardImage[]>([]);
   loading$ = new BehaviorSubject<boolean>(false);
   error$ = new BehaviorSubject<string | null>(null);
+
+  imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
 
   private destroy$ = new Subject<void>();
   private currentFocusIndex = -1;
