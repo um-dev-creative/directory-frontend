@@ -14,7 +14,6 @@ interface Promotion {
 }
 
 interface PromoSectionData {
-  download_buttons: DownloadButton[];
   promotions: Promotion[];
 }
 @Component({

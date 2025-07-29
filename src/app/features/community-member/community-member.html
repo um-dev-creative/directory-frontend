@@ -199,7 +199,7 @@
           <app-button
             type="submit"
             variant="primary"
-            [disabled]="profileForm.invalid"
+            [disabled]="profileForm.invalid || !profileForm.dirty"
             [loading]="isSubmitting">
             Guardar Cambios
           </app-button>

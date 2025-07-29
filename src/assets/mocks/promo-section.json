@@ -1,24 +1,12 @@
 {
-  "download_buttons": [
-    {
-      "platform": "App Store",
-      "image": "/static/img/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.2928664.svg",
-      "url": "https://itunes.apple.com/ca/app/spc-card/id716091998?mt=8"
-    },
-    {
-      "platform": "Google Play",
-      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0i...",
-      "url": "https://play.google.com/store/apps/details?id=com.spc.app"
-    }
-  ],
   "promotions": [
     {
-      "title": "Get the SPC App",
+      "title": "Historias Descuentos y mas, dale follow a nuestro instagram",
       "image": "BottomBanner_Left.webp",
       "url": "https://www.instagram.com/latinhub.info/"
     },
     {
-      "title": "Our Student Resource Hub",
+      "title": "Lo que necesitas saber en un solo lugar, el blog de LatinHub",
       "image": "BottomBanner_Right.webp",
       "url": "https://latinhubinfo.wordpress.com/"
     }
