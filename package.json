@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start-dev:win": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken %VAULT_TOKEN% --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/%ENVM% --debugMode %DEBUG_MODE%",
-    "start-dev:unix": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken $VAULT_TOKEN --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/ENVM --debugMode $DEBUG_MODE",
+    "start-dev:unix": "node server.js --ssl true --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt --vaultToken $VAULT_TOKEN --vaultUrl http://prx-qa.vault.tst --vaultPath PRX/data/directory-frontend/$ENVM --debugMode $DEBUG_MODE",
     "build": "cross-env ng build --configuration=$ENVM",
     "build:ssr": "cross-env-shell \"ng build --configuration $ENVM && ng run directory-frontend:server\"",
     "watch": "ng build --watch --configuration development",

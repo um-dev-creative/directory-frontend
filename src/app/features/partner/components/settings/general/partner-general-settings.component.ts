@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +13,9 @@ import {
   TimezoneService,
   Timezone
 } from '@app/core/services';
+import {CategoryClient} from '@core/services/category/category-client.service';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 
 interface PartnerGeneralData {
@@ -43,6 +46,7 @@ export class PartnerGeneralSettingsComponent implements OnInit {
   loadingCategories = false;
   timezones: Timezone[] = [];
   loadingTimezones = false;
+  private readonly destroy$ = new Subject<void>();
 
   reportProblemOptions: ReportProblemOptions = {
     googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessGeneralSettings',
@@ -65,6 +69,8 @@ export class PartnerGeneralSettingsComponent implements OnInit {
     category: 'restaurant',
     timezone: 'EST'
   };
+
+  private readonly categoryClient: CategoryClient  = inject(CategoryClient);
 
   constructor(
     private router: Router,
@@ -89,15 +95,18 @@ export class PartnerGeneralSettingsComponent implements OnInit {
 
   private loadCategories(): void {
     this.loadingCategories = true;
-    this.partnerCategoryService.getCategories().subscribe({
-      next: (categories) => {
-        this.categories = categories;
+    this.categoryClient.getCategories().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (getCategoryResponse) => {
+        if(getCategoryResponse.headers.status === 200 && getCategoryResponse.data.length > 0) {
+          this.categories = getCategoryResponse.data
+            .sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name))
+            .map((category: any) => ({value: category.id, label: category.name}));
+        }
         this.loadingCategories = false;
       },
-      error: (error) => {
-        console.error('Error loading categories:', error);
+      error: (err) => {
+        console.error('Failed to load categories', err);
         this.loadingCategories = false;
-        // Fallback: podrías mostrar un mensaje de error al usuario
       }
     });
   }
