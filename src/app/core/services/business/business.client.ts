@@ -3,7 +3,7 @@ import {ServiceTemplate} from '@app/core/services/service-template';
 import {HttpClient} from '@angular/common/http';
 import {DFC} from '@shared/constants/app.const';
 import {catchError, Observable} from 'rxjs';
-import {BusinessCreateRequest} from '@shared/models/business.model';
+import {BusinessCreateRequest, BusinessDetailResponse} from '@shared/models/business.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +26,15 @@ export class BusinessClient extends ServiceTemplate {
     this.logInfo(`BusinessClient.create:: ${this.CONTENT_PATH}`);
     return this.httpClient.post<any>(this.BUSINESS_CONTENT_PATH, businessCreateRequest,
       {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+  }
+
+  getBusinessById(id: string): Observable<any> {
+    const url = `${this.BUSINESS_CONTENT_PATH}/${id}`;
+    return this.httpClient.get<any>(url).pipe(
+      catchError((error) => {
+        console.error('Error fetching business details:', error);
+        throw error;
+      })
+    );
   }
 }

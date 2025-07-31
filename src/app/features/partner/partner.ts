@@ -3,14 +3,14 @@ import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subject, takeUntil} from 'rxjs';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
-import {PartnerRegistrationStepperComponent} from './components/partner-registration-stepper.component';
+import {PartnerRegistrationStepper} from '@app/features/partner/components';
 import {PartnerProfile, PartnerProfileService} from './services/partner-profile.service';
 
 // import {Modal} from '@app/modal/modal';
 
 @Component({
   selector: 'app-partner',
-  imports: [CommonModule, OfferSlider, PartnerRegistrationStepperComponent],
+  imports: [CommonModule, OfferSlider, PartnerRegistrationStepper],
   templateUrl: './partner.html',
   styleUrl: './partner.css'
 })
