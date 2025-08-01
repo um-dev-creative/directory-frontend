@@ -20,6 +20,7 @@ interface PartnerGeneralData {
   partnerName: string;
   partnerVerification?: boolean;
   slug: string;
+  website: string;
   partnerDescription: string;
   partnerImage: string;
   customerServiceEmail: string;
@@ -66,6 +67,7 @@ export class PartnerGeneralSettings implements OnInit {
     partnerName: 'Kwik-E-Mart',
     partnerVerification: false,
     slug: 'nike',
+    website: 'https://www.ejemplo.com',
     partnerDescription: 'Tienda de Conveniencia',
     partnerImage: '',
     customerServiceEmail: 'servicio@ejemplo.com',
@@ -161,16 +163,16 @@ export class PartnerGeneralSettings implements OnInit {
           this.partnerData.partnerDescription = businessDetailResponse.data.description;
           this.partnerData.customerServiceEmail = businessDetailResponse.data.customerServiceEmail || '';
           this.partnerData.orderManagementEmail = businessDetailResponse.data.orderManagementEmail || '';
+          this.partnerData.website = businessDetailResponse.data.website || '';
           this.partnerData.category = businessDetailResponse.data.categoryId || '';
-          this.partnerData.timezone =  '';
+          this.partnerData.timezone =  this.partnerData.timezone || 'UTC'; // Default to UTC if not set
+          this.partnerData.partnerVerification = businessDetailResponse.data.verification || false;
           this.generalForm.patchValue({
             partnerName: this.partnerData.partnerName,
             partnerDescription: this.partnerData.partnerDescription,
-            // TODO - Pending to manage the customer service and order management emails
             customerServiceEmail: this.partnerData.customerServiceEmail,
             orderManagementEmail: this.partnerData.orderManagementEmail,
             category: this.partnerData.category,
-            //TODO -  Pending to manage the timezone
             timezone: this.partnerData.timezone
           });
           this.logInfo('Business details loaded successfully:', this.partnerData);
