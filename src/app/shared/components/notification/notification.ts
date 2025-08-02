@@ -15,7 +15,7 @@ import { NotificationConfig } from '../../../core/services/notification.service'
     >
       <div class="tw-flex tw-items-start tw-justify-between">
         <div class="tw-flex tw-items-start">
-          <div class="tw-flex-shrink-0 tw-mr-3 tw-mt-0.5">
+          <div class="tw-flex-shrink-0 tw-mr-3">
             @switch (config?.type) {
               @case ('success') {
                 <svg class="tw-w-5 tw-h-5 tw-text-success" fill="currentColor" viewBox="0 0 20 20">
