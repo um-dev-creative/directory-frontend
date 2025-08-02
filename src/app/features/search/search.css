@@ -1,0 +1,54 @@
+/* Estilos específicos del componente de búsqueda con marca latinhub */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Mejoras adicionales de UX que no están cubiertas por Tailwind */
+.search-container {
+  position: relative;
+}
+
+/* Animación sutil para el placeholder */
+input::placeholder {
+  transition: color 0.2s ease-in-out;
+}
+
+input:focus::placeholder {
+  color: var(--beige-500);
+}
+
+/* Asegurar que el input tenga buen contraste en diferentes fondos */
+input {
+  color: var(--emerald-800);
+}
+
+input:focus {
+  color: var(--emerald-900);
+}
+
+/* Mejoras de accesibilidad para el botón de limpiar */
+button[aria-label="Limpiar búsqueda"]:focus {
+  outline: 2px solid var(--emerald-500);
+  outline-offset: 2px;
+}
+
+/* Estado de loading (para futuras mejoras) */
+.search-loading::after {
+  content: '';
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--beige-300);
+  border-top: 2px solid var(--emerald-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}

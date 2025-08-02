@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOption } from '@app/components/ui';
 import { InputExamplesComponent } from '@app/components/ui/inputs/input-examples.component';
+import { SearchUsageExampleComponent } from '@app/features/search/search-usage-example';
 
 @Component({
   selector: 'app-inputs-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, TextareaComponent, SelectComponent, Button, InputExamplesComponent],
+  imports: [CommonModule, FormsModule, InputComponent, TextareaComponent, SelectComponent, Button, InputExamplesComponent, SearchUsageExampleComponent],
   template: `
     <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
       <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Inputs</h2>
@@ -739,6 +740,7 @@ import { InputExamplesComponent } from '@app/components/ui/inputs/input-examples
         <app-input-examples></app-input-examples>
       </div>
     </div>
+    <app-search-usage-example></app-search-usage-example>
   `
 })
 export class InputsSectionComponent {
