@@ -17,7 +17,8 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    loadComponent: () => import('./features/auth/auth').then(m => m.Auth)
+    loadComponent: () => import('./features/auth/auth').then(m => m.Auth),
+    data: { hideFooter: true }
   },
   {
     path: 'deals',

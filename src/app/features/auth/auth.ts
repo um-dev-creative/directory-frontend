@@ -10,6 +10,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
 import {LoadingService} from '@app/core/services/loading.service';
 import {NotificationService} from '@app/core/services/notification.service';
+import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 // App Store
 import {loadSession} from '@app/core/store/session/session.action';
 import {SessionData, UserAuth} from '@app/core/store/session/session.state';
@@ -38,18 +39,22 @@ import {AuthPlaceholders} from './models/auth-placeholders.interface';
 // Auth Constants
 import {DEFAULT_COUNTRY_CODE, INITIAL_DROPDOWN_STATE, INITIAL_PLACEHOLDERS} from './auth.constants';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
+import {AlertComponent, Button, SocialLoginButton, SocialProvider} from '@app/components/ui';
 
 /**
  * Component for handling user authentication.
  */
 @Component({
   selector: 'app-auth',
-  imports: [CommonModule, FormsModule, Spinner],
+  imports: [CommonModule, FormsModule, Spinner, AlertComponent, SocialLoginButton, Button, ReportProblem],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class Auth implements OnDestroy, OnInit, AfterViewInit {
+    // Opciones para el componente ReportProblem
+  protected reportProblemOptions: ReportProblemOptions = {};
+  
   // Servicios inyectados
   private readonly authValidationService = inject(AuthValidationService);
   private readonly authFormService = inject(AuthFormService);
@@ -398,6 +403,21 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   togglePasswordVisibility(field: string, passwordField: HTMLInputElement): void {
     this.showPassword = !this.showPassword;
     passwordField.type = this.showPassword ? 'text' : 'password';
+  }
+
+  /**
+   * Handles social login button clicks.
+   * @param provider - The social provider selected.
+   */
+  handleSocialLogin(provider: SocialProvider): void {
+    console.debug(`Social login with ${provider} initiated`);
+    // TODO: Implement social login logic
+    this.notificationService.info(`Social login with ${provider} coming soon!`);
+  }
+
+  onForgotPassword(): void {
+    console.debug('Forgot password clicked');
+    this.notificationService.info('Forgot password functionality is not implemented yet.');
   }
 
   /**

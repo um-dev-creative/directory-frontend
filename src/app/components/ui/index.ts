@@ -1,4 +1,5 @@
 export * from './buttons/button';
+export * from './buttons/social-login-button';
 export * from './icons/icon';
 export * from './inputs/input';
 export * from './inputs/textarea';

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'ghost-alert'| 'alert' | 'success' | 'info' | 'alert-outline';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'ghost-alert'| 'alert' | 'success' | 'info' | 'alert-outline' | 'contrast-light' | 'contrast-outline';
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
@@ -207,6 +207,30 @@ export class Button {
         'hover:tw-shadow-sky-blue-700/50',
         // 'focus:tw-ring-sky-blue-600',
         'active:tw-bg-sky-blue-800',
+        'active:tw-scale-95'
+      ],
+      'contrast-light': [
+        'tw-bg-white',
+        'tw-text-emerald-green-600',
+        'tw-border-transparent',
+        'tw-shadow-lg',
+        'tw-font-bold',
+        'hover:tw-bg-gray-100',
+        'hover:tw-scale-105',
+        'tw-transition-all',
+        'active:tw-bg-gray-200',
+        'active:tw-scale-95'
+      ],
+      'contrast-outline': [
+        'tw-bg-transparent',
+        'tw-text-white',
+        'tw-border-white',
+        'tw-border-2',
+        'tw-font-bold',
+        'hover:tw-bg-white',
+        'hover:tw-text-emerald-green-600',
+        'tw-transition-all',
+        'active:tw-bg-gray-100',
         'active:tw-scale-95'
       ]
     };
