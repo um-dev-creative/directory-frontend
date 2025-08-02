@@ -1,119 +1,48 @@
 <app-spinner [key]="'auth'"></app-spinner>
-<div class="tw-isolate tw-bg-white tw-px-6">
-  <div class="tw-absolute tw-inset-x-0 tw--top-[10rem] tw--z-10 tw-transform-gpu tw-overflow-hidden tw-blur-3xl sm:tw--top-[20rem]" aria-hidden="true">
-    <div class="tw-relative tw-left-1/2 tw--z-10 tw-aspect-[1155/678] tw-w-[36.125rem] tw-max-w-none tw--translate-x-1/2 tw-rotate-[30deg] tw-bg-gradient-to-tr tw-from-sky-500 tw-to-emerald-500 tw-opacity-30 sm:tw-left-[calc(50%-40rem)] sm:tw-w-[72.1875rem]"
-         style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
-    </div>
-  </div>
-  <div class="tw-mx-auto tw-mt-16 tw-max-w-md sm:tw-mtcf-10">
-    <!-- Título -->
-    <div class="tw-text-center">
-      <h2 class="tw-text-xl tw-font-semibold tw-text-gray-900">
-        {{ isRegistering ? 'Únete y descubre lo mejor de nuestra comunidad' : 'Inicia sesión y conecta con todo lo que tenemos para ti' }}
-      </h2>
-    </div>
+<div class="auth-screen tw-min-h-screen tw-bg-gradient-hero tw-relative tw-overflow-hidden">
+  <!-- Decorative background elements -->
+  <div class="tw-absolute tw-inset-0 tw-bg-white/10 tw-backdrop-blur-3xl"></div>
+  <div class="tw-absolute tw-top-0 tw-left-0 tw-w-72 tw-h-72 tw-bg-emerald-green-300/20 tw-rounded-full tw-blur-3xl tw--translate-x-16 tw--translate-y-16"></div>
+  <div class="tw-absolute tw-bottom-0 tw-right-0 tw-w-96 tw-h-96 tw-bg-coral-300/20 tw-rounded-full tw-blur-3xl tw-translate-x-24 tw-translate-y-24"></div>
+  <div class="tw-absolute tw-top-1/2 tw-left-1/4 tw-w-48 tw-h-48 tw-bg-sky-blue-300/15 tw-rounded-full tw-blur-2xl"></div>
+
+  <div class="tw-relative tw-isolate tw-p-6">
+    <div class="tw-mx-auto tw-pt-16 tw-max-w-sm sm:tw-max-w-md lg:tw-max-w-lg xl:tw-max-w-xl">
+      <div class="tw-bg-white/95 tw-backdrop-blur-sm tw-rounded-2xl tw-shadow-lg tw-shadow-emerald-green-500/20 tw-p-4 sm:tw-p-6 lg:tw-p-8 tw-mb-8 tw-border tw-border-white/20">
+      <!-- Título -->
+      <div class="tw-text-center">
+        <h2 class="tw-text-xl tw-font-semibold tw-text-gray-900">
+          {{ isRegistering ? 'Únete y descubre lo mejor de nuestra comunidad' : 'Inicia sesión y conecta con todo lo que tenemos para ti' }}
+        </h2>
+      </div>
     <!-- Botones sociales -->
     @if(isRegistering){
       <div class="tw-space-y-4 tw-pt-6">
-        <button
-          class="tw-w-full tw-h-[42px] tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-md tw-border tw-border-gray-300 tw-px-4 tw-py-2 tw-bg-white tw-text-gray-900 hover:tw-bg-gray-50 hover:tw-border-gray-400 focus:tw-ring-2 focus:tw-ring-indigo-600 focus:tw-ring-offset-2"
-          aria-label="Continue with Google"
-        >
-          <svg
-            class="tw-w-6 tw-h-6"
-            viewBox="0 0 512 512"
-            aria-hidden="true"
-          >
-            <path
-              style="fill:#167EE6;"
-              d="M492.668,211.489l-208.84-0.01c-9.222,0-16.697,7.474-16.697,16.696v66.715
-        c0,9.22,7.475,16.696,16.696,16.696h117.606c-12.878,33.421-36.914,61.41-67.58,79.194L384,477.589
-        c80.442-46.523,128-128.152,128-219.53c0-13.011-0.959-22.312-2.877-32.785C507.665,217.317,500.757,211.489,492.668,211.489z"
-            />
-            <path
-              style="fill:#12B347;"
-              d="M256,411.826c-57.554,0-107.798-31.446-134.783-77.979l-86.806,50.034
-        C78.586,460.443,161.34,512,256,512c46.437,0,90.254-12.503,128-34.292v-0.119l-50.147-86.81
-        C310.915,404.083,284.371,411.826,256,411.826z"
-            />
-            <path
-              style="fill:#0F993E;"
-              d="M384,477.708v-0.119l-50.147-86.81c-22.938,13.303-49.48,21.047-77.853,21.047V512
-        C302.437,512,346.256,499.497,384,477.708z"
-            />
-            <path
-              style="fill:#FFD500;"
-              d="M100.174,256c0-28.369,7.742-54.91,21.043-77.847l-86.806-50.034
-        C12.502,165.746,0,209.444,0,256s12.502,90.254,34.411,127.881l86.806-50.034C107.916,310.91,100.174,284.369,100.174,256z"
-            />
-            <path
-              style="fill:#FF4B26;"
-              d="M256,100.174c37.531,0,72.005,13.336,98.932,35.519c6.643,5.472,16.298,5.077,22.383-1.008
-        l47.27-47.27c6.904-6.904,6.412-18.205-0.963-24.603C378.507,23.673,319.807,0,256,0C161.34,0,78.586,51.557,34.411,128.119
-        l86.806,50.034C148.202,131.62,198.446,100.174,256,100.174z"
-            />
-            <path
-              style="fill:#D93F21;"
-              d="M354.932,135.693c6.643,5.472,16.299,5.077,22.383-1.008l47.27-47.27
-        c6.903-6.904,6.411-18.205-0.963-24.603C378.507,23.672,319.807,0,256,0v100.174C293.53,100.174,328.005,113.51,354.932,135.693z"
-            />
-          </svg>
-          <span class="tw-text-sm tw-font-semibold">Sign up with Google</span>
-        </button>
+        <app-social-login-button
+          provider="google"
+          size="md"
+          mode="signup"
+          [fullWidth]="true"
+          [loading]="false"
+          (socialLogin)="handleSocialLogin($event)">
+        </app-social-login-button>
       </div>
     } @else {
       <div class="tw-space-y-4 tw-pt-6">
-        <button
-          class="tw-w-full tw-h-[42px] tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-md tw-border tw-border-gray-300 tw-px-4 tw-py-2 tw-bg-white tw-text-gray-900 hover:tw-bg-gray-50 focus:tw-ring-2 focus:tw-ring-indigo-600 focus:tw-ring-offset-2"
-          aria-label="Continue with Google"
-        >
-          <svg
-            class="tw-w-6 tw-h-6"
-            viewBox="0 0 512 512"
-            aria-hidden="true"
-          >
-            <path
-              style="fill:#167EE6;"
-              d="M492.668,211.489l-208.84-0.01c-9.222,0-16.697,7.474-16.697,16.696v66.715
-        c0,9.22,7.475,16.696,16.696,16.696h117.606c-12.878,33.421-36.914,61.41-67.58,79.194L384,477.589
-        c80.442-46.523,128-128.152,128-219.53c0-13.011-0.959-22.312-2.877-32.785C507.665,217.317,500.757,211.489,492.668,211.489z"
-            />
-            <path
-              style="fill:#12B347;"
-              d="M256,411.826c-57.554,0-107.798-31.446-134.783-77.979l-86.806,50.034
-        C78.586,460.443,161.34,512,256,512c46.437,0,90.254-12.503,128-34.292v-0.119l-50.147-86.81
-        C310.915,404.083,284.371,411.826,256,411.826z"
-            />
-            <path
-              style="fill:#0F993E;"
-              d="M384,477.708v-0.119l-50.147-86.81c-22.938,13.303-49.48,21.047-77.853,21.047V512
-        C302.437,512,346.256,499.497,384,477.708z"
-            />
-            <path
-              style="fill:#FFD500;"
-              d="M100.174,256c0-28.369,7.742-54.91,21.043-77.847l-86.806-50.034
-        C12.502,165.746,0,209.444,0,256s12.502,90.254,34.411,127.881l86.806-50.034C107.916,310.91,100.174,284.369,100.174,256z"
-            />
-            <path
-              style="fill:#FF4B26;"
-              d="M256,100.174c37.531,0,72.005,13.336,98.932,35.519c6.643,5.472,16.298,5.077,22.383-1.008
-        l47.27-47.27c6.904-6.904,6.412-18.205-0.963-24.603C378.507,23.673,319.807,0,256,0C161.34,0,78.586,51.557,34.411,128.119
-        l86.806,50.034C148.202,131.62,198.446,100.174,256,100.174z"
-            />
-            <path
-              style="fill:#D93F21;"
-              d="M354.932,135.693c6.643,5.472,16.299,5.077,22.383-1.008l47.27-47.27
-        c6.903-6.904,6.411-18.205-0.963-24.603C378.507,23.672,319.807,0,256,0v100.174C293.53,100.174,328.005,113.51,354.932,135.693z"
-            />
-          </svg>
-          <span class="tw-text-sm tw-font-semibold">Continue with Google</span>
-        </button>
+        <app-social-login-button
+          provider="google"
+          size="md"
+          mode="signin"
+          [fullWidth]="true"
+          [loading]="false"
+          (socialLogin)="handleSocialLogin($event)">
+        </app-social-login-button>
       </div>
     }
     <!-- Divider -->
     <div class="tw-flex tw-items-center tw-space-x-2 tw-mt-4 tw-mb-4">
       <div class="tw-flex-1 tw-border-t tw-border-gray-300"></div>
-      <p class="tw-text-sm tw-font-semibold tw-text-gray-500">{{ isRegistering ? 'Or, Create an account with email.' : 'Or, Sign in with email.' }}</p>
+      <p class="tw-text-sm tw-font-semibold tw-text-gray-500">{{ isRegistering ? 'O, crea una cuenta con email.' : 'O, inicia sesión con email.' }}</p>
       <div class="tw-flex-1 tw-border-t tw-border-gray-300"></div>
     </div>
     @if (isRegistering) {
@@ -121,27 +50,27 @@
         <!-- Nombre y Apellido -->
         <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-4">
           <div>
-            <label for="first-name" class="tw-sr-only">First name</label>
+            <label for="first-name" class="tw-sr-only">Nombre</label>
             <input
               type="text"
               id="first-name"
               name="first-name"
               [(ngModel)]="registerData.firstName"
               (ngModelChange)="validateRegistrationForm()"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
-              placeholder="First name"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              placeholder="Nombre"
               required
             />
           </div>
           <div>
-            <label for="last-name" class="tw-sr-only">Last name</label>
+            <label for="last-name" class="tw-sr-only">Apellido</label>
             <input
               type="text"
               id="last-name"
               name="last-name"
               [(ngModel)]="registerData.lastName"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
-              placeholder="Last name"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              placeholder="Apellido"
               (ngModelChange)="validateRegistrationForm()"
               required
             />
@@ -150,13 +79,13 @@
         <!-- Correo Electrónico -->
         <div>
           <div>
-            <label for="email" class="tw-sr-only">Email address</label>
+            <label for="email" class="tw-sr-only">Dirección de correo electrónico</label>
             <input
               type="email"
               id="email"
               name="email"
               [(ngModel)]="registerData.email"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
               [placeholder]="placeholders['email']"
               (focus)="onFocus('email')"
               (blur)="onBlur('email')"
@@ -167,13 +96,13 @@
           <!-- Error Message -->
           @if (!isEmailValid) {
             <div class="tw-text-red-500 tw-text-sm tw-mt-1">
-              Invalid Email Address.
+              Dirección de correo electrónico inválida.
             </div>
           }
         </div>
         <!-- Contraseña -->
         <div>
-          <label for="password" class="tw-sr-only">Password</label>
+          <label for="password" class="tw-sr-only">Contraseña</label>
           <div class="tw-relative">
             <input
               #passwordRegInput
@@ -181,8 +110,8 @@
               id="password"
               name="password"
               [(ngModel)]="registerData.password"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
-              placeholder="Password"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              placeholder="Contraseña"
               (ngModelChange)="validatePassword(); validateRegistrationForm()"
               required
             />
@@ -219,13 +148,13 @@
           </div>
           @if (!isPasswordValid) {
             <div class="tw-text-red-500 tw-text-sm tw-mt-1">
-              Password must be at least 8 characters.
+              La contraseña debe tener al menos 8 caracteres.
             </div>
           }
         </div>
         <!-- Numero de Telefono -->
         <div>
-          <label for="mobile-number" class="tw-sr-only">Mobile Number</label>
+          <label for="mobile-number" class="tw-sr-only">Número de teléfono móvil</label>
           <div class="
           tw-relative
           tw-flex
@@ -235,10 +164,10 @@
           tw-border
           tw-border-gray-300
           hover:tw-border-gray-400
-          focus-within:tw-border-indigo-600
+          focus-within:tw-border-emerald-green-600
           focus-within:tw-ring-1
-          focus-within:tw-ring-indigo-600
-          focus-within:hover:tw-border-indigo-600"
+          focus-within:tw-ring-emerald-green-600
+          focus-within:hover:tw-border-emerald-green-600"
           >
             <div class="tw-relative">
               <button
@@ -282,7 +211,7 @@
                 <li
                   *ngFor="let country of countries; let i = index"
                   [id]="'listbox-option-' + i"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
+                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-emerald-green-600 hover:tw-text-white"
                   role="option"
                   (click)="selectCountry(country)"
                 >
@@ -324,7 +253,7 @@
             <div class="tw-relative">
               <button
                 type="button"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
+                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
                 aria-haspopup="listbox"
                 [attr.aria-expanded]="dropdownState.month"
                 aria-labelledby="month-label"
@@ -360,7 +289,7 @@
               >
                 <li
                   *ngFor="let month of months"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-indigo-600 hover:tw-text-white"
+                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-emerald-green-600 hover:tw-text-white"
                   role="option"
                   (click)="selectMonth(month)"
                 >
@@ -378,7 +307,7 @@
                 id="day"
                 name="day"
                 [(ngModel)]="registerData.birthDay"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
+                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
                 [placeholder]="placeholders['day']"
                 (focus)="onFocus('day')"
                 (blur)="onBlur('day')"
@@ -395,7 +324,7 @@
                 id="year"
                 name="year"
                 [(ngModel)]="registerData.birthYear"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
+                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
                 [placeholder]="placeholders['year']"
                 (focus)="onFocus('year')"
                 (blur)="onBlur('year')"
@@ -423,30 +352,27 @@
             Al hacer clic en el botón de abajo, aceptas y confirmas haber leído nuestros
             <a
               routerLink="['/terms-and-conditions']"
-              class="tw-font-semibold tw-text-indigo-600 hover:tw-underline">
+              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
               Términos y Condiciones
             </a>. Para más detalles sobre cómo usamos la
             información que recopilamos sobre ti, por favor lee nuestra
             <a
               routerLink="['/privacy-policy']"
-              class="tw-font-semibold tw-text-indigo-600 hover:tw-underline">
+              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
               Política de Privacidad
             </a>.
           </p>
         </div>
         <!-- Botón de Registro -->
         <div>
-          <button
-            type="submit"type="submit"
-            [disabled]="!isRegistrationFormValid"
-            [ngClass]="{
-              'tw-bg-blue-500 hover:tw-bg-blue-600 tw-shadow-sm tw-shadow-indigo-500/40': isRegistrationFormValid,
-              'tw-bg-gray-400 hover:tw-bg-gray-400': !isRegistrationFormValid
-            }"
-            class="tw-h-[42px] tw-flex tw-items-center tw-justify-center tw-w-full tw-rounded-md tw-bg-blue-500 tw-px-3.5 tw-py-2.5 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-600 focus-visible:tw-outline focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
-          >
-            Create an account
-          </button>
+          <app-button
+            type="submit"
+            variant="primary"
+            size="md"
+            [fullWidth]="true"
+            [disabled]="!isRegistrationFormValid">
+            Crear cuenta
+          </app-button>
         </div>
       </form>
     } @else {
@@ -454,14 +380,13 @@
       <form (submit)="onSubmit()" #loginForm="ngForm" class="tw-space-y-4">
         <div>
           @if (this.isErrorFound) {
-            <div class="tw-bg-yellow-100 tw-p-4 tw-rounded-md tw-border tw-border-orange-300">
-              <svg class="tw-w-6 tw-h-6 tw-text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                   viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 9v2m0 4h.01M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/>
-              </svg>
-              <p class="tw-text-center tw-text-red-500">Error: Usuario y/o clave incorrecto.</p>
-            </div>
+            <app-alert
+              variant="error"
+              size="md"
+              description="Usuario y/o clave incorrecto."
+              [dismissible]="true"
+              (dismiss)="isErrorFound = false">
+            </app-alert>
           }
           <div class="tw-mt-1">
             <input
@@ -470,8 +395,8 @@
               type="email"
               [(ngModel)]="loginData.email"
               required
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
-              placeholder="Enter your email"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              placeholder="Ingresa tu correo electrónico"
             />
           </div>
         </div>
@@ -484,8 +409,8 @@
               type="password"
               [(ngModel)]="loginData.password"
               required
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-indigo-600 focus:tw-ring-1 focus:tw-ring-indigo-600 focus:tw-outline-none"
-              placeholder="Enter your password"
+              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              placeholder="Ingresa tu contraseña"
             />
             <button
               type="button"
@@ -520,51 +445,69 @@
           </div>
         </div>
         <div class="tw-flex tw-justify-end">
-          <a href="#" class="tw-text-sm tw-text-indigo-600 hover:tw-underline">Forgot password?</a>
+          <button
+            type="button"
+            class="tw-text-sm tw-text-emerald-green-600 hover:tw-underline"
+            (click)="onForgotPassword()">
+            ¿Olvidaste tu contraseña?
+          </button>
         </div>
         <div class="tw-mt-4 tw-text-center tw-text-xs tw-text-gray-600">
           <p>
             Al iniciar sesión, aceptas los
             <a
               routerLink="['/terms-and-conditions']"
-              class="tw-font-semibold tw-text-indigo-600 hover:tw-underline">
+              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
               Términos y Condiciones
             </a>
             y la
             <a
               routerLink="['/privacy-policy']"
-              class="tw-font-semibold tw-text-indigo-600 hover:tw-underline">
+              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
               Política de Privacidad
             </a>
             de Latinhub.
           </p>
         </div>
         <div>
-          <button
+          <app-button
             type="submit"
-            class="tw-h-[42px] tw-flex tw-items-center tw-justify-center tw-w-full tw-rounded-md tw-shadow-indigo-500/40 tw-bg-blue-500 tw-px-3.5 tw-py-2.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-blue-600 focus-visible:tw-outline focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
-            [disabled]="!loginForm.form.valid"
-          >
-            Sign In
-          </button>
+            variant="primary"
+            size="md"
+            [fullWidth]="true"
+            [disabled]="!loginForm.form.valid">
+            Iniciar sesión
+          </app-button>
         </div>
       </form>
     }
     <!-- Enlace para registro -->
     <div class="tw-flex tw-justify-center tw-mt-4 tw-text-sm tw-text-gray-600">
-      @if (!isRegistering) { <div class="tw-text-sm tw-font-semibold tw-pb-4">or</div> }
+      @if (!isRegistering) { <div class="tw-text-sm tw-font-semibold tw-pb-4">o</div> }
     </div>
     <div class="tw-text-center tw-text-gray-600">
       @if (isRegistering) {
-        Already have an account? <a (click)="toggleForm()" class="tw-font-semibold tw-text-indigo-600 hover:tw-underline">Sign In</a>
+        ¿Ya tienes una cuenta? <a (click)="toggleForm()" class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">Iniciar sesión</a>
           } @else {
-        <a
-          class="tw-h-[42px] tw-block tw-w-full tw-text-center tw-rounded-md tw-border tw-border-gray-300 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 hover:tw-bg-gray-50 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-600 focus:tw-ring-offset-2"
-          (click)="toggleForm()"
-        >
-          Create an account
-        </a>
+        <app-button
+          variant="outline"
+          size="md"
+          [fullWidth]="true"
+          (buttonClick)="toggleForm()">
+          Crear una cuenta
+        </app-button>
       }
     </div>
   </div>
-</div>
+  <!-- Support Section -->
+  <div class="tw-text-center tw-pt-6 tw-mt-8">
+  <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con tu cuenta?</p>
+    <app-report-problem
+      [options]="reportProblemOptions"
+      variant="link"
+      size="sm"
+      [showIcon]="true"
+      text="Reportar un problema">
+    </app-report-problem>
+  </div>
+  </div>

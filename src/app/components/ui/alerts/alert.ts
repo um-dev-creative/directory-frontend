@@ -156,7 +156,7 @@ export class AlertComponent {
   }
 
   get descriptionClasses(): string {
-    const baseClasses = 'tw-mt-1';
+    const baseClasses = this.title ? 'tw-mt-1' : 'tw-mt-0';
     const sizeClasses = this.size === 'sm' ? 'tw-text-xs' : 'tw-text-sm';
     const colorClasses = this.getDescriptionColorClasses();
 

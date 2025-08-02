@@ -1,1 +1,14 @@
 /* Archivo limpio - Los estilos del spinner ahora están en el componente Spinner */
+
+/* Esconder scrollbar en toda la pantalla de auth */
+.auth-screen {
+  /* Firefox */
+  scrollbar-width: none;
+  
+  /* Chrome, Safari, Edge */
+  -ms-overflow-style: none;
+}
+
+.auth-screen::-webkit-scrollbar {
+  display: none;
+}
