@@ -89,7 +89,7 @@ import {NotificationService} from '@core/services/notification.service';
     </form>
   `
 })
-export class PartnerStepOneComponent implements OnInit {
+export class PartnerStepOne implements OnInit {
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
@@ -164,6 +164,7 @@ export class PartnerStepOneComponent implements OnInit {
                 sessionTokenBkd: response.data?.token ?? this.sessionData?.userAuth?.sessionTokenBkd,
                 authorization: this.sessionData?.userAuth?.authorization??'',
                 features: this.sessionData?.userAuth?.features ?? [],
+                businesses: this.sessionData?.userAuth?.businesses ?? []
               },
               token: this.sessionData?.token ?? '',
             };

@@ -28,7 +28,8 @@ export class DirectoryFrontendConst {
     STAGE_PATH: '/stage',
     STAGE_UI_PATH: 'stage',
     ASSETS_i18_PATH: '/assets/i18n/',
-    CATEGORY_PATH: '/categories'
+    CATEGORY_PATH: '/categories',
+    TIMEZONE_PATH: '/timezones'
   };
 
   /**

@@ -7,27 +7,27 @@ Esta carpeta contiene todos los componentes relacionados con la funcionalidad de
 ```
 components/
 ├── index.ts                               # Exportaciones principales
-├── partner-registration-stepper.component.ts  # Componente principal de registro
-├── partner-settings.component.*          # Componente principal de configuración
+├── partner-registration-stepper.ts  # Componente principal de registro
+├── partner-settings.*          # Componente principal de configuración
 ├── registration/                          # Componentes de registro (para futura expansión)
 ├── settings/                             # Componentes de configuración
 │   ├── general/                          # Configuración general
 │   │   ├── index.ts
-│   │   ├── partner-general-settings.component.ts
-│   │   ├── partner-general-settings.component.html
-│   │   └── partner-general-settings.component.css
+│   │   ├── partner-general-settings.ts
+│   │   ├── partner-general-settings.html
+│   │   └── partner-general-settings.css
 │   ├── offers/                           # Configuración de ofertas
 │   │   ├── index.ts
-│   │   └── partner-offers-settings.component.ts
+│   │   └── partner-offers-settings.ts
 │   ├── products/                         # Configuración de productos
 │   │   ├── index.ts
-│   │   └── partner-products-settings.component.ts
+│   │   └── partner-products-settings.ts
 │   └── index.ts                          # Exportaciones de settings
 └── steps/                                # Pasos del registro
     ├── index.ts
-    ├── partner-step-one.component.ts
-    ├── partner-step-two.component.ts
-    └── partner-step-three.component.ts
+    ├── partner-step-one.ts
+    ├── partner-step-two.ts
+    └── partner-step-three.ts
 ```
 
 ## Importaciones
@@ -35,26 +35,26 @@ components/
 ### Componentes principales
 ```typescript
 import { 
-  PartnerRegistrationStepperComponent,
-  PartnerSettingsComponent
+  PartnerRegistrationStepper,
+  PartnerSettings
 } from '@app/features/partner/components';
 ```
 
 ### Componentes de configuración
 ```typescript
 import { 
-  PartnerGeneralSettingsComponent,
-  PartnerOffersSettingsComponent,
-  PartnerProductsSettingsComponent
+  PartnerGeneralSettings,
+  PartnerOffersSettings,
+  PartnerProductsSettings
 } from '@app/features/partner/components';
 ```
 
 ### Pasos de registro
 ```typescript
 import { 
-  PartnerStepOneComponent,
-  PartnerStepTwoComponent,
-  PartnerStepThreeComponent
+  PartnerStepOne,
+  PartnerStepTwo,
+  PartnerStepThree
 } from '@app/features/partner/components';
 ```
 

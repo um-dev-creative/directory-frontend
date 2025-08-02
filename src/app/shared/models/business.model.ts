@@ -15,3 +15,17 @@ export interface BusinessCreateResponse {
   createdDate: string,
   updatedDate: string
 }
+
+export interface BusinessDetailResponse {
+  id: string,
+  name: string,
+  description: string,
+  userId: string,
+  categoryId: string,
+  email: string | null,
+  customerServiceEmail: string | null,
+  orderManagementEmail: string | null,
+  website: string,
+  createdDate: string,
+  updatedDate: string
+}

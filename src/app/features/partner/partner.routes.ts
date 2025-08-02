@@ -9,19 +9,19 @@ export const partnerRoutes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () => import('./components/partner-registration-stepper.component').then(m => m.PartnerRegistrationStepperComponent),
+    loadComponent: () => import('./components/partner-registration-stepper').then(m => m.PartnerRegistrationStepper),
     data: { hideFooter: true }
   },
   {
     path: 'settings',
-    loadComponent: () => import('./components/partner-settings.component').then(m => m.PartnerSettingsComponent),
+    loadComponent: () => import('./components/partner-settings').then(m => m.PartnerSettings),
     canActivate: [authGuard],
     canActivateChild: [authGuardChild],
     data: { hideFooter: true }
   },
   {
     path: 'settings/general',
-    loadComponent: () => import('./components/settings/general/partner-general-settings.component').then(m => m.PartnerGeneralSettingsComponent),
+    loadComponent: () => import('./components/settings/general/partner-general-settings').then(m => m.PartnerGeneralSettings),
     canActivate: [authGuard],
     data: { hideFooter: true }
   },
