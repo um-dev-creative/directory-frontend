@@ -7,13 +7,14 @@ import {TextareaComponent} from '@app/components/ui/inputs/textarea';
 import {SelectComponent} from '@app/components/ui/inputs/select';
 import {IconComponent} from '@app/components/ui/icons/icon';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
-import {PartnerCategory, PartnerCategoryService, Timezone, TimezoneService} from '@app/core/services';
-import {CategoryClient} from '@core/services/category/category-client.service';
+import {PartnerCategoryService, TimezoneService} from '@app/core/services';
+import {CategoryClient} from '@core/services/category/category.client';
 import {BusinessClient} from '@app/core/services/business/business.client';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {SessionData, SessionState} from '@core/store/session/session.state';
 import {Store} from '@ngrx/store';
+import {TimezoneClient} from '@core/services/timezone/timezone.client';
 
 
 interface PartnerGeneralData {
@@ -41,9 +42,11 @@ export class PartnerGeneralSettings implements OnInit {
   isSubmitting = false;
   uploadingImage = false;
   imagePreview: string | null = null;
-  categories: PartnerCategory[] = [];
+  // categories: PartnerCategory[] = [];
+  categories: { value: string; label: string }[] = [];
+  timezones: { value: string; label: string }[] = [];
   loadingCategories = false;
-  timezones: Timezone[] = [];
+  // timezones: Timezone[] = [];
   /** * Indicates if timezones are currently being loaded */
   loadingTimezones = false;
   /** * Unique identifier for the business, replace with actual business ID */
@@ -81,7 +84,8 @@ export class PartnerGeneralSettings implements OnInit {
 
   /** Store for session state */
   private readonly store: Store<{ session: SessionState }> = inject(Store);
-  private readonly categoryClient: CategoryClient  = inject(CategoryClient);
+  private readonly categoryClient: CategoryClient = inject(CategoryClient);
+  private readonly timezoneClient: TimezoneClient = inject(TimezoneClient);
   private readonly partnerCategoryService: PartnerCategoryService = inject(PartnerCategoryService);
   private readonly timezoneService: TimezoneService = inject(TimezoneService);
   private readonly businessClient: BusinessClient = inject(BusinessClient);
@@ -113,17 +117,21 @@ export class PartnerGeneralSettings implements OnInit {
     this.logInfo('PartnerGeneralSettings ngOnInit - sessionData:', this.sessionData);
     this.loadCategories();
     this.loadTimezones();
-    if(this.sessionData) {
+    if (this.sessionData) {
       this.loadBusinessDetails(this.sessionData.userAuth.businesses[0]);
     }
     this.logInfo('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
+  }
+
+  private loadTimezoneData(): void {
+
   }
 
   private loadCategories(): void {
     this.loadingCategories = true;
     this.categoryClient.getCategories().pipe(takeUntil(this.destroy$)).subscribe({
       next: (getCategoryResponse) => {
-        if(getCategoryResponse.headers.status === 200 && getCategoryResponse.data.length > 0) {
+        if (getCategoryResponse.headers.status === 200 && getCategoryResponse.data.length > 0) {
           this.categories = getCategoryResponse.data
             .sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name))
             .map((category: any) => ({value: category.id, label: category.name}));
@@ -139,9 +147,12 @@ export class PartnerGeneralSettings implements OnInit {
 
   private loadTimezones(): void {
     this.loadingTimezones = true;
-    this.timezoneService.getTimezones().subscribe({
-      next: (timezones) => {
-        this.timezones = timezones;
+    this.timezoneClient.getTimezones().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (timezonesResponse) => {
+        if (timezonesResponse.headers.status === 200 && timezonesResponse.data.total > 0) {
+          this.timezones = timezonesResponse.data.timezones.sort((a: {name: string}, b: {name: string}) => a.name.localeCompare(b.name))
+            .map((timezone: any) => ({value: timezone.id, label: timezone.name}));
+        }
         this.loadingTimezones = false;
       },
       error: (error) => {
@@ -158,15 +169,15 @@ export class PartnerGeneralSettings implements OnInit {
 
     this.businessClient.getBusinessById(businessId).subscribe({
       next: (businessDetailResponse) => {
-        if(businessDetailResponse && businessDetailResponse.headers.status === 200) {
+        if (businessDetailResponse && businessDetailResponse.headers.status === 200) {
           this.partnerData.partnerName = businessDetailResponse.data.name;
           this.partnerData.partnerDescription = businessDetailResponse.data.description;
           this.partnerData.customerServiceEmail = businessDetailResponse.data.customerServiceEmail || '';
           this.partnerData.orderManagementEmail = businessDetailResponse.data.orderManagementEmail || '';
           this.partnerData.website = businessDetailResponse.data.website || '';
           this.partnerData.category = businessDetailResponse.data.categoryId || '';
-          this.partnerData.timezone =  this.partnerData.timezone || 'UTC'; // Default to UTC if not set
-          this.partnerData.partnerVerification = businessDetailResponse.data.verification || false;
+          this.partnerData.timezone = businessDetailResponse.data.timezoneId || 'UTC'; // Default to UTC if not set
+          this.partnerData.partnerVerification = businessDetailResponse.data.verified || false;
           this.generalForm.patchValue({
             partnerName: this.partnerData.partnerName,
             partnerDescription: this.partnerData.partnerDescription,
@@ -179,7 +190,7 @@ export class PartnerGeneralSettings implements OnInit {
         } else {
           this.logError('Failed to load business details:', businessDetailResponse);
         }
-          this.loadingBusinessDetails = false;
+        this.loadingBusinessDetails = false;
       },
       error: (error) => {
         console.error('Error loading business details:', error);
