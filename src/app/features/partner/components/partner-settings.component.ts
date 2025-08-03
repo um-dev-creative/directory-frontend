@@ -15,7 +15,8 @@ interface SettingsOption {
   selector: 'app-partner-settings',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './partner-settings.component.html'
+  templateUrl: './partner-settings.component.html',
+  styleUrls: ['./partner-settings.component.css']
 })
 export class PartnerSettingsComponent {
   settingsOptions: SettingsOption[] = [
@@ -63,78 +64,78 @@ export class PartnerSettingsComponent {
   }
 
   getCardClasses(option: SettingsOption): string {
-    const baseClasses = this.getCardColorClasses(option.color);
+    const colorClass = this.getCardColorClass(option.color);
     if (option.disabled) {
-      return `${baseClasses} tw-opacity-60 tw-cursor-not-allowed tw-pointer-events-none tw-bg-gray-100`;
+      return `${colorClass} settings-card--disabled`;
     }
-    return baseClasses;
+    return colorClass;
   }
 
   getIconClasses(option: SettingsOption): string {
-    const baseIconClasses = this.getIconColorClasses(option.color);
+    const colorClass = this.getIconColorClass(option.color);
     if (option.disabled) {
-      return 'tw-bg-gray-200 tw-text-gray-400';
+      return 'settings-icon--disabled';
     }
-    return baseIconClasses;
+    return colorClass;
   }
 
   getTitleClasses(option: SettingsOption): string {
     if (option.disabled) {
-      return 'tw-text-gray-400';
+      return 'settings-text-title--disabled';
     }
-    return 'tw-text-emerald-green-800 group-hover:tw-text-emerald-green-900';
+    return '';
   }
 
   getDescriptionClasses(option: SettingsOption): string {
     if (option.disabled) {
-      return 'tw-text-gray-400';
+      return 'settings-text-description--disabled';
     }
-    return 'tw-text-emerald-green-600 group-hover:tw-text-emerald-green-700';
+    return '';
   }
 
   getArrowClasses(option: SettingsOption): string {
     if (option.disabled) {
-      return 'tw-text-gray-400';
+      return 'settings-arrow--disabled';
     }
-    return this.getArrowColorClasses(option.color);
+    return this.getArrowColorClass(option.color);
   }
 
-  private getCardColorClasses(color: string): string {
+  private getCardColorClass(color: string): string {
     switch (color) {
       case 'emerald':
-        return 'tw-border-emerald-green-500 hover:tw-bg-gradient-to-br hover:tw-from-emerald-green-50 hover:tw-to-white focus:tw-ring-2 focus:tw-ring-emerald-green-500';
+        return 'settings-card--emerald';
       case 'coral':
-        return 'tw-border-coral-500 hover:tw-bg-gradient-to-br hover:tw-from-coral-50 hover:tw-to-white focus:tw-ring-2 focus:tw-ring-coral-500';
+        return 'settings-card--coral';
       case 'sky':
-        return 'tw-border-sky-blue-400 hover:tw-bg-gradient-to-br hover:tw-from-sky-blue-50 hover:tw-to-white focus:tw-ring-2 focus:tw-ring-sky-blue-400';
+        return 'settings-card--sky';
       default:
-        return 'tw-border-gray-300 hover:tw-bg-gray-50 focus:tw-ring-2 focus:tw-ring-gray-300';
-    }
-  }
-
-  private getIconColorClasses(color: string): string {
-    switch (color) {
-      case 'emerald':
-        return 'tw-bg-emerald-green-100 tw-text-emerald-green-700 group-hover:tw-bg-emerald-green-200';
-      case 'coral':
-        return 'tw-bg-coral-100 tw-text-coral-700 group-hover:tw-bg-coral-200';
-      case 'sky':
-        return 'tw-bg-sky-blue-100 tw-text-sky-blue-700 group-hover:tw-bg-sky-blue-200';
-      default:
-        return 'tw-bg-gray-100 tw-text-gray-700 group-hover:tw-bg-gray-200';
+        return '';
     }
   }
 
-  private getArrowColorClasses(color: string): string {
+  private getIconColorClass(color: string): string {
     switch (color) {
       case 'emerald':
-        return 'tw-text-emerald-green-400 group-hover:tw-text-emerald-green-600';
+        return 'settings-icon--emerald';
       case 'coral':
-        return 'tw-text-coral-400 group-hover:tw-text-coral-600';
+        return 'settings-icon--coral';
       case 'sky':
-        return 'tw-text-sky-blue-400 group-hover:tw-text-sky-blue-600';
+        return 'settings-icon--sky';
       default:
-        return 'tw-text-gray-400 group-hover:tw-text-gray-600';
+        return '';
+    }
+  }
+
+  private getArrowColorClass(color: string): string {
+    switch (color) {
+      case 'emerald':
+        return 'settings-arrow--emerald';
+      case 'coral':
+        return 'settings-arrow--coral';
+      case 'sky':
+        return 'settings-arrow--sky';
+      default:
+        return '';
     }
   }
 }
