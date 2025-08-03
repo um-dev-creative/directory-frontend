@@ -36,42 +36,24 @@
   @apply tw-shadow-xl tw--translate-y-1;
 }
 
-/* Card Color Variants */
+/* Card Color Variants - Consolidated */
 .settings-card--emerald {
   @apply tw-border-emerald-green-500;
 }
-
-.settings-card--emerald:hover {
-  @apply tw-bg-gradient-to-br tw-from-emerald-green-50 tw-to-white;
-}
-
-.settings-card--emerald:focus {
-  @apply tw-ring-2 tw-ring-emerald-green-500;
-}
-
 .settings-card--coral {
   @apply tw-border-coral-500;
 }
-
-.settings-card--coral:hover {
-  @apply tw-bg-gradient-to-br tw-from-coral-50 tw-to-white;
-}
-
-.settings-card--coral:focus {
-  @apply tw-ring-2 tw-ring-coral-500;
-}
-
 .settings-card--sky {
   @apply tw-border-sky-blue-400;
 }
 
-.settings-card--sky:hover {
-  @apply tw-bg-gradient-to-br tw-from-sky-blue-50 tw-to-white;
-}
+.settings-card--emerald:hover { @apply tw-bg-gradient-to-br tw-from-emerald-green-50 tw-to-white; }
+.settings-card--coral:hover { @apply tw-bg-gradient-to-br tw-from-coral-50 tw-to-white; }
+.settings-card--sky:hover { @apply tw-bg-gradient-to-br tw-from-sky-blue-50 tw-to-white; }
 
-.settings-card--sky:focus {
-  @apply tw-ring-2 tw-ring-sky-blue-400;
-}
+.settings-card--emerald:focus { @apply tw-ring-2 tw-ring-emerald-green-500; }
+.settings-card--coral:focus { @apply tw-ring-2 tw-ring-coral-500; }
+.settings-card--sky:focus { @apply tw-ring-2 tw-ring-sky-blue-400; }
 
 /* Disabled Card State */
 .settings-card--disabled {
@@ -92,100 +74,50 @@
   @apply tw-w-7 tw-h-7;
 }
 
-/* Icon Color Variants */
+/* Icon Color Variants - Consolidated */
 .settings-icon--emerald {
   @apply tw-bg-emerald-green-100 tw-text-emerald-green-700;
 }
-
-.tw-group:hover .settings-icon--emerald {
-  @apply tw-bg-emerald-green-200;
-}
-
 .settings-icon--coral {
   @apply tw-bg-coral-100 tw-text-coral-700;
 }
-
-.tw-group:hover .settings-icon--coral {
-  @apply tw-bg-coral-200;
-}
-
 .settings-icon--sky {
   @apply tw-bg-sky-blue-100 tw-text-sky-blue-700;
 }
 
-.tw-group:hover .settings-icon--sky {
-  @apply tw-bg-sky-blue-200;
-}
+.tw-group:hover .settings-icon--emerald { @apply tw-bg-emerald-green-200; }
+.tw-group:hover .settings-icon--coral { @apply tw-bg-coral-200; }
+.tw-group:hover .settings-icon--sky { @apply tw-bg-sky-blue-200; }
 
 /* Disabled Icon State */
 .settings-icon--disabled {
   @apply tw-bg-gray-200 tw-text-gray-400;
 }
 
-/* Text Content */
-.settings-text {
-  @apply tw-flex-1;
-}
-
+/* Text Content - Consolidated */
+.settings-text { @apply tw-flex-1; }
 .settings-text-title {
   @apply tw-text-xl tw-font-semibold tw-mb-2 tw-transition-colors tw-duration-300 tw-text-emerald-green-800;
 }
-
-.tw-group:hover .settings-text-title {
-  @apply tw-text-emerald-green-900;
-}
-
-.settings-text-title--disabled {
-  @apply tw-text-gray-400;
-}
-
 .settings-text-description {
   @apply tw-text-sm tw-transition-colors tw-duration-300 tw-text-emerald-green-600;
 }
 
-.tw-group:hover .settings-text-description {
-  @apply tw-text-emerald-green-700;
-}
+.tw-group:hover .settings-text-title { @apply tw-text-emerald-green-900; }
+.tw-group:hover .settings-text-description { @apply tw-text-emerald-green-700; }
 
-.settings-text-description--disabled {
-  @apply tw-text-gray-400;
-}
+.settings-text-title--disabled,
+.settings-text-description--disabled { @apply tw-text-gray-400; }
 
-/* Arrow Icon */
-.settings-arrow {
-  @apply tw-flex-shrink-0 tw-transition-all tw-duration-300;
-}
+/* Arrow Icon - Consolidated */
+.settings-arrow { @apply tw-flex-shrink-0 tw-transition-all tw-duration-300; }
+.tw-group:hover .settings-arrow { @apply tw-translate-x-1; }
 
-.tw-group:hover .settings-arrow {
-  @apply tw-translate-x-1;
-}
+.settings-arrow--emerald { @apply tw-text-emerald-green-400; }
+.settings-arrow--coral { @apply tw-text-coral-400; }
+.settings-arrow--sky { @apply tw-text-sky-blue-400; }
+.settings-arrow--disabled { @apply tw-text-gray-400; }
 
-/* Arrow Color Variants */
-.settings-arrow--emerald {
-  @apply tw-text-emerald-green-400;
-}
-
-.tw-group:hover .settings-arrow--emerald {
-  @apply tw-text-emerald-green-600;
-}
-
-.settings-arrow--coral {
-  @apply tw-text-coral-400;
-}
-
-.tw-group:hover .settings-arrow--coral {
-  @apply tw-text-coral-600;
-}
-
-.settings-arrow--sky {
-  @apply tw-text-sky-blue-400;
-}
-
-.tw-group:hover .settings-arrow--sky {
-  @apply tw-text-sky-blue-600;
-}
-
-/* Disabled Arrow State */
-.settings-arrow--disabled {
-  @apply tw-text-gray-400;
-}
+.tw-group:hover .settings-arrow--emerald { @apply tw-text-emerald-green-600; }
+.tw-group:hover .settings-arrow--coral { @apply tw-text-coral-600; }
+.tw-group:hover .settings-arrow--sky { @apply tw-text-sky-blue-600; }

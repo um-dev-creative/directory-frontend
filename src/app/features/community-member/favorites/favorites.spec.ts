@@ -1,24 +1,41 @@
+/// <reference types="jasmine" />
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
-import { Favorites } from './favorites';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { Favorites, FavoriteType, FavoriteItem } from './favorites';
+import { FavoritesService } from './services';
 
 describe('Favorites', () => {
   let component: Favorites;
   let fixture: ComponentFixture<Favorites>;
+  let favoritesService: jasmine.SpyObj<FavoritesService>;
 
   beforeEach(async () => {
+    const spy = jasmine.createSpyObj('FavoritesService', ['getFavorites', 'removeFromFavorites']);
+
     await TestBed.configureTestingModule({
       imports: [
         Favorites,
         RouterTestingModule,
-        FormsModule
+        FormsModule,
+        HttpClientTestingModule
+      ],
+      providers: [
+        { provide: FavoritesService, useValue: spy }
       ]
-    })
-    .compileComponents();
-    
+    }).compileComponents();
+
     fixture = TestBed.createComponent(Favorites);
     component = fixture.componentInstance;
+    favoritesService = TestBed.inject(FavoritesService) as jasmine.SpyObj<FavoritesService>;
+
+    // Setup default spy returns
+    favoritesService.getFavorites.and.returnValue(of([]));
+    favoritesService.removeFromFavorites.and.returnValue(of(true));
+
     fixture.detectChanges();
   });
 
@@ -27,8 +44,19 @@ describe('Favorites', () => {
   });
 
   it('should load favorites on init', () => {
+    const mockFavorites: FavoriteItem[] = [
+      {
+        id: '1',
+        type: 'offer',
+        title: 'Test Offer',
+        description: 'Test Description',
+        dateAdded: new Date()
+      }
+    ];
+
+    favoritesService.getFavorites.and.returnValue(of(mockFavorites));
     component.ngOnInit();
-    expect(component.isLoading).toBeTruthy();
+    expect(favoritesService.getFavorites).toHaveBeenCalled();
   });
 
   it('should filter favorites by type', () => {
@@ -48,8 +76,8 @@ describe('Favorites', () => {
         dateAdded: new Date()
       }
     ];
-    
-    component.setFilter('offer' as any);
+
+    component.setFilter(FavoriteType.OFFERS);
     expect(component.filteredFavorites.length).toBe(1);
     expect(component.filteredFavorites[0].type).toBe('offer');
   });
@@ -71,14 +99,14 @@ describe('Favorites', () => {
         dateAdded: new Date()
       }
     ];
-    
+
     component.searchTerm = 'pizza';
     component.onSearchChange();
     expect(component.filteredFavorites.length).toBe(1);
     expect(component.filteredFavorites[0].title.toLowerCase()).toContain('pizza');
   });
 
-  it('should remove favorite item', () => {
+  it('should remove favorite item via service', () => {
     component.favorites = [
       {
         id: '1',
@@ -88,9 +116,10 @@ describe('Favorites', () => {
         dateAdded: new Date()
       }
     ];
-    
+
+    favoritesService.removeFromFavorites.and.returnValue(of(true));
     component.removeFavorite('1');
-    expect(component.favorites.length).toBe(0);
+    expect(favoritesService.removeFromFavorites).toHaveBeenCalledWith('1');
   });
 
   it('should get correct favorite count', () => {
@@ -110,9 +139,9 @@ describe('Favorites', () => {
         dateAdded: new Date()
       }
     ];
-    
-    expect(component.getFavoriteCount('all' as any)).toBe(2);
-    expect(component.getFavoriteCount('offer' as any)).toBe(1);
-    expect(component.getFavoriteCount('product' as any)).toBe(1);
+
+    expect(component.getFavoriteCount(FavoriteType.ALL)).toBe(2);
+    expect(component.getFavoriteCount(FavoriteType.OFFERS)).toBe(1);
+    expect(component.getFavoriteCount(FavoriteType.PRODUCTS)).toBe(1);
   });
 });

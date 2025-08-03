@@ -38,8 +38,8 @@
       <button
         *ngFor="let filter of [FavoriteType.ALL, FavoriteType.OFFERS, FavoriteType.PRODUCTS, FavoriteType.BUSINESSES]"
         (click)="setFilter(filter)"
-        [class]="activeFilter === filter 
-          ? 'tw-bg-emerald-green-600 tw-text-white' 
+        [class]="activeFilter === filter
+          ? 'tw-bg-emerald-green-600 tw-text-white'
           : 'tw-bg-white tw-text-emerald-green-600 tw-border tw-border-emerald-green-300 hover:tw-bg-emerald-green-50'"
         class="tw-px-4 tw-py-2 tw-rounded-full tw-font-medium tw-transition-colors tw-duration-200"
       >
@@ -95,7 +95,7 @@
 
         <!-- Type Badge -->
         <div class="tw-absolute tw-top-3 tw-left-3">
-          <span 
+          <span
             [class]="getTypeBadgeClass(item.type)"
             class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-rounded-full"
           >

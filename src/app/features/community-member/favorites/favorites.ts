@@ -73,11 +73,11 @@ export class Favorites implements OnInit, OnDestroy {
   isLoading = true;
   favorites: FavoriteItem[] = [];
   filteredFavorites: FavoriteItem[] = [];
-  
+
   // Filters
   activeFilter: FavoriteType = FavoriteType.ALL;
   searchTerm = '';
-  
+
   // Enums for template
   FavoriteType = FavoriteType;
 
@@ -97,7 +97,7 @@ export class Favorites implements OnInit, OnDestroy {
    */
   loadFavorites(): void {
     this.isLoading = true;
-    
+
     this.favoritesService.getFavorites()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -127,7 +127,7 @@ export class Favorites implements OnInit, OnDestroy {
     // Filter by search term
     if (this.searchTerm.trim()) {
       const searchLower = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.title.toLowerCase().includes(searchLower) ||
         item.description.toLowerCase().includes(searchLower) ||
         (item.businessName && item.businessName.toLowerCase().includes(searchLower))
