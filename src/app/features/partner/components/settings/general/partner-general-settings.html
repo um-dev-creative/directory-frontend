@@ -36,7 +36,7 @@
       <div class="tw-flex tw-gap-2 tw-flex-row tw-w-full tw-max-w-80 tw-justify-center tw-items-center">
         <app-button
           type="button"
-          variant="secondary"
+          variant="contrast-light"
           size="sm"
           [disabled]="uploadingImage"
           (buttonClick)="imageInput.click()">
@@ -49,7 +49,7 @@
 
         <app-button
           type="button"
-          variant="alert"
+          variant="contrast-outline"
           size="sm"
           (buttonClick)="viewPartner()">
           Ver mi página
@@ -63,7 +63,6 @@
         <!-- Partner Details -->
         <div class="tw-space-y-6">
           <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700 tw-mb-6">Detalles del Negocio</h3>
-
           <app-input
             label="Nombre del Negocio"
             placeholder="Nombre de tu negocio"

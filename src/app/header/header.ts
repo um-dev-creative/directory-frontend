@@ -23,7 +23,7 @@ import {DFC} from '@app/shared/constants/app.const';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
-import {Search} from '@app/search/search';
+import {Search} from '@app/features/search/search';
 import { Button, Avatar } from '@app/components/ui';
 import {AuthClient} from '@app/features/auth/auth.client';
 

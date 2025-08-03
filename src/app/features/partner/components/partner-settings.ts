@@ -62,4 +62,80 @@ export class PartnerSettings {
       this.navigateToOption(option.route);
     }
   }
+
+  getCardClasses(option: SettingsOption): string {
+    const colorClass = this.getCardColorClass(option.color);
+    if (option.disabled) {
+      return `${colorClass} settings-card--disabled`;
+    }
+    return colorClass;
+  }
+
+  getIconClasses(option: SettingsOption): string {
+    const colorClass = this.getIconColorClass(option.color);
+    if (option.disabled) {
+      return 'settings-icon--disabled';
+    }
+    return colorClass;
+  }
+
+  getTitleClasses(option: SettingsOption): string {
+    if (option.disabled) {
+      return 'settings-text-title--disabled';
+    }
+    return '';
+  }
+
+  getDescriptionClasses(option: SettingsOption): string {
+    if (option.disabled) {
+      return 'settings-text-description--disabled';
+    }
+    return '';
+  }
+
+  getArrowClasses(option: SettingsOption): string {
+    if (option.disabled) {
+      return 'settings-arrow--disabled';
+    }
+    return this.getArrowColorClass(option.color);
+  }
+
+  private getCardColorClass(color: string): string {
+    switch (color) {
+      case 'emerald':
+        return 'settings-card--emerald';
+      case 'coral':
+        return 'settings-card--coral';
+      case 'sky':
+        return 'settings-card--sky';
+      default:
+        return '';
+    }
+  }
+
+  private getIconColorClass(color: string): string {
+    switch (color) {
+      case 'emerald':
+        return 'settings-icon--emerald';
+      case 'coral':
+        return 'settings-icon--coral';
+      case 'sky':
+        return 'settings-icon--sky';
+      default:
+        return '';
+    }
+  }
+
+  private getArrowColorClass(color: string): string {
+    switch (color) {
+      case 'emerald':
+        return 'settings-arrow--emerald';
+      case 'coral':
+        return 'settings-arrow--coral';
+      case 'sky':
+        return 'settings-arrow--sky';
+      default:
+        return '';
+    }
+  }
 }

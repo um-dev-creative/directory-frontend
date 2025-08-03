@@ -51,6 +51,14 @@ export const routes: Routes = [
     data: { hideFooter: true }
   },
 
+  // Protected favorites route (lazy loaded)
+  {
+    path: 'favorites',
+    loadComponent: () => import('./features/community-member/favorites').then(m => m.Favorites),
+    canActivate: [authGuard],
+    data: { hideFooter: true }
+  },
+
   // Default redirect
   { path: '', redirectTo: 'stage', pathMatch: 'full' },
   { path: '**', redirectTo: 'not-found'}

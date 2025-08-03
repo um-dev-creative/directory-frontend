@@ -1,136 +1,92 @@
 /* Clean and Minimal Footer Styles */
 .footer-container {
-  background-color: #fafafa;
-  border-top: 1px solid #e5e7eb;
-  position: relative;
+  @apply tw-bg-gray-50 tw-border-t tw-border-gray-200 tw-relative;
 }
 
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  @apply tw-max-w-6xl tw-mx-auto tw-px-4 tw-py-8;
 }
 
 /* Simplified Single Row Layout */
 .footer-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  text-align: center;
+  @apply tw-flex tw-flex-col tw-gap-6 tw-items-center tw-text-center;
 }
 
 .footer-logo {
-  height: 2rem;
-  width: auto;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  @apply tw-h-8 tw-w-auto tw-opacity-80 tw-transition-opacity tw-duration-200 tw-ease-out;
 }
 
 .footer-logo:hover {
-  opacity: 1;
+  @apply tw-opacity-100;
 }
 
 .footer-description {
-  font-size: 0.875rem;
-  color: #6b7280;
-  max-width: 400px;
-  line-height: 1.5;
-  margin: 0;
+  @apply tw-text-sm tw-text-gray-500 tw-max-w-md tw-leading-6 tw-m-0;
 }
 
 /* Simplified Links - Single Row */
 .footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: center;
+  @apply tw-flex tw-flex-wrap tw-gap-6 tw-justify-center tw-items-center;
 }
 
 .footer-link {
-  font-size: 0.875rem;
-  color: #6b7280;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  @apply tw-text-sm tw-text-gray-500 tw-no-underline tw-transition-colors tw-duration-200 tw-ease-out tw-py-1 tw-px-2 tw-rounded;
 }
 
 .footer-link:hover {
-  color: #059669;
-  background-color: rgba(5, 150, 105, 0.05);
+  @apply tw-text-emerald-600 tw-bg-emerald-50;
 }
 
 /* Divider */
 .footer-divider {
-  width: 100%;
-  height: 1px;
-  background-color: #e5e7eb;
-  margin: 1rem 0;
+  @apply tw-w-full tw-h-px tw-bg-gray-200 tw-my-4;
 }
 
 /* Bottom Section */
 .footer-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  align-items: center;
-  text-align: center;
-  padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+  @apply tw-flex tw-flex-col tw-gap-3 tw-items-center tw-text-center tw-pt-4 tw-border-t tw-border-gray-100;
 }
 
 .footer-copyright {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  margin: 0;
+  @apply tw-text-xs tw-text-gray-400 tw-m-0;
 }
 
 .footer-bottom-links {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  @apply tw-flex tw-gap-4 tw-flex-wrap tw-justify-center;
 }
 
 .footer-bottom-link {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  text-decoration: none;
-  transition: color 0.2s ease;
+  @apply tw-text-xs tw-text-gray-400 tw-no-underline tw-transition-colors tw-duration-200 tw-ease-out;
 }
 
 .footer-bottom-link:hover {
-  color: #059669;
+  @apply tw-text-emerald-600;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .footer-content {
-    padding: 1.5rem 1rem;
+    @apply tw-px-4 tw-py-6;
   }
 
   .footer-main {
-    gap: 1rem;
+    @apply tw-gap-4;
   }
 
   .footer-links {
-    gap: 1rem;
-    font-size: 0.8125rem;
+    @apply tw-gap-4 tw-text-xs;
   }
 
   .footer-logo {
-    height: 1.5rem;
+    @apply tw-h-6;
   }
 
   .footer-description {
-    font-size: 0.8125rem;
+    @apply tw-text-xs;
   }
 
   .footer-bottom {
-    gap: 0.5rem;
-    padding-top: 0.75rem;
+    @apply tw-gap-2 tw-pt-3;
   }
 }
 
@@ -139,6 +95,6 @@
   .footer-link,
   .footer-logo,
   .footer-bottom-link {
-    transition: none;
+    @apply tw-transition-none;
   }
 }
