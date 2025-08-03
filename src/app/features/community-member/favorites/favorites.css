@@ -1,0 +1,139 @@
+/* Favorites Component Styles */
+
+.favorites-container {
+  min-height: calc(100vh - 200px);
+}
+
+/* Custom line clamp utilities - fallback for older browsers */
+.tw-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hover effects for cards */
+.favorite-card {
+  transition: all 0.3s ease;
+}
+
+.favorite-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Custom scrollbar for mobile */
+@media (max-width: 768px) {
+  .favorites-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Loading animation enhancement */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Filter button active state animation */
+.filter-button-active {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Image placeholder styling */
+.image-placeholder {
+  background: linear-gradient(135deg, #f0f9f4 0%, #e6f7ea 100%);
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 640px) {
+  .favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .favorites-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .favorites-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Badge animations */
+.type-badge {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Heart icon animation for remove button */
+.remove-favorite-btn {
+  transition: all 0.2s ease;
+}
+
+.remove-favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Search input enhancements */
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Card content spacing */
+.favorite-card-content {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorite-card-actions {
+  margin-top: auto;
+}
+
+/* Empty state styling */
+.empty-state {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Discount badge pulse effect */
+.discount-badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

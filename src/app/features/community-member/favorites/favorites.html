@@ -1,0 +1,182 @@
+<div class="tw-min-h-screen tw-bg-gradient-warm">
+  <div class="favorites-container tw-container tw-mx-auto tw-px-4 tw-py-8">
+  <!-- Header Section -->
+  <div class="tw-mb-8">
+    <h1 class="tw-text-3xl tw-font-bold tw-text-emerald-green-800 tw-mb-2">
+      Mis Favoritos
+    </h1>
+    <p class="tw-text-emerald-green-600">
+      Tu colección personal de ofertas, productos y negocios que más te gustan
+    </p>
+  </div>
+
+  <!-- Search and Filters Section -->
+  <div class="tw-mb-6">
+    <!-- Search Bar -->
+    <div class="tw-mb-4">
+      <div class="tw-relative">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+          placeholder="Buscar en mis favoritos..."
+          class="tw-w-full tw-px-4 tw-py-3 tw-pl-10 tw-border tw-border-emerald-green-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-transparent"
+        >
+        <svg
+          class="tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2 tw-w-5 tw-h-5 tw-text-emerald-green-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="tw-flex tw-flex-wrap tw-gap-2">
+      <button
+        *ngFor="let filter of [FavoriteType.ALL, FavoriteType.OFFERS, FavoriteType.PRODUCTS, FavoriteType.BUSINESSES]"
+        (click)="setFilter(filter)"
+        [class]="activeFilter === filter 
+          ? 'tw-bg-emerald-green-600 tw-text-white' 
+          : 'tw-bg-white tw-text-emerald-green-600 tw-border tw-border-emerald-green-300 hover:tw-bg-emerald-green-50'"
+        class="tw-px-4 tw-py-2 tw-rounded-full tw-font-medium tw-transition-colors tw-duration-200"
+      >
+        {{ getFilterLabel(filter) }} ({{ getFavoriteCount(filter) }})
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="tw-flex tw-justify-center tw-items-center tw-py-12">
+    <div class="tw-animate-spin tw-rounded-full tw-h-12 tw-w-12 tw-border-b-2 tw-border-emerald-green-600"></div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredFavorites.length === 0" class="tw-text-center tw-py-12">
+    <svg class="tw-mx-auto tw-h-24 tw-w-24 tw-text-emerald-green-300 tw-mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+    </svg>
+    <h3 class="tw-text-xl tw-font-medium tw-text-emerald-green-800 tw-mb-2">
+      No tienes favoritos aún
+    </h3>
+    <p class="tw-text-emerald-green-600 tw-mb-6">
+      Comienza a explorar y guarda tus ofertas, productos y negocios favoritos
+    </p>
+    <a
+      routerLink="/"
+      class="tw-inline-flex tw-items-center tw-px-6 tw-py-3 tw-bg-emerald-green-600 tw-text-white tw-font-medium tw-rounded-lg hover:tw-bg-emerald-green-700 tw-transition-colors tw-duration-200"
+    >
+      Explorar Ofertas
+    </a>
+  </div>
+
+  <!-- Favorites Grid -->
+  <div *ngIf="!isLoading && filteredFavorites.length > 0" class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+    <div
+      *ngFor="let item of filteredFavorites"
+      class="tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden tw-border tw-border-emerald-green-100 hover:tw-shadow-xl tw-transition-shadow tw-duration-200 tw-backdrop-blur-sm"
+    >
+      <!-- Item Image -->
+      <div class="tw-relative tw-h-48 tw-bg-emerald-green-50">
+        <img
+          *ngIf="item.imageUrl"
+          [src]="item.imageUrl"
+          [alt]="item.title"
+          class="tw-w-full tw-h-full tw-object-cover"
+          (error)="onImageError($event)"
+        >
+        <div *ngIf="!item.imageUrl" class="tw-flex tw-items-center tw-justify-center tw-h-full">
+          <svg class="tw-w-16 tw-h-16 tw-text-emerald-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
+          </svg>
+        </div>
+
+        <!-- Type Badge -->
+        <div class="tw-absolute tw-top-3 tw-left-3">
+          <span 
+            [class]="getTypeBadgeClass(item.type)"
+            class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-rounded-full"
+          >
+            {{ getTypeLabel(item.type) }}
+          </span>
+        </div>
+
+        <!-- Remove Button -->
+        <button
+          (click)="removeFavorite(item.id)"
+          class="tw-absolute tw-top-3 tw-right-3 tw-bg-white tw-bg-opacity-90 tw-rounded-full tw-p-2 tw-text-coral-600 hover:tw-bg-coral-50 tw-transition-colors tw-duration-200"
+          title="Eliminar de favoritos"
+        >
+          <svg class="tw-w-4 tw-h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+          </svg>
+        </button>
+
+        <!-- Discount Badge (for offers) -->
+        <div *ngIf="item.type === 'offer' && item.discount" class="tw-absolute tw-bottom-3 tw-left-3">
+          <span class="tw-bg-coral-500 tw-text-white tw-px-2 tw-py-1 tw-text-sm tw-font-bold tw-rounded">
+            -{{ item.discount }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- Item Content -->
+      <div class="tw-p-4">
+        <!-- Business Name (if applicable) -->
+        <p *ngIf="item.businessName" class="tw-text-sm tw-text-emerald-green-600 tw-mb-1">
+          {{ item.businessName }}
+        </p>
+
+        <!-- Title -->
+        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-800 tw-mb-2 tw-line-clamp-2">
+          {{ item.title }}
+        </h3>
+
+        <!-- Description -->
+        <p class="tw-text-emerald-green-600 tw-text-sm tw-mb-3 tw-line-clamp-2">
+          {{ item.description }}
+        </p>
+
+        <!-- Price Section (for offers and products) -->
+        <div *ngIf="item.price" class="tw-flex tw-items-center tw-justify-between tw-mb-3">
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span class="tw-text-lg tw-font-bold tw-text-emerald-green-800">
+              {{ item.price }}
+            </span>
+            <span *ngIf="item.originalPrice" class="tw-text-sm tw-text-gray-500 tw-line-through">
+              {{ item.originalPrice }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Location and Rating -->
+        <div class="tw-flex tw-items-center tw-justify-between tw-text-sm tw-text-emerald-green-600 tw-mb-4">
+          <div *ngIf="item.location" class="tw-flex tw-items-center tw-gap-1">
+            <svg class="tw-w-4 tw-h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+            </svg>
+            <span>{{ item.location }}</span>
+          </div>
+          <div *ngIf="item.rating" class="tw-flex tw-items-center tw-gap-1">
+            <svg class="tw-w-4 tw-h-4 tw-text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/>
+            </svg>
+            <span>{{ item.rating }}</span>
+          </div>
+        </div>
+
+        <!-- View Details Button -->
+        <a
+          [routerLink]="getItemRoute(item)"
+          class="tw-block tw-w-full tw-text-center tw-px-4 tw-py-2 tw-bg-emerald-green-600 tw-text-white tw-font-medium tw-rounded-lg hover:tw-bg-emerald-green-700 tw-transition-colors tw-duration-200"
+        >
+          Ver Detalles
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
