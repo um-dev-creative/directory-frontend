@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-import { PartnerRegistrationService, Partner } from '../services/partner-registration.service';
-import { PartnerStepOneComponent } from './steps/partner-step-one.component';
-import { PartnerStepTwoComponent } from './steps/partner-step-two.component';
-import { PartnerStepThreeComponent, StepThreeData } from './steps/partner-step-three.component';
+import { PartnerRegistrationService, Partner } from '@app/features/partner/services';
+import { PartnerStepOne } from '@app/features/partner';
+import { PartnerStepTwo } from '@app/features/partner';
+import { PartnerStepThree, StepThreeData } from '@app/features/partner';
 import { CardComponent } from '@app/components/ui';
 import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
 
@@ -26,9 +26,9 @@ export interface StepTwoData {
   imports: [
     CommonModule,
     CardComponent,
-    PartnerStepOneComponent,
-    PartnerStepTwoComponent,
-    PartnerStepThreeComponent,
+    PartnerStepOne,
+    PartnerStepTwo,
+    PartnerStepThree,
     ReportProblem
   ],
   template: `
@@ -142,7 +142,7 @@ export interface StepTwoData {
     </div>
   `
 })
-export class PartnerRegistrationStepperComponent implements OnDestroy {
+export class PartnerRegistrationStepper implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   currentStep = 1;

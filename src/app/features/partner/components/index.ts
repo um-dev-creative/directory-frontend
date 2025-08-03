@@ -1,11 +1,11 @@
 // Main components
-export * from './partner-registration-stepper.component';
-export * from './partner-settings.component';
+export * from './partner-registration-stepper';
+export * from './partner-settings';
 
 // Settings components
 export * from './settings';
 
 // Registration steps
-export * from './steps/partner-step-one.component';
-export * from './steps/partner-step-two.component';
-export * from './steps/partner-step-three.component';
+export * from './steps/partner-step-one';
+export * from './steps/partner-step-two';
+export * from './steps/partner-step-three';

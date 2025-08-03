@@ -15,10 +15,10 @@ interface SettingsOption {
   selector: 'app-partner-settings',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './partner-settings.component.html',
-  styleUrls: ['./partner-settings.component.css']
+  templateUrl: './partner-settings.html',
+  styleUrls: ['./partner-settings.css']
 })
-export class PartnerSettingsComponent {
+export class PartnerSettings {
   settingsOptions: SettingsOption[] = [
     {
       title: 'General',

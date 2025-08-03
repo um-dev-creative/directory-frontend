@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, Input, OnDestroy } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
-import { StepTwoData } from '../partner-registration-stepper.component';
+import { StepTwoData } from '../partner-registration-stepper';
 import { PartnerRegistrationService } from '../../services/partner-registration.service';
 import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
 
@@ -121,7 +121,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui
     </div>
   `
 })
-export class PartnerStepTwoComponent implements OnDestroy {
+export class PartnerStepTwo implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   @Input() isLoading = false;

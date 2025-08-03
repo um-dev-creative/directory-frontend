@@ -650,6 +650,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       sessionToken: data.userDetailResponse.body.token,
       authorization: data.userDetailResponse.authorization,
       features: [],
+      businesses: data?.userDetail?.data?.businessIds || [],
       verifiedComplete: decodedTokenDirectory.vcCompleted === 'true',
       avatarUrl: avatar
     };

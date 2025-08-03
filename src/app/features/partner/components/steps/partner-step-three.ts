@@ -104,7 +104,7 @@ interface Country {
     </form>
   `
 })
-export class PartnerStepThreeComponent {
+export class PartnerStepThree {
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepThreeData>();
   @Output() previousStep = new EventEmitter<void>();
