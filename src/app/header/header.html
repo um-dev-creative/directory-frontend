@@ -57,7 +57,7 @@
       } @else if (validateHeader(HeaderType.GENERAL_HEADER)) {
         <!-- Botón de inicio de sesión -->
         <app-button
-          variant="primary"
+          variant="outline"
           [fullWidth]="true"
           class="tw-w-[120px] tw-h-[40px] md:tw-inline-block tw-hidden"
           [routerLink]="['/auth']"
@@ -505,7 +505,7 @@
           <!-- Menú de usuario no autenticado - Login/Register Menu - CTA-->
           <div class="tw-border-b tw-border-emerald-green-200 tw-p-4 tw-flex tw-flex-col tw-items-center tw-gap-4" role="none">
             <app-button
-              variant="primary"
+              variant="outline"
               [fullWidth]="true"
               class="tw-w-[180px] tw-h-[40px]"
               [routerLink]="['/auth']"
