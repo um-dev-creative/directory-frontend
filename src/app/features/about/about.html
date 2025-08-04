@@ -17,6 +17,7 @@
             variant="primary"
             size="lg"
             [routerLink]="companyInfo.primary.link"
+            [queryParams]="{ ref: 'hero', isRegistering: true }"
             [fullWidth]="false">
             {{ companyInfo.primary.text }}
           </app-button>
@@ -70,7 +71,8 @@
             <app-button
               variant="secondary"
               size="lg"
-              [routerLink]="companyInfo.primary.link"
+              [routerLink]="['/auth']"
+              [queryParams]="{ ref: 'about', isRegistering: true }"
               [fullWidth]="true"
               class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
               Únete a la comunidad
@@ -78,7 +80,7 @@
             <app-button
               variant="alert"
               size="lg"
-              [routerLink]="companyInfo.secondary.link"
+              [routerLink]="['/partner']"
               [fullWidth]="true"
               class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
               Para Negocios
