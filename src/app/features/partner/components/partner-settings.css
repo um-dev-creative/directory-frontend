@@ -1,123 +1,43 @@
-/* Partner Settings Component Styles */
-
-/* Container and Layout */
-.settings-container {
-  @apply tw-min-h-screen tw-bg-gray-50;
-}
-
-.settings-content {
-  @apply tw-max-w-4xl tw-mx-auto tw-px-4 tw-py-12;
-}
-
-/* Header Section */
-.settings-header {
-  @apply tw-text-center tw-mb-12;
-}
-
-.settings-title {
-  @apply tw-text-4xl tw-font-bold tw-text-emerald-green-800 tw-mb-3;
-}
-
-.settings-subtitle {
-  @apply tw-text-lg tw-text-emerald-green-600;
-}
-
-/* Grid Layout */
-.settings-grid {
-  @apply tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6 tw-justify-items-center;
-}
-
-/* Card Base Styles */
-.settings-card {
-  @apply tw-w-full tw-max-w-md tw-bg-white tw-rounded-2xl tw-p-6 tw-shadow-lg tw-border-l-4 tw-transition-all tw-duration-300 tw-cursor-pointer;
-}
-
-.settings-card:hover {
-  @apply tw-shadow-xl tw--translate-y-1;
-}
-
-/* Card Color Variants - Consolidated */
-.settings-card--emerald {
-  @apply tw-border-emerald-green-500;
-}
-.settings-card--coral {
-  @apply tw-border-coral-500;
-}
-.settings-card--sky {
-  @apply tw-border-sky-blue-400;
-}
-
-.settings-card--emerald:hover { @apply tw-bg-gradient-to-br tw-from-emerald-green-50 tw-to-white; }
-.settings-card--coral:hover { @apply tw-bg-gradient-to-br tw-from-coral-50 tw-to-white; }
-.settings-card--sky:hover { @apply tw-bg-gradient-to-br tw-from-sky-blue-50 tw-to-white; }
-
-.settings-card--emerald:focus { @apply tw-ring-2 tw-ring-emerald-green-500; }
-.settings-card--coral:focus { @apply tw-ring-2 tw-ring-coral-500; }
-.settings-card--sky:focus { @apply tw-ring-2 tw-ring-sky-blue-400; }
-
-/* Disabled Card State */
-.settings-card--disabled {
-  @apply tw-opacity-60 tw-cursor-not-allowed tw-pointer-events-none tw-bg-gray-100;
-}
-
-/* Card Content Layout */
-.settings-card-content {
-  @apply tw-flex tw-items-center tw-gap-6;
-}
-
-/* Icon Container Base */
-.settings-icon {
-  @apply tw-flex-shrink-0 tw-w-16 tw-h-16 tw-rounded-xl tw-flex tw-items-center tw-justify-center tw-transition-all tw-duration-300;
-}
-
-.settings-icon svg {
-  @apply tw-w-7 tw-h-7;
-}
-
-/* Icon Color Variants - Consolidated */
-.settings-icon--emerald {
-  @apply tw-bg-emerald-green-100 tw-text-emerald-green-700;
-}
-.settings-icon--coral {
-  @apply tw-bg-coral-100 tw-text-coral-700;
-}
-.settings-icon--sky {
-  @apply tw-bg-sky-blue-100 tw-text-sky-blue-700;
-}
-
-.tw-group:hover .settings-icon--emerald { @apply tw-bg-emerald-green-200; }
-.tw-group:hover .settings-icon--coral { @apply tw-bg-coral-200; }
-.tw-group:hover .settings-icon--sky { @apply tw-bg-sky-blue-200; }
-
-/* Disabled Icon State */
-.settings-icon--disabled {
-  @apply tw-bg-gray-200 tw-text-gray-400;
-}
-
-/* Text Content - Consolidated */
-.settings-text { @apply tw-flex-1; }
-.settings-text-title {
-  @apply tw-text-xl tw-font-semibold tw-mb-2 tw-transition-colors tw-duration-300 tw-text-emerald-green-800;
-}
-.settings-text-description {
-  @apply tw-text-sm tw-transition-colors tw-duration-300 tw-text-emerald-green-600;
-}
-
-.tw-group:hover .settings-text-title { @apply tw-text-emerald-green-900; }
-.tw-group:hover .settings-text-description { @apply tw-text-emerald-green-700; }
-
-.settings-text-title--disabled,
-.settings-text-description--disabled { @apply tw-text-gray-400; }
-
-/* Arrow Icon - Consolidated */
-.settings-arrow { @apply tw-flex-shrink-0 tw-transition-all tw-duration-300; }
-.tw-group:hover .settings-arrow { @apply tw-translate-x-1; }
-
-.settings-arrow--emerald { @apply tw-text-emerald-green-400; }
-.settings-arrow--coral { @apply tw-text-coral-400; }
-.settings-arrow--sky { @apply tw-text-sky-blue-400; }
-.settings-arrow--disabled { @apply tw-text-gray-400; }
-
-.tw-group:hover .settings-arrow--emerald { @apply tw-text-emerald-green-600; }
-.tw-group:hover .settings-arrow--coral { @apply tw-text-coral-600; }
-.tw-group:hover .settings-arrow--sky { @apply tw-text-sky-blue-600; }
+.settings-container{@apply tw-min-h-screen tw-bg-gray-50;}
+.settings-content{@apply tw-max-w-4xl tw-mx-auto tw-px-4 tw-py-12;}
+.settings-header{@apply tw-text-center tw-mb-12;}
+.settings-title{@apply tw-text-4xl tw-font-bold tw-text-emerald-green-800 tw-mb-3;}
+.settings-subtitle{@apply tw-text-lg tw-text-emerald-green-600;}
+.settings-grid{@apply tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6 tw-justify-items-center;}
+.settings-card{@apply tw-w-full tw-max-w-md tw-bg-white tw-rounded-2xl tw-p-6 tw-shadow-lg tw-border-l-4 tw-transition-all tw-duration-300 tw-cursor-pointer;}
+.settings-card:hover{@apply tw-shadow-xl tw--translate-y-1;}
+.settings-card--emerald{@apply tw-border-emerald-green-500;}
+.settings-card--coral{@apply tw-border-coral-500;}
+.settings-card--sky{@apply tw-border-sky-blue-400;}
+.settings-card--emerald:hover{@apply tw-bg-gradient-to-br tw-from-emerald-green-50 tw-to-white;}
+.settings-card--coral:hover{@apply tw-bg-gradient-to-br tw-from-coral-50 tw-to-white;}
+.settings-card--sky:hover{@apply tw-bg-gradient-to-br tw-from-sky-blue-50 tw-to-white;}
+.settings-card--emerald:focus{@apply tw-ring-2 tw-ring-emerald-green-500;}
+.settings-card--coral:focus{@apply tw-ring-2 tw-ring-coral-500;}
+.settings-card--sky:focus{@apply tw-ring-2 tw-ring-sky-blue-400;}
+.settings-card--disabled{@apply tw-opacity-60 tw-cursor-not-allowed tw-pointer-events-none tw-bg-gray-100;}
+.settings-card-content{@apply tw-flex tw-items-center tw-gap-6;}
+.settings-icon{@apply tw-flex-shrink-0 tw-w-16 tw-h-16 tw-rounded-xl tw-flex tw-items-center tw-justify-center tw-transition-all tw-duration-300;}
+.settings-icon svg{@apply tw-w-7 tw-h-7;}
+.settings-icon--emerald{@apply tw-bg-emerald-green-100 tw-text-emerald-green-700;}
+.settings-icon--coral{@apply tw-bg-coral-100 tw-text-coral-700;}
+.settings-icon--sky{@apply tw-bg-sky-blue-100 tw-text-sky-blue-700;}
+.tw-group:hover .settings-icon--emerald{@apply tw-bg-emerald-green-200;}
+.tw-group:hover .settings-icon--coral{@apply tw-bg-coral-200;}
+.tw-group:hover .settings-icon--sky{@apply tw-bg-sky-blue-200;}
+.settings-icon--disabled{@apply tw-bg-gray-200 tw-text-gray-400;}
+.settings-text{@apply tw-flex-1;}
+.settings-text-title{@apply tw-text-xl tw-font-semibold tw-mb-2 tw-transition-colors tw-duration-300 tw-text-emerald-green-800;}
+.settings-text-description{@apply tw-text-sm tw-transition-colors tw-duration-300 tw-text-emerald-green-600;}
+.tw-group:hover .settings-text-title{@apply tw-text-emerald-green-900;}
+.tw-group:hover .settings-text-description{@apply tw-text-emerald-green-700;}
+.settings-text-title--disabled,.settings-text-description--disabled{@apply tw-text-gray-400;}
+.settings-arrow{@apply tw-flex-shrink-0 tw-transition-all tw-duration-300;}
+.tw-group:hover .settings-arrow{@apply tw-translate-x-1;}
+.settings-arrow--emerald{@apply tw-text-emerald-green-400;}
+.settings-arrow--coral{@apply tw-text-coral-400;}
+.settings-arrow--sky{@apply tw-text-sky-blue-400;}
+.settings-arrow--disabled{@apply tw-text-gray-400;}
+.tw-group:hover .settings-arrow--emerald{@apply tw-text-emerald-green-600;}
+.tw-group:hover .settings-arrow--coral{@apply tw-text-coral-600;}
+.tw-group:hover .settings-arrow--sky{@apply tw-text-sky-blue-600;}

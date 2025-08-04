@@ -65,17 +65,15 @@
         >
           {{ 'menu_header.login_button.title' | translate }}
         </app-button>
-
         <!-- Botón de unirse -->
-        <app-button
-          variant="alert"
-          [fullWidth]="true"
-          class="tw-w-[120px] tw-h-[40px] md:tw-inline-block tw-hidden"
+        <button
+          class="tw-font-semibold tw-h-[40px] tw-text-sm tw-w-[120px] tw-rounded-full tw-px-4 tw-py-2 tw-whitespace-nowrap tw-transition-all hover:tw-scale-105 tw-bg-gradient-to-r tw-from-coral-600 tw-to-coral-400 tw-text-white tw-shadow-coral-500/40 tw-shadow-lg hover:tw-shadow-coral-600/50 hover:tw-shadow-lg hover:-tw-translate-y-0.5 md:tw-inline-block tw-hidden"
           [routerLink]="['/auth']"
           [queryParams]="{ ref: 'header', isRegistering: true }"
+          (click)="openMenu()"
         >
           {{ 'menu_header.join_now_button.title' | translate }}
-        </app-button>
+        </button>
         <div class="tw-relative">
           <button
             class="tw-flex tw-items-center tw-justify-center tw-rounded-full tw-p-2 tw-bg-emerald-green-50 tw-text-emerald-green-600 focus:tw-ring-2 focus:tw-outline-none tw-transition-colors hover:tw-scale-105"
@@ -516,16 +514,14 @@
             >
               {{ 'menu_header.login_button.title' | translate }}
             </app-button>
-            <app-button
-              variant="alert"
-              [fullWidth]="true"
-              class="tw-w-[180px] tw-h-[40px]"
+            <button
+              class="tw-font-semibold tw-h-[40px] tw-text-sm tw-w-[180px] tw-rounded-full tw-px-4 tw-py-2 tw-whitespace-nowrap tw-transition-all hover:tw-scale-105 tw-bg-gradient-to-r tw-from-coral-600 tw-to-coral-400 tw-text-white tw-shadow-coral-500/40 tw-shadow-lg hover:tw-shadow-coral-600/50 hover:tw-shadow-lg hover:-tw-translate-y-0.5"
               [routerLink]="['/auth']"
               [queryParams]="{ ref: 'menu', isRegistering: true }"
-              (buttonClick)="openMenu()"
+              (click)="openMenu()"
             >
               {{ 'menu_header.join_now_button.title' | translate }}
-            </app-button>
+            </button>
           </div>
           <nav class="tw-p-[10px]">
             <ul class="tw-font-semibold tw-text-emerald-green-700">
