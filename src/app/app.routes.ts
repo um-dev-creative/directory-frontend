@@ -32,7 +32,7 @@ export const routes: Routes = [
   },
 
   // Other lazy loaded routes
-  { path: 'about', loadComponent: () => import('./features/about').then(m => m.AboutComponent) },
+  { path: 'about', loadComponent: () => import('./features/about').then(m => m.About) },
   { path: 'contact', loadComponent: () => import('./features/contact').then(m => m.Contact) },
   { path: 'not-found', component: NotFound, data: { hideLayout: true } },
 

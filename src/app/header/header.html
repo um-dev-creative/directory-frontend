@@ -186,6 +186,7 @@
             <!---partner settings-->
             <li><a
               routerLink="/partner/settings"
+              (click)="openMenu()"
               class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -206,7 +207,8 @@
             </a></li>
             <!---offers-->
             <li><a
-              routerLink="/partner/offers"
+              routerLink="/partner/settings/offers"
+              (click)="openMenu()"
               class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -227,6 +229,7 @@
             <!---products-->
             <li><a
               routerLink="/partner/products"
+              (click)="openMenu()"
               class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
             >
               <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -285,6 +288,7 @@
               <!---member profile settings-->
               <li><a
                 routerLink="/member"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-rounded-md tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -335,6 +339,7 @@
               } @else {
                 <li><a
                   routerLink="/partner"
+                  (click)="openMenu()"
                   class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-rounded-md tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
                 >
                   <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -357,6 +362,7 @@
               <!--favorites-->
               <li><a
                 routerLink="/favorites"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -408,6 +414,7 @@
               <!-- about -->
               <li><a
                 routerLink="/about"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -428,6 +435,7 @@
               <!--help-->
               <li><a
                 routerLink="/help"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -448,6 +456,7 @@
               <!---contact us-->
               <li><a
                 routerLink="/contact"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -528,6 +537,7 @@
               <!-- about -->
               <li><a
                 routerLink="/about"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-rounded-md tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -570,6 +580,7 @@
               <!-- contact us -->
               <li><a
                 routerLink="/contact"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-rounded-md tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -590,6 +601,7 @@
               <!-- help -->
               <li><a
                 routerLink="/help"
+                (click)="openMenu()"
                 class="tw-flex tw-items-center tw-justify-between tw-rounded-md tw-gap-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors tw-text-emerald-green-700 hover:tw-bg-emerald-green-100 hover:tw-text-emerald-green-800"
               >
                 <div class="tw-flex tw-items-center tw-gap-2 tw-py-2">
@@ -617,10 +629,10 @@
     <div class="tw-p-4 tw-space-y-4">
       <!-- Enlaces del footer -->
       <div class="tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-2 tw-text-xs tw-text-emerald-green-500">
-        <a routerLink="/terms" class="hover:tw-text-emerald-green-700">
+        <a routerLink="/terms" (click)="openMenu()" class="hover:tw-text-emerald-green-700">
           Terms
         </a>
-        <a routerLink="/privacy" class="hover:tw-text-emerald-green-700">
+        <a routerLink="/privacy" (click)="openMenu()" class="hover:tw-text-emerald-green-700">
           Privacy
         </a>
       </div>

@@ -2,11 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-
 import { PartnerRegistrationService, Partner } from '@app/features/partner/services';
-import { PartnerStepOne } from '@app/features/partner';
-import { PartnerStepTwo } from '@app/features/partner';
-import { PartnerStepThree, StepThreeData } from '@app/features/partner';
+import { PartnerStepOne } from './steps/partner-step-one';
+import { PartnerStepTwo } from './steps/partner-step-two';
+import { PartnerStepThree, StepThreeData } from './steps/partner-step-three';
 import { CardComponent } from '@app/components/ui';
 import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
 
