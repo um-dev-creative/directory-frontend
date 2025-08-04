@@ -9,7 +9,7 @@ echo "🧹 Limpiando archivos de build anteriores..."
 rm -rf dist/ .angular/
 
 echo "🔑 Configurando variables de entorno..."
-export VAULT_TOKEN=hvs.CAESIC9LffVQ5pQz9yWYspZwodD1P4JxTgerJMB0jTV3rcI3Gh4KHGh2cy5pdG9UMEpUQUI0M25XWHlqRnJNRTAyeHg
+export VAULT_TOKEN=<tu_token_de_vault_aqui>
 export ENVM=qa
 # export ENVM=qa-cloud
 

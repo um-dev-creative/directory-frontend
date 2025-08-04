@@ -54,7 +54,7 @@ import {AlertComponent, Button, SocialLoginButton, SocialProvider} from '@app/co
 export class Auth implements OnDestroy, OnInit, AfterViewInit {
     // Opciones para el componente ReportProblem
   protected reportProblemOptions: ReportProblemOptions = {};
-  
+
   // Servicios inyectados
   private readonly authValidationService = inject(AuthValidationService);
   private readonly authFormService = inject(AuthFormService);
@@ -391,7 +391,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     const email = this.isRegistering ? this.registerData.email : this.loginData.email;
     const password = this.isRegistering ? this.registerData.password : this.loginData.password;
 
-    console.debug('Login Data:', {email, password: '***'});
+    console.debug('Login Data:', {email});
     this.authenticateUser(email, password);
   }
 
