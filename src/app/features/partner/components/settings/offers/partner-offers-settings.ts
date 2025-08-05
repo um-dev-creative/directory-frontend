@@ -278,7 +278,7 @@ import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/
     }
   `]
 })
-export class PartnerOffersSettingsComponent implements OnInit {
+export class PartnerOffersSettings implements OnInit {
   // Señales para el estado
   private paginatedOffersSignal = signal<PaginatedResponse<Offer> | null>(null);
   private isLoadingSignal = signal<boolean>(false);

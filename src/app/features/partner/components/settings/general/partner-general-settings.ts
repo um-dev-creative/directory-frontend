@@ -124,7 +124,8 @@ export class PartnerGeneralSettings implements OnInit {
   }
 
   private loadTimezoneData(): void {
-
+    console.debug('Loading timezone data...');
+    // TODO: Implement social login logic
   }
 
   private loadCategories(): void {

@@ -9,25 +9,25 @@ export const partnerRoutes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () => import('./components/partner-registration-stepper').then(m => m.PartnerRegistrationStepper),
+    loadComponent: () => import('./components').then(m => m.PartnerRegistrationStepper),
     data: { hideFooter: true }
   },
   {
     path: 'settings',
-    loadComponent: () => import('./components/partner-settings').then(m => m.PartnerSettings),
+    loadComponent: () => import('./components').then(m => m.PartnerSettings),
     canActivate: [authGuard],
     canActivateChild: [authGuardChild],
     data: { hideFooter: true }
   },
   {
     path: 'settings/general',
-    loadComponent: () => import('./components/settings/general/partner-general-settings').then(m => m.PartnerGeneralSettings),
+    loadComponent: () => import('./components/settings/general').then(m => m.PartnerGeneralSettings),
     canActivate: [authGuard],
     data: { hideFooter: true }
   },
   {
     path: 'settings/offers',
-    loadComponent: () => import('./components/settings/offers/partner-offers-settings.component').then(m => m.PartnerOffersSettingsComponent),
+    loadComponent: () => import('./components/settings/offers').then(m => m.PartnerOffersSettings),
     canActivate: [authGuard],
     data: { hideFooter: true }
   },
@@ -39,7 +39,7 @@ export const partnerRoutes: Routes = [
   },
   {
     path: 'settings/products',
-    loadComponent: () => import('./components/settings/products/partner-products-settings.component').then(m => m.PartnerProductsSettingsComponent),
+    loadComponent: () => import('./components/settings/products').then(m => m.PartnerProductsSettingsComponent),
     canActivate: [authGuard],
     data: { hideFooter: true }
   },

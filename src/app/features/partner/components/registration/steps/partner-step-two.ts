@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 import { StepTwoData } from '../partner-registration-stepper';
-import { PartnerRegistrationService } from '../../services/partner-registration.service';
+import { PartnerRegistrationService } from '@app/features/partner/services/partner-registration.service';
 import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
 
 @Component({

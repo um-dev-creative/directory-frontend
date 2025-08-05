@@ -1,5 +1,5 @@
 // Offers settings component
-export * from './partner-offers-settings.component';
+export * from './partner-offers-settings';
 
 // Offers service
 export * from './services/partner-offers.service';

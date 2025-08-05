@@ -2,7 +2,7 @@ import {Component, Output, EventEmitter, Input, inject, OnInit} from '@angular/c
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {StepOneData} from '@app/features/partner';
+import {StepOneData} from '../partner-registration-stepper';
 import {InputComponent, Button, CardComponent, TextareaComponent, IconComponent} from '@app/components/ui';
 import {BusinessClient} from '@app/core/services/business/business.client';
 import {BusinessCreateRequest} from '@shared/models/business.model';

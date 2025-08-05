@@ -12,7 +12,7 @@ import { IconComponent } from '@app/components/ui';
   styleUrl: './about.css',
   standalone: true
 })
-export class AboutComponent {
+export class About {
   public companyInfo = {
     name: 'Latin Hub',
     founded: '2025',
@@ -47,7 +47,7 @@ export class AboutComponent {
     },
     secondary: {
       text: 'Explorar Oportunidades',
-      link: '/partner',
+      link: '/deals',
       type: 'secondary'
     },
   };
