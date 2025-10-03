@@ -38,7 +38,8 @@ COPY package.json .
 COPY pnpm-lock.yaml .
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
-ENV ENVM=$ENVM
+ENV ENVM=dev
+ENV ENV=$ENVM
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
@@ -73,5 +74,5 @@ EXPOSE 7001
 
 # Run the application.
 CMD node server.js --ssl --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt \
-  --port $PORT --configuration $ENVM --vaultToken $VAULT_TOKEN \
+  --port $PORT --configuration $ENV --vaultToken $VAULT_TOKEN \
   --vaultUrl $VAULT_URI --vaultPath $VAULT_PATH --DEBUG_MODE $IS_DEBUG_ENABLED --ENVM $ENVM
