@@ -1,11 +1,4 @@
 # syntax=docker/dockerfile:1
-
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-## Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-#
 ARG NODE_VERSION=22.14.0
 
 ################################################################################
@@ -14,7 +7,6 @@ FROM node:${NODE_VERSION}-alpine AS base
 
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
-
 
 ################################################################################
 # Create a stage for installing production dependecies.
@@ -38,8 +30,6 @@ COPY package.json .
 COPY pnpm-lock.yaml .
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
-ENV ENVM=dev
-ENV ENV=$ENVM
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
@@ -56,15 +46,19 @@ COPY package.json .
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 # Copy only the server and build output (dist) from build stage
-COPY --from=build /usr/src/app/server.js ./server.js
+#COPY --from=build /usr/src/app/server ./server
+#COPY --from=build /usr/src/app/server.js ./server.js
 COPY --from=build /usr/src/app/. ./.
-COPY --from=build /usr/src/app/server ./server
-
-# Create uploads directory and set permissions for node user BEFORE switching user
-RUN mkdir -p /usr/src/app/ && chown node:node /usr/src/app/
+# Copy entrypoint and make it executable
+COPY docker-entrypoint.sh /usr/src/app/docker-entrypoint.sh
+RUN chmod +x /usr/src/app/docker-entrypoint.sh && mkdir -p /usr/src/app/ && chown node:node /usr/src/app/
 
 # Set environment variables (can be overridden at runtime)
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    ENVM=production \
+    PORT=7001 \
+    DEBUG_MODE=false
+# Note: Provide VAULT_TOKEN and VAULT_PATH at runtime via envs.
 
 # Run the application as a non-root user.
 USER node
@@ -72,7 +66,7 @@ USER node
 # Expose the port that the application listens on.
 EXPOSE 7001
 
-# Run the application.
-CMD node server.js --ssl --ssl-key ssl/backbone.key --ssl-cert ssl/backbone.crt \
-  --port $PORT --configuration $ENV --vaultToken $VAULT_TOKEN \
-  --vaultUrl $VAULT_URI --vaultPath $VAULT_PATH --DEBUG_MODE $IS_DEBUG_ENABLED --ENVM $ENVM
+# Run the application (shell form so envs expand at runtime).
+# - Uses defaults for PORT and keeps NODE_ENV/ENVM defaults.
+# - Passes Vault flags only when the variables are set.
+ENTRYPOINT ["sh", "/usr/src/app/docker-entrypoint.sh"]
