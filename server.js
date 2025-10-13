@@ -4,10 +4,9 @@ if (process.env.NODE_ENV !== 'production') {
 process.env.NODE_CONFIG_DIR = __dirname + "/server/config";
 
 const express = require('express');
-const fs = require('fs');
-const https = require('https');
-const path = require('path');
-const bodyParser = require('body-parser');
+const fs = require('node:fs');
+const https = require('node:https');
+const path = require('node:path');
 const compression = require('compression');
 const cors = require('cors');
 const RateLimit = require('express-rate-limit');
@@ -30,6 +29,7 @@ function getIndexHtml() {
   return fs.readFileSync(path.join(DIST_FOLDER, 'browser', htmlPath), 'utf-8');
 }
 
+// Adjust SSR initialization to handle module loading properly
 async function initAngularSSR() {
   try {
     const serverPath = './dist/directory-frontend/server/main.js';
@@ -59,7 +59,7 @@ async function initAngularSSR() {
         });
         res.send(html);
       } catch (err) {
-        console.error('❌ SSR error. Falling back to static HTML.');
+        console.error('❌ SSR error. Falling back to static HTML.', err);
         res.send(getIndexHtml());
       }
     });
@@ -83,6 +83,11 @@ appConfig.bootstrapConfiguration().then(async config => {
   } else {
     app.set('trust proxy', false); // Do not trust proxy headers in dev
   }
+  logger.info(`[SERVER] - ENVM: ${process.env.ENVM}`);
+  logger.info(`[SERVER] - NODE_ENV: ${process.env.NODE_ENV}`);
+  logger.info(`[SERVER] - DEBUG_MODE: ${process.env.DEBUG_MODE}`);
+  logger.info(`[SERVER] - VAULT_PATH: ${process.env.VAULT_PATH}`);
+  logger.info(`[SERVER] - VAULT_TOKEN: ${process.env.VAULT_TOKEN}`);
   app.use(RateLimit({ windowMs: 15 * 60 * 1000, max: 10000 }));
   app.use(httpContext.middleware);
   app.use(compression());

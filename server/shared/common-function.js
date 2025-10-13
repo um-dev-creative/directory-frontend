@@ -4,6 +4,8 @@ const constants = require('../config/constants.util.js');
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const {createErrorResponse} = require("./error-util");
 const {v4: uuidv4} = require('uuid');
+const appConfig = require("../config/app.config");
+const logger = appConfig.getLoggerApp();
 
 /**
  * HTTP connection options.
@@ -38,9 +40,9 @@ const keepaliveHttpsAgent = new HttpsAgent(httpConnectionOptions);
 function decodeJwtToken(jwtSession) {
   if (jwtSession) {
     let base64Url = jwtSession.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let base64 = base64Url.replaceAll('-', '+').replaceAll('_', '/');
     let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      return '%' + ('00' + c.codePointAt(0).toString(16)).slice(-2);
     }).join(''));
     let jwtPayload = JSON.parse(jsonPayload);
     return jwtPayload?.alias || jwtPayload?.sub;
@@ -61,7 +63,7 @@ let createRequestOption = function (method, url, body, headers) {
   return {
     method: method.toLowerCase(),
     url: url,
-    data: body != null ? body : null,
+    data: body == null ?  null : body,
     headers: headers,
     httpAgent: keepaliveAgent,
     httpsAgent: keepaliveHttpsAgent,
@@ -96,10 +98,10 @@ let getApiEndpoint = function (path, oAuthProxyConfig, API_SERVICE_MAP) {
   let applicationName = null;
   for (const element of oAuthProxyConfig) {
     if (element.matchOn != null && element.matchOn.startWith != null && path.startsWith(element.matchOn.startWith)) {
-      if (element.urlRewrite != null) {
-        finalPath = path.replace(element.urlRewrite.from, element.urlRewrite.to);
-      } else {
+      if (element.urlRewrite == null) {
         finalPath = path;
+      } else {
+        finalPath = path.replace(element.urlRewrite.from, element.urlRewrite.to);
       }
       applicationName = element.applicationName;
       break;
@@ -107,15 +109,14 @@ let getApiEndpoint = function (path, oAuthProxyConfig, API_SERVICE_MAP) {
   }
   let apiURL = API_SERVICE_MAP[applicationName];
 
-  if (apiURL != null) {
-    return apiURL + finalPath;
-  } else {
-
+  if (apiURL == null) {
     throw createErrorResponse(
       constants.HTTP_STATUS_CODE_404_NOT_FOUND,
       constants.NOT_FOUND_REQUEST_TITLE,
       constants.NOT_FOUND_REQUEST_DETAIL,
       constants.NOT_FOUND_REQUEST_CODE_VALUE);
+  } else {
+    return apiURL + finalPath;
   }
 };
 
@@ -254,6 +255,22 @@ const simpleResponse = (res, content) => {
   };
 };
 
+// Defensive JSON parsing helper
+const safeParseJson = (raw, defaultValue = null) => {
+  if (raw === 'undefined' || raw === null || raw === '') {
+    logger.debug('[common-function] - safeParseJson - empty: raw:', raw);
+    return defaultValue;
+  }
+  try {
+    logger.debug('[common-function] - safeParseJson: raw:', raw);
+    return JSON.parse(raw);
+  } catch (err) {
+    // Replace `console` with your logger if available
+    console.error('[common-function] - invalid JSON in environment variable:', err);
+    return defaultValue;
+  }
+}
+
 module.exports = {
   decodeJwtToken,
   createRequestOption,
@@ -262,5 +279,6 @@ module.exports = {
   getBasicHeader,
   getAuthBasicHeader,
   getSimpleResponse: simpleResponse,
-  getStandardHeader
+  getStandardHeader,
+  safeParseJson
 };

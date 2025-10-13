@@ -2,6 +2,8 @@
  * OAuth client instance.
  * @type {Object|null}
  */
+'use strict';
+
 let backboneClient = null;
 
 const appConfig = require('../config/app.config');
@@ -18,10 +20,13 @@ const authDirectoryProxyConfig = appConfig.getDirectoryAuthProxyConfig();
 const commonFunction = require("../shared/common-function");
 const userSessionStore = require('../shared/user-session-store');
 const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_BACKBONE_CONTROLLER}] :::`;
+const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH, getUserId} = require("../shared/oauth-common-function");
+const {safeParseJson} = require("../shared/common-function");
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 
-const BACKBONE_API_SERVICE_MAP = JSON.parse(process.env.BACKBONE_API_SERVICE_MAP);
+const RAW_BACKBONE_API_SERVICE_MAP = process.env.BACKBONE_API_SERVICE_MAP;
+const BACKBONE_API_SERVICE_MAP = safeParseJson(RAW_BACKBONE_API_SERVICE_MAP, {})
 const BACKBONE_OAUTH_AUTHENTICATION_TYPE = process.env.BACKBONE_AUTH_AUTHENTICATION_TYPE;
 const BACKBONE_OAUTH_CLIENT_ID = process.env.BACKBONE_AUTH_CLIENT_ID;
 const BACKBONE_OAUTH_CLIENT_SECRET = process.env.BACKBONE_AUTH_CLIENT_SECRET;
@@ -30,13 +35,11 @@ const BACKBONE_OAUTH_TOKEN_URL = process.env.BACKBONE_AUTH_SERVER_URI;
 const BACKBONE_OAUTH_USER_ALIAS = process.env.BACKBONE_AUTH_USER_ALIAS;
 const BACKBONE_OAUTH_USER_PASSWORD = process.env.BACKBONE_AUTH_USER_PASSWORD;
 
-const schemesList = ["http:", "https:"];
-const domainsList = ["directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost"];
+const schemesList = new Set("http:", "https:");
+const domainsList = new Set("directory-backend", "backbone-rest", "prx-qa.backbone.tst", "prx-qa.manager.tst", "localhost");
 const ajv = new Ajv();
 ajv.addFormat('uuid', commonFunction.getRegex());
 ajv.addSchema({type: 'string', format: 'uuid'}, 'schema');
-
-const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH, getUserId} = require("../shared/oauth-common-function");
 
 /**
  * Backbone OAuth client configuration.

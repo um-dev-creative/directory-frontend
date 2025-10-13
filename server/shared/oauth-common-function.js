@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 const {setUserSession, getUserSession} = require("./user-session-store");
 const {getOAuthClient} = require("../proxy/oauth-client");
+const {safeParseJson} = require("./common-function");
 const APPLICATION_ID = process.env.APPLICATION_ID;
 const INNER_AUTH_PATH = process.env.API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH;
-const API_SERVICE_DIRECTORY_MAP = JSON.parse(process.env.API_SERVICE_DIRECTORY_MAP);
+const RAW_API_SERVICE_DIRECTORY_MAP = process.env.API_SERVICE_DIRECTORY_MAP;
+const API_SERVICE_DIRECTORY_MAP = safeParseJson(RAW_API_SERVICE_DIRECTORY_MAP);
 const OAUTH_AUTHENTICATION_TYPE = process.env.AUTH_AUTHENTICATION_TYPE;
 const OAUTH_CLIENT_ID = process.env.AUTH_CLIENT_ID;
 const OAUTH_CLIENT_SECRET = process.env.AUTH_CLIENT_SECRET;
