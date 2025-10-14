@@ -18,7 +18,8 @@ const iv = CryptoJS.enc.Utf8.parse(process.env.ENCRYPT_IV);
 const Ajv = require('ajv');
 const authDirectoryProxyConfig = appConfig.getDirectoryAuthProxyConfig();
 const commonFunction = require("../shared/common-function");
-const userSessionStore = require('../shared/user-session-store');
+const redisSessionStore = require('../shared/redis-session-store');
+const { withLock } = require('../shared/redis-lock');
 const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_BACKBONE_CONTROLLER}] :::`;
 const {API_SERVICE_DIRECTORY_SESSION_RELATIVE_PATH, getUserId} = require("../shared/oauth-common-function");
 const {safeParseJson} = require("../shared/common-function");
@@ -82,7 +83,7 @@ const sessionToken = async (req) => {
   let sessionData = {};
   // Check if the session already exists in the store
   logger.info(`${LOGGER_TAG_ID} Checking session for alias: ${alias}`);
-  let session = userSessionStore.getUserSession(alias);
+  let session = await redisSessionStore.getUserSession(alias);
   if (session && session.backboneSession && session.backboneBearerToken && session.backboneSessionExpiresAt > Date.now()) {
     return {
       backboneSession: session.backboneSession,
@@ -90,28 +91,63 @@ const sessionToken = async (req) => {
       backboneSessionExpiresAt: session.backboneSessionExpiresAt
     };
   }
+  
   logger.debug(`${LOGGER_TAG_ID} No valid session found for alias: ${alias}, creating a new one.`);
-  const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
-  logger.debug(`${LOGGER_TAG_ID} Obtained Backbone Bearer Token for alias: ${alias}`);
-  sessionData = {
-    backboneSession: null,
-    backboneBearerToken: backboneBearerToken,
-    backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+  
+  // Use distributed lock when creating new session
+  const redisClient = redisSessionStore.getRedisClient();
+  const lockKey = `lock:session:${alias}`;
+  
+  const createSession = async () => {
+    // Double-check cache inside lock
+    let existingSession = await redisSessionStore.getUserSession(alias);
+    if (existingSession && existingSession.backboneSession && existingSession.backboneBearerToken && existingSession.backboneSessionExpiresAt > Date.now()) {
+      logger.debug(`${LOGGER_TAG_ID} Session was created by another request for alias: ${alias}`);
+      return {
+        backboneSession: existingSession.backboneSession,
+        backboneBearerToken: existingSession.backboneBearerToken,
+        backboneSessionExpiresAt: existingSession.backboneSessionExpiresAt
+      };
+    }
+    
+    const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
+    logger.debug(`${LOGGER_TAG_ID} Obtained Backbone Bearer Token for alias: ${alias}`);
+    
+    sessionData = {
+      backboneSession: null,
+      backboneBearerToken: backboneBearerToken,
+      backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
+    };
+    
+    if (req.url === constants.INNER_ACCESS_TOKEN_PATH) {
+      logger.debug(`${LOGGER_TAG_ID} Creating Backbone session for alias: ${alias}`);
+      const backboneSession = await getBackboneClient(constants.BACKBONE_TOKEN_RELATIVE_PATH).getToken(
+        req.body.alias,
+        CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
+        APPLICATION_ID,
+        backboneBearerToken
+      );
+      sessionData.backboneSession = backboneSession.token;
+      
+      // Update expiration based on expires_in from backbone response if available
+      if (backboneSession.expires_in) {
+        sessionData.backboneSessionExpiresAt = Date.now() + (backboneSession.expires_in * 1000);
+      }
+      
+      // Store the session with expiración (ejemplo: 1 hora)
+      await redisSessionStore.setUserSession(getUserId(backboneSession?.token), alias, sessionData);
+    }
+    
+    logger.info(`${LOGGER_TAG_ID} Backbone session created for alias: ${alias}`);
+    return sessionData;
   };
-  if (req.url === constants.INNER_ACCESS_TOKEN_PATH) {
-    logger.debug(`${LOGGER_TAG_ID} Creating Backbone session for alias: ${alias}`);
-    const backboneSession = await getBackboneClient(constants.BACKBONE_TOKEN_RELATIVE_PATH).getToken(
-      req.body.alias,
-      CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString(),
-      APPLICATION_ID,
-      backboneBearerToken
-    );
-    sessionData.backboneSession = backboneSession.token;
-    // Guarda la sesión en el store con expiración (ejemplo: 1 hora)
-    userSessionStore.setUserSession(getUserId(backboneSession?.token), alias, sessionData);
+  
+  // Execute with distributed lock if Redis is available
+  if (redisSessionStore.isRedisReady() && redisClient) {
+    return await withLock(redisClient, lockKey, createSession, 15000);
+  } else {
+    return await createSession();
   }
-  logger.info(`${LOGGER_TAG_ID} Backbone session created for alias: ${alias}`);
-  return sessionData;
 };
 
 /**
@@ -126,19 +162,48 @@ const sessionToken = async (req) => {
 const renewToken = async (userId) => {
   try {
     logger.debug(`${LOGGER_TAG_ID} Renewing Backbone session for user: ${userId}`);
-    let sessionData = userSessionStore.getUserSession(userId);
-    const response = await getBackboneClient(constants.BACKBONE_TOKEN_RENEW_RELATIVE_PATH)
-      .getNewToken(sessionData.backboneBearerToken, sessionData.backboneSession);
-    if (response) {
-      logger.debug(`${LOGGER_TAG_ID} Successfully renewed Backbone session for user: ${userId}`);
-      sessionData.backboneSession = response.token;
-      userSessionStore.setUserSession(userId, null, sessionData);
-      return response.token;
+    
+    // Use distributed lock for renewToken to avoid race conditions
+    const redisClient = redisSessionStore.getRedisClient();
+    const lockKey = `lock:renew:${userId}`;
+    
+    const renewSession = async () => {
+      let sessionData = await redisSessionStore.getUserSession(userId);
+      
+      if (!sessionData) {
+        throw new Error('Session not found for user');
+      }
+      
+      const response = await getBackboneClient(constants.BACKBONE_TOKEN_RENEW_RELATIVE_PATH)
+        .getNewToken(sessionData.backboneBearerToken, sessionData.backboneSession);
+      
+      if (response) {
+        logger.debug(`${LOGGER_TAG_ID} Successfully renewed Backbone session for user: ${userId}`);
+        sessionData.backboneSession = response.token;
+        
+        // Update expiration based on expires_in from backbone response if available
+        if (response.expires_in) {
+          sessionData.backboneSessionExpiresAt = Date.now() + (response.expires_in * 1000);
+        }
+        
+        await redisSessionStore.setUserSession(userId, null, sessionData);
+        return response.token;
+      }
+    };
+    
+    // Execute with distributed lock if Redis is available
+    if (redisSessionStore.isRedisReady() && redisClient) {
+      return await withLock(redisClient, lockKey, renewSession, 15000);
+    } else {
+      return await renewSession();
     }
   } catch (error) {
     if (error.response != null) {
       logger.error(`${LOGGER_TAG_ID} Error renewing Backbone session: ${error.response.data}`);
       throw new Error(error.response.data);
+    } else {
+      logger.error(`${LOGGER_TAG_ID} Error renewing Backbone session: ${error.message}`);
+      throw error;
     }
   }
 };

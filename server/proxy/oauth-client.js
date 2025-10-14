@@ -3,7 +3,12 @@ const axios = require('axios');
 const appConfig = require("../config/app.config");
 const logger = appConfig.getLoggerApp();
 const constants = require('../config/constants.util.js');
+const { getRedisClient, isRedisReady } = require('../shared/redis-session-store');
+const { withLock } = require('../shared/redis-lock');
+
 const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_OAUTH_CLIENT}] :::`;
+const TOKEN_CACHE_PREFIX = 'oauth_token:';
+
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
   JWT: "JWT"
@@ -58,8 +63,54 @@ class OAuthClient {
   getBearerToken = async () => {
     logger.debug(`${LOGGER_TAG_ID} getBearerToken called with clientId:
     ${this.clientId}, authenticationType: ${this.authenticationType}, grantType: ${this.grantType}`);
+    
+    const cacheKey = `${TOKEN_CACHE_PREFIX}${this.clientId}`;
+    const lockKey = `lock:${cacheKey}`;
+    const redisClient = getRedisClient();
+
+    // Try to get token from Redis first if available
+    if (isRedisReady() && redisClient) {
+      try {
+        const cachedToken = await redisClient.get(cacheKey);
+        if (cachedToken) {
+          logger.debug(`${LOGGER_TAG_ID} Returning cached token from Redis`);
+          return cachedToken;
+        }
+      } catch (error) {
+        logger.error(`${LOGGER_TAG_ID} Error retrieving token from Redis: ${error.message}`);
+      }
+    }
+
+    // Check in-memory cache as fallback
     const requestTime = new Date().getTime();
-    if (this.cacheToken === undefined || this.cacheToken === "" || (requestTime - this.lastRequestTime) / 1000 > this.tokenCachePeriod) {
+    if (this.cacheToken && (requestTime - this.lastRequestTime) / 1000 <= this.tokenCachePeriod) {
+      logger.debug(`${LOGGER_TAG_ID} Returning cached token from memory`);
+      return this.cacheToken;
+    }
+
+    // Need to fetch new token - use distributed lock if Redis is available
+    const fetchToken = async () => {
+      // Double-check cache inside lock to avoid race condition
+      if (isRedisReady() && redisClient) {
+        try {
+          const cachedToken = await redisClient.get(cacheKey);
+          if (cachedToken) {
+            logger.debug(`${LOGGER_TAG_ID} Token was cached by another request, returning it`);
+            this.cacheToken = cachedToken;
+            return cachedToken;
+          }
+        } catch (error) {
+          logger.error(`${LOGGER_TAG_ID} Error checking cache in lock: ${error.message}`);
+        }
+      }
+
+      // Check in-memory cache again
+      const now = new Date().getTime();
+      if (this.cacheToken && (now - this.lastRequestTime) / 1000 <= this.tokenCachePeriod) {
+        logger.debug(`${LOGGER_TAG_ID} Token was cached in memory by another request, returning it`);
+        return this.cacheToken;
+      }
+
       logger.debug(`${LOGGER_TAG_ID} Cache token is either undefined or expired. Requesting new token.`);
       let options = {};
       if (this.authenticationType === AuthenticationType.OPAQUE) {
@@ -95,19 +146,43 @@ class OAuthClient {
         };
         logger.debug(`${LOGGER_TAG_ID} Using JWT authentication type with data: ${JSON.stringify(options.data)}`);
       }
+      
       logger.debug(`${LOGGER_TAG_ID} Requesting token from ${this.tokenUrl} with clientId: ${this.clientId},
        authenticationType: ${this.authenticationType} and grantType: ${this.grantType}`);
       // Call OAuth service
       logger.debug(`${LOGGER_TAG_ID} Request options: ${JSON.stringify(options)}`);
       const oauthResponse = await axios(options);
-      logger.debug(`${LOGGER_TAG_ID} Received token response: ${JSON.stringify(oauthResponse.data)}`);
-      // Cache token in local variable.
-      this.cacheToken = oauthResponse.data.access_token;
-      this.lastRequestTime = requestTime;
-      return this.cacheToken;
+      logger.debug(`${LOGGER_TAG_ID} Received token response from OAuth server`);
+      
+      const accessToken = oauthResponse.data.access_token;
+      const expiresIn = oauthResponse.data.expires_in || this.tokenCachePeriod;
+      
+      // Cache token in Redis with TTL if available
+      if (isRedisReady() && redisClient) {
+        try {
+          // Use expires_in from response for TTL, with a small buffer (subtract 10 seconds)
+          const ttlSeconds = Math.max(expiresIn - 10, 60);
+          await redisClient.setEx(cacheKey, ttlSeconds, accessToken);
+          logger.debug(`${LOGGER_TAG_ID} Token cached in Redis with TTL: ${ttlSeconds}s`);
+        } catch (error) {
+          logger.error(`${LOGGER_TAG_ID} Error caching token in Redis: ${error.message}`);
+        }
+      }
+      
+      // Also cache in memory as fallback
+      this.cacheToken = accessToken;
+      this.lastRequestTime = now;
+      
+      return accessToken;
+    };
+
+    // Execute with distributed lock if Redis is available
+    if (isRedisReady() && redisClient) {
+      logger.debug(`${LOGGER_TAG_ID} Fetching token with distributed lock`);
+      return await withLock(redisClient, lockKey, fetchToken, 15000);
     } else {
-      logger.debug(`${LOGGER_TAG_ID} Returning cached token: ${this.cacheToken}`);
-      return this.cacheToken;
+      logger.debug(`${LOGGER_TAG_ID} Fetching token without distributed lock (Redis not available)`);
+      return await fetchToken();
     }
   };
 }
