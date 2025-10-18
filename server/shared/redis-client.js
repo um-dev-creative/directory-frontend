@@ -29,6 +29,9 @@ async function getRedisClient() {
 
   // Check if Redis URL is configured
   const redisUrl = process.env.REDIS_URL;
+  const redisPort = process.env.REDIS_PORT;
+  const redisUsername = process.env.REDIS_USERNAME;
+  const redisPassword = process.env.REDIS_PASSWORD;
   if (!redisUrl) {
     logger.warn(`${LOGGER_TAG_ID} REDIS_URL not configured, Redis features disabled`);
     return null;
@@ -39,7 +42,8 @@ async function getRedisClient() {
     logger.info(`${LOGGER_TAG_ID} Connecting to Redis...`);
 
     redisClient = createClient({
-      url: redisUrl,
+      url: `redis://${redisUsername}:${redisPassword}@${redisUrl}:${redisPort}`,
+      // url: "redis://DRT-USR:MD7Bj!q.csZL:KJ@redis-18974.crce174.ca-central-1-1.ec2.redns.redis-cloud.com:18974",
       socket: {
         reconnectStrategy: (retries) => {
           if (retries > 10) {
