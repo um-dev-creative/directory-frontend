@@ -1,10 +1,17 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, signal } from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, OnChanges, signal, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Offer } from '../../services/partner-offers.service';
+import { CampaignClient } from '@app/core/services/campaign/campaign.client';
+import { NotificationService } from '@app/core/services/notification.service';
 
 // Importar componentes UI
 import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOption } from '@app/components/ui';
+import {CategoryClient} from '@core/services/category/category.client';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {SessionData, SessionState} from '@core/store/session/session.state';
 
 @Component({
   selector: 'app-offer-edit-modal',
@@ -89,7 +96,7 @@ import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOptio
                   [required]="true"
                   [variant]="getFieldVariant('category')"
                   [errorMessage]="getFieldError('category')"
-                  [options]="categoryOptions"
+                  [options]="categories"
                   formControlName="category">
                 </app-select>
               </div>
@@ -211,35 +218,26 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;
   @Input() offer: Offer | null = null;
   @Input() isEditMode: boolean = false;
+  @Input() businessId: string = "";
 
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<Partial<Offer>>();
 
   // Señales para el estado
-  private submittingSignal = signal<boolean>(false);
+  private readonly submittingSignal = signal<boolean>(false);
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+
+  private readonly destroy$ = new Subject<void>();
+  protected logInfo: (...arg: any) => void;
+  protected logError: (...arg: any) => void;
+  protected sessionData: SessionData | undefined;
+
+  categories: { value: string; label: string }[] = [];
 
   // Getters para las señales
   isSubmitting = this.submittingSignal.asReadonly();
 
   offerForm!: FormGroup;
-
-  // Opciones para los selects
-  categoryOptions: SelectOption[] = [
-    { value: 'Temporada', label: 'Temporada' },
-    { value: 'Evento', label: 'Evento' },
-    { value: 'Nuevos Clientes', label: 'Nuevos Clientes' },
-    { value: 'Educación', label: 'Educación' },
-    { value: 'Tecnología', label: 'Tecnología' },
-    { value: 'Jardín', label: 'Jardín' },
-    { value: 'Empresas', label: 'Empresas' },
-    { value: 'Flash', label: 'Flash' },
-    { value: 'Aniversario', label: 'Aniversario' },
-    { value: 'Fin de Año', label: 'Fin de Año' },
-    { value: 'Familia', label: 'Familia' },
-    { value: 'VIP', label: 'VIP' },
-    { value: 'Lealtad', label: 'Lealtad' },
-    { value: 'Romántico', label: 'Romántico' }
-  ];
 
   statusOptions: SelectOption[] = [
     { value: 'active', label: 'Activa' },
@@ -253,11 +251,20 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
     { value: 'ambos', label: 'Online y En Tienda' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private readonly campaignClient: CampaignClient,
+              private readonly categoryClient: CategoryClient, private readonly  notification: NotificationService) {
+    this.logInfo = (...arg: any) => console.info(arg);
+    this.logError = (...arg: any) => console.error(arg);
     this.initializeForm();
   }
 
   ngOnInit(): void {
+    this.store.select('session').subscribe(sessionState => {
+      if (sessionState?.sessionData) {
+        this.sessionData = sessionState.sessionData;
+        // Aquí podrías cargar más datos del negocio si es necesario
+      }
+    });
     this.initializeForm();
   }
 
@@ -270,6 +277,7 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
   private initializeForm(): void {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    this.loadCategories();
 
     this.offerForm = this.fb.group({
       title: new FormControl(
@@ -307,6 +315,21 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
     });
   }
 
+  private loadCategories(): void {
+    this.categoryClient.getCategories().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (getCategoryResponse) => {
+        if (getCategoryResponse.headers.status === 200 && getCategoryResponse.data.length > 0) {
+          this.categories = getCategoryResponse.data
+            .sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name))
+            .map((category: any) => ({value: category.id, label: category.name}));
+        }
+      },
+      error: (err) => {
+        this.logError('Error loading categories:', err);
+      }
+    });
+  }
+
   private formatDateForInput(date: Date): string {
     const d = new Date(date);
     return d.toISOString().split('T')[0];
@@ -320,11 +343,6 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
     today.setHours(0, 0, 0, 0);
 
     return inputDate > today ? null : { futureDate: true };
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.offerForm.get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   /**
@@ -376,12 +394,12 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
    */
   getFormErrors(): string {
     const errors: any = {};
-    Object.keys(this.offerForm.controls).forEach(key => {
+    for (const key of Object.keys(this.offerForm.controls)) {
       const control = this.offerForm.get(key);
       if (control?.errors) {
         errors[key] = control.errors;
       }
-    });
+    }
     return JSON.stringify(errors, null, 2);
   }
 
@@ -401,17 +419,99 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
         offerData.id = this.offer.id;
       }
 
-      // Simular delay de guardado
-      setTimeout(() => {
-        this.submittingSignal.set(false);
-        this.save.emit(offerData);
-        this.onClose();
-      }, 1000);
+      // Map offer data to campaign payload and call backend via CampaignClient
+      // NOTE: Backend expects local date-time format without milliseconds or timezone, e.g., 2025-11-17T00:00:00
+      const toLocalDateTime = (d?: Date) => {
+        if (!d) return undefined;
+        const date = new Date(d);
+        // Set to local midnight
+        date.setHours(0, 0, 0, 0);
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+      };
+
+      const campaignPayload = {
+        name: offerData.title || '',
+        description: offerData.description || offerData.terms || '',
+        startDate: toLocalDateTime(new Date()),
+        endDate: toLocalDateTime(offerData.validUntil as Date),
+        businessId: this.sessionData ? this.sessionData.userAuth.businesses[0] : null,
+        discount: offerData.discount,
+        categoryId: offerData.category,
+        active: offerData.status === 'active'
+      };
+
+      this.campaignClient.create(campaignPayload as any).subscribe({
+        next: (res) => {
+          // res is { status, body }
+          this.submittingSignal.set(false);
+          console.debug('Campaign create response:', res);
+          this.notification.success('Offer created successfully (campaign recorded)');
+          // Optionally attach returned campaign id to emitted data
+          const emitted = { ...offerData } as Partial<Offer>;
+          const createdId = (res && res.body && (res.body as any).id) || (res && (res as any).id);
+          if (createdId) {
+            (emitted as any).campaignId = createdId;
+          }
+          this.save.emit(emitted);
+          this.onClose();
+        },
+        error: (err) => {
+          this.submittingSignal.set(false);
+          console.error('Error creating campaign from offer (normalized):', err);
+
+          // Helper to extract errors object from various backend shapes
+          const extractErrors = (e: any): any => {
+            if (!e) return null;
+            if (e.errors && typeof e.errors === 'object') return e.errors;
+            if (e.body && e.body.errors && typeof e.body.errors === 'object') return e.body.errors;
+            if (e.body && e.body.ModelState) return e.body.ModelState;
+            if (e.body && e.body.modelState) return e.body.modelState;
+            // Some APIs return validation errors keyed by field name directly in body
+            if (e.body && typeof e.body === 'object') {
+              // attempt to find fields with array values
+              const candidates: any = {};
+              for (const k of Object.keys(e.body)) {
+                if (Array.isArray(e.body[k]) || typeof e.body[k] === 'string') {
+                  candidates[k] = e.body[k];
+                }
+              }
+              if (Object.keys(candidates).length) return candidates;
+            }
+            return null;
+          };
+
+          const serverErrors = extractErrors(err) || extractErrors(err?.error) || null;
+
+          if (serverErrors) {
+            for (const field of Object.keys(serverErrors)) {
+              const control = this.offerForm.get(field);
+              const value = serverErrors[field];
+              if (control) {
+                control.setErrors({ server: Array.isArray(value) ? value.join(' ') : String(value) });
+                control.markAsTouched();
+              }
+            }
+            const msg = err?.message || 'Validation errors occurred. Please check the form.';
+            this.notification.error(msg);
+            return;
+          }
+
+          // If there's a top-level message, show it
+          if (err?.message) {
+            this.notification.error(err.message);
+            return;
+          }
+
+          // Generic fallback
+          this.notification.error('Unable to save offer right now. Please try again.');
+        }
+      });
     } else {
       // Marcar todos los campos como touched para mostrar errores
-      Object.keys(this.offerForm.controls).forEach(key => {
+      for (const key of Object.keys(this.offerForm.controls)) {
         this.offerForm.get(key)?.markAsTouched();
-      });
+      }
     }
   }
 

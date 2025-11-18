@@ -108,7 +108,7 @@ import { BadgeComponent, BadgeVariant } from '@app/components/ui/badges/badge';
                     </app-badge>
                   </td>
                   <td class="tw-px-6 tw-py-4 tw-whitespace-nowrap tw-text-sm tw-text-gray-600">
-                    {{ offer.category }}
+                    {{ offer.category.name }}
                   </td>
                   <td class="tw-px-6 tw-py-4 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
                     <div class="tw-flex tw-justify-end tw-items-center tw-space-x-3">

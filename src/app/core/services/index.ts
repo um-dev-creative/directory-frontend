@@ -7,3 +7,4 @@ export * from './partner-category.service';
 export * from './storage-mock.service';
 export * from './theme.service';
 export * from './timezone.service';
+export * from './campaign/campaign.client';
