@@ -218,7 +218,6 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;
   @Input() offer: Offer | null = null;
   @Input() isEditMode: boolean = false;
-  @Input() businessId: string = "";
 
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<Partial<Offer>>();
