@@ -251,7 +251,7 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
   ];
 
   constructor(private fb: FormBuilder, private readonly campaignClient: CampaignClient,
-              private readonly categoryClient: CategoryClient, private readonly  notification: NotificationService) {
+              private readonly categoryClient: CategoryClient, private readonly notification: NotificationService) {
     this.logInfo = (...arg: any) => console.info(arg);
     this.logError = (...arg: any) => console.error(arg);
     this.initializeForm();
