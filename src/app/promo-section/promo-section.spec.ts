@@ -2,15 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PromoSection } from './promo-section';
+import {provideLocationMocks} from '@angular/common/testing';
+import {provideHttpClient} from '@angular/common/http';
 
-describe('PromoSectionComponent', () => {
+describe('PromoSection', () => {
   let component: PromoSection;
   let fixture: ComponentFixture<PromoSection>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PromoSection],
-      providers: [provideHttpClientTesting()]
+      providers: [
+        provideLocationMocks(),
+        provideHttpClientTesting(),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 

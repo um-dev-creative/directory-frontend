@@ -16,17 +16,15 @@ describe('DirectoryBackendJwtPipe', () => {
   });
 
   it('should decode a valid JWT token', () => {
-    const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    const validToken = 'eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI4MTI1NzE4YS00ODk2LTQ0MWUtYjZiMS1jNjFkMGQ3MGJjYjgiLCJ2Y0NvbXBsZXRlZCI6InRydWUiLCJ0eXBlIjoic2Vzc2lvbi10b2tlbiIsImlhdCI6MTc2MzczMzc0OCwianRpIjoiMTZmODYzMDMtNWUwYS00N2VhLTllMzYtMjEwOWQ3YzI1YjI4Iiwic3ViIjoiYW1hdGEyOTA4MzkiLCJleHAiOjE3NjM3MzczNDh9.yBj3-0XbXTw3pd_VM6ShZ3YUEefazOo6ayiKKshQDpY';
     const expectedPayload: DirectoryBackendJwtPayload = {
-      uid: '1234567890',
-      vcCompleted: 'true',
-      exp: 1516239022,
-      sub: '1234567890',
-      iss: 'https://example.com',
-      jti: '1234567890',
-      nbf: 1516239022,
-      aud: 'https://example.com',
-      iat: 1516239022
+      uid: "8125718a-4896-441e-b6b1-c61d0d70bcb8",
+      vcCompleted: "true",
+      type: "session-token",
+      iat: 1763733748,
+      jti: "16f86303-5e0a-47ea-9e36-2109d7c25b28",
+      sub: "amata290839",
+      exp: 1763737348
     };
 
     const result = pipe.transform(validToken);

@@ -12,6 +12,7 @@
     "dev:win": "concurrently \"npm run watch:ssr\" \"npm run start-dev:win\"",
     "dev:unix": "concurrently \"npm run watch:ssr\" \"npm run start-dev:unix\"",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
+    "test:browser": "ng test --code-coverage",
     "server:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs"
   },
   "private": true,

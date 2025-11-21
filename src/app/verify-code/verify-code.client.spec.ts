@@ -1,13 +1,32 @@
-import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {TestBed} from '@angular/core/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
-import { VerifyCodeClient } from './verify-code-client.service';
+import {VerifyCodeClient} from './verify-code-client.service';
+import {provideHttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import {of} from 'rxjs';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('VerifyCodeClient', () => {
   let service: VerifyCodeClient;
+  let mockStore: any;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClientTesting()] });
+  beforeEach(async () => {
+    mockStore = {
+      select: jasmine.createSpy().and.returnValue(of({
+        logged: false,
+        userAuth: {alias: 'testAlias', fullName: 'Pepe Perez'}
+      })),
+      dispatch: jasmine.createSpy()
+    };
+    TestBed.configureTestingModule({
+      providers: [
+        {provide: Store, useValue: mockStore},
+        provideLocationMocks(),
+        provideHttpClientTesting(),
+        provideHttpClient()
+      ]
+    });
     service = TestBed.inject(VerifyCodeClient);
   });
 

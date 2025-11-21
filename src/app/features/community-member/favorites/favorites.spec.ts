@@ -7,11 +7,13 @@ import { of } from 'rxjs';
 import { Favorites, FavoriteType, FavoriteItem } from './favorites';
 import { FavoritesService } from './services';
 import {provideLocationMocks} from '@angular/common/testing';
+import {ActivatedRoute, convertToParamMap} from '@angular/router';
 
 describe('Favorites', () => {
   let component: Favorites;
   let fixture: ComponentFixture<Favorites>;
   let favoritesService: jasmine.SpyObj<FavoritesService>;
+  let activatedRoute: ActivatedRoute;
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('FavoritesService', ['getFavorites', 'removeFromFavorites']);
@@ -23,8 +25,9 @@ describe('Favorites', () => {
       ],
       providers: [
         { provide: FavoritesService, useValue: spy },
+        { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
         provideHttpClientTesting(),
-        provideLocationMocks()
+        provideLocationMocks(),
       ]
     }).compileComponents();
 

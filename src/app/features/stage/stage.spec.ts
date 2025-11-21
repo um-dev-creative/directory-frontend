@@ -4,6 +4,12 @@ import {Store} from '@ngrx/store';
 import {HeaderService} from '@app/header/header.service';
 import {ChangeDetectorRef} from '@angular/core';
 import {CardImage} from '@app/cards/services/cards.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Router, ActivatedRoute } from '@angular/router';
+import { convertToParamMap } from '@angular/router';
+import { BannerService } from '@app/banner/services/banner.service';
+import { CardsService } from '@app/cards/services/cards.service';
+import { of } from 'rxjs';
 
 // Mocks
 class MockHeaderService {
@@ -16,7 +22,43 @@ class MockStore {
   select = jasmine.createSpy().and.returnValue({
     subscribe: (fn: (state: any) => void) => fn({ sessionData: { userAuth: { fullName: 'Test User' }, token: 'token' } })
   });
+  dispatch = jasmine.createSpy('dispatch');
 }
+
+const mockBannerData = {
+  title: 'Test Banner',
+  categories: [],
+  banners: {}
+};
+
+class MockBannerService {
+  getBannerData() {
+    return of(mockBannerData);
+  }
+  clearCache() {}
+}
+
+const mockCardsData = [
+  { src: 'a.jpg', alt: 'A', id: '1', title: 'Card A' }
+];
+
+class MockCardsService {
+  getCards() {
+    return of(mockCardsData);
+  }
+  clearCache() {}
+}
+
+const mockRouter = {
+  navigate: jasmine.createSpy('navigate'),
+  events: of({})
+} as any;
+
+const mockActivatedRoute = {
+  paramMap: of(convertToParamMap({})),
+  queryParams: of({}),
+  snapshot: { paramMap: convertToParamMap({}) }
+};
 
 describe('Stage', () => {
   let component: Stage;
@@ -27,8 +69,12 @@ describe('Stage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Stage],
+      imports: [Stage, HttpClientTestingModule],
       providers: [
+        { provide: CardsService, useClass: MockCardsService },
+        { provide: BannerService, useClass: MockBannerService },
+        { provide: Router, useValue: mockRouter },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: HeaderService, useClass: MockHeaderService },
         { provide: Store, useClass: MockStore },
         { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef }
@@ -92,4 +138,3 @@ describe('Stage', () => {
     expect(console.warn).toHaveBeenCalledWith('Failed to load image for card:', 'Card Title');
   });
 });
-

@@ -2,15 +2,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Marquee } from './marquee';
+import {ActivatedRoute, convertToParamMap} from '@angular/router';
+import {of} from 'rxjs';
+import {provideLocationMocks} from '@angular/common/testing';
+import {provideHttpClient} from '@angular/common/http';
 
-describe('MarqueeComponent', () => {
+describe('Marquee', () => {
   let component: Marquee;
   let fixture: ComponentFixture<Marquee>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Marquee],
-      providers: [provideHttpClientTesting()]
+      providers: [
+        { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
+        provideLocationMocks(),
+        provideHttpClientTesting(),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 

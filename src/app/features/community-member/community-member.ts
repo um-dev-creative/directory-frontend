@@ -334,8 +334,10 @@ export class CommunityMember implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (userData: any) => {
+            // userData may be either the raw data object or a response wrapper { headers, data }
+            const data = userData?.data ? userData.data : userData;
             // Update local profile data and form
-            this.setProfileData(userData);
+            this.setProfileData(data);
             this.updateFormWithSessionData();
             this.isSubmitting = false;
             this.notificationService.success('User updated successfully');
@@ -368,7 +370,7 @@ export class CommunityMember implements OnInit, OnDestroy {
 
     this.userClient.deleteUser(this.userId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response: any) => {
-          if (response && response.status === 204) {
+          if (response?.status === 204) {
             this.notificationService.success('Account deleted successfully');
             // Clear session data and redirect to the home page
             this.logout();
@@ -526,7 +528,7 @@ export class CommunityMember implements OnInit, OnDestroy {
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     const [year, month, day] = dateString.split('-');
-    const monthIndex = parseInt(month, 10) - 1;
+    const monthIndex = Number.parseInt(month, 10) - 1;
     return {
       month: months[monthIndex] || '',
       day: day,
