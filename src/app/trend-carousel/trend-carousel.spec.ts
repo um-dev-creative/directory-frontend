@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { TrendCarousel } from './trend-carousel';
 
@@ -8,7 +9,8 @@ describe('OffersCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TrendCarousel]
+      imports: [TrendCarousel],
+      providers: [provideHttpClientTesting()]
     })
     .compileComponents();
 

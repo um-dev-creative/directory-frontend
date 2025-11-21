@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Marquee } from './marquee';
 
@@ -8,7 +9,8 @@ describe('MarqueeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Marquee]
+      imports: [Marquee],
+      providers: [provideHttpClientTesting()]
     })
     .compileComponents();
 

@@ -51,7 +51,7 @@ export class PartnerSettings {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   navigateToOption(route: string): void {
     this.router.navigate([route]);

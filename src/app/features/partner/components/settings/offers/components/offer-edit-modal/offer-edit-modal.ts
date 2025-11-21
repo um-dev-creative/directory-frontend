@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnChanges, signal, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Offer } from '../../services/partner-offers.service';
+import {Offer, OfferStatus} from '../../services/partner-offers.service';
 import { CampaignClient } from '@app/core/services/campaign/campaign.client';
 import { NotificationService } from '@app/core/services/notification.service';
 
@@ -24,202 +24,15 @@ import {SessionData, SessionState} from '@core/store/session/session.state';
     TextareaComponent,
     SelectComponent
   ],
-  template: `
-    @if (isOpen) {
-      <!-- Overlay -->
-      <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-z-50 tw-flex tw-items-center tw-justify-center tw-p-4" (click)="onOverlayClick($event)">
-        <!-- Modal -->
-        <div class="tw-bg-white tw-rounded-xl tw-shadow-soft-lg tw-w-full tw-max-w-2xl tw-max-h-[90vh] tw-overflow-y-auto" (click)="$event.stopPropagation()">
-          <div class="tw-p-6">
-            <!-- Header -->
-            <div class="tw-flex tw-items-center tw-justify-between tw-mb-6">
-              <h2 class="tw-text-xl tw-font-bold tw-text-emerald-green-700">
-                {{ isEditMode ? 'Editar Oferta' : 'Nueva Oferta' }}
-              </h2>
-              <div class="tw-flex tw-items-center tw-space-x-4">
-                @if (isEditMode && offer) {
-                  <span class="tw-text-sm tw-text-beige-600">ID: #{{ offer.id }}</span>
-                }
-                <button
-                  type="button"
-                  class="tw-text-beige-400 hover:tw-text-beige-600 tw-transition-colors"
-                  (click)="onClose()"
-                >
-                  <svg class="tw-w-6 tw-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Formulario -->
-            <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="tw-space-y-6">
-              <!-- Título -->
-              <app-input
-                label="Título de la oferta"
-                placeholder="Ej: Descuento de Verano"
-                [required]="true"
-                [variant]="getFieldVariant('title')"
-                [errorMessage]="getFieldError('title')"
-                formControlName="title">
-              </app-input>
-
-              <!-- Descripción -->
-              <app-textarea
-                label="Descripción"
-                placeholder="Describe los detalles de la oferta..."
-                [required]="true"
-                [rows]="3"
-                [variant]="getFieldVariant('description')"
-                [errorMessage]="getFieldError('description')"
-                formControlName="description">
-              </app-textarea>
-
-              <!-- Fila: Descuento y Categoría -->
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
-                <!-- Descuento -->
-                <app-input
-                  label="Porcentaje de descuento"
-                  type="number"
-                  placeholder="20"
-                  [required]="true"
-                  [variant]="getFieldVariant('discount')"
-                  [errorMessage]="getFieldError('discount')"
-                  formControlName="discount"
-                  style="border: none; padding: 0; background: transparent; ">
-                </app-input>
-
-                <!-- Categoría -->
-                <app-select
-                  label="Categoría"
-                  placeholder="Selecciona una categoría"
-                  [required]="true"
-                  [variant]="getFieldVariant('category')"
-                  [errorMessage]="getFieldError('category')"
-                  [options]="categories"
-                  formControlName="category">
-                </app-select>
-              </div>
-
-              <!-- Tipo de Oferta -->
-              <app-select
-                label="Tipo de oferta"
-                [required]="true"
-                [variant]="getFieldVariant('type')"
-                [errorMessage]="getFieldError('type')"
-                [options]="typeOptions"
-                formControlName="type">
-              </app-select>
-
-              <!-- Fila: Fecha válida hasta y Estado -->
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
-                <!-- Fecha válida hasta -->
-                <app-input
-                  label="Válido hasta"
-                  type="text"
-                  placeholder="YYYY-MM-DD"
-                  [required]="true"
-                  [variant]="getFieldVariant('validUntil')"
-                  [errorMessage]="getFieldError('validUntil')"
-                  formControlName="validUntil"
-                  style="border: none; padding: 0; background: transparent; ">
-                </app-input>
-
-                <!-- Estado -->
-                <app-select
-                  label="Estado"
-                  [required]="true"
-                  [variant]="getFieldVariant('status')"
-                  [errorMessage]="getFieldError('status')"
-                  [options]="statusOptions"
-                  formControlName="status">
-                </app-select>
-              </div>
-
-              <!-- Términos y Condiciones -->
-              <app-textarea
-                label="Términos y Condiciones"
-                placeholder="Especifica los términos y condiciones de la oferta..."
-                [required]="true"
-                [rows]="4"
-                [variant]="getFieldVariant('terms')"
-                [errorMessage]="getFieldError('terms')"
-                formControlName="terms">
-              </app-textarea>
-
-              <!-- Botones -->
-              <div class="tw-flex tw-justify-end tw-space-x-3 tw-pt-6 tw-border-t tw-border-beige-200">
-                <app-button
-                  type="button"
-                  variant="outline"
-                  [disabled]="isSubmitting()"
-                  (buttonClick)="onClose()">
-                  Cancelar
-                </app-button>
-                <app-button
-                  type="submit"
-                  variant="primary"
-                  [disabled]="offerForm.invalid || isSubmitting()"
-                  [loading]="isSubmitting()">
-                  {{ isEditMode ? 'Actualizar' : 'Crear' }} Oferta
-                </app-button>
-              </div>
-            </form>
-
-            <!-- Form Status - Development Section (Temporal) -->
-            <div class="tw-mt-8 tw-p-4 tw-bg-gray-50 tw-rounded-lg tw-border tw-border-gray-200">
-              <h3 class="tw-font-semibold tw-mb-3 tw-text-gray-800">Estado del Formulario (Desarrollo):</h3>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4 tw-text-sm">
-                <div>
-                  <p><strong>Válido:</strong> @if (offerForm.valid) { Sí } @else { No }</p>
-                  <p><strong>Tocado:</strong> @if (offerForm.touched) { Sí } @else { No }</p>
-                  <p><strong>Sucio:</strong> @if (offerForm.dirty) { Sí } @else { No }</p>
-                </div>
-                <div>
-                  <p><strong>Estado:</strong> {{ offerForm.status }}</p>
-                  <p><strong>Pendiente:</strong> @if (offerForm.pending) { Sí } @else { No }</p>
-                  <p><strong>Enviando:</strong> @if (isSubmitting()) { Sí } @else { No }</p>
-                </div>
-              </div>
-
-              <div class="tw-mt-4">
-                <p class="tw-font-medium tw-mb-2">Valores del Formulario:</p>
-                <pre class="tw-text-xs tw-bg-white tw-p-3 tw-rounded tw-border tw-overflow-auto tw-max-h-40">{{ getFormValues() }}</pre>
-              </div>
-
-              @if (!offerForm.valid) {
-                <div class="tw-mt-4">
-                  <p class="tw-font-medium tw-mb-2 tw-text-red-600">Errores del Formulario:</p>
-                  <pre class="tw-text-xs tw-bg-red-50 tw-p-3 tw-rounded tw-border tw-border-red-200 tw-overflow-auto tw-max-h-32">{{ getFormErrors() }}</pre>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    }
-  `,
-  styles: [`
-    .tw-animate-spin {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  `]
+  templateUrl: 'offer-edit-modal.html',
+  styleUrls: ['./offer-edit-modal.css']
 })
-export class OfferEditModalComponent implements OnInit, OnChanges {
+export class OfferEditModal implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;
   @Input() offer: Offer | null = null;
   @Input() isEditMode: boolean = false;
 
-  @Output() close = new EventEmitter<void>();
+  @Output()  closeEventEmitter = new EventEmitter<void>();
   @Output() save = new EventEmitter<Partial<Offer>>();
 
   // Señales para el estado
@@ -238,19 +51,21 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
 
   offerForm!: FormGroup;
 
+  // PENDING - Implementing status options as a service
   statusOptions: SelectOption[] = [
-    { value: 'active', label: 'Activa' },
-    { value: 'inactive', label: 'Inactiva' },
-    { value: 'expired', label: 'Expirada' }
+    { value: OfferStatus.ACTIVE, label: 'Activa' },
+    { value: OfferStatus.INACTIVE, label: 'Inactiva' },
+    { value: OfferStatus.EXPIRED, label: 'Expirada' }
   ];
 
+  // PENDING - Implementing type options as a service
   typeOptions: SelectOption[] = [
     { value: 'online', label: 'Online' },
     { value: 'en_tienda', label: 'En Tienda' },
     { value: 'ambos', label: 'Online y En Tienda' }
   ];
 
-  constructor(private fb: FormBuilder, private readonly campaignClient: CampaignClient,
+  constructor(private readonly fb: FormBuilder, private readonly campaignClient: CampaignClient,
               private readonly categoryClient: CategoryClient, private readonly notification: NotificationService) {
     this.logInfo = (...arg: any) => console.info(arg);
     this.logError = (...arg: any) => console.error(arg);
@@ -304,7 +119,7 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
         [Validators.required, this.futureDateValidator]
       ),
       status: new FormControl(
-        this.offer?.status || 'active',
+        this.offer?.status || OfferStatus.ACTIVE,
         [Validators.required]
       ),
       terms: new FormControl(
@@ -430,14 +245,16 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
       };
 
       const campaignPayload = {
-        name: offerData.title || '',
+        title: offerData.title || '',
         description: offerData.description || offerData.terms || '',
         startDate: toLocalDateTime(new Date()),
         endDate: toLocalDateTime(offerData.validUntil as Date),
+        categoryId: offerData.category??'',
         businessId: this.sessionData ? this.sessionData.userAuth.businesses[0] : null,
         discount: offerData.discount,
-        categoryId: offerData.category,
-        active: offerData.status === 'active'
+        terms: offerData.terms,
+        status: offerData.status?.toUpperCase(),
+        active: true
       };
 
       this.campaignClient.create(campaignPayload as any).subscribe({
@@ -517,7 +334,7 @@ export class OfferEditModalComponent implements OnInit, OnChanges {
   onClose(): void {
     this.offerForm?.reset();
     this.submittingSignal.set(false);
-    this.close.emit();
+    this.closeEventEmitter.emit();
   }
 
   onOverlayClick(event: Event): void {

@@ -8,6 +8,7 @@ import {HeaderService} from '@app/header/header.service';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 import {UserMockService} from './services/user-mock.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 // Mocks
 class MockUserClient {
@@ -63,16 +64,15 @@ describe('CommunityMember', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      providers: [
+      imports: [ReactiveFormsModule, CommunityMember],
+      providers: [provideHttpClientTesting(),
         { provide: UserClient, useClass: MockUserClient },
         { provide: Store, useClass: MockStore },
         { provide: HeaderService, useClass: MockHeaderService },
         { provide: BackboneJwtPipe, useClass: MockBackboneJwtPipe },
         { provide: DirectoryBackendJwtPipe, useClass: MockDirectoryBackendJwtPipe },
         { provide: UserMockService, useClass: MockUserMockService }
-      ],
-      declarations: [CommunityMember]
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CommunityMember);
@@ -203,4 +203,3 @@ describe('CommunityMember', () => {
     expect(typeof component.getFormErrors()).toBe('string');
   });
 });
-

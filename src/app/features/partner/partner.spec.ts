@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {provideMockStore} from '@ngrx/store/testing';
 
-import { Partner } from './partner';
+import {Partner} from './partner';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('StoreComponent', () => {
   let component: Partner;
@@ -8,7 +10,8 @@ describe('StoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Partner]
+      imports: [Partner],
+      providers: [provideMockStore({}), provideLocationMocks()]
     })
     .compileComponents();
 

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ProductList } from './product-list';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('ProductListComponent', () => {
   let component: ProductList;
@@ -8,7 +10,8 @@ describe('ProductListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductList]
+      imports: [ProductList],
+      providers: [provideHttpClientTesting(), provideLocationMocks()]
     })
     .compileComponents();
 

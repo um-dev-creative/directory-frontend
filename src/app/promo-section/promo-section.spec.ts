@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PromoSection } from './promo-section';
 
@@ -8,7 +9,8 @@ describe('PromoSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PromoSection]
+      imports: [PromoSection],
+      providers: [provideHttpClientTesting()]
     })
     .compileComponents();
 

@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { OfferSlider } from './offer-slider';
 
-describe('OfferCarouselComponent', () => {
+describe('OfferSliderComponent', () => {
   let component: OfferSlider;
   let fixture: ComponentFixture<OfferSlider>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OfferSlider]
+      imports: [OfferSlider],
+      providers: [provideHttpClientTesting()]
     })
     .compileComponents();
 

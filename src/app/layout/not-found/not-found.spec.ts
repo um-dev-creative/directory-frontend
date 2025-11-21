@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NotFound } from './not-found';
+import {NotFound} from './not-found';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('NotFoundComponent', () => {
   let component: NotFound;
@@ -8,7 +9,8 @@ describe('NotFoundComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotFound]
+      imports: [NotFound],
+      providers: [provideLocationMocks()]
     })
     .compileComponents();
 
