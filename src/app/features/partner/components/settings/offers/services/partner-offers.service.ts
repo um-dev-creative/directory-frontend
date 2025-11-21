@@ -1,13 +1,20 @@
 import {Injectable, signal} from '@angular/core';
 import {delay, Observable, of} from 'rxjs';
 
+export enum OfferStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  EXPIRED = 'EXPIRED'
+}
+
 export interface Offer {
-  id: number;
+  _id:number;
+  id: string;
   title: string;
   description: string;
   discount: number;
   validUntil: Date;
-  status: 'active' | 'inactive' | 'expired';
+  status: OfferStatus;
   category: { id: string; name: string };
   createdAt: Date;
   terms?: string;
@@ -27,153 +34,168 @@ export interface PaginatedResponse<T> {
 export class PartnerOffersService {
   private mockOffers: Offer[] = [
     {
-      id: 1,
+      _id:1,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento de Verano",
       description: "20% de descuento en todos los productos de temporada",
       discount: 20,
       validUntil: new Date('2024-08-31'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '8609db8d-8825-4cd3-ae66-c94249bc1023', name: 'Temporada'},
       createdAt: new Date('2024-06-01'),
       terms: "Válido hasta el 31 de agosto de 2024. No acumulable con otras ofertas. Aplica solo a productos en stock. Descuento aplicado automáticamente al finalizar la compra."
     },
     {
-      id: 2,
+      _id:2,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Black Friday Especial",
       description: "50% de descuento en productos seleccionados",
       discount: 50,
       validUntil: new Date('2024-11-29'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: 'f1dbe0d5-694b-4d48-bd9b-afd2fffc36a5', name: 'Evento'},
       createdAt: new Date('2024-05-15')
     },
     {
-      id: 3,
+      _id:3,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta de Bienvenida",
       description: "15% de descuento para nuevos clientes",
       discount: 15,
       validUntil: new Date('2024-12-31'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: 'a77bb4a7-9845-487c-bbdd-a9bc55da5214', name: 'Nuevos Clientes'},
       createdAt: new Date('2024-01-01')
     },
     {
-      id: 4,
+      _id:4,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento Estudiantil",
       description: "10% de descuento para estudiantes universitarios",
       discount: 10,
       validUntil: new Date('2024-09-30'),
-      status: 'inactive',
+      status: OfferStatus.INACTIVE,
       category: {id: 'e43fdffc-4128-408b-b987-53000c79744d', name: 'Educación'},
       createdAt: new Date('2024-03-01')
     },
     {
-      id: 5,
+      _id:5,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta Navideña",
       description: "30% de descuento en la temporada navideña",
       discount: 30,
       validUntil: new Date('2023-12-31'),
-      status: 'expired',
+      status: OfferStatus.EXPIRED,
       category: {id: '124814d6-5751-4941-a471-5f989790c377', name: 'Temporada'},
       createdAt: new Date('2023-11-01')
     },
     {
-      id: 6,
+      _id:6,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Cyber Monday",
       description: "40% de descuento en productos tecnológicos",
       discount: 40,
       validUntil: new Date('2024-11-30'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '85366e4a-fcdf-4406-98cd-13fbdfba0e57', name: 'Tecnología'},
       createdAt: new Date('2024-04-10')
     },
     {
-      id: 7,
+      _id:7,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta de Primavera",
       description: "25% de descuento en productos de jardín",
       discount: 25,
       validUntil: new Date('2024-06-30'),
-      status: 'expired',
+      status: OfferStatus.EXPIRED,
       category: {id: '798c1fa4-ece4-4a61-b0a4-947aae22fba4', name: 'Jardín'},
       createdAt: new Date('2024-03-15')
     },
     {
-      id: 8,
+      _id:8,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento Corporativo",
       description: "35% de descuento para empresas",
       discount: 35,
       validUntil: new Date('2024-10-31'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: 'df10f334-115c-4bba-88be-6d5b38a60869', name: 'Empresas'},
       createdAt: new Date('2024-02-01')
     },
     {
-      id: 9,
+      _id:9,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta Flash",
       description: "60% de descuento por tiempo limitado",
       discount: 60,
       validUntil: new Date('2024-07-20'),
-      status: 'inactive',
+      status: OfferStatus.INACTIVE,
       category: {id: 'a7d966c8-df71-431a-97fd-1d2d1e642a28', name: 'Flash'},
       createdAt: new Date('2024-07-01')
     },
     {
-      id: 10,
+      _id:10,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento de Aniversario",
       description: "45% de descuento por nuestro aniversario",
       discount: 45,
       validUntil: new Date('2024-09-15'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '18f7abf8-a1f5-4c6d-9ab5-ce4ee018de89', name: 'Aniversario'},
       createdAt: new Date('2024-05-01')
     },
     {
-      id: 11,
+      _id:11,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta de Fin de Año",
       description: "55% de descuento para cerrar el año",
       discount: 55,
       validUntil: new Date('2024-12-31'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '60d9d00f-efd6-42cc-bbff-69ad4c613cf8', name: 'Fin de Año'},
       createdAt: new Date('2024-06-15')
     },
     {
-      id: 12,
+      _id:12,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento Familiar",
       description: "20% de descuento para familias numerosas",
       discount: 20,
       validUntil: new Date('2024-08-15'),
-      status: 'inactive',
+      status: OfferStatus.INACTIVE,
       category: {id: '052e5903-cf7e-40c5-a852-bf35111a323b', name: 'Familia'},
       createdAt: new Date('2024-04-01')
     },
     {
-      id: 13,
+      _id:13,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta VIP",
       description: "70% de descuento para clientes VIP",
       discount: 70,
       validUntil: new Date('2024-11-15'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '6c101466-c5ab-4f59-aa8a-02443dc27399', name: 'VIP'},
       createdAt: new Date('2024-03-20')
     },
     {
-      id: 14,
+      _id:14,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Descuento de Lealtad",
       description: "25% de descuento por fidelidad",
       discount: 25,
       validUntil: new Date('2024-10-01'),
-      status: 'active',
+      status: OfferStatus.ACTIVE,
       category: {id: '5f305402-a452-464d-b6e7-d95d0d5f7a49', name: 'Lealtad'},
       createdAt: new Date('2024-01-15')
     },
     {
-      id: 15,
+      _id:15,
+      id: "7fa5e73a-07d0-4763-8498-ef28168616fb",
       title: "Oferta Especial San Valentín",
       description: "40% de descuento en productos románticos",
       discount: 40,
       validUntil: new Date('2024-02-14'),
-      status: 'expired',
+      status: OfferStatus.EXPIRED,
       category: {id: 'c82970dc-b867-440f-be0b-2d7e8f38b0fa', name: 'Romántico'},
       createdAt: new Date('2024-01-01')
     }
@@ -213,18 +235,18 @@ export class PartnerOffersService {
   /**
    * Obtiene una oferta por ID
    */
-  getOfferById(id: number): Observable<Offer | null> {
-    const offer = this.mockOffers.find(o => o.id === id);
+  getOfferById(_id: number): Observable<Offer | null> {
+    const offer = this.mockOffers.find(o => o._id === _id);
     return of(offer || null).pipe(delay(200));
   }
 
   /**
    * Actualiza una oferta
    */
-  updateOffer(id: number, updatedOffer: Partial<Offer>): Observable<Offer> {
+  updateOffer(_id: number, updatedOffer: Partial<Offer>): Observable<Offer> {
     this.loadingSignal.set(true);
 
-    const index = this.mockOffers.findIndex(o => o.id === id);
+    const index = this.mockOffers.findIndex(o => o._id === _id);
     if (index !== -1) {
       this.mockOffers[index] = { ...this.mockOffers[index], ...updatedOffer };
       this.offersSignal.set([...this.mockOffers]);
@@ -238,12 +260,12 @@ export class PartnerOffersService {
   /**
    * Crea una nueva oferta
    */
-  createOffer(newOffer: Omit<Offer, 'id' | 'createdAt'>): Observable<Offer> {
+  createOffer(newOffer: Omit<Offer, '_id' | 'createdAt'>): Observable<Offer> {
     this.loadingSignal.set(true);
 
     const offer: Offer = {
       ...newOffer,
-      id: Math.max(...this.mockOffers.map(o => o.id)) + 1,
+      _id: Math.max(...this.mockOffers.map(o => o._id)) + 1,
       createdAt: new Date()
     };
 
@@ -256,7 +278,7 @@ export class PartnerOffersService {
   /**
    * Elimina una oferta
    */
-  deleteOffer(id: number): Observable<boolean> {
+  deleteOffer(id: string): Observable<boolean> {
     this.loadingSignal.set(true);
 
     const index = this.mockOffers.findIndex(o => o.id === id);

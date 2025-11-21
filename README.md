@@ -93,6 +93,19 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
+Quick test run (unit tests):
+
+```powershell
+# from repository root
+npm ci; npm test
+```
+
+```
+# Notes:
+# - Tests use Karma/Jasmine as configured in package.json.
+# - If running in CI/container, ensure ChromeHeadlessNoSandbox is available or adjust Karma config.
+```
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
@@ -102,6 +115,17 @@ ng e2e
 ```
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Backend API: Campaigns
+
+This frontend integrates with the directory-backend campaigns endpoint used to list and manage campaigns.
+
+- Endpoint: GET /api/campaigns
+- Query params:
+  - page (number) — 1-based page number (optional, default 1)
+  - limit (number) — page size (optional, default 10)
+
+The Angular client `src/app/core/services/campaign/campaign.client.ts` exposes a `list(params: { page?: number; limit?: number })` method that returns an Observable of a normalized paginated result. The client implements a simple in-memory cache per `page|limit` while the session is active and surfaces friendly error messages.
 
 ## Additional Resources
 

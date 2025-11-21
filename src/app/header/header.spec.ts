@@ -2,16 +2,16 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Header} from './header';
 import {DebugElement} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
+import {Router} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Stage} from '@app/features/stage/stage';
 import {App} from '@app/app';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Store} from '@ngrx/store';
-import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('Header', () => {
   let component: Header;
@@ -37,9 +37,7 @@ describe('Header', () => {
       imports: [
         Header,
         BrowserAnimationsModule,
-        RouterModule.forRoot(
-          [{path: '', component: Stage}, {path: 'simple', component: Stage}]
-        ), TranslateModule.forRoot({
+        TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
@@ -51,8 +49,8 @@ describe('Header', () => {
         provideHttpClientTesting(),
         {provide: Store, useValue: mockStore},
         {provide: Router, useValue: mockRouter},
-        provideHttpClient(withInterceptorsFromDi()),
-        {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])}
+        {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])},
+        , provideLocationMocks()
       ]
     })
       .compileComponents();

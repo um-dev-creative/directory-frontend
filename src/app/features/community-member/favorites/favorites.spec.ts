@@ -1,17 +1,19 @@
 /// <reference types="jasmine" />
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { Favorites, FavoriteType, FavoriteItem } from './favorites';
 import { FavoritesService } from './services';
+import {provideLocationMocks} from '@angular/common/testing';
+import {ActivatedRoute, convertToParamMap} from '@angular/router';
 
 describe('Favorites', () => {
   let component: Favorites;
   let fixture: ComponentFixture<Favorites>;
   let favoritesService: jasmine.SpyObj<FavoritesService>;
+  let activatedRoute: ActivatedRoute;
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('FavoritesService', ['getFavorites', 'removeFromFavorites']);
@@ -19,12 +21,13 @@ describe('Favorites', () => {
     await TestBed.configureTestingModule({
       imports: [
         Favorites,
-        RouterTestingModule,
-        FormsModule,
-        HttpClientTestingModule
+        FormsModule
       ],
       providers: [
-        { provide: FavoritesService, useValue: spy }
+        { provide: FavoritesService, useValue: spy },
+        { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
+        provideHttpClientTesting(),
+        provideLocationMocks(),
       ]
     }).compileComponents();
 

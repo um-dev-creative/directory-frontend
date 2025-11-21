@@ -1,0 +1,173 @@
+@if (this.isOpen) {
+  <!-- Overlay -->
+  <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-z-50 tw-flex tw-items-center tw-justify-center tw-p-4" (click)="this.onOverlayClick($event)">
+    <!-- Modal -->
+    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft-lg tw-w-full tw-max-w-2xl tw-max-h-[90vh] tw-overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="tw-p-6">
+        <!-- Header -->
+        <div class="tw-flex tw-items-center tw-justify-between tw-mb-6">
+          <h2 class="tw-text-xl tw-font-bold tw-text-emerald-green-700">
+            {{ this.isEditMode ? 'Editar Oferta' : 'Nueva Oferta' }}
+          </h2>
+          <div class="tw-flex tw-items-center tw-space-x-4">
+            @if (this.isEditMode && this.offer) {
+              <span class="tw-text-sm tw-text-beige-600">ID: #{{ this.offer.id }}</span>
+            }
+            <button
+              type="button"
+              class="tw-text-beige-400 hover:tw-text-beige-600 tw-transition-colors"
+              (click)="this.onClose()"
+            >
+              <svg class="tw-w-6 tw-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <form [formGroup]="this.offerForm" (ngSubmit)="this.onSubmit()" class="tw-space-y-6">
+          <!-- Título -->
+          <app-input
+            label="Título de la oferta"
+            placeholder="Ej: Descuento de Verano"
+            [required]="true"
+            [variant]="this.getFieldVariant('title')"
+            [errorMessage]="this.getFieldError('title')"
+            formControlName="title">
+          </app-input>
+
+          <!-- Descripción -->
+          <app-textarea
+            label="Descripción"
+            placeholder="Describe los detalles de la oferta..."
+            [required]="true"
+            [rows]="3"
+            [variant]="this.getFieldVariant('description')"
+            [errorMessage]="this.getFieldError('description')"
+            formControlName="description">
+          </app-textarea>
+
+          <!-- Fila: Descuento y Categoría -->
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <!-- Descuento -->
+            <app-input
+              label="Porcentaje de descuento"
+              type="number"
+              placeholder="20"
+              [required]="true"
+              [variant]="this.getFieldVariant('discount')"
+              [errorMessage]="this.getFieldError('discount')"
+              formControlName="discount"
+              style="border: none; padding: 0; background: transparent; ">
+            </app-input>
+
+            <!-- Categoría -->
+            <app-select
+              label="Categoría"
+              placeholder="Selecciona una categoría"
+              [required]="true"
+              [variant]="this.getFieldVariant('category')"
+              [errorMessage]="this.getFieldError('category')"
+              [options]="this.categories"
+              formControlName="category">
+            </app-select>
+          </div>
+
+          <!-- Tipo de Oferta -->
+          <app-select
+            label="Tipo de oferta"
+            [required]="true"
+            [variant]="this.getFieldVariant('type')"
+            [errorMessage]="this.getFieldError('type')"
+            [options]="this.typeOptions"
+            formControlName="type">
+          </app-select>
+
+          <!-- Fila: Fecha válida hasta y Estado -->
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <!-- Fecha válida hasta -->
+            <app-input
+              label="Válido hasta"
+              type="text"
+              placeholder="YYYY-MM-DD"
+              [required]="true"
+              [variant]="this.getFieldVariant('validUntil')"
+              [errorMessage]="this.getFieldError('validUntil')"
+              formControlName="validUntil"
+              style="border: none; padding: 0; background: transparent; ">
+            </app-input>
+
+            <!-- Estado -->
+            <app-select
+              label="Estado"
+              [required]="true"
+              [variant]="this.getFieldVariant('status')"
+              [errorMessage]="this.getFieldError('status')"
+              [options]="this.statusOptions"
+              formControlName="status">
+            </app-select>
+          </div>
+
+          <!-- Términos y Condiciones -->
+          <app-textarea
+            label="Términos y Condiciones"
+            placeholder="Especifica los términos y condiciones de la oferta..."
+            [required]="true"
+            [rows]="4"
+            [variant]="this.getFieldVariant('terms')"
+            [errorMessage]="this.getFieldError('terms')"
+            formControlName="terms">
+          </app-textarea>
+
+          <!-- Botones -->
+          <div class="tw-flex tw-justify-end tw-space-x-3 tw-pt-6 tw-border-t tw-border-beige-200">
+            <app-button
+              type="button"
+              variant="outline"
+              [disabled]="this.isSubmitting()"
+              (buttonClick)="this.onClose()">
+              Cancelar
+            </app-button>
+            <app-button
+              type="submit"
+              variant="primary"
+              [disabled]="this.offerForm.invalid || this.isSubmitting()"
+              [loading]="this.isSubmitting()">
+              {{ this.isEditMode ? 'Actualizar' : 'Crear' }} Oferta
+            </app-button>
+          </div>
+        </form>
+
+        <!-- Form Status - Development Section (Temporal) -->
+        <div class="tw-mt-8 tw-p-4 tw-bg-gray-50 tw-rounded-lg tw-border tw-border-gray-200">
+          <h3 class="tw-font-semibold tw-mb-3 tw-text-gray-800">Estado del Formulario (Desarrollo):</h3>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4 tw-text-sm">
+            <div>
+              <p><strong>Válido:</strong> @if (this.offerForm.valid) { Sí } @else { No }</p>
+              <p><strong>Tocado:</strong> @if (this.offerForm.touched) { Sí } @else { No }</p>
+              <p><strong>Sucio:</strong> @if (this.offerForm.dirty) { Sí } @else { No }</p>
+            </div>
+            <div>
+              <p><strong>Estado:</strong> {{ this.offerForm.status }}</p>
+              <p><strong>Pendiente:</strong> @if (this.offerForm.pending) { Sí } @else { No }</p>
+              <p><strong>Enviando:</strong> @if (this.isSubmitting()) { Sí } @else { No }</p>
+            </div>
+          </div>
+
+          <div class="tw-mt-4">
+            <p class="tw-font-medium tw-mb-2">Valores del Formulario:</p>
+            <pre class="tw-text-xs tw-bg-white tw-p-3 tw-rounded tw-border tw-overflow-auto tw-max-h-40">{{ this.getFormValues() }}</pre>
+          </div>
+
+          @if (!this.offerForm.valid) {
+            <div class="tw-mt-4">
+              <p class="tw-font-medium tw-mb-2 tw-text-red-600">Errores del Formulario:</p>
+              <pre class="tw-text-xs tw-bg-red-50 tw-p-3 tw-rounded tw-border tw-border-red-200 tw-overflow-auto tw-max-h-32">{{ this.getFormErrors() }}</pre>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

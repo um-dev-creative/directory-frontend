@@ -10,7 +10,8 @@ describe('App Actions', () => {
             sessionToken: '',
             features: [],
             email: '',
-            authorization: ''
+            authorization: '',
+            businesses: []
           },
             token: 'true'
         };

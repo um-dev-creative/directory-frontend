@@ -6,4 +6,6 @@ export interface DirectoryBackendJwtPayload extends JwtPayload {
   uid?: string;
   /** User alias */
   sub?: string;
+  /** Session type */
+  type?: string;
 }

@@ -4,17 +4,6 @@ import {catchError, map, Observable} from 'rxjs';
 import {ServiceTemplate} from '@app/core/services/service-template';
 import {AUTHORIZATION_TOKEN_KEY, DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
 
-export interface AuthTokenRequest {
-  alias: string;
-  password: string;
-}
-
-export interface AuthTokenResponse {
-  headers: any;
-  body: any;
-  sessionTokenBkd: string | null;
-}
-
 /**
  * Auth client services to get token from backend services
  */
@@ -58,7 +47,7 @@ export class AuthClient extends ServiceTemplate {
   /**
    * Get token from backend services with user and password provided by the user
    * @param backboneToken - AuthTokenRequest
-   * @return Observable<AuthTokenResponse>
+   * @return Observable<any>
    */
   closeSession(backboneToken: any): Observable<any> {
     return this.httpClient.delete<any>(`${this.CONTENT_PATH}/session-end`,

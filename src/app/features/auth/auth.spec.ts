@@ -2,12 +2,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Auth} from './auth';
 import {DebugElement} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, convertToParamMap, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClient, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {App} from '@app/app';
-import {Stage} from '@app/features/stage';
 import {Store} from "@ngrx/store";
 import {AuthClient} from '@app/features/auth/auth.client';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
@@ -19,6 +18,7 @@ describe('AuthComponent', () => {
   let debugElement: DebugElement;
   let mockRouter: Router;
   let mockStore: any;
+  let activatedRoute: ActivatedRoute;
 
   beforeEach(async () => {
     mockStore = {
@@ -35,23 +35,21 @@ describe('AuthComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         Auth,
-        BrowserAnimationsModule,
-        RouterModule.forRoot(
-          [{path: '', component: Stage}, {path: 'simple', component: Stage}]
-        )
+        BrowserAnimationsModule
       ],
       providers: [
         App,
         AuthClient,
         provideHttpClientTesting(),
+        { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
         {provide: Store, useValue: mockStore},
         {provide: Router, useValue: mockRouter},
-        provideHttpClient(withInterceptorsFromDi()),
         {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])}
       ]
     })
     .compileComponents();
 
+    activatedRoute = TestBed.inject(ActivatedRoute);
     fixture = TestBed.createComponent(Auth);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
