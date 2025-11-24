@@ -15,7 +15,8 @@ export interface Offer {
   discount: number;
   validUntil: Date;
   status: OfferStatus;
-  category: { id: string; name: string };
+  category: {id: string; name:  string};
+  type?: string;
   createdAt: Date;
   terms?: string;
 }

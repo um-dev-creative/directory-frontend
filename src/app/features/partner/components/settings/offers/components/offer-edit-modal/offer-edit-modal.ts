@@ -1,12 +1,12 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnChanges, signal, inject} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import {Offer, OfferStatus} from '../../services/partner-offers.service';
-import { CampaignClient } from '@app/core/services/campaign/campaign.client';
-import { NotificationService } from '@app/core/services/notification.service';
+import {CampaignClient} from '@app/core/services/campaign/campaign.client';
+import {NotificationService} from '@app/core/services/notification.service';
 
 // Importar componentes UI
-import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOption } from '@app/components/ui';
+import {Button, InputComponent, TextareaComponent, SelectComponent, SelectOption} from '@app/components/ui';
 import {CategoryClient} from '@core/services/category/category.client';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -32,7 +32,7 @@ export class OfferEditModal implements OnInit, OnChanges {
   @Input() offer: Offer | null = null;
   @Input() isEditMode: boolean = false;
 
-  @Output()  closeEventEmitter = new EventEmitter<void>();
+  @Output() closeEventEmitter = new EventEmitter<void>();
   @Output() save = new EventEmitter<Partial<Offer>>();
 
   // Señales para el estado
@@ -53,16 +53,16 @@ export class OfferEditModal implements OnInit, OnChanges {
 
   // PENDING - Implementing status options as a service
   statusOptions: SelectOption[] = [
-    { value: OfferStatus.ACTIVE, label: 'Activa' },
-    { value: OfferStatus.INACTIVE, label: 'Inactiva' },
-    { value: OfferStatus.EXPIRED, label: 'Expirada' }
+    {value: OfferStatus.ACTIVE, label: 'Activa'},
+    {value: OfferStatus.INACTIVE, label: 'Inactiva'},
+    {value: OfferStatus.EXPIRED, label: 'Expirada'}
   ];
 
   // PENDING - Implementing type options as a service
   typeOptions: SelectOption[] = [
-    { value: 'online', label: 'Online' },
-    { value: 'en_tienda', label: 'En Tienda' },
-    { value: 'ambos', label: 'Online y En Tienda' }
+    {value: 'online', label: 'Online'},
+    {value: 'en_tienda', label: 'En Tienda'},
+    {value: 'ambos', label: 'Online y En Tienda'}
   ];
 
   constructor(private readonly fb: FormBuilder, private readonly campaignClient: CampaignClient,
@@ -111,7 +111,7 @@ export class OfferEditModal implements OnInit, OnChanges {
         [Validators.required]
       ),
       type: new FormControl(
-        (this.offer as any)?.type || 'online',
+        this.offer?.type || 'online',
         [Validators.required]
       ),
       validUntil: new FormControl(
@@ -124,7 +124,7 @@ export class OfferEditModal implements OnInit, OnChanges {
       ),
       terms: new FormControl(
         this.offer?.terms || '',
-        [Validators.required, Validators.minLength(20)]
+        [Validators.required, Validators.minLength(200), Validators.maxLength(2500)]
       )
     });
   }
@@ -156,7 +156,7 @@ export class OfferEditModal implements OnInit, OnChanges {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    return inputDate > today ? null : { futureDate: true };
+    return inputDate > today ? null : {futureDate: true};
   }
 
   /**
@@ -231,104 +231,200 @@ export class OfferEditModal implements OnInit, OnChanges {
       // Si es modo edición, incluir el ID
       if (this.isEditMode && this.offer) {
         offerData.id = this.offer.id;
+        this.updateCampaign(offerData);
+      } else {
+        this.createCampaign(offerData);
       }
-
-      // Map offer data to campaign payload and call backend via CampaignClient
-      // NOTE: Backend expects local date-time format without milliseconds or timezone, e.g., 2025-11-17T00:00:00
-      const toLocalDateTime = (d?: Date) => {
-        if (!d) return undefined;
-        const date = new Date(d);
-        // Set to local midnight
-        date.setHours(0, 0, 0, 0);
-        const pad = (n: number) => n.toString().padStart(2, '0');
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-      };
-
-      const campaignPayload = {
-        title: offerData.title || '',
-        description: offerData.description || offerData.terms || '',
-        startDate: toLocalDateTime(new Date()),
-        endDate: toLocalDateTime(offerData.validUntil as Date),
-        categoryId: offerData.category??'',
-        businessId: this.sessionData ? this.sessionData.userAuth.businesses[0] : null,
-        discount: offerData.discount,
-        terms: offerData.terms,
-        status: offerData.status?.toUpperCase(),
-        active: true
-      };
-
-      this.campaignClient.create(campaignPayload as any).subscribe({
-        next: (res) => {
-          // res is { status, body }
-          this.submittingSignal.set(false);
-          console.debug('Campaign create response:', res);
-          this.notification.success('Offer created successfully (campaign recorded)');
-          // Optionally attach returned campaign id to emitted data
-          const emitted = { ...offerData } as Partial<Offer>;
-          const createdId = (res && res.body && (res.body as any).id) || (res && (res as any).id);
-          if (createdId) {
-            (emitted as any).campaignId = createdId;
-          }
-          this.save.emit(emitted);
-          this.onClose();
-        },
-        error: (err) => {
-          this.submittingSignal.set(false);
-          console.error('Error creating campaign from offer (normalized):', err);
-
-          // Helper to extract errors object from various backend shapes
-          const extractErrors = (e: any): any => {
-            if (!e) return null;
-            if (e.errors && typeof e.errors === 'object') return e.errors;
-            if (e.body && e.body.errors && typeof e.body.errors === 'object') return e.body.errors;
-            if (e.body && e.body.ModelState) return e.body.ModelState;
-            if (e.body && e.body.modelState) return e.body.modelState;
-            // Some APIs return validation errors keyed by field name directly in body
-            if (e.body && typeof e.body === 'object') {
-              // attempt to find fields with array values
-              const candidates: any = {};
-              for (const k of Object.keys(e.body)) {
-                if (Array.isArray(e.body[k]) || typeof e.body[k] === 'string') {
-                  candidates[k] = e.body[k];
-                }
-              }
-              if (Object.keys(candidates).length) return candidates;
-            }
-            return null;
-          };
-
-          const serverErrors = extractErrors(err) || extractErrors(err?.error) || null;
-
-          if (serverErrors) {
-            for (const field of Object.keys(serverErrors)) {
-              const control = this.offerForm.get(field);
-              const value = serverErrors[field];
-              if (control) {
-                control.setErrors({ server: Array.isArray(value) ? value.join(' ') : String(value) });
-                control.markAsTouched();
-              }
-            }
-            const msg = err?.message || 'Validation errors occurred. Please check the form.';
-            this.notification.error(msg);
-            return;
-          }
-
-          // If there's a top-level message, show it
-          if (err?.message) {
-            this.notification.error(err.message);
-            return;
-          }
-
-          // Generic fallback
-          this.notification.error('Unable to save offer right now. Please try again.');
-        }
-      });
     } else {
       // Marcar todos los campos como touched para mostrar errores
       for (const key of Object.keys(this.offerForm.controls)) {
         this.offerForm.get(key)?.markAsTouched();
       }
     }
+  }
+
+  private createCampaign(offerData: Partial<Offer>): void {
+    // Map offer data to campaign payload and call backend via CampaignClient
+    // NOTE: Backend expects local date-time format without milliseconds or timezone, e.g., 2025-11-17T00:00:00
+    const toLocalDateTime = (d?: Date) => {
+      if (!d) return undefined;
+      const date = new Date(d);
+      // Set to local midnight
+      date.setHours(0, 0, 0, 0);
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    };
+
+    const campaignCreatePayload = {
+      title: offerData.title || '',
+      description: offerData.description || offerData.terms || '',
+      startDate: toLocalDateTime(new Date()),
+      endDate: toLocalDateTime(offerData.validUntil as Date),
+      categoryId: offerData.category ?? '',
+      businessId: this.sessionData ? this.sessionData.userAuth.businesses[0] : null,
+      discount: offerData.discount,
+      terms: offerData.terms,
+      status: offerData.status?.toUpperCase(),
+      active: true
+    };
+
+    this.campaignClient.create(campaignCreatePayload as any).subscribe({
+      next: (res) => {
+        // res is { status, body }
+        this.submittingSignal.set(false);
+        console.debug('Campaign create response:', res);
+        this.notification.success('Offer created successfully (campaign recorded)');
+        // Optionally attach returned campaign id to emitted data
+        const emitted = {...offerData} as Partial<Offer>;
+        const createdId = (res && res.body && (res.body as any).id) || (res && (res as any).id);
+        if (createdId) {
+          (emitted as any).campaignId = createdId;
+        }
+        this.save.emit(emitted);
+        this.onClose();
+      },
+      error: (err) => {
+        this.submittingSignal.set(false);
+        console.error('Error creating campaign from offer (normalized):', err);
+
+        // Helper to extract errors object from various backend shapes
+        const extractErrors = (e: any): any => {
+          if (!e) return null;
+          if (e.errors && typeof e.errors === 'object') return e.errors;
+          if (e.body && e.body.errors && typeof e.body.errors === 'object') return e.body.errors;
+          if (e.body && e.body.ModelState) return e.body.ModelState;
+          if (e.body && e.body.modelState) return e.body.modelState;
+          // Some APIs return validation errors keyed by field name directly in body
+          if (e.body && typeof e.body === 'object') {
+            // attempt to find fields with array values
+            const candidates: any = {};
+            for (const k of Object.keys(e.body)) {
+              if (Array.isArray(e.body[k]) || typeof e.body[k] === 'string') {
+                candidates[k] = e.body[k];
+              }
+            }
+            if (Object.keys(candidates).length) return candidates;
+          }
+          return null;
+        };
+
+        const serverErrors = extractErrors(err) || extractErrors(err?.error) || null;
+
+        if (serverErrors) {
+          for (const field of Object.keys(serverErrors)) {
+            const control = this.offerForm.get(field);
+            const value = serverErrors[field];
+            if (control) {
+              control.setErrors({server: Array.isArray(value) ? value.join(' ') : String(value)});
+              control.markAsTouched();
+            }
+          }
+          const msg = err?.message || 'Validation errors occurred. Please check the form.';
+          this.notification.error(msg);
+          return;
+        }
+
+        // If there's a top-level message, show it
+        if (err?.message) {
+          this.notification.error(err.message);
+          return;
+        }
+
+        // Generic fallback
+        this.notification.error('Unable to save offer right now. Please try again.');
+      }
+    });
+  }
+
+  private updateCampaign(offerData: Partial<Offer>) {
+    // Map offerData -> CampaignUpdateRequest expected by backend
+    const toLocalDateTime = (d?: Date) => {
+      if (!d) return undefined;
+      const date = new Date(d);
+      // Set to local midnight
+      date.setHours(0, 0, 0, 0);
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    };
+
+    // Determine campaign id from payload or existing offer
+    const campaignId = (offerData as any).id || (offerData as any).campaignId || this.offer?.id || (this.offer as any)?.campaignId;
+    if (!campaignId) {
+      this.submittingSignal.set(false);
+      this.notification.error('No campaign id available to update.');
+      return;
+    }
+
+    const payload: any = {
+      title: offerData.title || this.offer?.title || '',
+      description: offerData.description || this.offer?.description || '',
+      businessId: this.sessionData ? this.sessionData.userAuth?.businesses?.[0] : null,
+      categoryId: offerData.category || (this.offer as any)?.categoryId || (this.offer as any)?.category || null,
+      endDate: toLocalDateTime((offerData.validUntil as Date) || ((this.offer as any)?.validUntil ? new Date((this.offer as any).validUntil) : undefined)),
+      discount: Number(offerData.discount ?? this.offer?.discount ?? 0),
+      active: (offerData.status ? String(offerData.status).toLowerCase() === String(OfferStatus.ACTIVE).toLowerCase() : (this.offer?.status ? String(this.offer.status).toLowerCase() === String(OfferStatus.ACTIVE).toLowerCase() : true)),
+      terms: offerData.terms || this.offer?.terms || ''
+    };
+
+    this.campaignClient.patchCampaign(String(campaignId), payload).subscribe({
+      next: (res) => {
+        this.submittingSignal.set(false);
+        this.notification.success('Offer updated successfully (campaign updated)');
+        const emitted = {...offerData} as Partial<Offer>;
+        // Optionally attach returned lastUpdate/id
+        if (res && res.body) {
+          (emitted as any).campaignId = res.body.id;
+          (emitted as any).campaignLastUpdate = res.body.lastUpdate;
+        }
+        this.save.emit(emitted);
+        this.onClose();
+      },
+      error: (err) => {
+        this.submittingSignal.set(false);
+        console.error('Error updating campaign from offer (normalized):', err);
+
+        const extractErrors = (e: any): any => {
+          if (!e) return null;
+          if (e.errors && typeof e.errors === 'object') return e.errors;
+          if (e.body && e.body.errors && typeof e.body.errors === 'object') return e.body.errors;
+          if (e.body && e.body.ModelState) return e.body.ModelState;
+          if (e.body && e.body.modelState) return e.body.modelState;
+          if (e.body && typeof e.body === 'object') {
+            const candidates: any = {};
+            for (const k of Object.keys(e.body)) {
+              if (Array.isArray(e.body[k]) || typeof e.body[k] === 'string') {
+                candidates[k] = e.body[k];
+              }
+            }
+            if (Object.keys(candidates).length) return candidates;
+          }
+          return null;
+        };
+
+        const serverErrors = extractErrors(err) || extractErrors(err?.error) || null;
+
+        if (serverErrors) {
+          for (const field of Object.keys(serverErrors)) {
+            const control = this.offerForm.get(field);
+            const value = serverErrors[field];
+            if (control) {
+              control.setErrors({server: Array.isArray(value) ? value.join(' ') : String(value)});
+              control.markAsTouched();
+            }
+          }
+          const msg = err?.message || 'Validation errors occurred. Please check the form.';
+          this.notification.error(msg);
+          return;
+        }
+
+        if (err?.message) {
+          this.notification.error(err.message);
+          return;
+        }
+
+        this.notification.error('Unable to update offer right now. Please try again.');
+      }
+    });
   }
 
   onClose(): void {

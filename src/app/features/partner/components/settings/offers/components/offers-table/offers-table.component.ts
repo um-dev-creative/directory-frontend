@@ -150,6 +150,7 @@ export class OffersTableComponent implements OnInit {
           status: (c.status === OfferStatus.ACTIVE ? OfferStatus.ACTIVE : (c.status === OfferStatus.EXPIRED ? OfferStatus.EXPIRED : OfferStatus.INACTIVE)) as Offer['status'],
           category: { id: c.categoryId, name: c.categoryName },
           createdAt: new Date(),
+          terms: c.terms ?? '',
         })) as Offer[];
 
         this.paginatedData = {
@@ -177,6 +178,7 @@ export class OffersTableComponent implements OnInit {
 
   onEditOffer(event: Event, offer: Offer): void {
     event.stopPropagation();
+    // TODO - Include the Campaign find by campaignId in the backend call
     this.editOffer.emit(offer);
   }
 

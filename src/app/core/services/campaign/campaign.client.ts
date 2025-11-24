@@ -29,6 +29,10 @@ export interface PaginatedCampaigns {
   total_pages: number;
 }
 
+/**
+ * Service client for handling operations related to campaigns, including creation and retrieval of campaigns.
+ * This service interacts with the backend API and manages in-memory caching for optimized requests.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +48,49 @@ export class CampaignClient extends ServiceTemplate {
     super();
   }
 
+  /**
+   * PATCH update an existing campaign by id.
+   * Accepts a partial campaign payload (matching backend expectations) and returns normalized response.
+   * Expected successful response example: { id: string, lastUpdate: string } with HTTP 202.
+   */
+  patchCampaign(id: string, requestBody: any): Observable<{status: number; body: {id: string; lastUpdate: string}}>{
+    this.logInfo('CampaignClient.patchCampaign -> PATCH ' + this.CAMPAIGN_PATH + '/' + id, requestBody);
+
+    return this.sessionStore.session$.pipe(
+      take(1),
+      switchMap(session => {
+        let sessionTokenBkd: string | undefined = session?.userAuth?.sessionTokenBkd;
+        let headers: HttpHeaders = DFC.HttpHeader.STANDARD;
+        if (sessionTokenBkd) {
+          headers = headers.set(SESSION_TOKEN_BACKEND, sessionTokenBkd);
+        }
+
+        // perform PATCH to /campaigns/:id
+        return this.httpClient.patch<{id: string; lastUpdate: string}>(`${this.CAMPAIGN_PATH}/${id}`, requestBody, {
+          headers,
+          observe: 'response' as const
+        });
+      }),
+      map(response => ({status: (response as any).status, body: (response as any).body})),
+      catchError((err) => {
+        const payload = err?.error ?? null;
+        const normalized = {
+          status: err?.status ?? 0,
+          message: payload?.message ?? err?.message ?? 'Unknown error',
+          errors: payload?.errors ?? payload
+        };
+        this.logError('CampaignClient.patchCampaign error', normalized);
+        return throwError(() => normalized);
+      })
+    );
+  }
+
+  /**
+   * Creates a new campaign by sending a POST request to the campaign endpoint with the provided request data.
+   *
+   * @param {CampaignCreateRequest} request - The details of the campaign to be created, including necessary parameters and configurations.
+   * @return {Observable<any>} An observable that emits the status and body of the response when the campaign is successfully created, or an error object if the request fails.
+   */
   create(request: CampaignCreateRequest): Observable<any> {
     this.logInfo('CampaignClient.create -> POST ' + this.CAMPAIGN_PATH, request);
 
@@ -76,8 +123,14 @@ export class CampaignClient extends ServiceTemplate {
   }
 
   /**
-   * List campaigns with optional pagination. Returns a paginated result.
-   * Uses a simple in-memory cache keyed by `page|limit` and shareReplay(1) to avoid duplicate requests.
+   * Fetches a paginated list of campaigns from the backend.
+   * Results can be customized using optional pagination parameters.
+   * The method utilizes cache for repeated requests with the same parameters.
+   *
+   * @param params An object containing optional pagination values:
+   * - page: The page number to retrieve. Defaults to 1 if not provided.
+   * - limit: The number of items per page. Defaults to 10 if not provided.
+   * @return An observable emitting the paginated campaigns data, including items, total count, page, per page, and total pages.
    */
   list(params: { page?: number; limit?: number } = {}): Observable<PaginatedCampaigns> {
     const page = params.page ?? 1;
@@ -116,7 +169,8 @@ export class CampaignClient extends ServiceTemplate {
           startDate: dto.startDate ?? dto.validFrom ?? null,
           endDate: dto.endDate ?? dto.validUntil ?? null,
           discount: dto.discount ?? dto.discount ?? 0,
-          status: dto.status ?? dto.state ?? null
+          status: dto.status ?? dto.state ?? null,
+          terms: dto.terms ?? dto.terms ?? null,
         }));
 
         const total = Number(response?.data.total_count ?? response?.totalItems ?? items.length);
@@ -152,7 +206,11 @@ export class CampaignClient extends ServiceTemplate {
     return obs;
   }
 
-  /** Clear the in-memory cache (useful for tests or when data may have changed) */
+  /**
+   * Clears all stored data in the cache.
+   *
+   * @return {void} Does not return any value.
+   */
   clearCache(): void {
     this.cache.clear();
   }
