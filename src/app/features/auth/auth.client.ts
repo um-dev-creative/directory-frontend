@@ -1,7 +1,6 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {catchError, map, Observable} from 'rxjs';
-import {ServiceTemplate} from '@app/core/services/service-template';
+import {ClientTemplate} from '@core/services/client-template';
 import {AUTHORIZATION_TOKEN_KEY, DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
 
 /**
@@ -10,8 +9,7 @@ import {AUTHORIZATION_TOKEN_KEY, DFC, SESSION_TOKEN_BACKEND} from '@app/shared/c
 @Injectable({
   providedIn: 'root'
 })
-export class AuthClient extends ServiceTemplate {
-  private readonly httpClient: HttpClient = inject(HttpClient);
+export class AuthClient extends ClientTemplate {
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
 

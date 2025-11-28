@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {ServiceTemplate} from '@core/services/service-template';
+import {ClientTemplate} from '@core/services/client-template';
 import {HttpClient} from '@angular/common/http';
 import {DFC} from '@shared/constants/app.const';
 import {Observable} from 'rxjs';
@@ -8,7 +8,7 @@ import {catchError} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class TimezoneClient extends ServiceTemplate {
+export class TimezoneClient extends ClientTemplate {
 
   private readonly http: HttpClient = inject(HttpClient);
   private readonly TIMEZONE_CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +

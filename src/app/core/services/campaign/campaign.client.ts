@@ -1,33 +1,17 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
 import {catchError, map, Observable, throwError, switchMap, take, shareReplay} from 'rxjs';
-import {CampaignCreateRequest, CampaignCreateResponse} from '@shared/models/campaign.model';
-import {ServiceTemplate} from '@app/core/services/service-template';
+import {
+  Campaign,
+  CampaignCreateRequest,
+  CampaignCreateResponse,
+  PaginatedCampaigns
+} from '@shared/models/campaign.model';
+import {ClientTemplate} from '@core/services/client-template';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
-
-export type Campaign = {
-  id: string;
-  title: string;
-  description?: string;
-  startDate?: string | null;
-  endDate?: string | null;
-  categoryId?: string;
-  businessId?: string;
-  active?: boolean;
-  categoryName?: string;
-  discount?: number;
-  status?: string;
-  terms?: string;
-};
-
-export interface PaginatedCampaigns {
-  items: Campaign[];
-  total_count: number;
-  page: number;
-  per_page: number;
-  total_pages: number;
-}
+import {CampaignMapper} from '@core/services';
+import {sanitizeError} from '@shared/handler/error.handler';
 
 /**
  * Service client for handling operations related to campaigns, including creation and retrieval of campaigns.
@@ -36,9 +20,9 @@ export interface PaginatedCampaigns {
 @Injectable({
   providedIn: 'root'
 })
-export class CampaignClient extends ServiceTemplate {
-  private readonly httpClient: HttpClient = inject(HttpClient);
+export class CampaignClient extends ClientTemplate {
   private readonly sessionStore = inject(SessionStoreService);
+  private readonly mapper = inject(CampaignMapper);
   private readonly CAMPAIGN_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL + DFC.RelativePath.GENERAL_PATH + '/campaigns';
 
   // Simple in-memory cache for observables keyed by `${page}|${limit}`
@@ -46,6 +30,36 @@ export class CampaignClient extends ServiceTemplate {
 
   constructor() {
     super();
+  }
+
+  /**
+   * Retrieve a single campaign by id.
+   * Calls GET /campaigns/:id and returns a normalized Campaign object or a normalized error.
+   */
+  getCampaign(id: string): Observable<Campaign> {
+    this.logInfo('CampaignClient.getCampaign -> GET ' + this.CAMPAIGN_PATH + '/' + id);
+
+    return this.sessionStore.session$.pipe(
+      take(1),
+      switchMap(session => {
+        let sessionTokenBkd: string | undefined = session?.userAuth?.sessionTokenBkd;
+        let headers: HttpHeaders = DFC.HttpHeader.STANDARD;
+        if (sessionTokenBkd) {
+          headers = headers.set(SESSION_TOKEN_BACKEND, sessionTokenBkd);
+        }
+        return this.httpClient.get<any>(`${this.CAMPAIGN_PATH}/${id}`, { headers });
+      }),
+      map((response: any) => {
+        // Normalize possible shapes
+        const dto = response?.data ?? response ?? {};
+        return this.mapper.mapToCampaign(dto);
+      }),
+      catchError((err) => {
+        const normalized = sanitizeError(err);
+        this.logError('CampaignClient.getCampaign error', normalized);
+        return throwError(() => normalized);
+      })
+    );
   }
 
   /**
@@ -73,12 +87,7 @@ export class CampaignClient extends ServiceTemplate {
       }),
       map(response => ({status: (response as any).status, body: (response as any).body})),
       catchError((err) => {
-        const payload = err?.error ?? null;
-        const normalized = {
-          status: err?.status ?? 0,
-          message: payload?.message ?? err?.message ?? 'Unknown error',
-          errors: payload?.errors ?? payload
-        };
+        const normalized = sanitizeError(err);
         this.logError('CampaignClient.patchCampaign error', normalized);
         return throwError(() => normalized);
       })
@@ -110,12 +119,7 @@ export class CampaignClient extends ServiceTemplate {
       }),
       map(response => ({status: (response as any).status, body: (response as any).body})),
       catchError((err) => {
-        const payload = err?.error ?? null;
-        const normalized = {
-          status: err?.status ?? 0,
-          message: payload?.message ?? err?.message ?? 'Unknown error',
-          errors: payload?.errors ?? payload
-        };
+        const normalized = sanitizeError(err);
         this.logError('CampaignClient.create error', normalized);
         return throwError(() => normalized);
       })
@@ -159,19 +163,14 @@ export class CampaignClient extends ServiceTemplate {
       map((response: any) => {
         // Normalize backend response to PaginatedCampaigns
         // Backend may return: { data: [...], total, page, limit, totalPages }
-        const dataArray = response?.data ?? response?.items ?? response ?? [];
-        const items: Campaign[] = (Array.isArray(dataArray.items) ? dataArray.items : []).map((dto: any) => ({
-          id: String(dto.id ?? dto.id ?? dto.uuid ?? ''),
-          title: dto.title ?? dto.title ?? '',
-          description: dto.description ?? dto.summary ?? dto.desc ?? '',
-          categoryId: dto.categoryId ?? dto.category ?? null,
-          categoryName: dto.categoryName ?? dto.category ?? null,
-          startDate: dto.startDate ?? dto.validFrom ?? null,
-          endDate: dto.endDate ?? dto.validUntil ?? null,
-          discount: dto.discount ?? dto.discount ?? 0,
-          status: dto.status ?? dto.state ?? null,
-          terms: dto.terms ?? dto.terms ?? null,
-        }));
+        const raw = response?.data ?? response?.items ?? response ?? [];
+        let arr: any[] = [];
+        if (Array.isArray(raw)) {
+          arr = raw;
+        } else if (raw && Array.isArray(raw.items)) {
+          arr = raw.items;
+        }
+        const items: Campaign[] = arr.map((dto: any) => this.mapper.mapToCampaign(dto));
 
         const total = Number(response?.data.total_count ?? response?.totalItems ?? items.length);
         const respPage = Number(response?.data.page ?? page);
@@ -186,12 +185,7 @@ export class CampaignClient extends ServiceTemplate {
         } as PaginatedCampaigns;
       }),
       catchError((err) => {
-        const payload = err?.error ?? null;
-        const normalized = {
-          status: err?.status ?? 0,
-          message: payload?.message ?? err?.message ?? 'Error fetching campaigns',
-          errors: payload?.errors ?? payload
-        };
+        const normalized = sanitizeError(err);
         this.logError('CampaignClient.list error', normalized);
         // Surface friendly message to callers
         return throwError(() => normalized);

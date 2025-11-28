@@ -1,10 +1,12 @@
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
+import {inject} from '@angular/core';
 
-export class ServiceTemplate {
+export class ClientTemplate {
 
   protected logInfo: (...arg: any) => void;
   protected logError: (...arg: any) => void;
+  protected readonly httpClient: HttpClient = inject(HttpClient);
 
   constructor() {
     this.logInfo = (...arg: any) => console.info(arg);

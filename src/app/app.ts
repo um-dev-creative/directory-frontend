@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Footer} from '@app/layout/footer/footer';
 import {Header} from '@app/header/header';
 import {animate, query, style, transition, trigger} from '@angular/animations';

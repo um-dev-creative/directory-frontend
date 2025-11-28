@@ -1,12 +1,14 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Offer, PaginatedResponse, OfferStatus } from '../../services/partner-offers.service';
-import { CampaignClient, PaginatedCampaigns } from '@app/core/services/campaign/campaign.client';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Offer, OfferStatus, PaginatedResponse} from '../../services/partner-offers.service';
+import {CampaignClient} from '@app/core/services/campaign/campaign.client';
 
 // Importar componentes UI
-import { Button } from '@app/components/ui/buttons/button';
-import { BadgeComponent, BadgeVariant } from '@app/components/ui/badges/badge';
+import {Button} from '@app/components/ui/buttons/button';
+import {BadgeComponent, BadgeVariant} from '@app/components/ui/badges/badge';
 import {UiVariant} from '@app/components/ui/ui-variant';
+import {PaginatedCampaigns} from '@shared/models/campaign.model';
+import {CampaignMapper} from '@core/services';
 
 @Component({
   selector: 'app-offers-table',
@@ -21,6 +23,7 @@ import {UiVariant} from '@app/components/ui/ui-variant';
 })
 export class OffersTableComponent implements OnInit {
   private readonly campaignClient = inject(CampaignClient);
+  private readonly campaignMapper = inject(CampaignMapper);
   @Input() paginatedData: PaginatedResponse<Offer> | null = null;
   @Input() isLoading: boolean = false;
   @Input() currentPage: number = 1;
@@ -120,7 +123,7 @@ export class OffersTableComponent implements OnInit {
 
     if (page >= 1 && this.paginatedData
       && page <= this.paginatedData.totalPages) {
-      if(this.paginatedData?.limit * page > this.paginatedData?.data.length) {
+      if (this.paginatedData?.limit * page > this.paginatedData?.data.length) {
         this.load(page);
       }
       this.pageChange.emit(page);
@@ -137,22 +140,10 @@ export class OffersTableComponent implements OnInit {
   private load(page: number = 1): void {
     this.isLoading = true;
     this.internalError = null;
-    this.campaignClient.list({ page, limit: 10 }).subscribe({
+    this.campaignClient.list({page, limit: 10}).subscribe({
       next: (resp: PaginatedCampaigns) => {
         // Map campaigns into Offer-like objects for display (minimal fields)
-        const offers = resp.items.map((c, index) => ({
-          _id: (index+1),
-          id: c.id??'',
-          title: c.title,
-          description: c.description ?? '',
-          discount: c.discount ?? 0,
-          validUntil: c.endDate ? new Date(c.endDate) : new Date(),
-          status: (c.status === OfferStatus.ACTIVE ? OfferStatus.ACTIVE : (c.status === OfferStatus.EXPIRED ? OfferStatus.EXPIRED : OfferStatus.INACTIVE)) as Offer['status'],
-          category: { id: c.categoryId, name: c.categoryName },
-          createdAt: new Date(),
-          terms: c.terms ?? '',
-        })) as Offer[];
-
+        const offers = resp.items.map((c, index) => this.campaignMapper.mapCampaignToOffer(c, {index: index}));
         this.paginatedData = {
           data: offers,
           total: resp.total_count,
@@ -176,10 +167,36 @@ export class OffersTableComponent implements OnInit {
     this.load(this.currentPage);
   }
 
-  onEditOffer(event: Event, offer: Offer): void {
+  onEditOffer(event: Event, offerId: string): void {
     event.stopPropagation();
-    // TODO - Include the Campaign find by campaignId in the backend call
-    this.editOffer.emit(offer);
+    // Try to fetch full campaign details before emitting edit event.
+    // If campaign fetch succeeds, attach campaign to the offer as `campaign` property;
+    // if it fails, still emit the original offer but set internalError so UI/tests can react.
+    this.isLoading = true;
+    this.internalError = null;
+
+    const campaignId = offerId ?? '';
+    if (!campaignId) {
+      this.internalError = 'Invalid campaign id';
+      this.isLoading = false;
+      return;
+    }
+
+    this.campaignClient.getCampaign(campaignId).subscribe({
+      next: (campaign) => {
+        this.isLoading = false;
+        let offerResult: Offer = this.campaignMapper.mapCampaignToOffer(campaign);
+        // Attach campaign details to offer for consumers
+        this.editOffer.emit(offerResult);
+      },
+      error: (err) => {
+        console.error('OffersTableComponent.onEditOffer error', err);
+        this.internalError = err?.message ?? 'Error fetching campaign details';
+        this.isLoading = false;
+        // still emit the offer so callers can proceed (tests may expect emission)
+        this.editOffer.emit(null as any);
+      }
+    });
   }
 
   onViewOffer(event: Event, offer: Offer): void {

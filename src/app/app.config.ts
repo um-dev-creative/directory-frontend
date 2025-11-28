@@ -12,6 +12,7 @@ import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
 import {provideCore} from '@core/core.module';
 import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
+
 function createTranslateLoader(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
 }

@@ -1,15 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {ServiceTemplate} from '@app/core/services/service-template';
-import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ClientTemplate} from '@core/services/client-template';
 import {DFC} from '@shared/constants/app.const';
-import {catchError, Observable} from 'rxjs';
-import {BusinessCreateRequest, BusinessDetailResponse} from '@shared/models/business.model';
+import {catchError, Observable, throwError} from 'rxjs';
+import {BusinessCreateRequest} from '@shared/models/business.model';
+import {sanitizeError} from '@shared/handler/error.handler';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BusinessClient extends ServiceTemplate {
-  private readonly httpClient: HttpClient = inject(HttpClient);
+export class BusinessClient extends ClientTemplate {
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
   private readonly BUSINESS_CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
@@ -18,6 +17,7 @@ export class BusinessClient extends ServiceTemplate {
   constructor() {
     super();
   }
+
   /**
    * Retrieves the business profile for the current user.
    * @returns An observable containing the business profile data.
@@ -31,9 +31,10 @@ export class BusinessClient extends ServiceTemplate {
   getBusinessById(id: string): Observable<any> {
     const url = `${this.BUSINESS_CONTENT_PATH}/${id}`;
     return this.httpClient.get<any>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching business details:', error);
-        throw error;
+      catchError((err) => {
+        const normalized = sanitizeError(err);
+        this.logError('BusinessClient.create error', normalized);
+        return throwError(() => normalized);
       })
     );
   }
