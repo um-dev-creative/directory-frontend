@@ -1,15 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpRequest} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {ServiceTemplate} from '@app/core/services/service-template';
+import {ClientTemplate} from '@core/services/client-template';
 import {DFC} from '@app/shared/constants/app.const';
 import {UserDetailUpdateRequest} from '@shared/models/user-detail-update-request';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserClient extends ServiceTemplate {
-  private readonly httpClient: HttpClient = inject(HttpClient);
+export class UserClient extends ClientTemplate {
   private readonly CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.AUTH_PATH;
 

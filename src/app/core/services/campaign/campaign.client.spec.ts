@@ -130,5 +130,48 @@ describe('CampaignClient', () => {
     req.flush({message: 'Internal Server Error'}, {status: 500, statusText: 'Server Error'});
   });
 
-});
+  it('should GET campaign by id and normalize response when successful', (done) => {
+    const campaignId = 'cid-123';
+    mockSession.set({userAuth: {sessionTokenBkd: 'bk-token'}});
 
+    client.getCampaign(campaignId).subscribe({
+      next: (campaign) => {
+        try {
+          expect(campaign).toBeTruthy();
+          expect(campaign.id).toBe(campaignId);
+          expect(campaign.title).toBe('Campaign Title');
+          done();
+        } catch (e: any) { done.fail(e); }
+      },
+      error: (err) => done.fail(err)
+    });
+
+    const req = httpMock.expectOne((r) => r.method === 'GET' && r.url.endsWith(`/campaigns/${campaignId}`));
+    expect(req.request.headers.has(SESSION_TOKEN_BACKEND)).toBeTrue();
+
+    req.flush({data: {id: campaignId, title: 'Campaign Title', description: 'desc'}}, {status: 200, statusText: 'OK'});
+  });
+
+  it('should surface normalized error when GET campaign fails', (done) => {
+    const campaignId = 'cid-err';
+    mockSession.set({userAuth: {}});
+
+    client.getCampaign(campaignId).subscribe({
+      next: () => done.fail('expected error'),
+      error: (err: Error) => {
+        try {
+          expect(err).toBeTruthy();
+          // expect(err.status).toBe(404);
+          expect(err.message).toBe('Not Found');
+          done();
+        } catch (e: any) { done.fail(e); }
+      }
+    });
+
+    const req = httpMock.expectOne((r) => r.method === 'GET' && r.url.endsWith(`/campaigns/${campaignId}`));
+    expect(req.request.headers.has(SESSION_TOKEN_BACKEND)).toBeFalse();
+
+    req.flush({message: 'Not Found'}, {status: 404, statusText: 'Not Found'});
+  });
+
+});

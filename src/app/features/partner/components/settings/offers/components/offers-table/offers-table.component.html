@@ -91,14 +91,14 @@
                 </app-badge>
               </td>
               <td class="tw-px-6 tw-py-4 tw-whitespace-nowrap tw-text-sm tw-text-gray-600">
-                {{ offer.category.name }}
+                {{ offer.categoryName }}
               </td>
               <td class="tw-px-6 tw-py-4 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
                 <div class="tw-flex tw-justify-end tw-items-center tw-space-x-3">
                   <!-- Icono Editar -->
                   <button
                     type="button"
-                    (click)="onEditOffer($event, offer)"
+                    (click)="onEditOffer($event, offer.id)"
                     title="Editar oferta"
                     class="tw-p-2 tw-rounded-lg tw-text-gray-500 hover:tw-text-emerald-green-600 hover:tw-bg-emerald-green-50 tw-transition-all tw-duration-200 tw-group"
                   >
