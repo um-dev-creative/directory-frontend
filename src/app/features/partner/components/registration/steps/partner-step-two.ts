@@ -1,10 +1,11 @@
-import { Component, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
-import { StepTwoData } from '../partner-registration-stepper';
+import { StepTwoData } from '@app/features/partner';
 import { PartnerRegistrationService } from '@app/features/partner/services/partner-registration.service';
 import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
+import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-partner-step-two',
@@ -123,6 +124,7 @@ import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui
 })
 export class PartnerStepTwo implements OnDestroy {
   private destroy$ = new Subject<void>();
+  private readonly logger = inject(LoggerService);
 
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepTwoData>();
@@ -168,7 +170,7 @@ export class PartnerStepTwo implements OnDestroy {
             this.uploadingAvatar = false;
           },
           error: (error: any) => {
-            console.error('Error uploading avatar:', error);
+            this.logger.error('Error uploading avatar:', error);
             this.uploadingAvatar = false;
             this.removeAvatar();
           }
@@ -199,7 +201,7 @@ export class PartnerStepTwo implements OnDestroy {
             this.uploadingLogo = false;
           },
           error: (error: any) => {
-            console.error('Error uploading logo:', error);
+            this.logger.error('Error uploading logo:', error);
             this.uploadingLogo = false;
           }
         });

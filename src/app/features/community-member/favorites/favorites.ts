@@ -24,12 +24,13 @@
  * - HeaderService for UI header management.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FavoritesService } from './services';
+import { LoggerService } from '@app/core/services/logger.service';
 
 // Types
 export interface FavoriteItem {
@@ -68,6 +69,7 @@ export enum FavoriteType {
 })
 export class Favorites implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  private readonly logger = inject(LoggerService);
 
   // Component state
   isLoading = true;
@@ -107,7 +109,7 @@ export class Favorites implements OnInit, OnDestroy {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Error loading favorites:', error);
+          this.logger.error('Error loading favorites:', error);
           this.isLoading = false;
         }
       });
@@ -166,7 +168,7 @@ export class Favorites implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          console.error('Error removing favorite:', error);
+          this.logger.error('Error removing favorite:', error);
         }
       });
   }
@@ -176,7 +178,7 @@ export class Favorites implements OnInit, OnDestroy {
    */
   navigateToItem(item: FavoriteItem): void {
     // TODO: Implement navigation based on item type
-    console.log('Navigate to:', item);
+    this.logger.debug('Navigate to:', item);
   }
 
   /**

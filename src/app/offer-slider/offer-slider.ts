@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input, Inject, PLATFORM_ID,
+  inject
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { OfferSliderClient } from '@app/offer-slider/offer-slider.client';
 import { Observable } from 'rxjs';
 import { Offer } from '@app/shared/models/offer.model';
 import { BadgeComponent, IconComponent } from '@app/components/ui';
+import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-offer-slider',
@@ -28,6 +32,7 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   private isDragging = false;
   private startX = 0;
   private scrollStartPosition = 0;
+  private readonly logger = inject(LoggerService);
 
   constructor(
     private readonly offerSliderClient: OfferSliderClient,
@@ -59,7 +64,7 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
 
   onOfferClick(offer: Offer): void {
     if (!offer) {
-      console.warn('No offer provided to onOfferClick');
+      this.logger.warn('No offer provided to onOfferClick');
       return;
     }
 
@@ -76,7 +81,7 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
       }
     } else {
       // Si no hay link, por lo menos logueamos la oferta
-      console.log('Offer clicked:', offer);
+      this.logger.info('Offer clicked', offer);
       // Aquí podrías agregar navegación por defecto, como ir a una página de detalles
       // this.router.navigate(['/offers', offer.id]);
     }

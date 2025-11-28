@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {DFC, SESSION_TOKEN_BACKEND} from '@app/shared/constants/app.const';
-import {catchError, map, Observable, throwError, switchMap, take, shareReplay} from 'rxjs';
+import {catchError, map, Observable, throwError, switchMap, take, shareReplay, tap} from 'rxjs';
 import {
   Campaign,
   CampaignCreateRequest,
@@ -86,6 +86,8 @@ export class CampaignClient extends ClientTemplate {
         });
       }),
       map(response => ({status: (response as any).status, body: (response as any).body})),
+      // Clear cached list results so UI sees the updated campaign when reloading
+      tap(() => this.clearCache()),
       catchError((err) => {
         const normalized = sanitizeError(err);
         this.logError('CampaignClient.patchCampaign error', normalized);

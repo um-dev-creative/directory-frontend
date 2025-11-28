@@ -2,14 +2,19 @@ import {createReducer, on} from '@ngrx/store';
 import {clearSession, loadSession, saveSession, setInitialized} from './session.action';
 import {initialState, SessionData} from './session.state';
 
+// Local debug helper for reducers (can't inject services here)
+const debugLog = (...args: any[]) => {
+  try { console.debug(...args); } catch (e) { /* noop */ }
+};
+
 const _sessionReducer = createReducer(
   initialState,
   on(saveSession, (state, {sessionData, isInitialized}) => {
-    console.debug('🔐 Saving session:', sessionData?.userAuth?.email);
+    debugLog('🔐 Saving session:', sessionData?.userAuth?.email);
     return {...state, sessionData, isInitialized: isInitialized ?? state.isInitialized};
   }),
   on(clearSession, (state) => {
-    console.debug('🔒 Session cleared from the Local Storage');
+    debugLog('🔒 Session cleared from the Local Storage');
     return {
       ...initialState,
       isInitialized: true
@@ -20,15 +25,15 @@ const _sessionReducer = createReducer(
       const storedSession = localStorage.getItem('currentSession');
       if (storedSession) {
         const sessionData: SessionData = JSON.parse(storedSession);
-        console.debug('🔓 Session loaded:', sessionData?.userAuth?.email);
+        debugLog('🔓 Session loaded:', sessionData?.userAuth?.email);
         return {...state, sessionData};
       }
     }
-    console.debug('🔍 No session found');
+    debugLog('🔍 No session found');
     return state;
   }),
   on(setInitialized, (state) => {
-    console.debug('✨ App initialized');
+    debugLog('✨ App initialized');
     return {...state, isInitialized: true};
   })
 );

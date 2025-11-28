@@ -14,6 +14,7 @@ import {Store} from '@ngrx/store';
 import {SessionData, SessionState} from '@core/store/session/session.state';
 import {formatDate} from '@shared/handler/date.handler';
 import {CampaignMapper} from '@core/services';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-offer-edit-modal',
@@ -43,9 +44,8 @@ export class OfferEditModal implements OnInit, OnChanges {
   private readonly campaignMapper = inject(CampaignMapper);
 
   private readonly destroy$ = new Subject<void>();
-  protected logInfo: (...arg: any) => void;
-  protected logError: (...arg: any) => void;
   protected sessionData: SessionData | undefined;
+  private readonly logger = inject(LoggerService);
 
   categories: { value: string; label: string }[] = [];
 
@@ -70,8 +70,7 @@ export class OfferEditModal implements OnInit, OnChanges {
 
   constructor(private readonly fb: FormBuilder, private readonly campaignClient: CampaignClient,
               private readonly categoryClient: CategoryClient, private readonly notification: NotificationService) {
-    this.logInfo = (...arg: any) => console.info(arg);
-    this.logError = (...arg: any) => console.error(arg);
+    // use injected logger
     this.initializeForm();
   }
 
@@ -142,7 +141,7 @@ export class OfferEditModal implements OnInit, OnChanges {
         }
       },
       error: (err) => {
-        this.logError('Error loading categories:', err);
+        this.logger.error('Error loading categories:', err);
       }
     });
   }
@@ -256,7 +255,7 @@ export class OfferEditModal implements OnInit, OnChanges {
         next: (res) => {
           // res is { status, body }
           this.submittingSignal.set(false);
-          console.debug('Campaign create response:', res);
+          this.logger.debug('Campaign create response:', res);
           this.notification.success('Offer created successfully (campaign recorded)');
           // Optionally attach returned campaign id to emitted data
           const emitted = {...offerData} as Partial<Offer>;
@@ -269,7 +268,7 @@ export class OfferEditModal implements OnInit, OnChanges {
         },
         error: (err) => {
           this.submittingSignal.set(false);
-          console.error('Error creating campaign from offer (normalized):', err);
+          this.logger.error('Error creating campaign from offer (normalized):', err);
 
           // Helper to extract errors object from various backend shapes
           const extractErrors = (e: any): any => {
@@ -325,6 +324,7 @@ export class OfferEditModal implements OnInit, OnChanges {
   }
 
   private updateCampaign(offerData: Partial<Offer>) {
+    this.logger.debug('Updating campaign with offer data:', offerData);
     // Determine campaign id from payload or existing offer
     const campaignId = (offerData as any).id || (offerData as any).campaignId || this.offer?.id || (this.offer as any)?.campaignId;
     if (!campaignId) {
@@ -357,10 +357,11 @@ export class OfferEditModal implements OnInit, OnChanges {
         }
         this.save.emit(emitted);
         this.onClose();
+        this.logger.debug('Campaign update response:', res);
       },
       error: (err) => {
         this.submittingSignal.set(false);
-        console.error('Error updating campaign from offer (normalized):', err);
+        this.logger.error('Error updating campaign from offer (normalized):', err);
 
         const extractErrors = (e: any): any => {
           if (!e) return null;

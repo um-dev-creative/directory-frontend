@@ -9,6 +9,7 @@ import {BadgeComponent, BadgeVariant} from '@app/components/ui/badges/badge';
 import {UiVariant} from '@app/components/ui/ui-variant';
 import {PaginatedCampaigns} from '@shared/models/campaign.model';
 import {CampaignMapper} from '@core/services';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-offers-table',
@@ -24,6 +25,7 @@ import {CampaignMapper} from '@core/services';
 export class OffersTableComponent implements OnInit {
   private readonly campaignClient = inject(CampaignClient);
   private readonly campaignMapper = inject(CampaignMapper);
+  private readonly logger = inject(LoggerService);
   @Input() paginatedData: PaginatedResponse<Offer> | null = null;
   @Input() isLoading: boolean = false;
   @Input() currentPage: number = 1;
@@ -37,6 +39,8 @@ export class OffersTableComponent implements OnInit {
   @Output() deleteOffer = new EventEmitter<Offer>();
   @Output() createOffer = new EventEmitter<void>();
   @Output() offerClick = new EventEmitter<Offer>();
+
+  constructor() {}
 
   get startIndex(): number {
     if (!this.paginatedData) return 0;
@@ -132,18 +136,26 @@ export class OffersTableComponent implements OnInit {
 
   ngOnInit(): void {
     // If parent hasn't provided paginatedData, fetch campaigns from backend
+    this.logger.debug('OffersTableComponent.ngOnInit', {paginatedDataProvided: !!this.paginatedData, currentPage: this.currentPage});
     if (!this.paginatedData) {
+      this.logger.info('OffersTableComponent.ngOnInit -> loading initial page', {page: this.currentPage});
       this.load(this.currentPage);
     }
   }
 
   private load(page: number = 1): void {
+    this.logger.debug('OffersTableComponent.load start', {page});
     this.isLoading = true;
     this.internalError = null;
     this.campaignClient.list({page, limit: 10}).subscribe({
       next: (resp: PaginatedCampaigns) => {
+        this.logger.info('OffersTableComponent.load received response', {page, total_count: resp.total_count, items: resp.items?.length});
         // Map campaigns into Offer-like objects for display (minimal fields)
-        const offers = resp.items.map((c, index) => this.campaignMapper.mapCampaignToOffer(c, {index: index}));
+        const offers = resp.items.map((c, index) => {
+          const mapped = this.campaignMapper.mapCampaignToOffer(c, {index: (index+1)});
+          this.logger.debug('OffersTableComponent.load mapped campaign to offer', {campaignId: c.id, offerId: mapped.id, index});
+          return mapped;
+        });
         this.paginatedData = {
           data: offers,
           total: resp.total_count,
@@ -153,9 +165,10 @@ export class OffersTableComponent implements OnInit {
         };
         this.currentPage = resp.page;
         this.isLoading = false;
+        this.logger.info('OffersTableComponent.load completed', {page: resp.page, loaded: offers.length});
       },
       error: (err) => {
-        console.error('OffersTableComponent.load error', err);
+        this.logger.error('OffersTableComponent.load error', err);
         this.internalError = err?.message ?? 'Error loading campaigns';
         this.isLoading = false;
       }
@@ -172,28 +185,34 @@ export class OffersTableComponent implements OnInit {
     // Try to fetch full campaign details before emitting edit event.
     // If campaign fetch succeeds, attach campaign to the offer as `campaign` property;
     // if it fails, still emit the original offer but set internalError so UI/tests can react.
+    this.logger.debug('OffersTableComponent.onEditOffer start', {offerId});
     this.isLoading = true;
     this.internalError = null;
 
     const campaignId = offerId ?? '';
     if (!campaignId) {
+      this.logger.warn('OffersTableComponent.onEditOffer invalid id', {offerId});
       this.internalError = 'Invalid campaign id';
       this.isLoading = false;
       return;
     }
 
+    this.logger.debug('OffersTableComponent.onEditOffer calling getCampaign', {campaignId});
     this.campaignClient.getCampaign(campaignId).subscribe({
       next: (campaign) => {
+        this.logger.info('OffersTableComponent.onEditOffer received campaign', {campaignId: campaign.id});
         this.isLoading = false;
         let offerResult: Offer = this.campaignMapper.mapCampaignToOffer(campaign);
         // Attach campaign details to offer for consumers
+        this.logger.debug('OffersTableComponent.onEditOffer emitting editOffer', {offerId: offerResult.id});
         this.editOffer.emit(offerResult);
       },
       error: (err) => {
-        console.error('OffersTableComponent.onEditOffer error', err);
+        this.logger.error('OffersTableComponent.onEditOffer error', err);
         this.internalError = err?.message ?? 'Error fetching campaign details';
         this.isLoading = false;
         // still emit the offer so callers can proceed (tests may expect emission)
+        this.logger.info('OffersTableComponent.onEditOffer emitting null due to error', {campaignId});
         this.editOffer.emit(null as any);
       }
     });

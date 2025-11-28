@@ -15,6 +15,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-verify-code',
@@ -77,11 +78,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
    */
   protected isErrorFound: boolean = false;
 
-  /** Function to log information */
-  protected logInfo: (...arg: any) => void;
-
-  /** Function to log errors */
-  protected logError: (...arg: any) => void;
+  private readonly logger = inject(LoggerService);
 
   protected verificationCodeForm: FormGroup;
 
@@ -101,8 +98,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
 
 
   constructor() {
-    this.logInfo = (...arg: any) => console.info(arg);
-    this.logError = (...arg: any) => console.error(arg);
+    // no local console wrappers; use injected logger
     this.verificationCodeForm = new FormGroup({
       position1: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]),
       position2: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]),
@@ -177,9 +173,9 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
   setErrorFound(element: string, errorResponse: Error): void {
     this.isErrorFound = true;
     if (errorResponse instanceof HttpErrorResponse) {
-      this.logError(`Error occurred while getting ${element} ${errorResponse.status}: ${errorResponse.statusText}`);
+      this.logger.error(`Error occurred while getting ${element}`, {status: errorResponse.status, statusText: errorResponse.statusText});
     } else {
-      this.logError(`Error occurred while getting ${element} ${errorResponse}`);
+      this.logger.error(`Error occurred while getting ${element}`, errorResponse);
     }
   }
 

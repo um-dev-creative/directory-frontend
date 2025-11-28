@@ -31,6 +31,7 @@ import {OfferEditModal} from './components/offer-edit-modal/offer-edit-modal';
 import {Button} from '@app/components/ui/buttons/button';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 import {CampaignMapper} from '@core/services';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-partner-offers-settings',
@@ -77,6 +78,7 @@ export class PartnerOffersSettings implements OnInit {
   private readonly offersService: PartnerOffersService = inject(PartnerOffersService);
   private readonly campaignClient: CampaignClient = inject(CampaignClient);
   private readonly campaignMapper = inject(CampaignMapper);
+  private readonly logger = inject(LoggerService);
 
   // Getters computados
   paginatedOffers = this.paginatedOffersSignal.asReadonly();
@@ -174,7 +176,7 @@ export class PartnerOffersSettings implements OnInit {
         error: (error) => {
           const message = error?.message ?? 'No se pudieron cargar las campañas. Intenta nuevamente.';
           this.errorMessageSignal.set(String(message));
-          console.error('Error loading campaigns:', error);
+          this.logger.error('Error loading campaigns:', error);
         }
       });
   }
@@ -256,11 +258,11 @@ export class PartnerOffersSettings implements OnInit {
     if (confirm(`¿Estás seguro de que deseas eliminar la oferta "${offer.title}"?`)) {
       this.offersService.deleteOffer(offer.id).subscribe({
         next: () => {
-          console.log('Oferta eliminada:', offer);
+          this.logger.info('Oferta eliminada', offer);
           this.loadOffers();
         },
         error: (error: any) => {
-          console.error('Error al eliminar la oferta:', error);
+          this.logger.error('Error al eliminar la oferta:', error);
         }
       });
     }
@@ -289,12 +291,12 @@ export class PartnerOffersSettings implements OnInit {
         )
         .subscribe({
           next: (updatedOffer) => {
-            console.log('Offer updated:', updatedOffer);
+            this.logger.info('Offer updated', updatedOffer);
             this.loadOffers(this.currentPage());
             // Aquí podrías mostrar una notificación de éxito
           },
           error: (error) => {
-            console.error('Error updating offer:', error);
+            this.logger.error('Error updating offer:', error);
             // Aquí podrías mostrar una notificación de error
           }
         });

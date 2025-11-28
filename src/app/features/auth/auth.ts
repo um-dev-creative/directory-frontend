@@ -40,6 +40,7 @@ import {AuthPlaceholders} from './models/auth-placeholders.interface';
 import {DEFAULT_COUNTRY_CODE, INITIAL_DROPDOWN_STATE, INITIAL_PLACEHOLDERS} from './auth.constants';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 import {AlertComponent, Button, SocialLoginButton, SocialProvider} from '@app/components/ui';
+import {LoggerService} from '@app/core/services/logger.service';
 
 /**
  * Component for handling user authentication.
@@ -238,6 +239,12 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private readonly router: Router = inject(Router);
 
   /**
+   * Logger service for logging messages
+   * @param {LoggerService}
+   */
+  private readonly logger: LoggerService = inject(LoggerService);
+
+  /**
    * Creates an instance of Auth.
    * @param appComponent - App component services
    */
@@ -260,7 +267,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     // Get the query parameter
     this.route.queryParams.subscribe(params => {
       this.isRegistering = params['isRegistering'] === 'true';
-      console.debug('Auth initialized with isRegistering:', this.isRegistering);
+      this.logger.debug('Auth initialized with isRegistering:', this.isRegistering);
     });
   }
 
@@ -293,7 +300,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.phoneNumber = '';
     this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
-    console.debug('Country selected:', country);
+    this.logger.debug('Country selected:', country);
   }
 
   /**
@@ -304,7 +311,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.registerData.birthMonth = month.number;
     this.selectedMonth = month.abbr;
     this.dropdownState.month = false;
-    console.debug('Month selected:', month);
+    this.logger.debug('Month selected:', month);
   }
 
   /**
@@ -368,17 +375,17 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
       this.userClient.createUser(apiPayload).pipe(takeUntil(this.subject$)).subscribe({
         next: (response: any) => {
-          console.debug('User created:', response);
+          this.logger.debug('User created:', response);
           this.handleLogin();
         },
         error: (error: any) => {
-          console.error('Error creating user:', error);
+          this.logger.error('Error creating user:', error);
           this.notificationService.error('Error creating user. Please try again.');
           this.loader.hide('auth');
         },
       });
     } else {
-      console.error('Invalid user data:', userToRegister);
+      this.logger.error('Invalid user data:', userToRegister);
       this.notificationService.error('Invalid registration data. Please check your inputs.');
       this.loader.hide('auth');
     }
@@ -391,7 +398,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     const email = this.isRegistering ? this.registerData.email : this.loginData.email;
     const password = this.isRegistering ? this.registerData.password : this.loginData.password;
 
-    console.debug('Login Data:', {email});
+    this.logger.debug('Login Data:', {email});
     this.authenticateUser(email, password);
   }
 
@@ -410,13 +417,13 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param provider - The social provider selected.
    */
   handleSocialLogin(provider: SocialProvider): void {
-    console.debug(`Social login with ${provider} initiated`);
+    this.logger.debug(`Social login with ${provider} initiated`);
     // TODO: Implement social login logic
     this.notificationService.info(`Social login with ${provider} coming soon!`);
   }
 
   onForgotPassword(): void {
-    console.debug('Forgot password clicked');
+    this.logger.debug('Forgot password clicked');
     this.notificationService.info('Forgot password functionality is not implemented yet.');
   }
 
@@ -487,7 +494,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       this.isPasswordValid &&
       this.isValidPhoneNumber;
 
-    console.debug('Is Registration Form Valid:', this.isRegistrationFormValid);
+    this.logger.debug('Is Registration Form Valid:', this.isRegistrationFormValid);
   }
 
   /**
@@ -505,13 +512,13 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         this.isFullDateValid = true;
         this.showFullDateError = false;
       } else {
-        console.error("Invalid date of birth.");
+        this.logger.error("Invalid date of birth.");
         this.isFullDateValid = false;
         this.showFullDateError = true;
         this.registerData.birthdayFull = null;
       }
     } else {
-      console.error("Date of birth fields are incomplete.");
+      this.logger.error("Date of birth fields are incomplete.");
       this.isFullDateValid = false;
       this.registerData.birthdayFull = null;
     }
@@ -525,7 +532,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   private authenticateUser(email: string, password: string): void {
     this.loader.show('auth'); // Usando una key específica para auth
     this.authClient.getToken(email, password).pipe(takeUntil(this.subject$), concatMap((response: any) => {
-        console.debug('Authentication response:', response);
+        this.logger.debug('Authentication response:', response);
 
         const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
         let resull: any;
@@ -557,7 +564,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         } else {
           this.notificationService.error('Login failed. Please try again later.');
         }
-        console.error('Error authenticating user:', error);
+        this.logger.error('Error authenticating user:', error);
         this.loader.hide('auth');
       }
     });
@@ -618,7 +625,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.resetValidationFlags();
     this.selectedMonth = null;
     this.loginData = INITIAL_LOGIN_DATA;
-    console.debug('Form cleared');
+    this.logger.debug('Form cleared');
 
   }
 
@@ -658,7 +665,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
     this.sessionStoreService.saveSessionData(this.sessionData);
 
     this.sessionStoreService.session$.subscribe(sessionData => {
-      console.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
+      this.logger.debug(`Current session in store after save: ${JSON.stringify(sessionData)}`);
     });
 
     return userAuth;

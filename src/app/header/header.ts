@@ -26,6 +26,7 @@ import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/features/search/search';
 import { Button, Avatar } from '@app/components/ui';
 import {AuthClient} from '@app/features/auth/auth.client';
+import {LoggerService} from '@app/core/services/logger.service';
 
 
 /**
@@ -71,6 +72,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
   private readonly authClient: AuthClient = inject(AuthClient);
+  private readonly logger = inject(LoggerService);
 
   private businessAssigned: any = []; // Indica si el usuario tiene un negocio asignado
 
@@ -117,7 +119,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
           'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
         this.businessAssigned = this.backboneJwtPipe.transform(this.sessionData?.userAuth.sessionTokenBkd ?? "")?.roles||[];
-        console.debug(`Getting sessionData on the header :: ${JSON.stringify(this.sessionData)}`);
+        this.logger.debug('Getting sessionData on the header', this.sessionData);
       }
     });
     this.setupBreakpointObserver();
@@ -140,12 +142,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
         .observe([Breakpoints.XSmall, Breakpoints.Small])
         .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
-          console.debug('BreakpointObserver result:', result);
+          this.logger.debug('BreakpointObserver result:', result);
           this.isMobile = result.matches;
 
           if (!this.isMobile && this.isMenuOpen) {
             this.isMenuOpen = false;
-            console.debug('The screen is not mobile, closing the menu.');
+            this.logger.debug('The screen is not mobile, closing the menu.');
             this.changeDetectorRefs.detectChanges(); // Forzar detección de cambios
           }
         });
@@ -156,7 +158,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
    * Alternar visibilidad del menú móvil
    */
   openMenu() {
-    console.debug('User clicked the menu');
+    this.logger.debug('User clicked the menu');
     this.isMenuOpen = !this.isMenuOpen;
   }
 
@@ -180,12 +182,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     // Cambiar el header y navegar después de que los efectos de limpiar la sesión se completen
     setTimeout(() => {
       this.authClient.closeSession(this.sessionData?.userAuth?.sessionTokenBkd).subscribe({
-        next: () => console.debug('User logged out successfully'),
-        error: (error) => console.error('Error logging out:', error)
+        next: () => this.logger.info('User logged out successfully'),
+        error: (error) => this.logger.error('Error logging out:', error)
       });
       this.sessionStoreService.clearSessionData();
       this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-      console.debug('User logged out');
+      this.logger.info('User logged out');
       this.router.navigate([DFC.RelativePath.STAGE_PATH]);
     }, 0);
   }
@@ -203,12 +205,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.debug(`Header component initialized :: ${this.sessionData?.token}`);
+    this.logger.debug('Header component initialized', {token: this.sessionData?.token});
     this.changeDetectorRefs.detectChanges();
   }
 
   validateHeader(headerType: HeaderType): boolean {
-    console.debug('Validating header type:', this.headerType);
+    this.logger.debug('Validating header type', {current: this.headerType, expected: headerType});
     return (this.headerType as HeaderType) === headerType;
   }
 

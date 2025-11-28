@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '@env/environment';
+import {LoggerService} from '@app/core/services/logger.service';
 interface DownloadButton {
   platform: string;
   image: string;
@@ -25,6 +26,7 @@ interface PromoSectionData {
 export class PromoSection implements OnInit {
   promo: PromoSectionData | null = null;
   imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
+  private readonly logger = inject(LoggerService);
 
   constructor(private readonly http: HttpClient) {}
 
@@ -35,7 +37,7 @@ export class PromoSection implements OnInit {
   private loadPromoData(): void {
     this.http.get<PromoSectionData>('/assets/mocks/promo-section.json').subscribe({
       next: (data) => (this.promo = data),
-      error: (err) => console.error('Error loading promo data', err),
+      error: (err) => this.logger.error('Error loading promo data', err),
     });
   }
 }

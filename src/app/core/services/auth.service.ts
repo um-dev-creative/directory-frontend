@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -49,7 +49,6 @@ export class AuthService extends ClientTemplate {
   constructor(
     private readonly httpService: HttpService,
     private readonly storageService: StorageMockService,
-    private readonly logger: LoggerService,
     private readonly notificationService: NotificationService,
     private readonly router: Router
   ) {
