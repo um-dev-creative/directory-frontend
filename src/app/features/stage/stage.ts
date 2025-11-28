@@ -15,6 +15,7 @@ import {SessionStoreService} from '@app/core/store/session/session-store.service
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import { CardImage } from '@app/cards/services/cards.service';
+import {LoggerService} from '@app/core/services/logger.service';
 
 interface OnAfterViewInit {
 }
@@ -36,6 +37,7 @@ export class Stage implements OnInit, OnAfterViewInit {
   private readonly headerService: HeaderService = inject(HeaderService);
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
+  private readonly logger = inject(LoggerService);
 
   /**
    * Store services for session data management
@@ -61,7 +63,7 @@ export class Stage implements OnInit, OnAfterViewInit {
       this.sessionData = sessionState.sessionData;
       if (this.sessionData && this.sessionData.userAuth?.fullName) {
         this.isAuthenticated = true;
-        console.debug('User is authenticated:', this.sessionData.userAuth.fullName);
+        this.logger.debug('User is authenticated:', this.sessionData.userAuth.fullName);
         // this.userFullName = this.sessionData.userAuth.fullName;
       } else {
         this.isAuthenticated = false;
@@ -74,7 +76,7 @@ export class Stage implements OnInit, OnAfterViewInit {
   private processSessionData(): void  {
     if (this.sessionData?.token) {
       this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
-      console.debug('User is authenticated');
+      this.logger.debug('User is authenticated');
     } else {
       this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
     }
@@ -85,7 +87,7 @@ export class Stage implements OnInit, OnAfterViewInit {
    * Handle card click events from the Cards component
    */
   onCardClick(event: {card: CardImage, index: number}): void {
-    console.log('Card clicked:', event.card.title || event.card.alt, 'at position', event.index);
+    this.logger.info('Card clicked', {title: event.card.title || event.card.alt, position: event.index});
 
     // Here you can implement navigation, modal opening, analytics tracking, etc.
     // For example:
@@ -97,7 +99,7 @@ export class Stage implements OnInit, OnAfterViewInit {
    * Handle image loading errors from the Cards component
    */
   onImageError(event: {card: CardImage, index: number}): void {
-    console.warn('Failed to load image for card:', event.card.title || event.card.alt);
+    this.logger.warn('Failed to load image for card:', event.card.title || event.card.alt);
 
     // You could implement fallback logic, error reporting, etc.
     // For example:

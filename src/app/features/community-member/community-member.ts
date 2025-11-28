@@ -57,6 +57,7 @@ import {AuthClient} from '@app/features/auth/auth.client';
 import {SessionStoreService} from '@core/store/session/session-store.service';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-community-member',
@@ -97,10 +98,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
   /** Router for navigation */
   private readonly router: Router = inject(Router);
-  /** Function to log information */
-  logInfo: (...arg: any) => void;
-  /** Function to log errors */
-  logError: (...arg: any) => void;
+  private readonly logger = inject(LoggerService);
 
   /** Session data from the store */
   protected sessionData: SessionData | undefined;
@@ -152,8 +150,7 @@ export class CommunityMember implements OnInit, OnDestroy {
    * Initializes logging functions and sets up the profile form.
    */
   constructor() {
-    this.logInfo = (...arg: any) => console.info(arg);
-    this.logError = (...arg: any) => console.error(arg);
+    // use injected logger
     this.initializeForm();
   }
 
@@ -176,8 +173,8 @@ export class CommunityMember implements OnInit, OnDestroy {
         this.userFullName = undefined;
       }
       // Log de la información de usuario disponible
-      console.log('User session data:', this.sessionData);
-      console.log('Profile data:', this.profileData);
+      this.logger.info('User session data:', this.sessionData);
+      this.logger.debug('Profile data:', this.profileData);
 
       // Actualizar opciones del componente ReportProblem
       this.updateReportProblemOptions();
@@ -207,15 +204,15 @@ export class CommunityMember implements OnInit, OnDestroy {
         .subscribe({
           next: (response: any) => {
             if (!response.headers.status || response.headers.status !== 200) {
-              this.logError('Unexpected response status:', response.status);
+              this.logger.error('Unexpected response status:', response.status);
               return;
             }
             this.setProfileData(response.data);
             this.updateFormWithSessionData();
-            this.logInfo('Profile data loaded:', this.profileData);
+            this.logger.info('Profile data loaded:', this.profileData);
           },
           error: (error: any) => {
-            this.logError('Error loading profile data:', error);
+            this.logger.error('Error loading profile data:', error);
           }
         });
     }
@@ -269,7 +266,7 @@ export class CommunityMember implements OnInit, OnDestroy {
           this.uploadingAvatar = false;
         },
         error: (err) => {
-          console.error('Error uploading avatar:', err);
+          this.logger.error('Error uploading avatar:', err);
           this.uploadingAvatar = false;
         }
       });
@@ -343,7 +340,7 @@ export class CommunityMember implements OnInit, OnDestroy {
             this.notificationService.success('User updated successfully');
           },
           error: (err) => {
-            this.logError('Failed to update or reload user', err);
+            this.logger.error('Failed to update or reload user', err);
             this.isSubmitting = false;
           }
         });
@@ -366,7 +363,7 @@ export class CommunityMember implements OnInit, OnDestroy {
    * @return {void} No return value. The method performs side effects such as logging, state updates, and triggering notifications.
    */
   confirmDeleteAccount(): void {
-    console.log('Account deletion confirmed');
+    this.logger.info('Account deletion confirmed');
 
     this.userClient.deleteUser(this.userId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response: any) => {
@@ -380,7 +377,7 @@ export class CommunityMember implements OnInit, OnDestroy {
           this.deleteAccountModalOpen = false;
         },
         error: (error: any) => {
-          this.logError('Error deleting account:', error);
+          this.logger.error('Error deleting account:', error);
           this.deleteAccountModalOpen = false;
           this.notificationService.error('Error deleting account');
         }
@@ -586,12 +583,12 @@ export class CommunityMember implements OnInit, OnDestroy {
   private logout(): void {
     // Cambiar el header y navegar después de que los efectos de limpiar la sesión se completen
     this.authClient.closeSession(this.sessionData?.userAuth?.sessionTokenBkd).subscribe({
-      next: () => console.debug('User logged out successfully'),
-      error: (error) => console.error('Error logging out:', error)
+      next: () => this.logger.info('User logged out successfully'),
+      error: (error) => this.logger.error('Error logging out:', error)
     });
     this.sessionStoreService.clearSessionData();
     this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-    console.debug('User logged out');
+    this.logger.info('User logged out');
     this.router.navigate([DFC.RelativePath.STAGE_PATH]);
   }
 }

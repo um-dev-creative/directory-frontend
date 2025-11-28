@@ -1,10 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subject, takeUntil} from 'rxjs';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
 import {PartnerRegistrationStepper} from '@app/features/partner/components';
 import {PartnerProfile, PartnerProfileService} from './services/partner-profile.service';
+import {AuthClient} from '@app/features/auth/auth.client';
+import {LoggerService} from '@app/core/services/logger.service';
 
 // import {Modal} from '@app/modal/modal';
 
@@ -24,6 +26,7 @@ export class Partner implements OnInit, OnDestroy {
   showTermsAndConditions = false;
 
   private destroy$ = new Subject<void>();
+  private readonly logger = inject(LoggerService);
 
   constructor(
     private route: ActivatedRoute,
@@ -71,7 +74,7 @@ export class Partner implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          console.error('Error loading partner profile:', error);
+          this.logger.error('Error loading partner profile:', error);
           this.isLoading = false;
         }
       });
@@ -85,7 +88,7 @@ export class Partner implements OnInit, OnDestroy {
           this.similarPartners = partners;
         },
         error: (error) => {
-          console.error('Error loading similar partners:', error);
+          this.logger.error('Error loading similar partners:', error);
         }
       });
   }  toggleBookmark(): void {
@@ -100,7 +103,7 @@ export class Partner implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          console.error('Error toggling bookmark:', error);
+          this.logger.error('Error toggling bookmark:', error);
         }
       });
   }
@@ -111,7 +114,7 @@ export class Partner implements OnInit, OnDestroy {
     // Navigate to partner settings page using the partner slug
     this.router.navigate(['/partner/settings', 'general'])
       .catch(error => {
-        console.error('Error navigating to partner settings:', error);
+        this.logger.error('Error navigating to partner settings:', error);
       });
   }
 
@@ -126,7 +129,7 @@ export class Partner implements OnInit, OnDestroy {
         text: this.partnerProfile.shortDescription,
         url: window.location.href
       }).catch(err => {
-        console.log('Error sharing:', err);
+        this.logger.debug('Error sharing:', err);
         // Fallback: copy to clipboard
         this.copyToClipboard(window.location.href);
       });
@@ -138,10 +141,10 @@ export class Partner implements OnInit, OnDestroy {
 
   private copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text).then(() => {
-      console.log('Link copied to clipboard');
+      this.logger.info('Link copied to clipboard');
       // Here you could show a toast notification
     }).catch(err => {
-      console.error('Could not copy text: ', err);
+      this.logger.error('Could not copy text: ', err);
     });
   }
 

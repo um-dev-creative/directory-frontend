@@ -14,6 +14,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {SessionData, SessionState} from '@core/store/session/session.state';
 import {Store} from '@ngrx/store';
+import {LoggerService} from '@app/core/services/logger.service';
 import {TimezoneClient} from '@core/services/timezone/timezone.client';
 
 
@@ -53,8 +54,6 @@ export class PartnerGeneralSettings implements OnInit {
   private readonly destroy$ = new Subject<void>();
   /** Session data from the store */
   protected sessionData: SessionData | undefined;
-  protected logInfo: (...arg: any) => void;
-  protected logError: (...arg: any) => void;
 
   reportProblemOptions: ReportProblemOptions = {
     googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessGeneralSettings',
@@ -91,11 +90,10 @@ export class PartnerGeneralSettings implements OnInit {
   private readonly businessClient: BusinessClient = inject(BusinessClient);
   private readonly router: Router = inject(Router);
   private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly logger = inject(LoggerService);
 
 
   constructor() {
-    this.logInfo = (...arg: any) => console.info(arg);
-    this.logError = (...arg: any) => console.error(arg);
     this.generalForm = this.fb.group({
       partnerName: [this.partnerData.partnerName, [Validators.required, Validators.maxLength(25)]],
       partnerDescription: [this.partnerData.partnerDescription, [Validators.required, Validators.minLength(20), Validators.maxLength(500)]],
@@ -104,7 +102,7 @@ export class PartnerGeneralSettings implements OnInit {
       category: [this.partnerData.category, [Validators.required]],
       timezone: [this.partnerData.timezone, [Validators.required]]
     });
-    this.logInfo('PartnerGeneralSettings initialized with form:', this.generalForm.value);
+    this.logger.info('PartnerGeneralSettings initialized with form:', this.generalForm.value);
   }
 
   ngOnInit(): void {
@@ -114,17 +112,17 @@ export class PartnerGeneralSettings implements OnInit {
         // Aquí podrías cargar más datos del negocio si es necesario
       }
     });
-    this.logInfo('PartnerGeneralSettings ngOnInit - sessionData:', this.sessionData);
+    this.logger.debug('PartnerGeneralSettings ngOnInit - sessionData:', this.sessionData);
     this.loadCategories();
     this.loadTimezones();
     if (this.sessionData) {
       this.loadBusinessDetails(this.sessionData.userAuth.businesses[0]);
     }
-    this.logInfo('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
+    this.logger.debug('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
   }
 
   private loadTimezoneData(): void {
-    console.debug('Loading timezone data...');
+    this.logger.debug('Loading timezone data...');
     // TODO: Implement social login logic
   }
 
@@ -140,7 +138,7 @@ export class PartnerGeneralSettings implements OnInit {
         this.loadingCategories = false;
       },
       error: (err) => {
-        this.logError('Error loading categories:', err);
+        this.logger.error('Error loading categories:', err);
         this.loadingCategories = false;
       }
     });
@@ -157,7 +155,7 @@ export class PartnerGeneralSettings implements OnInit {
         this.loadingTimezones = false;
       },
       error: (error) => {
-        console.error('Error loading timezones:', error);
+        this.logger.error('Error loading timezones:', error);
         this.loadingTimezones = false;
         // Fallback: podrías mostrar un mensaje de error al usuario
       }
@@ -187,14 +185,14 @@ export class PartnerGeneralSettings implements OnInit {
             category: this.partnerData.category,
             timezone: this.partnerData.timezone
           });
-          this.logInfo('Business details loaded successfully:', this.partnerData);
+          this.logger.info('Business details loaded successfully:', this.partnerData);
         } else {
-          this.logError('Failed to load business details:', businessDetailResponse);
+          this.logger.error('Failed to load business details:', businessDetailResponse);
         }
         this.loadingBusinessDetails = false;
       },
       error: (error) => {
-        console.error('Error loading business details:', error);
+        this.logger.error('Error loading business details:', error);
         this.errorLoadingBusinessDetails = true;
         this.loadingBusinessDetails = false;
       }
@@ -230,7 +228,7 @@ export class PartnerGeneralSettings implements OnInit {
 
       // Simulate API call
       setTimeout(() => {
-        console.log('Saving partner general settings:', formData);
+        this.logger.info('Saving partner general settings:', formData);
         this.isSubmitting = false;
         // Show success message
       }, 2000);
@@ -258,7 +256,7 @@ export class PartnerGeneralSettings implements OnInit {
     if (this.partnerData.slug) {
       this.router.navigate(['/partner', this.partnerData.slug]);
     } else {
-      console.error('No slug available for partner navigation');
+      this.logger.error('No slug available for partner navigation');
     }
   }
 
@@ -313,7 +311,7 @@ export class PartnerGeneralSettings implements OnInit {
         this.loadingCategories = false;
       },
       error: (error) => {
-        console.error('Error searching categories:', error);
+        this.logger.error('Error searching categories:', error);
         this.loadingCategories = false;
       }
     });
@@ -336,7 +334,7 @@ export class PartnerGeneralSettings implements OnInit {
         this.loadingTimezones = false;
       },
       error: (error) => {
-        console.error('Error searching timezones:', error);
+        this.logger.error('Error searching timezones:', error);
         this.loadingTimezones = false;
       }
     });

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { HttpService } from './http.service';
 import { StorageMockService } from './storage-mock.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
-import { ServiceTemplate } from './service-template';
+import { ClientTemplate } from './client-template';
 import { DFC } from '@app/shared/constants/app.const';
 
 export interface LoginCredentials {
@@ -36,7 +36,7 @@ export interface User {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends ServiceTemplate {
+export class AuthService extends ClientTemplate {
   private readonly currentUserSubject = new BehaviorSubject<User | null>(null);
   private readonly  isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -49,7 +49,6 @@ export class AuthService extends ServiceTemplate {
   constructor(
     private readonly httpService: HttpService,
     private readonly storageService: StorageMockService,
-    private readonly logger: LoggerService,
     private readonly notificationService: NotificationService,
     private readonly router: Router
   ) {

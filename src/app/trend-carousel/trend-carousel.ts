@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Button } from "../components/ui/buttons/button";
+import { Button } from "@app/components/ui";
+import { LoggerService } from '@app/core/services/logger.service';
 
 interface Trend {
   title: string;
@@ -22,6 +23,7 @@ export class TrendCarousel implements OnInit {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
   private scrollInterval: any;
   private readonly scrollSpeed = 200;  // Ajusta este valor para controlar la velocidad
+  private readonly logger = inject(LoggerService);
 
   /** Inicia el desplazamiento automático */
   startScroll(direction: 'left' | 'right') {
@@ -59,7 +61,7 @@ export class TrendCarousel implements OnInit {
       this.router.navigate([trend.internalLink]);
     } else {
       // Fallback: navegar a una página de detalle con el título como parámetro
-      console.warn('No internal link provided for trend:', trend.title);
+      this.logger.warn('No internal link provided for trend:', trend.title);
       // Opcional: podrías navegar a una página de detalle genérica
       // this.router.navigate(['/trend-detail'], { queryParams: { title: trend.title } });
     }

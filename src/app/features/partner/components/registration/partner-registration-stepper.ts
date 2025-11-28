@@ -1,13 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PartnerRegistrationService, Partner } from '@app/features/partner/services';
-import { PartnerStepOne } from './steps/partner-step-one';
-import { PartnerStepTwo } from './steps/partner-step-two';
-import { PartnerStepThree, StepThreeData } from './steps/partner-step-three';
+import { PartnerStepOne, PartnerStepTwo, PartnerStepThree, StepThreeData} from '@app/features/partner';
+
+
 import { CardComponent } from '@app/components/ui';
 import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
+import { LoggerService } from '@app/core/services/logger.service';
 
 export interface StepOneData {
   name: string;
@@ -182,6 +183,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
     private partnerService: PartnerRegistrationService,
     private router: Router
   ) {}
+  private readonly logger = inject(LoggerService);
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -220,7 +222,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
           this.isLoading = false;
         },
         error: (error: any) => {
-          console.error('Error creating partner:', error);
+          this.logger.error('Error creating partner:', error);
           this.isLoading = false;
           // Here you could show an error notification
         }
@@ -229,7 +231,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
 
   onStepTwoCompleted(data: StepTwoData): void {
     if (!this.partnerId) {
-      console.error('No partner ID available');
+      this.logger.error('No partner ID available');
       return;
     }
 
@@ -245,7 +247,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
           this.isLoading = false;
         },
         error: (error: any) => {
-          console.error('Error updating partner:', error);
+          this.logger.error('Error updating partner:', error);
           this.isLoading = false;
         }
       });
@@ -253,7 +255,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
 
   onStepThreeCompleted(data: StepThreeData): void {
     if (!this.partnerId) {
-      console.error('No partner ID available');
+      this.logger.error('No partner ID available');
       return;
     }
 
@@ -271,7 +273,7 @@ export class PartnerRegistrationStepper implements OnDestroy {
           this.router.navigate(['/partner', partner.slug]);
         },
         error: (error: any) => {
-          console.error('Error completing registration:', error);
+          this.logger.error('Error completing registration:', error);
           this.isLoading = false;
         }
       });

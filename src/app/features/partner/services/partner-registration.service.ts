@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, delay } from 'rxjs';
+import { LoggerService } from '@app/core/services/logger.service';
 
 export interface CreatePartnerRequest {
   name: string;
@@ -39,6 +40,8 @@ export class PartnerRegistrationService {
 
   currentPartner$ = this.currentPartnerSubject.asObservable();
 
+  private readonly logger = inject(LoggerService);
+
   constructor(private http: HttpClient) {}
 
   private generateSlug(name: string): string {
@@ -60,7 +63,7 @@ export class PartnerRegistrationService {
       };
 
       this.mockPartners.push(newPartner);
-      console.log('🎯 Mock: Created partner:', newPartner);
+      this.logger.debug('Mock: Created partner', newPartner);
 
       return of(newPartner).pipe(delay(1500));
     }
@@ -87,7 +90,7 @@ export class PartnerRegistrationService {
       }
 
       this.mockPartners[partnerIndex] = updatedPartner;
-      console.log('🎯 Mock: Updated partner:', updatedPartner);
+      this.logger.debug('Mock: Updated partner', updatedPartner);
 
       return of(updatedPartner).pipe(delay(1000));
     }
@@ -98,7 +101,7 @@ export class PartnerRegistrationService {
   uploadLogo(file: File): Observable<{ url: string }> {
     if (this.useMockData) {
       const mockUrl = `https://via.placeholder.com/400x200/10B981/ffffff?text=${encodeURIComponent(file.name.split('.')[0])}`;
-      console.log('🎯 Mock: Uploading logo:', file.name);
+      this.logger.debug('Mock: Uploading logo', file.name);
       return of({ url: mockUrl }).pipe(delay(2000));
     }
 
@@ -110,7 +113,7 @@ export class PartnerRegistrationService {
   uploadAvatar(file: File): Observable<{ url: string }> {
     if (this.useMockData) {
       const mockUrl = `https://via.placeholder.com/200x200/06B6D4/ffffff?text=${encodeURIComponent(file.name.split('.')[0])}`;
-      console.log('🎯 Mock: Uploading avatar:', file.name);
+      this.logger.debug('Mock: Uploading avatar', file.name);
       return of({ url: mockUrl }).pipe(delay(2000));
     }
 

@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LoggerService } from '@app/core/services/logger.service';
 
 export interface ReportProblemOptions {
   userEmail?: string;
@@ -24,9 +25,10 @@ export class ReportProblem {
 
   // URL por defecto del Google Form (puedes cambiarla)
   private readonly defaultGoogleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=DefaultReportProblem';
+  private readonly logger = inject(LoggerService);
 
   protected reportProblem(): void {
-    console.log('Report problem requested');
+    this.logger.info('Report problem requested');
 
     // URL del Google Form para reportes de problemas
     const googleFormUrl = this.options.googleFormUrl || this.defaultGoogleFormUrl;
@@ -42,7 +44,7 @@ export class ReportProblem {
     };
 
     // Log para referencia del desarrollador
-    console.log('Opening problem report form with context:', contextInfo);
+    this.logger.debug('Opening problem report form with context:', contextInfo);
 
     // Abrir Google Form en nueva pestaña
     window.open(googleFormUrl, '_blank', 'noopener,noreferrer');

@@ -15,7 +15,9 @@ export interface Offer {
   discount: number;
   validUntil: Date;
   status: OfferStatus;
-  category: { id: string; name: string };
+  categoryId: string;
+  categoryName?: string;
+  type?: string;
   createdAt: Date;
   terms?: string;
 }
@@ -41,7 +43,8 @@ export class PartnerOffersService {
       discount: 20,
       validUntil: new Date('2024-08-31'),
       status: OfferStatus.ACTIVE,
-      category: {id: '8609db8d-8825-4cd3-ae66-c94249bc1023', name: 'Temporada'},
+      categoryId: '8609db8d-8825-4cd3-ae66-c94249bc1023',
+      categoryName: 'Temporada',
       createdAt: new Date('2024-06-01'),
       terms: "Válido hasta el 31 de agosto de 2024. No acumulable con otras ofertas. Aplica solo a productos en stock. Descuento aplicado automáticamente al finalizar la compra."
     },
@@ -53,7 +56,8 @@ export class PartnerOffersService {
       discount: 50,
       validUntil: new Date('2024-11-29'),
       status: OfferStatus.ACTIVE,
-      category: {id: 'f1dbe0d5-694b-4d48-bd9b-afd2fffc36a5', name: 'Evento'},
+      categoryId: 'f1dbe0d5-694b-4d48-bd9b-afd2fffc36a5',
+      categoryName: 'Evento',
       createdAt: new Date('2024-05-15')
     },
     {
@@ -64,7 +68,8 @@ export class PartnerOffersService {
       discount: 15,
       validUntil: new Date('2024-12-31'),
       status: OfferStatus.ACTIVE,
-      category: {id: 'a77bb4a7-9845-487c-bbdd-a9bc55da5214', name: 'Nuevos Clientes'},
+      categoryId: 'a77bb4a7-9845-487c-bbdd-a9bc55da5214',
+      categoryName: 'Nuevos Clientes',
       createdAt: new Date('2024-01-01')
     },
     {
@@ -75,7 +80,8 @@ export class PartnerOffersService {
       discount: 10,
       validUntil: new Date('2024-09-30'),
       status: OfferStatus.INACTIVE,
-      category: {id: 'e43fdffc-4128-408b-b987-53000c79744d', name: 'Educación'},
+      categoryId: 'e43fdffc-4128-408b-b987-53000c79744d',
+      categoryName: 'Educación',
       createdAt: new Date('2024-03-01')
     },
     {
@@ -86,7 +92,8 @@ export class PartnerOffersService {
       discount: 30,
       validUntil: new Date('2023-12-31'),
       status: OfferStatus.EXPIRED,
-      category: {id: '124814d6-5751-4941-a471-5f989790c377', name: 'Temporada'},
+      categoryId: '124814d6-5751-4941-a471-5f989790c377',
+      categoryName: 'Temporada',
       createdAt: new Date('2023-11-01')
     },
     {
@@ -97,7 +104,8 @@ export class PartnerOffersService {
       discount: 40,
       validUntil: new Date('2024-11-30'),
       status: OfferStatus.ACTIVE,
-      category: {id: '85366e4a-fcdf-4406-98cd-13fbdfba0e57', name: 'Tecnología'},
+      categoryId: '85366e4a-fcdf-4406-98cd-13fbdfba0e57',
+      categoryName: 'Tecnología',
       createdAt: new Date('2024-04-10')
     },
     {
@@ -108,7 +116,8 @@ export class PartnerOffersService {
       discount: 25,
       validUntil: new Date('2024-06-30'),
       status: OfferStatus.EXPIRED,
-      category: {id: '798c1fa4-ece4-4a61-b0a4-947aae22fba4', name: 'Jardín'},
+      categoryId: '798c1fa4-ece4-4a61-b0a4-947aae22fba4',
+      categoryName: 'Jardín',
       createdAt: new Date('2024-03-15')
     },
     {
@@ -119,7 +128,8 @@ export class PartnerOffersService {
       discount: 35,
       validUntil: new Date('2024-10-31'),
       status: OfferStatus.ACTIVE,
-      category: {id: 'df10f334-115c-4bba-88be-6d5b38a60869', name: 'Empresas'},
+      categoryId: 'df10f334-115c-4bba-88be-6d5b38a60869',
+      categoryName: 'Empresas',
       createdAt: new Date('2024-02-01')
     },
     {
@@ -130,7 +140,8 @@ export class PartnerOffersService {
       discount: 60,
       validUntil: new Date('2024-07-20'),
       status: OfferStatus.INACTIVE,
-      category: {id: 'a7d966c8-df71-431a-97fd-1d2d1e642a28', name: 'Flash'},
+      categoryId: 'a7d966c8-df71-431a-97fd-1d2d1e642a28',
+      categoryName: 'Flash',
       createdAt: new Date('2024-07-01')
     },
     {
@@ -141,7 +152,8 @@ export class PartnerOffersService {
       discount: 45,
       validUntil: new Date('2024-09-15'),
       status: OfferStatus.ACTIVE,
-      category: {id: '18f7abf8-a1f5-4c6d-9ab5-ce4ee018de89', name: 'Aniversario'},
+      categoryId: '18f7abf8-a1f5-4c6d-9ab5-ce4ee018de89',
+      categoryName: 'Aniversario',
       createdAt: new Date('2024-05-01')
     },
     {
@@ -152,7 +164,8 @@ export class PartnerOffersService {
       discount: 55,
       validUntil: new Date('2024-12-31'),
       status: OfferStatus.ACTIVE,
-      category: {id: '60d9d00f-efd6-42cc-bbff-69ad4c613cf8', name: 'Fin de Año'},
+      categoryId: '60d9d00f-efd6-42cc-bbff-69ad4c613cf8',
+      categoryName: 'Fin de Año',
       createdAt: new Date('2024-06-15')
     },
     {
@@ -163,7 +176,8 @@ export class PartnerOffersService {
       discount: 20,
       validUntil: new Date('2024-08-15'),
       status: OfferStatus.INACTIVE,
-      category: {id: '052e5903-cf7e-40c5-a852-bf35111a323b', name: 'Familia'},
+      categoryId: '052e5903-cf7e-40c5-a852-bf35111a323b',
+      categoryName: 'Familia',
       createdAt: new Date('2024-04-01')
     },
     {
@@ -174,7 +188,8 @@ export class PartnerOffersService {
       discount: 70,
       validUntil: new Date('2024-11-15'),
       status: OfferStatus.ACTIVE,
-      category: {id: '6c101466-c5ab-4f59-aa8a-02443dc27399', name: 'VIP'},
+      categoryId: '6c101466-c5ab-4f59-aa8a-02443dc27399',
+      categoryName: 'VIP',
       createdAt: new Date('2024-03-20')
     },
     {
@@ -185,7 +200,8 @@ export class PartnerOffersService {
       discount: 25,
       validUntil: new Date('2024-10-01'),
       status: OfferStatus.ACTIVE,
-      category: {id: '5f305402-a452-464d-b6e7-d95d0d5f7a49', name: 'Lealtad'},
+      categoryId: '5f305402-a452-464d-b6e7-d95d0d5f7a49',
+      categoryName: 'Lealtad',
       createdAt: new Date('2024-01-15')
     },
     {
@@ -196,14 +212,15 @@ export class PartnerOffersService {
       discount: 40,
       validUntil: new Date('2024-02-14'),
       status: OfferStatus.EXPIRED,
-      category: {id: 'c82970dc-b867-440f-be0b-2d7e8f38b0fa', name: 'Romántico'},
+      categoryId: 'c82970dc-b867-440f-be0b-2d7e8f38b0fa',
+      categoryName: 'Romántico',
       createdAt: new Date('2024-01-01')
     }
   ];
 
   // Señales para el estado
-  private offersSignal = signal<Offer[]>(this.mockOffers);
-  private loadingSignal = signal<boolean>(false);
+  private readonly offersSignal = signal<Offer[]>(this.mockOffers);
+  private readonly loadingSignal = signal<boolean>(false);
 
   // Getters públicos
   get offers() { return this.offersSignal.asReadonly(); }

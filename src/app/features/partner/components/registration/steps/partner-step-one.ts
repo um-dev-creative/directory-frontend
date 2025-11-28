@@ -13,6 +13,7 @@ import {Subject, switchMap, takeUntil} from 'rxjs';
 import {AuthClient} from '@app/features/auth/auth.client';
 import {SessionStoreService} from '@core/store/session/session-store.service';
 import {NotificationService} from '@core/services/notification.service';
+import {LoggerService} from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-partner-step-one',
@@ -105,19 +106,14 @@ export class PartnerStepOne implements OnInit {
   private readonly store: Store<{ session: SessionState }> = inject(Store);
   private readonly destroy$ = new Subject<void>();
   private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly logger = inject(LoggerService);
 
   private userId: string = '';
   protected sessionData: SessionData | undefined;
 
   reactiveForm: FormGroup;
-  /** Function to log information */
-  logInfo: (...arg: any) => void;
-  /** Function to log errors */
-  logError: (...arg: any) => void;
 
   constructor() {
-    this.logInfo = (...arg: any) => console.info(arg);
-    this.logError = (...arg: any) => console.error(arg);
     this.reactiveForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(25)]],
       description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]]
@@ -133,19 +129,19 @@ export class PartnerStepOne implements OnInit {
 
   onContinue(): void {
     if (this.reactiveForm.valid) {
-      this.logInfo('Form data is valid, proceeding with business creation');
+      this.logger.info('Form data is valid, proceeding with business creation');
       const formData: StepOneData = {
         name: this.reactiveForm.get('name')?.value,
         description: this.reactiveForm.get('description')?.value
       };
-      this.logInfo('Form data:', formData);
+      this.logger.debug('Form data:', formData);
       this.businessClient.create(this.getBusinessData(formData)).pipe(
         takeUntil(this.destroy$),
         switchMap((response) => {
-          this.logInfo('Business creation response:', response);
+          this.logger.info('Business creation response:', response);
           // TODO: Change to status code #202
           if (response.headers.status === 201) {
-            this.logInfo('Business created successfully with ID:', response.body);
+            this.logger.info('Business created successfully with ID:', response.body);
             // let businessData: BusinessData = {
             //   id: response.body.id,
             //   name: response.body.name,
@@ -171,7 +167,7 @@ export class PartnerStepOne implements OnInit {
             this.notificationService.success('Business created successfully');
 
             this.sessionStoreService.saveSessionData(sessionDataNew);
-            this.logInfo('Business created successfully:', response);
+            this.logger.info('Business created successfully:', response);
             // Mark all form controls as touched to show validation errors
             this.reactiveForm.markAllAsTouched();
             // Emit the form data to the parent component
@@ -180,17 +176,17 @@ export class PartnerStepOne implements OnInit {
           }
 
           if (response.status === 409) {
-            this.logError('Business already exists for this user');
+            this.logger.warn('Business already exists for this user');
             this.notificationService.error('Ya tienes un negocio creado. Por favor, edítalo si deseas realizar cambios.');
             throw new Error('Business already exists for this user');
           } else {
-            this.logError('Unexpected response status:', response.status);
+            this.logger.error('Unexpected response status:', response.status);
             throw new Error(`Unexpected response status: ${response.status}`);
           }
         })
       ).subscribe({
         next: (response) => {
-          this.logInfo('Business created successfully:', response);
+          this.logger.info('Business created successfully:', response);
           // Mark all form controls as touched to show validation errors
           this.reactiveForm.markAllAsTouched();
           // Emit the form data to the parent component
@@ -200,7 +196,7 @@ export class PartnerStepOne implements OnInit {
           if (error.status === 409) {
             this.notificationService.error('Ya existe un negocio con el nombre ingresado. Por favor, Ingresar otro nombre.');
           } else {
-            this.logError('Error creating business:', error);
+            this.logger.error('Error creating business:', error);
           }
         }
       });

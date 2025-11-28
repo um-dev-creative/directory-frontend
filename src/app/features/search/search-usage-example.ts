@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Search } from './search';
+import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-search-usage-example',
@@ -135,6 +136,7 @@ import { Search } from './search';
   styles: []
 })
 export class SearchUsageExampleComponent {
+  private readonly logger = inject(LoggerService);
   lastSearchTerm: string = '';
   isLoading: boolean = false;
   validationMessage: string = '';
@@ -147,7 +149,7 @@ export class SearchUsageExampleComponent {
 
   onSearchSubmit(term: string) {
     this.addEvent('submit', term);
-    console.log('Búsqueda enviada:', term);
+    this.logger.info('Search submitted', term);
   }
 
   onSearchClear() {
@@ -159,7 +161,7 @@ export class SearchUsageExampleComponent {
     this.addEvent('realtime', term);
     // Simular búsqueda en tiempo real
     if (term.length > 2) {
-      console.log('Búsqueda en tiempo real:', term);
+      this.logger.debug('Real-time search', term);
     }
   }
 

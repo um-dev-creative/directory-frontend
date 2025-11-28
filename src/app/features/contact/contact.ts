@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Country, countries } from 'assets/data/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples} from 'libphonenumber-js';
 import examples from 'libphonenumber-js/examples.mobile.json';
+import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-contact',
@@ -15,6 +16,8 @@ import examples from 'libphonenumber-js/examples.mobile.json';
   styleUrl: './contact.css'
 })
 export class Contact {
+  private readonly logger = inject(LoggerService);
+
   countries: Country[] = countries.filter(country => country.active);
   placeholders: { [key: string]: string } = {
     email: '',
@@ -40,7 +43,7 @@ export class Contact {
   };
 
   onSubmit() {
-    console.log('Form submitted!', this.contactData);
+    this.logger.info('Form submitted!', this.contactData);
   }
   onFocus(field: string): void {
     if (field === 'email') {
@@ -75,7 +78,7 @@ export class Contact {
     this.contactData.phoneNumber = '';
     this.isValidPhoneNumber = true;
     this.dropdownState.country = false; // Cierra el menú
-    console.log('Country selected:', country);
+    this.logger.debug('Country selected:', country);
   }
   validateEmail() {
     const email = this.contactData.email;
@@ -108,18 +111,18 @@ export class Contact {
     const hasMessage = !!this.contactData.message;
 
     // Depurar campos que fallan
-    if (!isEmailValid) console.error("Invalid email address.");
-    if (!isPhoneValid) console.error("Invalid phone number.");
-    if (!hasFirstName) console.error("First name is missing.");
-    if (!hasLastName) console.error("Last name is missing.");
-    if (!hasSubject) console.error("Subject is missing.");
-    if (!hasMessage) console.error("Message is missing.");
+    if (!isEmailValid) this.logger.warn("Invalid email address.");
+    if (!isPhoneValid) this.logger.warn("Invalid phone number.");
+    if (!hasFirstName) this.logger.warn("First name is missing.");
+    if (!hasLastName) this.logger.warn("Last name is missing.");
+    if (!hasSubject) this.logger.warn("Subject is missing.");
+    if (!hasMessage) this.logger.warn("Message is missing.");
 
     // Determinar la validez total del formulario
     this.isContactFormValid = isEmailValid && isPhoneValid && hasFirstName && hasLastName && hasSubject && hasMessage;
 
     // Opcional: registrar el estado final
-    console.log(`Contact form valid: ${this.isContactFormValid}`);
+    this.logger.info(`Contact form valid: ${this.isContactFormValid}`);
   }
 
 }

@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-search',
@@ -15,12 +16,14 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search.css'],
 })
 export class Search {
+  private readonly logger = inject(LoggerService);
+
   @Input() placeholder: string = 'menu_header.search.placeholder';
   @Input() disabled: boolean = false;
   @Input() loading: boolean = false;
   @Input() maxLength: number = 255;
   @Input() minLength: number = 1;
-  
+
   @Output() searchChange = new EventEmitter<string>();
   @Output() searchSubmit = new EventEmitter<string>();
   @Output() searchClear = new EventEmitter<void>();
@@ -31,7 +34,7 @@ export class Search {
 
   onInput() {
     this.searchChange.emit(this.searchText);
-    console.log('Texto actual:', this.searchText);
+    this.logger.debug('Search input changed', this.searchText);
   }
 
   onKeyPress(event: KeyboardEvent) {
@@ -50,7 +53,7 @@ export class Search {
     this.searchText = '';
     this.searchClear.emit();
     this.searchChange.emit('');
-    
+
     // Mantener el foco en el input después de limpiar
     if (this.searchInput) {
       this.searchInput.nativeElement.focus();
@@ -84,7 +87,7 @@ export class Search {
     ];
 
     const stateClasses = [];
-    
+
     if (this.disabled) {
       stateClasses.push('tw-opacity-50', 'tw-cursor-not-allowed');
     } else {

@@ -10,6 +10,7 @@ import { convertToParamMap } from '@angular/router';
 import { BannerService } from '@app/banner/services/banner.service';
 import { CardsService } from '@app/cards/services/cards.service';
 import { of } from 'rxjs';
+import { LoggerService } from '@app/core/services/logger.service';
 
 // Mocks
 class MockHeaderService {
@@ -66,8 +67,10 @@ describe('Stage', () => {
   let headerService: MockHeaderService;
   let store: MockStore;
   let changeDetectorRef: MockChangeDetectorRef;
+  const mockLogger = { info: jasmine.createSpy('info'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
 
   beforeEach(async () => {
+
     await TestBed.configureTestingModule({
       imports: [Stage, HttpClientTestingModule],
       providers: [
@@ -77,7 +80,8 @@ describe('Stage', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: HeaderService, useClass: MockHeaderService },
         { provide: Store, useClass: MockStore },
-        { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef }
+        { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef },
+        { provide: LoggerService, useValue: mockLogger }
       ]
     }).compileComponents();
 
@@ -125,16 +129,16 @@ describe('Stage', () => {
   });
 
   it('should log card click event', () => {
-    spyOn(console, 'log');
+    const logger = TestBed.inject(LoggerService) as any;
     const card: CardImage = { title: 'Card Title', alt: 'Alt', src: '', id: '1' } as any;
     component.onCardClick({ card, index: 2 });
-    expect(console.log).toHaveBeenCalledWith('Card clicked:', 'Card Title', 'at position', 2);
+    expect(logger.info).toHaveBeenCalledWith('Card clicked', {title: 'Card Title', position: 2});
   });
 
   it('should log image error event', () => {
-    spyOn(console, 'warn');
+    const logger = TestBed.inject(LoggerService) as any;
     const card: CardImage = { title: 'Card Title', alt: 'Alt', src: '', id: '1' } as any;
     component.onImageError({ card, index: 1 });
-    expect(console.warn).toHaveBeenCalledWith('Failed to load image for card:', 'Card Title');
+    expect(logger.warn).toHaveBeenCalledWith('Failed to load image for card:', 'Card Title');
   });
 });
