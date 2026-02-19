@@ -318,8 +318,9 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Closes the dropdown if the click target is outside the dropdown.
    * @param target - The click target element.
    */
-  @HostListener('document:click', ['$event.target'])
-  closeDropdown(target: HTMLElement): void {
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: Event): void {
+    const target = event.target as HTMLElement;
     const countryButton = document.querySelector('[aria-labelledby="country-label"]');
     const monthButton = document.querySelector('[aria-labelledby="month-label"]');
     if (!countryButton?.contains(target) && !monthButton?.contains(target)) {

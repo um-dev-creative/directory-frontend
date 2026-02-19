@@ -4,10 +4,10 @@
 
   <!-- Loading State -->
   @if (loading$ | async) {
-    <div class="tw-flex tw-justify-center tw-py-8" role="status" aria-label="Loading campaigns">
-      <div class="tw-flex tw-space-x-4">
+    <div class="flex justify-center py-8" role="status" aria-label="Loading campaigns">
+      <div class="flex space-x-4">
         @for (skeleton of [1,2,3]; track skeleton) {
-          <div class="tw-animate-pulse tw-flex-shrink-0 tw-w-80 lg:tw-w-96 tw-h-32 sm:tw-h-36 md:tw-h-40 lg:tw-h-44 xl:tw-h-48 tw-bg-beige-200 tw-rounded-xl"></div>
+          <div class="animate-pulse shrink-0 w-80 lg:w-96 h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 bg-beige-200 rounded-xl"></div>
         }
       </div>
     </div>
@@ -15,12 +15,12 @@
 
   <!-- Error State -->
   @if (error$ | async; as error) {
-    <div class="tw-text-center tw-py-8" role="alert">
-      <div class="tw-text-4xl tw-mb-4">⚠️</div>
-      <p class="tw-text-coral-600 tw-mb-4">{{ error }}</p>
+    <div class="text-center py-8" role="alert">
+      <div class="text-4xl mb-4">⚠️</div>
+      <p class="text-coral-600 mb-4">{{ error }}</p>
       <button
         (click)="loadCards()"
-        class="tw-px-4 tw-py-2 tw-bg-emerald-green-600 tw-text-white tw-rounded-lg hover:tw-bg-emerald-green-700 tw-transition tw-duration-200"
+        class="px-4 py-2 bg-emerald-green-600 text-white rounded-lg hover:bg-emerald-green-700 transition duration-200"
         type="button">
         Retry
       </button>
@@ -30,15 +30,15 @@
   <!-- Cards Grid -->
   @if (cardsData$ | async; as cards) {
     <div
-      class="tw-overflow-x-auto lg:tw-overflow-visible tw-scrollbar-hide tw-mt-4 tw-pb-6 tw-smooth-scroll"
+      class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6 smooth-scroll"
       role="group"
       aria-label="Campaign cards">
 
       <!-- Mobile: Horizontal scroll, Desktop: Grid with space-between for equilibrium -->
-      <div class="tw-flex tw-gap-4 tw-min-w-max lg:tw-min-w-0 lg:tw-justify-between lg:tw-max-w-full">
+      <div class="flex gap-4 min-w-max lg:min-w-0 lg:justify-between lg:max-w-full">
         @for (card of cards; track trackByCardSrc($index, card); let i = $index) {
           <article
-            class="tw-flex-shrink-0 tw-w-80 lg:tw-w-[calc(33.333%-1rem)] lg:tw-max-w-sm tw-bg-white tw-rounded-xl tw-shadow-soft tw-overflow-hidden tw-cursor-pointer tw-transition tw-duration-300 hover:tw-shadow-lg focus:tw-outline-none"
+            class="shrink-0 w-80 lg:w-[calc(33.333%-1rem)] lg:max-w-sm bg-white rounded-xl shadow-soft overflow-hidden cursor-pointer transition duration-300 hover:shadow-lg focus:outline-none"
             [attr.aria-label]="card.alt || 'Campaign card ' + (i + 1)"
             [attr.data-card-index]="i"
             tabindex="0"
@@ -46,20 +46,20 @@
             (click)="onCardClick(card, i)"
             (keydown.enter)="onCardClick(card, i)"
             (keydown.space)="onCardClick(card, i); $event.preventDefault()">
-            <div class="tw-relative tw-h-32 sm:tw-h-36 md:tw-h-40 lg:tw-h-44 xl:tw-h-48 tw-overflow-hidden tw-group">
+            <div class="relative h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 overflow-hidden group">
               <img
                 [src]="imageBucketUrl + card.src"
                 [alt]="card.alt || 'Campaign image'"
-                class="tw-w-full tw-h-full tw-object-cover tw-object-center tw-transition tw-duration-300"
+                class="w-full h-full object-cover object-center transition duration-300"
                 loading="lazy"
                 [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
                 (error)="onImageError($event, card, i)"
               >
 
               <!-- Overlay -->
-              <div class="tw-absolute tw-inset-0 tw-bg-gradient-to-t tw-from-black/50 tw-to-transparent tw-opacity-0 group-hover:tw-opacity-100 tw-transition tw-duration-300">
-                <div class="tw-absolute tw-bottom-4 tw-right-4">
-                  <svg class="tw-w-6 tw-h-6 tw-text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300">
+                <div class="absolute bottom-4 right-4">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                   </svg>
                 </div>
@@ -73,12 +73,12 @@
 
   <!-- Empty State -->
   @if ((cardsData$ | async)?.length === 0 && !(loading$ | async) && !(error$ | async)) {
-    <div class="tw-text-center tw-py-12">
-      <div class="tw-text-6xl tw-mb-4">📸</div>
-      <h3 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-2">
+    <div class="text-center py-12">
+      <div class="text-6xl mb-4">📸</div>
+      <h3 class="text-lg font-semibold text-beige-800 mb-2">
         No campaigns available
       </h3>
-      <p class="tw-text-beige-600">
+      <p class="text-beige-600">
         Check back later for new campaigns
       </p>
     </div>

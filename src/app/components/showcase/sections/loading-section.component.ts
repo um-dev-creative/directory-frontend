@@ -10,37 +10,37 @@ import { SkeletonComponent } from '../../ui';
   template: `
     <!-- Full Screen Loading Overlay -->
     @if (isFullScreenLoading) {
-      <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center tw-z-50">
-        <div class="tw-bg-white tw-rounded-lg tw-p-8 tw-text-center">
-          <div class="tw-animate-spin tw-mx-auto tw-h-12 tw-w-12 tw-border-4 tw-border-emerald-green-200 tw-border-t-emerald-green-500 tw-rounded-full tw-mb-4"></div>
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-2">Cargando Directorio...</h3>
-          <p class="tw-text-beige-600">Por favor espere mientras se cargan los datos</p>
+      <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 text-center">
+          <div class="animate-spin mx-auto h-12 w-12 border-4 border-emerald-green-200 border-t-emerald-green-500 rounded-full mb-4"></div>
+          <h3 class="text-lg font-semibold text-emerald-green-700 mb-2">Cargando Directorio...</h3>
+          <p class="text-beige-600">Por favor espere mientras se cargan los datos</p>
         </div>
       </div>
     }
 
     <!-- Loading -->
-    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Loading</h2>
-      <p class="tw-text-beige-700 tw-mb-6">
+    <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+      <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Loading</h2>
+      <p class="text-beige-700 mb-6">
         Ejemplo de estados de carga integrados con LoadingService
       </p>
 
-      <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Basic Loading -->
-        <div class="tw-text-center tw-space-y-4">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-600">Loading Básico</h3>
+        <div class="text-center space-y-4">
+          <h3 class="text-lg font-semibold text-emerald-green-600">Loading Básico</h3>
           <button
             (click)="onShowBasicLoading()"
             [disabled]="isBasicLoading"
-            class="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold tw-transition-all"
+            class="w-full px-4 py-3 rounded-lg font-semibold transition-all"
             [ngClass]="isBasicLoading
-              ? 'tw-bg-beige-300 tw-text-beige-600 tw-cursor-not-allowed'
-              : 'tw-bg-emerald-green-500 tw-text-white hover:tw-bg-emerald-green-600'"
+              ? 'bg-beige-300 text-beige-600 cursor-not-allowed'
+              : 'bg-emerald-green-500 text-white hover:bg-emerald-green-600'"
           >
             @if (isBasicLoading) {
-              <div class="tw-flex tw-items-center tw-justify-center tw-space-x-2">
-                <div class="tw-animate-spin tw-rounded-full tw-h-4 tw-w-4 tw-border-2 tw-border-beige-600 tw-border-t-transparent"></div>
+              <div class="flex items-center justify-center space-x-2">
+                <div class="animate-spin rounded-full h-4 w-4 border-2 border-beige-600 border-t-transparent"></div>
                 <span>Cargando...</span>
               </div>
             } @else {
@@ -50,19 +50,19 @@ import { SkeletonComponent } from '../../ui';
         </div>
 
         <!-- Action Loading -->
-        <div class="tw-text-center tw-space-y-4">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-sky-blue-600">Loading con Acción</h3>
+        <div class="text-center space-y-4">
+          <h3 class="text-lg font-semibold text-sky-blue-600">Loading con Acción</h3>
           <button
             (click)="onShowActionLoading()"
             [disabled]="isActionLoading"
-            class="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold tw-transition-all"
+            class="w-full px-4 py-3 rounded-lg font-semibold transition-all"
             [ngClass]="isActionLoading
-              ? 'tw-bg-sky-blue-300 tw-text-sky-blue-700 tw-cursor-not-allowed'
-              : 'tw-bg-sky-blue-500 tw-text-white hover:tw-bg-sky-blue-600'"
+              ? 'bg-sky-blue-300 text-sky-blue-700 cursor-not-allowed'
+              : 'bg-sky-blue-500 text-white hover:bg-sky-blue-600'"
           >
             @if (isActionLoading) {
-              <div class="tw-flex tw-items-center tw-justify-center tw-space-x-2">
-                <div class="tw-animate-pulse tw-w-4 tw-h-4 tw-bg-sky-blue-700 tw-rounded-full"></div>
+              <div class="flex items-center justify-center space-x-2">
+                <div class="animate-pulse w-4 h-4 bg-sky-blue-700 rounded-full"></div>
                 <span>Guardando...</span>
               </div>
             } @else {
@@ -72,19 +72,19 @@ import { SkeletonComponent } from '../../ui';
         </div>
 
         <!-- Global Loading (LoadingService) -->
-        <div class="tw-text-center tw-space-y-4">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-coral-600">Loading Global</h3>
+        <div class="text-center space-y-4">
+          <h3 class="text-lg font-semibold text-coral-600">Loading Global</h3>
           <button
             (click)="onShowGlobalLoading()"
             [disabled]="isGlobalLoading"
-            class="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-font-semibold tw-transition-all"
+            class="w-full px-4 py-3 rounded-lg font-semibold transition-all"
             [ngClass]="isGlobalLoading
-              ? 'tw-bg-coral-300 tw-text-coral-700 tw-cursor-not-allowed'
-              : 'tw-bg-coral-500 tw-text-white hover:tw-bg-coral-600'"
+              ? 'bg-coral-300 text-coral-700 cursor-not-allowed'
+              : 'bg-coral-500 text-white hover:bg-coral-600'"
           >
             @if (isGlobalLoading) {
-              <div class="tw-flex tw-items-center tw-justify-center tw-space-x-2">
-                <div class="tw-animate-spin tw-rounded-full tw-h-4 tw-w-4 tw-border-2 tw-border-coral-700 tw-border-t-transparent"></div>
+              <div class="flex items-center justify-center space-x-2">
+                <div class="animate-spin rounded-full h-4 w-4 border-2 border-coral-700 border-t-transparent"></div>
                 <span>Procesando...</span>
               </div>
             } @else {
@@ -95,14 +95,14 @@ import { SkeletonComponent } from '../../ui';
       </div>
 
       <!-- Full Screen & Advanced Loading -->
-      <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Loading Avanzado</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
+      <div class="mt-8 border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Loading Avanzado</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Full Screen Loading -->
           <button
             (click)="onShowFullScreenLoading()"
             [disabled]="isFullScreenLoading"
-            class="tw-px-4 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-bg-emerald-green-500 tw-text-white hover:tw-bg-emerald-green-600 disabled:tw-opacity-50"
+            class="px-4 py-3 rounded-lg font-medium transition-all bg-emerald-green-500 text-white hover:bg-emerald-green-600 disabled:opacity-50"
           >
             Full Screen Loading
           </button>
@@ -111,7 +111,7 @@ import { SkeletonComponent } from '../../ui';
           <button
             (click)="onShowProgressLoading()"
             [disabled]="isProgressLoading"
-            class="tw-px-4 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-bg-sky-blue-500 tw-text-white hover:tw-bg-sky-blue-600 disabled:tw-opacity-50"
+            class="px-4 py-3 rounded-lg font-medium transition-all bg-sky-blue-500 text-white hover:bg-sky-blue-600 disabled:opacity-50"
           >
             Progress Loading
           </button>
@@ -120,7 +120,7 @@ import { SkeletonComponent } from '../../ui';
           <button
             (click)="onShowSkeletonLoading()"
             [disabled]="isSkeletonLoading"
-            class="tw-px-4 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-bg-coral-500 tw-text-white hover:tw-bg-coral-600 disabled:tw-opacity-50"
+            class="px-4 py-3 rounded-lg font-medium transition-all bg-coral-500 text-white hover:bg-coral-600 disabled:opacity-50"
           >
             Skeleton Loading
           </button>
@@ -129,7 +129,7 @@ import { SkeletonComponent } from '../../ui';
           <button
             (click)="onShowInlineLoading()"
             [disabled]="isInlineLoading"
-            class="tw-px-4 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-bg-beige-600 tw-text-white hover:tw-bg-beige-700 disabled:tw-opacity-50"
+            class="px-4 py-3 rounded-lg font-medium transition-all bg-beige-600 text-white hover:bg-beige-700 disabled:opacity-50"
           >
             Inline Loading
           </button>
@@ -138,27 +138,27 @@ import { SkeletonComponent } from '../../ui';
 
       <!-- Progress Loading Demo -->
       @if (isProgressLoading) {
-        <div class="tw-mt-6 tw-bg-sky-blue-50 tw-rounded-lg tw-p-6">
-          <h4 class="tw-font-semibold tw-text-sky-blue-800 tw-mb-4">Cargando datos del directorio...</h4>
-          <div class="tw-w-full tw-bg-sky-blue-200 tw-rounded-full tw-h-3 tw-mb-2">
+        <div class="mt-6 bg-sky-blue-50 rounded-lg p-6">
+          <h4 class="font-semibold text-sky-blue-800 mb-4">Cargando datos del directorio...</h4>
+          <div class="w-full bg-sky-blue-200 rounded-full h-3 mb-2">
             <div
-              class="tw-bg-sky-blue-600 tw-h-3 tw-rounded-full tw-transition-all tw-duration-300"
+              class="bg-sky-blue-600 h-3 rounded-full transition-all duration-300"
               [style.width.%]="progressValue"
             ></div>
           </div>
-          <p class="tw-text-sm tw-text-sky-blue-700">{{ progressValue }}% - {{ progressMessage }}</p>
+          <p class="text-sm text-sky-blue-700">{{ progressValue }}% - {{ progressMessage }}</p>
         </div>
       }
 
       <!-- Skeleton Loading Demo -->
       @if (isSkeletonLoading) {
-        <div class="tw-mt-6 tw-bg-white tw-rounded-lg tw-p-6">
-          <h4 class="tw-font-semibold tw-text-emerald-green-800 tw-mb-4">Vista previa de empresas:</h4>
+        <div class="mt-6 bg-white rounded-lg p-6">
+          <h4 class="font-semibold text-emerald-green-800 mb-4">Vista previa de empresas:</h4>
 
           <!-- Business Directory Skeleton -->
-          <div class="tw-space-y-6">
+          <div class="space-y-6">
             <!-- Featured Business Card -->
-            <div class="tw-mb-4">
+            <div class="mb-4">
               <app-skeleton
                 variant="card"
                 [loading]="true"
@@ -181,34 +181,34 @@ import { SkeletonComponent } from '../../ui';
           </div>
 
           <!-- Alternative: Custom Skeleton Pattern -->
-          <div class="tw-mt-6 tw-pt-4 tw-border-t tw-border-emerald-green-200">
-            <h5 class="tw-font-medium tw-text-emerald-green-700 tw-mb-3">Patrón personalizado:</h5>
+          <div class="mt-6 pt-4 border-t border-emerald-green-200">
+            <h5 class="font-medium text-emerald-green-700 mb-3">Patrón personalizado:</h5>
             <app-skeleton
               variant="custom"
               [loading]="true"
               animation="pulse"
             >
-              <div class="tw-space-y-4">
+              <div class="space-y-4">
                 @for (i of [1,2,3]; track i) {
-                  <div class="tw-flex tw-space-x-4 tw-p-4 tw-bg-white tw-rounded-lg tw-border tw-border-emerald-green-100">
+                  <div class="flex space-x-4 p-4 bg-white rounded-lg border border-emerald-green-100">
                     <!-- Company Logo -->
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-16 tw-h-16 tw-flex-shrink-0"></div>
+                    <div class="skeleton-element skeleton-pulse skeleton-rounded w-16 h-16 shrink-0"></div>
 
                     <!-- Company Info -->
-                    <div class="tw-flex-1 tw-space-y-2">
+                    <div class="flex-1 space-y-2">
                       <!-- Company Name -->
-                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-5 tw-w-3/4"></div>
+                      <div class="skeleton-element skeleton-pulse skeleton-rounded h-5 w-3/4"></div>
                       <!-- Category -->
-                      <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-1/2"></div>
+                      <div class="skeleton-element skeleton-pulse skeleton-rounded h-4 w-1/2"></div>
                       <!-- Rating and Contact -->
-                      <div class="tw-flex tw-space-x-4">
-                        <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-20"></div>
-                        <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-4 tw-w-24"></div>
+                      <div class="flex space-x-4">
+                        <div class="skeleton-element skeleton-pulse skeleton-rounded h-4 w-20"></div>
+                        <div class="skeleton-element skeleton-pulse skeleton-rounded h-4 w-24"></div>
                       </div>
                     </div>
 
                     <!-- Action Button -->
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-w-20 tw-h-10"></div>
+                    <div class="skeleton-element skeleton-pulse skeleton-rounded w-20 h-10"></div>
                   </div>
                 }
               </div>
@@ -219,61 +219,61 @@ import { SkeletonComponent } from '../../ui';
 
       <!-- Inline Loading Demo -->
       @if (isInlineLoading) {
-        <div class="tw-mt-6 tw-bg-beige-50 tw-rounded-lg tw-p-6">
-          <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-4">Lista de empresas</h4>
-          <div class="tw-space-y-3">
-            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+        <div class="mt-6 bg-beige-50 rounded-lg p-6">
+          <h4 class="font-semibold text-beige-800 mb-4">Lista de empresas</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
               <span>Restaurante El Buen Sabor</span>
-              <div class="tw-animate-spin tw-h-4 tw-w-4 tw-border-2 tw-border-beige-300 tw-border-t-beige-600 tw-rounded-full"></div>
+              <div class="animate-spin h-4 w-4 border-2 border-beige-300 border-t-beige-600 rounded-full"></div>
             </div>
-            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
               <span>Tecnología Avanzada S.A.</span>
-              <div class="tw-animate-pulse tw-h-4 tw-w-4 tw-bg-beige-400 tw-rounded-full"></div>
+              <div class="animate-pulse h-4 w-4 bg-beige-400 rounded-full"></div>
             </div>
-            <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-white tw-rounded-lg tw-border">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
               <span>Centro Médico Salud+</span>
-              <div class="tw-animate-bounce tw-h-4 tw-w-4 tw-bg-beige-500 tw-rounded-full"></div>
+              <div class="animate-bounce h-4 w-4 bg-beige-500 rounded-full"></div>
             </div>
           </div>
         </div>
       }
 
       <!-- Loading Spinners Showcase -->
-      <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estilos de Spinners</h3>
-        <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-8">
+      <div class="mt-8 border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Estilos de Spinners</h3>
+        <div class="flex flex-wrap justify-center gap-8">
           <!-- Spinner 1 -->
-          <div class="tw-text-center">
-            <div class="tw-animate-spin tw-rounded-full tw-h-8 tw-w-8 tw-border-4 tw-border-emerald-green-200 tw-border-t-emerald-green-500 tw-mx-auto tw-mb-2"></div>
-            <p class="tw-text-xs tw-text-beige-600">Emerald</p>
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-4 border-emerald-green-200 border-t-emerald-green-500 mx-auto mb-2"></div>
+            <p class="text-xs text-beige-600">Emerald</p>
           </div>
           <!-- Spinner 2 -->
-          <div class="tw-text-center">
-            <div class="tw-animate-pulse tw-h-8 tw-w-8 tw-bg-coral-500 tw-rounded-full tw-mx-auto tw-mb-2"></div>
-            <p class="tw-text-xs tw-text-beige-600">Coral Pulse</p>
+          <div class="text-center">
+            <div class="animate-pulse h-8 w-8 bg-coral-500 rounded-full mx-auto mb-2"></div>
+            <p class="text-xs text-beige-600">Coral Pulse</p>
           </div>
           <!-- Spinner 3 -->
-          <div class="tw-text-center">
-            <div class="tw-animate-bounce tw-h-8 tw-w-8 tw-bg-sky-blue-500 tw-rounded-full tw-mx-auto tw-mb-2"></div>
-            <p class="tw-text-xs tw-text-beige-600">Sky Bounce</p>
+          <div class="text-center">
+            <div class="animate-bounce h-8 w-8 bg-sky-blue-500 rounded-full mx-auto mb-2"></div>
+            <p class="text-xs text-beige-600">Sky Bounce</p>
           </div>
           <!-- Spinner 4 -->
-          <div class="tw-text-center">
-            <div class="tw-animate-spin tw-h-8 tw-w-8 tw-border-4 tw-border-beige-300 tw-border-l-beige-600 tw-rounded-full tw-mx-auto tw-mb-2"></div>
-            <p class="tw-text-xs tw-text-beige-600">Beige Spin</p>
+          <div class="text-center">
+            <div class="animate-spin h-8 w-8 border-4 border-beige-300 border-l-beige-600 rounded-full mx-auto mb-2"></div>
+            <p class="text-xs text-beige-600">Beige Spin</p>
           </div>
         </div>
       </div>
 
       <!-- Advanced Skeleton Patterns -->
-      <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Patrones de Skeleton Avanzados</h3>
-        <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6">
+      <div class="mt-8 border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Patrones de Skeleton Avanzados</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           <!-- Dashboard Skeleton -->
-          <div class="tw-bg-sky-blue-50 tw-rounded-lg tw-p-4">
-            <h4 class="tw-font-semibold tw-text-sky-blue-800 tw-mb-3">Dashboard Loading</h4>
-            <div class="tw-grid tw-grid-cols-2 tw-gap-4">
+          <div class="bg-sky-blue-50 rounded-lg p-4">
+            <h4 class="font-semibold text-sky-blue-800 mb-3">Dashboard Loading</h4>
+            <div class="grid grid-cols-2 gap-4">
               <!-- Profile Section -->
               <div>
                 <app-skeleton
@@ -284,9 +284,9 @@ import { SkeletonComponent } from '../../ui';
               </div>
 
               <!-- Stats Cards -->
-              <div class="tw-space-y-3">
+              <div class="space-y-3">
                 @for (i of [1,2]; track i) {
-                  <div class="tw-p-3 tw-bg-white tw-rounded-lg tw-border tw-border-sky-blue-100">
+                  <div class="p-3 bg-white rounded-lg border border-sky-blue-100">
                     <app-skeleton
                       variant="default"
                       [loading]="true"
@@ -301,8 +301,8 @@ import { SkeletonComponent } from '../../ui';
           </div>
 
           <!-- Table Skeleton -->
-          <div class="tw-bg-beige-50 tw-rounded-lg tw-p-4">
-            <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">Data Table Loading</h4>
+          <div class="bg-beige-50 rounded-lg p-4">
+            <h4 class="font-semibold text-beige-800 mb-3">Data Table Loading</h4>
             <app-skeleton
               variant="table"
               [loading]="true"
@@ -314,24 +314,24 @@ import { SkeletonComponent } from '../../ui';
         </div>
 
         <!-- Custom Message Thread Skeleton -->
-        <div class="tw-mt-6 tw-bg-emerald-green-50 tw-rounded-lg tw-p-4">
-          <h4 class="tw-font-semibold tw-text-emerald-green-800 tw-mb-3">Chat/Messages Loading</h4>
+        <div class="mt-6 bg-emerald-green-50 rounded-lg p-4">
+          <h4 class="font-semibold text-emerald-green-800 mb-3">Chat/Messages Loading</h4>
           <app-skeleton
             variant="custom"
             [loading]="true"
             animation="pulse"
           >
-            <div class="tw-space-y-4">
+            <div class="space-y-4">
               @for (i of [1,2,3]; track i) {
-                <div class="tw-flex tw-space-x-3" [class.tw-flex-row-reverse]="i % 2 === 0">
+                <div class="flex space-x-3" [class.flex-row-reverse]="i % 2 === 0">
                   <!-- Avatar -->
-                  <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-circle tw-w-8 tw-h-8 tw-flex-shrink-0"></div>
+                  <div class="skeleton-element skeleton-pulse skeleton-circle w-8 h-8 shrink-0"></div>
                   <!-- Message -->
-                  <div class="tw-space-y-1 tw-max-w-xs">
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-h-3 tw-w-16"></div>
-                    <div class="tw-skeleton-element tw-skeleton-pulse tw-skeleton-rounded tw-p-3"
+                  <div class="space-y-1 max-w-xs">
+                    <div class="skeleton-element skeleton-pulse skeleton-rounded h-3 w-16"></div>
+                    <div class="skeleton-element skeleton-pulse skeleton-rounded p-3"
                          [style.width]="(60 + i * 15) + '%'">
-                      <div class="tw-h-4"></div>
+                      <div class="h-4"></div>
                     </div>
                   </div>
                 </div>
@@ -342,10 +342,10 @@ import { SkeletonComponent } from '../../ui';
       </div>
 
       <!-- Loading States Info -->
-      <div class="tw-mt-8 tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-beige-700 tw-mb-4">Estados de Loading</h3>
-        <div class="tw-bg-beige-50 tw-rounded-lg tw-p-4">
-          <ul class="tw-text-sm tw-text-beige-700 tw-space-y-2">
+      <div class="mt-8 border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-beige-700 mb-4">Estados de Loading</h3>
+        <div class="bg-beige-50 rounded-lg p-4">
+          <ul class="text-sm text-beige-700 space-y-2">
             <li><strong>Basic Loading:</strong> Estado de carga simple con duración fija</li>
             <li><strong>Action Loading:</strong> Estado específico para acciones como guardar</li>
             <li><strong>Global Loading:</strong> Utiliza LoadingService para bloqueo global</li>
@@ -358,9 +358,9 @@ import { SkeletonComponent } from '../../ui';
         </div>
 
         <!-- Skeleton Best Practices -->
-        <div class="tw-mt-4 tw-bg-emerald-green-50 tw-rounded-lg tw-p-4">
-          <h4 class="tw-font-semibold tw-text-emerald-green-700 tw-mb-2">Mejores Prácticas - Skeleton Loading:</h4>
-          <ul class="tw-text-sm tw-text-emerald-green-700 tw-space-y-1">
+        <div class="mt-4 bg-emerald-green-50 rounded-lg p-4">
+          <h4 class="font-semibold text-emerald-green-700 mb-2">Mejores Prácticas - Skeleton Loading:</h4>
+          <ul class="text-sm text-emerald-green-700 space-y-1">
             <li>• Usa <strong>pulse</strong> para animación suave y accesible</li>
             <li>• Prefiere <strong>variant="card"</strong> para contenido de empresas</li>
             <li>• Usa <strong>variant="list"</strong> para listas de elementos</li>
@@ -373,20 +373,22 @@ import { SkeletonComponent } from '../../ui';
     </div>
   `,
   styles: [`
-    .tw-skeleton-element {
-      @apply tw-bg-gradient-to-r tw-from-beige-200 tw-via-beige-300 tw-to-beige-200;
+    @reference "../../../../styles.css";
+
+    .skeleton-element {
+      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
     }
 
-    .tw-skeleton-pulse {
-      @apply tw-animate-pulse;
+    .skeleton-pulse {
+      @apply animate-pulse;
     }
 
-    .tw-skeleton-rounded {
-      @apply tw-rounded-md;
+    .skeleton-rounded {
+      @apply rounded-md;
     }
 
-    .tw-skeleton-circle {
-      @apply tw-rounded-full;
+    .skeleton-circle {
+      @apply rounded-full;
     }
   `]
 })

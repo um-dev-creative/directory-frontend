@@ -47,27 +47,27 @@ export interface ShowcaseSection {
     AvatarsSectionComponent
   ],
   template: `
-    <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
-      <div class="tw-max-w-6xl tw-mx-auto">
+    <div class="p-8 bg-gradient-hero min-h-screen">
+      <div class="max-w-6xl mx-auto">
         <!-- Header -->
-        <div class="tw-text-center tw-mb-12">
-          <h1 class="tw-text-4xl tw-font-bold tw-text-emerald-green-700 tw-mb-4">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-emerald-green-700 mb-4">
             Showcase de Componentes
           </h1>
-          <p class="tw-text-lg tw-text-beige-800">
+          <p class="text-lg text-beige-800">
             Ejemplo de implementación de la nueva paleta de colores y componentes
           </p>
         </div>
 
         <!-- Navigation Menu -->
-        <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6 tw-mb-8">
-          <h2 class="tw-text-xl tw-font-bold tw-text-emerald-green-700 tw-mb-4">Navegación</h2>
-          <div class="tw-flex tw-flex-wrap tw-gap-3">
+        <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
+          <h2 class="text-xl font-bold text-emerald-green-700 mb-4">Navegación</h2>
+          <div class="flex flex-wrap gap-3">
             @for (section of sections; track section.id) {
               <button
                 (click)="activeSection = section.id"
                 [class]="getSectionButtonClass(section.id)"
-                class="tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200"
+                class="px-4 py-2 rounded-lg font-medium transition-all duration-200"
               >
                 {{ section.name }}
               </button>
@@ -76,7 +76,7 @@ export interface ShowcaseSection {
         </div>
 
         <!-- Section Content -->
-        <div class="tw-transition-all tw-duration-300">
+        <div class="transition-all duration-300">
           <!-- Colors Section -->
           @if (activeSection === 'colors') {
             <app-colors-section></app-colors-section>
@@ -238,9 +238,9 @@ export class BrandShowcaseComponent {
 
   // Navigation methods
   getSectionButtonClass(sectionId: string): string {
-    const baseClasses = 'tw-px-4 tw-py-2 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200';
-    const activeClasses = 'tw-bg-emerald-green-500 tw-text-white tw-shadow-md';
-    const inactiveClasses = 'tw-bg-beige-100 tw-text-beige-700 hover:tw-bg-beige-200';
+    const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-all duration-200';
+    const activeClasses = 'bg-emerald-green-500 text-white shadow-md';
+    const inactiveClasses = 'bg-beige-100 text-beige-700 hover:bg-beige-200';
 
     return this.activeSection === sectionId
       ? `${baseClasses} ${activeClasses}`

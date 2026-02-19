@@ -8,7 +8,7 @@
     <div class="settings-grid">
     @for (option of settingsOptions; track option.route) {
       <div
-        class="settings-card tw-group"
+        class="settings-card group"
         [class]="getCardClasses(option)"
         (click)="handleOptionClick(option)"
         role="button"

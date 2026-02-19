@@ -112,7 +112,7 @@ describe('CardsComponent', () => {
     component.error$.next(null);
     fixture.detectChanges();
 
-    const emptyStateElement = fixture.debugElement.query(By.css('.tw-text-center'));
+    const emptyStateElement = fixture.debugElement.query(By.css('.text-center'));
     expect(emptyStateElement.nativeElement.textContent).toContain('No campaigns available');
   });
 

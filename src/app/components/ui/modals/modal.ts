@@ -12,7 +12,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
     <!-- Modal Backdrop -->
     @if (open) {
       <div
-        class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-black/40 tw-backdrop-blur-sm tw-transition-opacity tw-duration-300"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300"
         (click)="onBackdropClick($event)"
         [attr.aria-modal]="true"
         [attr.role]="'dialog'"
@@ -29,16 +29,16 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
           <!-- Header -->
           @if (hasHeader) {
             <div [class]="headerClasses">
-              <div class="tw-flex-1">
+              <div class="flex-1">
                 <ng-content select="[slot=header]"></ng-content>
               </div>
               @if (!disableClose) {
                 <button
-                  class="tw-ml-4 tw-p-1 tw-text-beige-500 hover:tw-text-coral-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-ring-offset-2 tw-rounded-md tw-transition-colors"
+                  class="ml-4 p-1 text-beige-500 hover:text-coral-500 focus:outline-none focus:ring-2 focus:ring-emerald-green-500 focus:ring-offset-2 rounded-md transition-colors"
                   (click)="close()"
                   aria-label="Cerrar modal"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -60,13 +60,13 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
 
           <!-- Loading Overlay -->
           @if (loading) {
-            <div class="tw-absolute tw-inset-0 tw-bg-white/80 tw-backdrop-blur-sm tw-flex tw-items-center tw-justify-center tw-z-10">
-              <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
-                <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
-                  <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <div class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10">
+              <div class="flex flex-col items-center justify-center space-y-2">
+                <svg class="animate-spin h-8 w-8 text-emerald-green-500" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
+                <span class="text-sm text-gray-600">Cargando...</span>
               </div>
             </div>
           }
@@ -100,43 +100,43 @@ export class ModalComponent implements AfterViewInit, OnChanges {
 
   get modalClasses(): string {
     const baseClasses = [
-      'tw-bg-white',
-      'tw-shadow-2xl',
-      'tw-transition-all',
-      'tw-duration-300',
-      'tw-ease-out',
-      'tw-outline-none',
-      'tw-flex',
-      'tw-flex-col',
-      'tw-relative',
-      'tw-overflow-hidden'
+      'bg-white',
+      'shadow-2xl',
+      'transition-all',
+      'duration-300',
+      'ease-out',
+      'outline-none',
+      'flex',
+      'flex-col',
+      'relative',
+      'overflow-hidden'
     ];
 
     // Size classes
     const sizeClasses = {
-      xs: ['tw-w-80', 'tw-max-h-[80vh]'],
-      sm: ['tw-w-96', 'tw-max-h-[80vh]'],
-      md: ['tw-w-[32rem]', 'tw-max-h-[85vh]'],
-      lg: ['tw-w-[40rem]', 'tw-max-h-[90vh]'],
-      xl: ['tw-w-[56rem]', 'tw-max-h-[90vh]'],
-      full: ['tw-w-screen', 'tw-h-screen']
+      xs: ['w-80', 'max-h-[80vh]'],
+      sm: ['w-96', 'max-h-[80vh]'],
+      md: ['w-[32rem]', 'max-h-[85vh]'],
+      lg: ['w-[40rem]', 'max-h-[90vh]'],
+      xl: ['w-[56rem]', 'max-h-[90vh]'],
+      full: ['w-screen', 'h-screen']
     };
 
     // Variant-specific classes
     const variantClasses = {
-      centered: ['tw-rounded-xl', 'tw-mx-4'],
-      wide: ['tw-rounded-xl', 'tw-mx-4', 'tw-w-[90vw]', 'md:tw-w-[70vw]', 'lg:tw-w-[60vw]'],
-      fullscreen: ['tw-w-screen', 'tw-h-screen', 'tw-rounded-none', 'tw-mx-0'],
+      centered: ['rounded-xl', 'mx-4'],
+      wide: ['rounded-xl', 'mx-4', 'w-[90vw]', 'md:w-[70vw]', 'lg:w-[60vw]'],
+      fullscreen: ['w-screen', 'h-screen', 'rounded-none', 'mx-0'],
       drawer: [
-        'tw-absolute',
-        'tw-right-0',
-        'tw-top-0',
-        'tw-h-full',
-        'tw-w-full',
-        'sm:tw-w-[28rem]',
-        'tw-rounded-l-xl',
-        'tw-rounded-r-none',
-        'tw-shadow-xl'
+        'absolute',
+        'right-0',
+        'top-0',
+        'h-full',
+        'w-full',
+        'sm:w-[28rem]',
+        'rounded-l-xl',
+        'rounded-r-none',
+        'shadow-xl'
       ]
     };
 
@@ -149,40 +149,40 @@ export class ModalComponent implements AfterViewInit, OnChanges {
 
   get headerClasses(): string {
     return [
-      'tw-flex',
-      'tw-items-center',
-      'tw-justify-between',
-      'tw-px-6',
-      'tw-pt-6',
-      'tw-pb-4',
-      'tw-border-b',
-      'tw-border-beige-200',
-      'tw-bg-beige-50/30'
+      'flex',
+      'items-center',
+      'justify-between',
+      'px-6',
+      'pt-6',
+      'pb-4',
+      'border-b',
+      'border-beige-200',
+      'bg-beige-50/30'
     ].join(' ');
   }
 
   get contentClasses(): string {
     return [
-      'tw-flex-1',
-      'tw-px-6',
-      'tw-py-4',
-      'tw-overflow-y-auto',
-      'tw-overflow-x-hidden'
+      'flex-1',
+      'px-6',
+      'py-4',
+      'overflow-y-auto',
+      'overflow-x-hidden'
     ].join(' ');
   }
 
   get footerClasses(): string {
     return [
-      'tw-flex',
-      'tw-items-center',
-      'tw-justify-end',
-      'tw-gap-3',
-      'tw-px-6',
-      'tw-pb-6',
-      'tw-pt-4',
-      'tw-border-t',
-      'tw-border-beige-200',
-      'tw-bg-beige-50/30'
+      'flex',
+      'items-center',
+      'justify-end',
+      'gap-3',
+      'px-6',
+      'pb-6',
+      'pt-4',
+      'border-t',
+      'border-beige-200',
+      'bg-beige-50/30'
     ].join(' ');
   }
 

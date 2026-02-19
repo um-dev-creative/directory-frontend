@@ -10,18 +10,18 @@ import { takeUntil } from 'rxjs/operators';
   imports: [CommonModule],
   template: `
     <div *ngIf="isVisible"
-      class="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-transition-opacity tw-duration-200"
+      class="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-200"
       [ngClass]="{
-        'tw-opacity-0': !isVisible,
-        'tw-opacity-100': isVisible,
-        'tw-absolute': contained,
-        'tw-bg-beige-50/90 tw-backdrop-blur-sm': !transparent
+        'opacity-0': !isVisible,
+        'opacity-100': isVisible,
+        'absolute': contained,
+        'bg-beige-50/90 backdrop-blur-sm': !transparent
       }"
     >
-      <div class="tw-relative">
-        <div class="tw-w-12 tw-h-12">
-          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-beige-200"></div>
-          <div class="tw-absolute tw-w-full tw-h-full tw-rounded-full tw-border-4 tw-border-emerald-green-500 tw-border-t-transparent tw-animate-spin"></div>
+      <div class="relative">
+        <div class="w-12 h-12">
+          <div class="absolute w-full h-full rounded-full border-4 border-beige-200"></div>
+          <div class="absolute w-full h-full rounded-full border-4 border-emerald-green-500 border-t-transparent animate-spin"></div>
         </div>
       </div>
     </div>

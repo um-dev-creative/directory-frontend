@@ -8,16 +8,16 @@ import { SelectComponent, SelectOption } from './select';
   standalone: true,
   imports: [CommonModule, FormsModule, SelectComponent],
   template: `
-    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Componente Select</h2>
-      <p class="tw-text-beige-700 tw-mb-6">
+    <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+      <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Componente Select</h2>
+      <p class="text-beige-700 mb-6">
         Componente Select personalizado con los colores de la marca y funcionalidad completa.
       </p>
 
       <!-- Select Básico -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Select Básico</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Select Básico</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-select
             label="País"
             placeholder="Selecciona tu país"
@@ -37,9 +37,9 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Estados de Validación -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estados de Validación</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Estados de Validación</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <app-select
             label="Estado de Éxito"
             placeholder="Selección válida"
@@ -73,9 +73,9 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Diferentes Tamaños -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Diferentes Tamaños</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Diferentes Tamaños</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <app-select
             label="Tamaño Pequeño"
             placeholder="Select pequeño..."
@@ -106,9 +106,9 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Estados Especiales -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estados Especiales</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Estados Especiales</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-select
             label="Campo Requerido"
             placeholder="Este campo es obligatorio"
@@ -131,9 +131,9 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Select con Opciones Agrupadas -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Ejemplos Avanzados</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Ejemplos Avanzados</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-select
             label="Meses del Año"
             placeholder="Selecciona un mes"
@@ -155,9 +155,9 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Select con Opciones Deshabilitadas -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Opciones Deshabilitadas</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Opciones Deshabilitadas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-select
             label="Productos Disponibles"
             placeholder="Selecciona un producto"
@@ -179,11 +179,11 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Formulario de Ejemplo -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Formulario Completo</h3>
-        <div class="tw-bg-beige-50 tw-p-6 tw-rounded-lg tw-border tw-border-beige-200">
-          <form class="tw-space-y-6">
-            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Formulario Completo</h3>
+        <div class="bg-beige-50 p-6 rounded-lg border border-beige-200">
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <app-select
                 label="País de Residencia"
                 placeholder="Selecciona tu país"
@@ -219,18 +219,18 @@ import { SelectComponent, SelectOption } from './select';
               </app-select>
             </div>
 
-            <div class="tw-flex tw-gap-4 tw-pt-4">
+            <div class="flex gap-4 pt-4">
               <button
                 type="button"
                 (click)="submitForm()"
-                class="tw-px-6 tw-py-2 tw-bg-emerald-green-600 tw-text-white tw-rounded-lg tw-font-medium hover:tw-bg-emerald-green-700 tw-transition-colors">
+                class="px-6 py-2 bg-emerald-green-600 text-white rounded-lg font-medium hover:bg-emerald-green-700 transition-colors">
                 Enviar Formulario
               </button>
 
               <button
                 type="button"
                 (click)="clearForm()"
-                class="tw-px-6 tw-py-2 tw-bg-beige-200 tw-text-emerald-green-700 tw-rounded-lg tw-font-medium hover:tw-bg-beige-300 tw-transition-colors">
+                class="px-6 py-2 bg-beige-200 text-emerald-green-700 rounded-lg font-medium hover:bg-beige-300 transition-colors">
                 Limpiar
               </button>
             </div>
@@ -239,17 +239,17 @@ import { SelectComponent, SelectOption } from './select';
       </div>
 
       <!-- Valores Actuales (Demo) -->
-      <div class="tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-beige-700 tw-mb-4">Valores Seleccionados (Demo)</h3>
-        <div class="tw-bg-beige-50 tw-p-4 tw-rounded-lg tw-text-sm">
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+      <div class="border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-beige-700 mb-4">Valores Seleccionados (Demo)</h3>
+        <div class="bg-beige-50 p-4 rounded-lg text-sm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h4 class="tw-font-medium tw-text-emerald-green-700 tw-mb-2">Ejemplos Básicos:</h4>
-              <pre class="tw-text-beige-700 tw-overflow-x-auto">{{ getBasicValuesForDisplay() }}</pre>
+              <h4 class="font-medium text-emerald-green-700 mb-2">Ejemplos Básicos:</h4>
+              <pre class="text-beige-700 overflow-x-auto">{{ getBasicValuesForDisplay() }}</pre>
             </div>
             <div>
-              <h4 class="tw-font-medium tw-text-emerald-green-700 tw-mb-2">Formulario:</h4>
-              <pre class="tw-text-beige-700 tw-overflow-x-auto">{{ getFormValuesForDisplay() }}</pre>
+              <h4 class="font-medium text-emerald-green-700 mb-2">Formulario:</h4>
+              <pre class="text-beige-700 overflow-x-auto">{{ getFormValuesForDisplay() }}</pre>
             </div>
           </div>
         </div>

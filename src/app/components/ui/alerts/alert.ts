@@ -16,7 +16,7 @@ export type AlertSize = 'sm' | 'md' | 'lg';
         [attr.aria-live]="variant === 'error' ? 'assertive' : 'polite'"
       >
         <!-- Icon -->
-        <div class="tw-flex-shrink-0">
+        <div class="shrink-0">
           <svg [class]="iconClasses" fill="currentColor" viewBox="0 0 20 20">
             @switch (variant) {
               @case ('info') {
@@ -56,7 +56,7 @@ export type AlertSize = 'sm' | 'md' | 'lg';
         </div>
 
         <!-- Content -->
-        <div class="tw-ml-3 tw-flex-1">
+        <div class="ml-3 flex-1">
           <!-- Title -->
           @if (title) {
             <h3 [class]="titleClasses">
@@ -74,8 +74,8 @@ export type AlertSize = 'sm' | 'md' | 'lg';
 
           <!-- Actions -->
           @if (actions || actionText) {
-            <div class="tw-mt-4">
-              <div class="tw-flex tw-space-x-3">
+            <div class="mt-4">
+              <div class="flex space-x-3">
                 <!-- Custom Actions -->
                 @if (actions) {
                   <ng-content select="[slot=actions]"></ng-content>
@@ -98,16 +98,16 @@ export type AlertSize = 'sm' | 'md' | 'lg';
 
         <!-- Dismiss Button -->
         @if (dismissible) {
-          <div class="tw-ml-auto tw-pl-3">
-            <div class="tw--mx-1.5 tw--my-1.5">
+          <div class="ml-auto pl-3">
+            <div class="-mx-1.5 -my-1.5">
               <button
                 type="button"
                 [class]="dismissButtonClasses"
                 (click)="onDismiss()"
                 aria-label="Dismiss alert"
               >
-                <span class="tw-sr-only">Dismiss</span>
-                <svg class="tw-w-5 tw-h-5" viewBox="0 0 20 20" fill="currentColor">
+                <span class="sr-only">Dismiss</span>
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
                 </svg>
               </button>
@@ -135,66 +135,66 @@ export class AlertComponent {
   dismissed = false;
 
   get alertClasses(): string {
-    const baseClasses = 'tw-rounded-lg tw-flex tw-transition-all tw-duration-200 tw-my-2';
+    const baseClasses = 'rounded-lg flex transition-all duration-200 my-2';
     const sizeClasses = this.getSizeClasses();
     const variantClasses = this.getVariantClasses();
-    const borderClasses = this.bordered ? 'tw-border-l-4' : '';
+    const borderClasses = this.bordered ? 'border-l-4' : '';
 
     return `${baseClasses} ${sizeClasses} ${variantClasses} ${borderClasses}`.trim();
   }
 
   get iconClasses(): string {
-    return this.size === 'sm' ? 'tw-w-4 tw-h-4' : 'tw-w-5 tw-h-5';
+    return this.size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
   }
 
   get titleClasses(): string {
-    const baseClasses = 'tw-font-medium';
-    const sizeClasses = this.size === 'sm' ? 'tw-text-sm' : 'tw-text-base';
+    const baseClasses = 'font-medium';
+    const sizeClasses = this.size === 'sm' ? 'text-sm' : 'text-base';
     const colorClasses = this.getTitleColorClasses();
 
     return `${baseClasses} ${sizeClasses} ${colorClasses}`.trim();
   }
 
   get descriptionClasses(): string {
-    const baseClasses = this.title ? 'tw-mt-1' : 'tw-mt-0';
-    const sizeClasses = this.size === 'sm' ? 'tw-text-xs' : 'tw-text-sm';
+    const baseClasses = this.title ? 'mt-1' : 'mt-0';
+    const sizeClasses = this.size === 'sm' ? 'text-xs' : 'text-sm';
     const colorClasses = this.getDescriptionColorClasses();
 
     return `${baseClasses} ${sizeClasses} ${colorClasses}`.trim();
   }
 
   get actionButtonClasses(): string {
-    const baseClasses = 'tw-text-sm tw-font-medium tw-rounded-md tw-px-3 tw-py-2 tw-transition-colors tw-duration-200';
+    const baseClasses = 'text-sm font-medium rounded-md px-3 py-2 transition-colors duration-200';
     return `${baseClasses} ${this.getActionButtonColorClasses()}`.trim();
   }
 
   get dismissButtonClasses(): string {
-    const baseClasses = 'tw-inline-flex tw-rounded-md tw-p-1.5 tw-transition-colors tw-duration-200 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2';
+    const baseClasses = 'inline-flex rounded-md p-1.5 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
     return `${baseClasses} ${this.getDismissButtonColorClasses()}`.trim();
   }
 
   private getSizeClasses(): string {
     const sizeMap = {
-      sm: 'tw-p-3',
-      md: 'tw-p-4',
-      lg: 'tw-p-6'
+      sm: 'p-3',
+      md: 'p-4',
+      lg: 'p-6'
     };
     return sizeMap[this.size];
   }
 
   private getVariantClasses(): string {
     const variantMap = {
-      info: 'tw-bg-blue-50',
-      success: 'tw-bg-emerald-green-50',
-      warning: 'tw-bg-yellow-50',
-      error: 'tw-bg-red-50'
+      info: 'bg-blue-50',
+      success: 'bg-emerald-green-50',
+      warning: 'bg-yellow-50',
+      error: 'bg-red-50'
     };
 
     const borderMap = {
-      info: 'tw-border-blue-400',
-      success: 'tw-border-emerald-green-400',
-      warning: 'tw-border-yellow-400',
-      error: 'tw-border-red-400'
+      info: 'border-blue-400',
+      success: 'border-emerald-green-400',
+      warning: 'border-yellow-400',
+      error: 'border-red-400'
     };
 
     const base = variantMap[this.variant];
@@ -205,40 +205,40 @@ export class AlertComponent {
 
   private getTitleColorClasses(): string {
     const colorMap = {
-      info: 'tw-text-blue-800',
-      success: 'tw-text-emerald-green-800',
-      warning: 'tw-text-yellow-800',
-      error: 'tw-text-red-800'
+      info: 'text-blue-800',
+      success: 'text-emerald-green-800',
+      warning: 'text-yellow-800',
+      error: 'text-red-800'
     };
     return colorMap[this.variant];
   }
 
   private getDescriptionColorClasses(): string {
     const colorMap = {
-      info: 'tw-text-blue-700',
-      success: 'tw-text-emerald-green-700',
-      warning: 'tw-text-yellow-700',
-      error: 'tw-text-red-700'
+      info: 'text-blue-700',
+      success: 'text-emerald-green-700',
+      warning: 'text-yellow-700',
+      error: 'text-red-700'
     };
     return colorMap[this.variant];
   }
 
   private getActionButtonColorClasses(): string {
     const colorMap = {
-      info: 'tw-bg-blue-100 tw-text-blue-800 hover:tw-bg-blue-200',
-      success: 'tw-bg-emerald-green-100 tw-text-emerald-green-800 hover:tw-bg-emerald-green-200',
-      warning: 'tw-bg-yellow-100 tw-text-yellow-800 hover:tw-bg-yellow-200',
-      error: 'tw-bg-red-100 tw-text-red-800 hover:tw-bg-red-200'
+      info: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
+      success: 'bg-emerald-green-100 text-emerald-green-800 hover:bg-emerald-green-200',
+      warning: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
+      error: 'bg-red-100 text-red-800 hover:bg-red-200'
     };
     return colorMap[this.variant];
   }
 
   private getDismissButtonColorClasses(): string {
     const colorMap = {
-      info: 'tw-text-blue-500 hover:tw-bg-blue-100 focus:tw-ring-blue-600 focus:tw-ring-offset-blue-50',
-      success: 'tw-text-emerald-green-500 hover:tw-bg-emerald-green-100 focus:tw-ring-emerald-green-600 focus:tw-ring-offset-emerald-green-50',
-      warning: 'tw-text-yellow-500 hover:tw-bg-yellow-100 focus:tw-ring-yellow-600 focus:tw-ring-offset-yellow-50',
-      error: 'tw-text-red-500 hover:tw-bg-red-100 focus:tw-ring-red-600 focus:tw-ring-offset-red-50'
+      info: 'text-blue-500 hover:bg-blue-100 focus:ring-blue-600 focus:ring-offset-blue-50',
+      success: 'text-emerald-green-500 hover:bg-emerald-green-100 focus:ring-emerald-green-600 focus:ring-offset-emerald-green-50',
+      warning: 'text-yellow-500 hover:bg-yellow-100 focus:ring-yellow-600 focus:ring-offset-yellow-50',
+      error: 'text-red-500 hover:bg-red-100 focus:ring-red-600 focus:ring-offset-red-50'
     };
     return colorMap[this.variant];
   }

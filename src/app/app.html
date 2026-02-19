@@ -8,7 +8,7 @@
     <div class="full-page-container">
       <div
         [@routeAnimations]="getRouteAnimationData(outlet)"
-        class="tw-w-full tw-h-screen"
+        class="w-full h-screen"
       >
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
@@ -17,10 +17,10 @@
     <!-- Layout sin footer pero con header -->
     <div class="app-container">
       <app-header></app-header>
-      <div class="tw-flex tw-flex-col tw-h-screen tw-pt-[60px]">
+      <div class="flex flex-col h-screen pt-[60px]">
         <div
           [@routeAnimations]="getRouteAnimationData(outlet)"
-          class="tw-flex-1 tw-relative tw-w-full"
+          class="flex-1 relative w-full"
         >
           <router-outlet #outlet="outlet"></router-outlet>
         </div>
@@ -31,10 +31,10 @@
     <!-- Layout normal con header y footer -->
     <div class="app-container">
       <app-header></app-header>
-      <div class="tw-flex tw-flex-col tw-h-screen tw-pt-[60px]">
+      <div class="flex flex-col h-screen pt-[60px]">
         <div
           [@routeAnimations]="getRouteAnimationData(outlet)"
-          class="tw-flex-1 tw-relative tw-w-full"
+          class="flex-1 relative w-full"
         >
           <router-outlet #outlet="outlet"></router-outlet>
         </div>

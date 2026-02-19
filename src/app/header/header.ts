@@ -194,14 +194,14 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
 
   get dynamicClasses(): string {
     return this.isOpaque
-      ? 'tw-bg-white tw-shadow-lg'
-      : 'tw-bg-white/90 tw-shadow-md';
+      ? 'bg-white shadow-lg'
+      : 'bg-white/90 shadow-md';
   }
 
   get layoutClasses(): string {
     return this.validateHeader(HeaderType.CENTER_HEADER)
-      ? 'tw-justify-center tw-py-2 tw-px-2'
-      : 'tw-justify-between tw-gap-2 sm:tw-gap-4 md:tw-gap-8 tw-px-4 tw-py-3';
+      ? 'justify-center py-2 px-2'
+      : 'justify-between gap-2 sm:gap-4 md:gap-8 px-4 py-3';
   }
 
   ngAfterViewInit(): void {

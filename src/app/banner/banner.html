@@ -1,16 +1,16 @@
 <!-- Loading state -->
 @if (loading$ | async) {
-  <div class="tw-flex tw-justify-center tw-items-center tw-py-8" role="status" aria-label="Loading banner">
-    <div class="tw-animate-pulse tw-bg-gray-200 tw-rounded-lg tw-h-32 tw-w-full tw-max-w-md"></div>
-    <span class="tw-sr-only">Loading banner content...</span>
+  <div class="flex justify-center items-center py-8" role="status" aria-label="Loading banner">
+    <div class="animate-pulse bg-gray-200 rounded-lg h-32 w-full max-w-md"></div>
+    <span class="sr-only">Loading banner content...</span>
   </div>
 }
 
 <!-- Error state -->
 @if (error$ | async; as errorMessage) {
-  <div class="tw-flex tw-justify-center tw-items-center tw-py-8" role="alert" aria-live="polite">
-    <div class="tw-bg-red-50 tw-border tw-border-red-200 tw-rounded-lg tw-p-4 tw-text-red-700">
-      <p class="tw-text-sm">{{ errorMessage }}</p>
+  <div class="flex justify-center items-center py-8" role="alert" aria-live="polite">
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+      <p class="text-sm">{{ errorMessage }}</p>
     </div>
   </div>
 }
@@ -18,24 +18,24 @@
 <!-- Categories section
 @if (categories.length && !(loading$ | async) && !(error$ | async)) {
   <section
-    class="tw-bg-[#faf8f8] tw-w-full tw-max-w-[1200px] tw-mx-auto tw-rounded-[15px] tw-overflow-hidden tw-shadow-sm tw-mb-4"
+    class="bg-[#faf8f8] w-full max-w-[1200px] mx-auto rounded-[15px] overflow-hidden shadow-sm mb-4"
     role="region"
     aria-labelledby="categories-heading"
   >
-    <div class="tw-container tw-mx-auto tw-p-6">
-      <h2 id="categories-heading" class="tw-text-2xl tw-font-bold tw-text-left tw-mb-6">{{ title }}</h2>
-      <div class="tw-flex tw-overflow-x-auto tw-gap-6 tw-py-4 tw-scrollbar-hide" role="list">
+    <div class="container mx-auto p-6">
+      <h2 id="categories-heading" class="text-2xl font-bold text-left mb-6">{{ title }}</h2>
+      <div class="flex overflow-x-auto gap-6 py-4 scrollbar-hide" role="list">
         @for (category of categories; track category.name) {
-          <div class="tw-flex-shrink-0 tw-flex tw-flex-col tw-items-center" role="listitem">
-            <div class="tw-w-24 tw-h-24 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden tw-shadow-md">
+          <div class="shrink-0 flex flex-col items-center" role="listitem">
+            <div class="w-24 h-24 bg-gray-200 rounded-full overflow-hidden shadow-md">
               <img
                 [src]="category.image"
                 [alt]="category.name"
-                class="tw-w-full tw-h-full tw-object-cover"
+                class="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
-            <span class="tw-mt-2 tw-text-sm tw-font-medium tw-text-center">{{ category.name }}</span>
+            <span class="mt-2 text-sm font-medium text-center">{{ category.name }}</span>
           </div>
         }
       </div>
@@ -47,10 +47,10 @@
 @if (currentBanner && !(loading$ | async) && !(error$ | async)) {
   @switch (bannerType) {
     @case ('top') {
-      <section class="tw-flex tw-justify-center tw-rounded-[15px]" role="banner" aria-label="Promotional banner">
+      <section class="flex justify-center rounded-[15px]" role="banner" aria-label="Promotional banner">
         <a
           [routerLink]="getRouteForBanner()"
-          class="clickable-pointer tw-block tw-focus:tw-outline-none tw-focus:tw-ring-2 tw-focus:tw-ring-blue-500 tw-focus:tw-ring-offset-2 tw-rounded-lg"
+          class="clickable-pointer block focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
           [attr.aria-label]="'Navigate to ' + currentBanner.alt"
           role="link"
         >
@@ -66,7 +66,7 @@
             <img
               [src]="imageBucketUrl+currentBanner.mobile"
               [alt]="currentBanner.alt"
-              class="tw-rounded-lg tw-shadow-md tw-w-full tw-h-auto"
+              class="rounded-lg shadow-md w-full h-auto"
               loading="lazy"
               (error)="onImageError($event)"
             >
@@ -76,13 +76,13 @@
     }
     @case ('mid') {
       <section
-        class="tw-flex tw-justify-center tw-items-center tw-rounded-[5px] tw-overflow-visible tw-w-full tw-h-full"
+        class="flex justify-center items-center rounded-[5px] overflow-visible w-full h-full"
         role="banner"
         aria-label="Secondary promotional banner"
       >
         <a
           [routerLink]="getRouteForBanner()"
-          class="clickable-pointer tw-relative tw-w-full tw-h-full tw-block tw-focus:tw-outline-none tw-focus:tw-ring-2 tw-focus:tw-ring-blue-500 tw-focus:tw-ring-offset-2 tw-rounded-lg tw-transition-transform tw-duration-300 hover:tw-scale-110"
+          class="clickable-pointer relative w-full h-full block focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg transition-transform duration-300 hover:scale-110"
           [attr.aria-label]="'Navigate to ' + currentBanner.alt"
           role="link"
         >
@@ -98,7 +98,7 @@
             <img
               [src]="imageBucketUrl+currentBanner.mobile"
               [alt]="currentBanner.alt"
-              class="tw-w-full tw-rounded-lg tw-shadow-md tw-h-auto"
+              class="w-full rounded-lg shadow-md h-auto"
               loading="lazy"
               (error)="onImageError($event)"
             >

@@ -1,17 +1,17 @@
-<div class="tw-min-h-screen tw-bg-gray-50 tw-py-8">
-  <div class="tw-max-w-2xl tw-mx-auto tw-px-4">
-    <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-mb-5 tw-text-emerald-green-700">General</h2>
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4">
+    <h2 class="text-2xl font-semibold text-center mb-5 text-emerald-green-700">General</h2>
 
     <!-- Breadcrumb -->
-    <nav class="tw-text-sm tw-mb-5 tw-text-center">
-      <span class="tw-text-sky-blue-600 tw-cursor-pointer" (click)="goBack()">Configuración del Negocio</span>
-      <span class="tw-mx-2">&gt;</span>
-      <span class="tw-text-emerald-green-700 tw-font-medium">General</span>
+    <nav class="text-sm mb-5 text-center">
+      <span class="text-sky-blue-600 cursor-pointer" (click)="goBack()">Configuración del Negocio</span>
+      <span class="mx-2">&gt;</span>
+      <span class="text-emerald-green-700 font-medium">General</span>
     </nav>
 
     <!-- Partner Image Upload -->
-    <div class="tw-flex tw-flex-col tw-items-center tw-mb-4 tw-bg-gradient-primary tw-text-white tw-py-8 tw-rounded-xl tw-shadow-soft">
-      <div class="tw-relative tw-mb-4">
+    <div class="flex flex-col items-center mb-4 bg-gradient-primary text-white py-8 rounded-xl shadow-soft">
+      <div class="relative mb-4">
         <app-avatar
           [src]="imagePreview || partnerData.partnerImage"
           [initials]="getAvatarDisplay()"
@@ -20,7 +20,7 @@
           variant="circular"
           [loading]="uploadingImage">
           @if (!imagePreview && !partnerData.partnerImage) {
-            <app-icon name="image" size="sm" class="tw-mr-2"></app-icon>
+            <app-icon name="image" size="sm" class="mr-2"></app-icon>
           }
         </app-avatar>
       </div>
@@ -31,9 +31,9 @@
         accept="image/*"
         (change)="onImageSelect($event)"
         #imageInput
-        class="tw-hidden" />
+        class="hidden" />
 
-      <div class="tw-flex tw-gap-2 tw-flex-row tw-w-full tw-max-w-80 tw-justify-center tw-items-center">
+      <div class="flex gap-2 flex-row w-full max-w-80 justify-center items-center">
         <app-button
           type="button"
           variant="contrast-light"
@@ -58,11 +58,11 @@
     </div>
 
     <app-card variant="elevated" size="full">
-      <form [formGroup]="generalForm" (ngSubmit)="onSubmit()" class="tw-space-y-8">
+      <form [formGroup]="generalForm" (ngSubmit)="onSubmit()" class="space-y-8">
 
         <!-- Partner Details -->
-        <div class="tw-space-y-6">
-          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700 tw-mb-6">Detalles del Negocio</h3>
+        <div class="space-y-6">
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700 mb-6">Detalles del Negocio</h3>
           <app-input
             label="Nombre del Negocio"
             placeholder="Nombre de tu negocio"
@@ -75,16 +75,16 @@
           </app-input>
           <!-- Partner Verification -->
           @if (partnerData.partnerVerification) {
-            <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-emerald-green-100 tw-text-emerald-green-800" style="margin-top: 5px;">
-              <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-green-100 text-emerald-green-800" style="margin-top: 5px;">
+              <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
               </svg>
               Verificado
             </span>
           }
           @else {
-            <span class="tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-bg-beige-100 tw-text-beige-800" style="margin-top: 5px;">
-              <svg class="tw-w-3 tw-h-3 tw-mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-beige-100 text-beige-800" style="margin-top: 5px;">
+              <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
               </svg>
                 Pendiente
@@ -107,13 +107,13 @@
         </div>
 
         <!-- Email Addresses -->
-        <div class="tw-space-y-6">
-          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700">Direcciones de Correo</h3>
-          <p class="tw-text-sm tw-text-beige-600 tw-mb-4">
+        <div class="space-y-6">
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">Direcciones de Correo</h3>
+          <p class="text-sm text-beige-600 mb-4">
             Gestiona las direcciones de correo que usamos para comunicarnos contigo
           </p>
 
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Customer Service Email -->
             <app-input
               label="Servicio al Cliente"
@@ -141,9 +141,9 @@
         </div>
 
         <!-- Category -->
-        <div class="tw-space-y-6">
-          <h3 class="tw-text-lg tw-font-semibold tw-border-b tw-border-beige-200 tw-pb-2 tw-text-emerald-green-700">Categoría y Zona Horaria</h3>
-          <p class="tw-text-sm tw-text-beige-600 tw-mb-4">
+        <div class="space-y-6">
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">Categoría y Zona Horaria</h3>
+          <p class="text-sm text-beige-600 mb-4">
             Establece la categoría de tu negocio para ayudar en la búsqueda y descubrimiento.
           </p>
           <!-- Category Drop List -->
@@ -159,7 +159,7 @@
         </div>
 
         <!-- Timezone -->
-        <div class="tw-space-y-6">
+        <div class="space-y-6">
           <app-select
             label="Zona Horaria"
             [options]="timezones"
@@ -172,8 +172,8 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="tw-flex tw-justify-end tw-items-center tw-pt-6">
-          <p class="tw-text-sm tw-text-beige-600 tw-mr-4">Haz un cambio antes de guardar.</p>
+        <div class="flex justify-end items-center pt-6">
+          <p class="text-sm text-beige-600 mr-4">Haz un cambio antes de guardar.</p>
           <app-button
             type="submit"
             variant="primary"
@@ -186,9 +186,9 @@
     </app-card>
 
     <!-- Form Status - Development Section (Temporal) -->
-    <div class="tw-mt-8 tw-p-4 tw-bg-gray-50 tw-rounded-lg tw-border tw-border-gray-200">
-      <h3 class="tw-font-semibold tw-mb-3 tw-text-gray-800">Estado del Formulario (Desarrollo):</h3>
-      <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4 tw-text-sm">
+    <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <h3 class="font-semibold mb-3 text-gray-800">Estado del Formulario (Desarrollo):</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
           <p><strong>Válido:</strong> @if (generalForm.valid) { Sí } @else { No }</p>
           <p><strong>Tocado:</strong> @if (generalForm.touched) { Sí } @else { No }</p>
@@ -201,22 +201,22 @@
         </div>
       </div>
 
-      <div class="tw-mt-4">
-        <p class="tw-font-medium tw-mb-2">Valores del Formulario:</p>
-        <pre class="tw-text-xs tw-bg-white tw-p-3 tw-rounded tw-border tw-overflow-auto tw-max-h-40">{{ getFormValues() }}</pre>
+      <div class="mt-4">
+        <p class="font-medium mb-2">Valores del Formulario:</p>
+        <pre class="text-xs bg-white p-3 rounded border overflow-auto max-h-40">{{ getFormValues() }}</pre>
       </div>
 
       @if (!generalForm.valid) {
-        <div class="tw-mt-4">
-          <p class="tw-font-medium tw-mb-2 tw-text-red-600">Errores del Formulario:</p>
-          <pre class="tw-text-xs tw-bg-red-50 tw-p-3 tw-rounded tw-border tw-border-red-200 tw-overflow-auto tw-max-h-32">{{ getFormErrors() }}</pre>
+        <div class="mt-4">
+          <p class="font-medium mb-2 text-red-600">Errores del Formulario:</p>
+          <pre class="text-xs bg-red-50 p-3 rounded border border-red-200 overflow-auto max-h-32">{{ getFormErrors() }}</pre>
         </div>
       }
     </div>
   </div>
   <!-- Support Section -->
-  <div class="tw-text-center tw-pt-6 tw-border-t tw-border-gray-200 tw-mt-8">
-    <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con la actualización de tu negocio?</p>
+  <div class="text-center pt-6 border-t border-gray-200 mt-8">
+    <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con la actualización de tu negocio?</p>
     <app-report-problem
       [options]="reportProblemOptions"
       variant="link"

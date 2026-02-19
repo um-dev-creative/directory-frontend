@@ -1,22 +1,22 @@
 @if (isMobile$ | async) {
   <!-- Mobile Carousel -->
-    <h1 class="tw-text-3xl tw-font-bold tw-text-center tw-text-emerald-800 tw-my-5">{{ sliderTitle }}</h1>
-    <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto tw-overflow-hidden">
+    <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">{{ sliderTitle }}</h1>
+    <div class="relative w-full max-w-[1200px] mx-auto overflow-hidden">
       @for (offer of offers ?? (offers$ | async); track offer.id) {
         <!-- Carrusel -->
-        <div class="app-view-container tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded-xl tw-border-2 tw-border-gray-200 tw-shadow-soft-blue tw-mb-4 tw-bg-white hover:tw-shadow-soft-lg tw-transition-all tw-duration-200 tw-cursor-pointer" (click)="onOfferClick(offer)">
+        <div class="app-view-container flex items-center gap-2 p-2 rounded-xl border-2 border-gray-200 shadow-soft-blue mb-4 bg-white hover:shadow-soft-lg transition-all duration-200 cursor-pointer" (click)="onOfferClick(offer)">
           <!-- Icon Container -->
-          <div class="tw-w-16 tw-h-16 tw-border-2 tw-border-gray-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
-            <img [src]="offer.image" [alt]="offer.name" class="tw-w-[38px] tw-h-[38px] tw-object-cover tw-aspect-square">
+          <div class="w-16 h-16 border-2 border-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+            <img [src]="offer.image" [alt]="offer.name" class="w-[38px] h-[38px] object-cover aspect-square">
           </div>
           <!-- Content Container -->
-          <div class="content-container tw-flex-1">
-            <div class="title tw-text-lg tw-font-semibold tw-text-gray-700 tw-mb-1">{{ offer.name }}</div>
-            <div class="description tw-text-sm tw-text-gray-600 tw-line-clamp-2">{{ offer.discount }}</div>
+          <div class="content-container flex-1">
+            <div class="title text-lg font-semibold text-gray-700 mb-1">{{ offer.name }}</div>
+            <div class="description text-sm text-gray-600 line-clamp-2">{{ offer.discount }}</div>
           </div>
 
           <!-- Pill Container -->
-          <div class="tw-flex tw-flex-col tw-space-y-2 tw-mt-2">
+          <div class="flex flex-col space-y-2 mt-2">
             @if (offer.isOnline) { <app-badge variant="primary" size="sm">Online</app-badge> }
             @if (offer.isInStore) { <app-badge variant="secondary" size="sm">En Tienda</app-badge> }
           </div>
@@ -25,16 +25,16 @@
     </div>
 } @else {
   <!-- Desktop version -->
-  <h1 class="tw-text-3xl tw-font-bold tw-text-center tw-text-emerald-800 tw-my-5">{{ sliderTitle }}</h1>
-  <div class="tw-relative tw-w-full tw-max-w-[1200px] tw-mx-auto">
+  <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">{{ sliderTitle }}</h1>
+  <div class="relative w-full max-w-[1200px] mx-auto">
     <!-- Flecha izquierda -->
     @if (((offers ?? (offers$ | async))?.length ?? 0) > 4) {
       <button
         (click)="scrollLeft()"
         aria-label="Anterior"
-        class="tw-absolute tw-left-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-gray-200 tw-transition-all tw-duration-200 :tw-bg-gray-50 hover:tw-shadow-soft-lg hover:tw-border-gray-400 group"
+        class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-soft border-2 border-gray-200 transition-all duration-200 :bg-gray-50 hover:shadow-soft-lg hover:border-gray-400 group"
       >
-        <app-icon name="chevron-left" class="tw-w-6 tw-h-6 tw-text-gray-600 group-hover:tw-text-gray-800 tw-transition-colors tw-duration-200"></app-icon>
+        <app-icon name="chevron-left" class="w-6 h-6 text-gray-600 group-hover:text-gray-800 transition-colors duration-200"></app-icon>
       </button>
     }
     <!-- Contenedor del carrusel -->
@@ -44,27 +44,27 @@
       'offer-container': true,
       'hide-scroll': isMobile$ | async
     }"
-      class="tw-overflow-auto tw-scroll-smooth tw-whitespace-nowrap tw-flex tw-space-x-6 tw-px-16 tw-scroll-snap-x"
+      class="overflow-auto scroll-smooth whitespace-nowrap flex space-x-6 px-16 scroll-snap-x"
     >
-      <ul class="tw-flex tw-w-max">
+      <ul class="flex w-max">
         <!-- Tarjetas de ofertas -->
         @for (offer of offers ?? (offers$ | async); track offer.id) {
-          <div class="tw-px-2 tw-py-7">
-            <li class="tw-w-[255px] tw-h-[238px] tw-bg-white tw-border-2 tw-border-gray-200 tw-rounded-xl tw-shadow-soft hover:tw-shadow-soft-lg hover:tw-border-gray-600 tw-flex tw-flex-col tw-items-center tw-text-center tw-p-2 tw-cursor-pointer tw-transition-all tw-duration-200 hover:tw-scale-[1.02]" (click)="onOfferClick(offer)">
+          <div class="px-2 py-7">
+            <li class="w-[255px] h-[238px] bg-white border-2 border-gray-200 rounded-xl shadow-soft hover:shadow-soft-lg hover:border-gray-600 flex flex-col items-center text-center p-2 cursor-pointer transition-all duration-200 hover:scale-[1.02]" (click)="onOfferClick(offer)">
 
               <!-- Contenedor Principal -->
-              <div class="tw-w-full tw-relative">
+              <div class="w-full relative">
                 <!-- logo del partner -->
-                <div class="tw-w-full tw-flex tw-justify-center">
-                  <div class="tw-w-[90px] tw-h-[90px] tw-border-2 tw-border-gray-200 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
-                    <img [src]="offer.image" [alt]="offer.name" class="tw-w-[50px] tw-h-[50px] tw-object-cover tw-aspect-square">
+                <div class="w-full flex justify-center">
+                  <div class="w-[90px] h-[90px] border-2 border-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                    <img [src]="offer.image" [alt]="offer.name" class="w-[50px] h-[50px] object-cover aspect-square">
                   </div>
                 </div>
                 <!-- Icono de Favorito (Bookmark) -->
-                <div class="tw-absolute tw-top-0 tw-right-0 tw-border-2 tw-border-gray-200 tw-rounded-lg tw-p-1.5 tw-bg-white hover:tw-bg-gray-50 tw-transition-colors tw-duration-200 tw-cursor-pointer">
+                <div class="absolute top-0 right-0 border-2 border-gray-200 rounded-lg p-1.5 bg-white hover:bg-gray-50 transition-colors duration-200 cursor-pointer">
                   <svg
                     alt="Bookmark"
-                    class="tw-w-5 tw-h-5 tw-text-gray-500 hover:tw-text-gray-600 tw-transition-colors tw-duration-200"
+                    class="w-5 h-5 text-gray-500 hover:text-gray-600 transition-colors duration-200"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -80,15 +80,15 @@
 
               </div>
               <!-- Etiquetas (Online, In-Store, etc.) -->
-              <div class="tw-flex tw-space-x-2 tw-mt-2">
+              <div class="flex space-x-2 mt-2">
                 @if (offer.isOnline) { <app-badge variant="primary" size="sm">Online</app-badge> }
                 @if (offer.isInStore) { <app-badge variant="secondary" size="sm">En Tienda</app-badge>}
               </div>
 
               <!-- Información de la Oferta -->
-              <div class="tw-mt-4">
-                <div class="tw-text-lg tw-text-gray-800 tw-font-semibold">{{ offer.name }}</div>
-                <p class="tw-text-sm tw-text-gray-800 tw-truncate tw-w-full tw-overflow-hidden tw-whitespace-normal tw-break-words">
+              <div class="mt-4">
+                <div class="text-lg text-gray-800 font-semibold">{{ offer.name }}</div>
+                <p class="text-sm text-gray-800 truncate w-full overflow-hidden whitespace-normal break-words">
                   {{ offer.discount }}
                 </p>
               </div>
@@ -103,9 +103,9 @@
       <button
         (click)="scrollRight()"
         aria-label="Siguiente"
-        class="tw-absolute tw-right-2 tw-top-1/2 -tw-translate-y-1/2 tw-z-10 tw-bg-white tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-soft tw-border-2 tw-border-gray-200 tw-transition-all tw-duration-200 hover:tw-bg-gray-50 hover:tw-shadow-soft-lg hover:tw-border-gray-400 group"
+        class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-soft border-2 border-gray-200 transition-all duration-200 hover:bg-gray-50 hover:shadow-soft-lg hover:border-gray-400 group"
       >
-        <app-icon name="chevron-right" class="tw-w-6 tw-h-6 tw-text-gray-600 group-hover:tw-text-gray-800 tw-transition-colors tw-duration-200"></app-icon>
+        <app-icon name="chevron-right" class="w-6 h-6 text-gray-600 group-hover:text-gray-800 transition-colors duration-200"></app-icon>
       </button>
     }
   </div>

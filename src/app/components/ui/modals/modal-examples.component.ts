@@ -8,44 +8,44 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
   standalone: true,
   imports: [CommonModule, FormsModule, ModalComponent, Button, InputComponent, BadgeComponent, CardComponent],
   template: `
-    <div class="tw-p-8 tw-space-y-8">
-      <h1 class="tw-text-3xl tw-font-bold tw-text-emerald-green-700">
+    <div class="p-8 space-y-8">
+      <h1 class="text-3xl font-bold text-emerald-green-700">
         Modal Component - Ejemplos de Uso
       </h1>
 
       <!-- Botones de ejemplo -->
-      <div class="tw-space-y-4">
-        <h2 class="tw-text-xl tw-font-semibold tw-text-beige-800">Casos de Uso para Directory</h2>
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-beige-800">Casos de Uso para Directory</h2>
 
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <app-card variant="interactive" [clickable]="true" (cardClick)="openBusinessDetails()">
-            <h3 class="tw-font-semibold tw-text-emerald-green-700">Ver Detalles de Negocio</h3>
-            <p class="tw-text-sm tw-text-beige-600">Modal con información completa de la empresa</p>
+            <h3 class="font-semibold text-emerald-green-700">Ver Detalles de Negocio</h3>
+            <p class="text-sm text-beige-600">Modal con información completa de la empresa</p>
           </app-card>
 
           <app-card variant="interactive" [clickable]="true" (cardClick)="openContactForm()">
-            <h3 class="tw-font-semibold tw-text-sky-blue-700">Formulario de Contacto</h3>
-            <p class="tw-text-sm tw-text-beige-600">Modal para contactar empresas</p>
+            <h3 class="font-semibold text-sky-blue-700">Formulario de Contacto</h3>
+            <p class="text-sm text-beige-600">Modal para contactar empresas</p>
           </app-card>
 
           <app-card variant="interactive" [clickable]="true" (cardClick)="openAdvancedFilters()">
-            <h3 class="tw-font-semibold tw-text-coral-700">Filtros Avanzados</h3>
-            <p class="tw-text-sm tw-text-beige-600">Drawer lateral con opciones de filtrado</p>
+            <h3 class="font-semibold text-coral-700">Filtros Avanzados</h3>
+            <p class="text-sm text-beige-600">Drawer lateral con opciones de filtrado</p>
           </app-card>
 
           <app-card variant="interactive" [clickable]="true" (cardClick)="openAddBusiness()">
-            <h3 class="tw-font-semibold tw-text-emerald-green-700">Agregar Negocio</h3>
-            <p class="tw-text-sm tw-text-beige-600">Formulario fullscreen para registrar empresa</p>
+            <h3 class="font-semibold text-emerald-green-700">Agregar Negocio</h3>
+            <p class="text-sm text-beige-600">Formulario fullscreen para registrar empresa</p>
           </app-card>
 
           <app-card variant="interactive" [clickable]="true" (cardClick)="openImageGallery()">
-            <h3 class="tw-font-semibold tw-text-sky-blue-700">Galería de Imágenes</h3>
-            <p class="tw-text-sm tw-text-beige-600">Modal wide para mostrar fotos de negocios</p>
+            <h3 class="font-semibold text-sky-blue-700">Galería de Imágenes</h3>
+            <p class="text-sm text-beige-600">Modal wide para mostrar fotos de negocios</p>
           </app-card>
 
           <app-card variant="interactive" [clickable]="true" (cardClick)="openDeleteConfirmation()">
-            <h3 class="tw-font-semibold tw-text-coral-700">Confirmaciones</h3>
-            <p class="tw-text-sm tw-text-beige-600">Modal pequeño para confirmaciones</p>
+            <h3 class="font-semibold text-coral-700">Confirmaciones</h3>
+            <p class="text-sm text-beige-600">Modal pequeño para confirmaciones</p>
           </app-card>
         </div>
       </div>
@@ -60,8 +60,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
       >
         <div slot="header">
           <div>
-            <h3 class="tw-text-xl tw-font-bold tw-text-emerald-green-700">Restaurante La Tradición</h3>
-            <div class="tw-flex tw-gap-2 tw-mt-2">
+            <h3 class="text-xl font-bold text-emerald-green-700">Restaurante La Tradición</h3>
+            <div class="flex gap-2 mt-2">
               <app-badge variant="success" size="sm">Verificado</app-badge>
               <app-badge variant="info" size="sm">Premium</app-badge>
               <app-badge variant="secondary" size="sm">Restaurante</app-badge>
@@ -69,36 +69,36 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
           </div>
         </div>
         <div slot="content">
-          <div class="tw-space-y-6">
+          <div class="space-y-6">
             <!-- Información básica -->
-            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">📍 Ubicación</h4>
-                <p class="tw-text-beige-600">Av. Libertador 456, Centro Histórico</p>
-                <p class="tw-text-beige-600">Caracas, Venezuela</p>
+                <h4 class="font-semibold text-beige-800 mb-3">📍 Ubicación</h4>
+                <p class="text-beige-600">Av. Libertador 456, Centro Histórico</p>
+                <p class="text-beige-600">Caracas, Venezuela</p>
               </div>
               <div>
-                <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">📞 Contacto</h4>
-                <p class="tw-text-beige-600">+58 212-555-0123</p>
-                <p class="tw-text-beige-600">info&#64;latradicion.com</p>
+                <h4 class="font-semibold text-beige-800 mb-3">📞 Contacto</h4>
+                <p class="text-beige-600">+58 212-555-0123</p>
+                <p class="text-beige-600">info&#64;latradicion.com</p>
               </div>
             </div>
 
             <!-- Horarios -->
             <div>
-              <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">🕒 Horarios de Atención</h4>
-              <div class="tw-grid tw-grid-cols-2 tw-gap-2 tw-text-sm">
-                <p class="tw-text-beige-600">Lunes - Viernes: 11:00 AM - 10:00 PM</p>
-                <p class="tw-text-beige-600">Sábados: 12:00 PM - 11:00 PM</p>
-                <p class="tw-text-beige-600">Domingos: 12:00 PM - 9:00 PM</p>
-                <p class="tw-text-emerald-green-600 tw-font-medium">Abierto ahora</p>
+              <h4 class="font-semibold text-beige-800 mb-3">🕒 Horarios de Atención</h4>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <p class="text-beige-600">Lunes - Viernes: 11:00 AM - 10:00 PM</p>
+                <p class="text-beige-600">Sábados: 12:00 PM - 11:00 PM</p>
+                <p class="text-beige-600">Domingos: 12:00 PM - 9:00 PM</p>
+                <p class="text-emerald-green-600 font-medium">Abierto ahora</p>
               </div>
             </div>
 
             <!-- Descripción -->
             <div>
-              <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">📝 Descripción</h4>
-              <p class="tw-text-beige-600 tw-leading-relaxed">
+              <h4 class="font-semibold text-beige-800 mb-3">📝 Descripción</h4>
+              <p class="text-beige-600 leading-relaxed">
                 Restaurante familiar especializado en comida criolla venezolana con más de 25 años de tradición.
                 Ofrecemos platos típicos preparados con recetas familiares y ingredientes frescos de la región.
                 Ambiente acogedor perfecto para reuniones familiares y celebraciones especiales.
@@ -107,8 +107,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Especialidades -->
             <div>
-              <h4 class="tw-font-semibold tw-text-beige-800 tw-mb-3">⭐ Especialidades</h4>
-              <div class="tw-flex tw-flex-wrap tw-gap-2">
+              <h4 class="font-semibold text-beige-800 mb-3">⭐ Especialidades</h4>
+              <div class="flex flex-wrap gap-2">
                 <app-badge variant="secondary" size="sm">Pabellón Criollo</app-badge>
                 <app-badge variant="secondary" size="sm">Asado Negro</app-badge>
                 <app-badge variant="secondary" size="sm">Hallacas</app-badge>
@@ -140,10 +140,10 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         [loading]="contactLoading"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700">Contactar Restaurante La Tradición</h3>
+          <h3 class="text-lg font-semibold text-emerald-green-700">Contactar Restaurante La Tradición</h3>
         </div>
         <div slot="content">
-          <div class="tw-space-y-4">
+          <div class="space-y-4">
             <app-input
               label="Tu nombre"
               [required]="true"
@@ -202,21 +202,21 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-sky-blue-700">Filtros Avanzados</h3>
+          <h3 class="text-lg font-semibold text-sky-blue-700">Filtros Avanzados</h3>
         </div>
         <div slot="content">
-          <div class="tw-space-y-6">
+          <div class="space-y-6">
             <!-- Categoría -->
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-3">🏷️ Categoría</h4>
-              <div class="tw-space-y-2">
+              <h4 class="font-medium text-beige-800 mb-3">🏷️ Categoría</h4>
+              <div class="space-y-2">
                 <app-input label="Buscar categoría" [(ngModel)]="filters.categorySearch"></app-input>
-                <div class="tw-flex tw-flex-wrap tw-gap-2 tw-mt-2">
+                <div class="flex flex-wrap gap-2 mt-2">
                   @for (cat of popularCategories; track cat) {
                     <app-badge
                       variant="secondary"
                       size="sm"
-                      style="tw-cursor-pointer"
+                      style="cursor-pointer"
                       (click)="selectCategory(cat)"
                     >
                       {{ cat }}
@@ -228,7 +228,7 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Ubicación -->
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-3">📍 Ubicación</h4>
+              <h4 class="font-medium text-beige-800 mb-3">📍 Ubicación</h4>
               <app-input
                 label="Ciudad o región"
                 [(ngModel)]="filters.location"
@@ -238,8 +238,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Horario -->
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-3">🕒 Disponibilidad</h4>
-              <div class="tw-grid tw-grid-cols-2 tw-gap-2">
+              <h4 class="font-medium text-beige-800 mb-3">🕒 Disponibilidad</h4>
+              <div class="grid grid-cols-2 gap-2">
                 <app-input label="Abierto desde" type="time" [(ngModel)]="filters.openFrom"></app-input>
                 <app-input label="Abierto hasta" type="time" [(ngModel)]="filters.openUntil"></app-input>
               </div>
@@ -247,13 +247,13 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Características -->
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-3">✨ Características</h4>
-              <div class="tw-flex tw-flex-wrap tw-gap-2">
+              <h4 class="font-medium text-beige-800 mb-3">✨ Características</h4>
+              <div class="flex flex-wrap gap-2">
                 @for (feature of availableFeatures; track feature) {
                   <app-badge
                     [variant]="isFeatureSelected(feature) ? 'primary' : 'secondary'"
                     size="sm"
-                    style="tw-cursor-pointer"
+                    style="cursor-pointer"
                     (click)="toggleFeature(feature)"
                   >
                     {{ feature }}
@@ -282,15 +282,15 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-xl tw-font-bold tw-text-emerald-green-700">Registrar Nuevo Negocio</h3>
+          <h3 class="text-xl font-bold text-emerald-green-700">Registrar Nuevo Negocio</h3>
           <app-badge variant="info">Formulario Completo</app-badge>
         </div>
         <div slot="content">
-          <div class="tw-max-w-4xl tw-mx-auto tw-space-y-8">
+          <div class="max-w-4xl mx-auto space-y-8">
             <!-- Información Básica -->
             <div>
-              <h4 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-4">1. Información Básica</h4>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+              <h4 class="text-lg font-semibold text-beige-800 mb-4">1. Información Básica</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <app-input label="Nombre del negocio" [(ngModel)]="businessForm.name" [required]="true"></app-input>
                 <app-input label="Categoría" [(ngModel)]="businessForm.category" [required]="true"></app-input>
                 <app-input label="Teléfono principal" type="tel" [(ngModel)]="businessForm.phone"></app-input>
@@ -302,8 +302,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Ubicación -->
             <div>
-              <h4 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-4">2. Ubicación</h4>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+              <h4 class="text-lg font-semibold text-beige-800 mb-4">2. Ubicación</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <app-input label="Dirección completa" [(ngModel)]="businessForm.address" [required]="true"></app-input>
                 <app-input label="Ciudad" [(ngModel)]="businessForm.city" [required]="true"></app-input>
                 <app-input label="Estado/Región" [(ngModel)]="businessForm.state"></app-input>
@@ -313,8 +313,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Descripción y Servicios -->
             <div>
-              <h4 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-4">3. Descripción y Servicios</h4>
-              <div class="tw-space-y-4">
+              <h4 class="text-lg font-semibold text-beige-800 mb-4">3. Descripción y Servicios</h4>
+              <div class="space-y-4">
                 <app-input
                   label="Descripción del negocio"
                   [(ngModel)]="businessForm.description"
@@ -330,8 +330,8 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
 
             <!-- Horarios -->
             <div>
-              <h4 class="tw-text-lg tw-font-semibold tw-text-beige-800 tw-mb-4">4. Horarios de Atención</h4>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
+              <h4 class="text-lg font-semibold text-beige-800 mb-4">4. Horarios de Atención</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <app-input label="Lunes - Viernes" [(ngModel)]="businessForm.weekdayHours"></app-input>
                 <app-input label="Sábados" [(ngModel)]="businessForm.saturdayHours"></app-input>
                 <app-input label="Domingos" [(ngModel)]="businessForm.sundayHours"></app-input>
@@ -361,13 +361,13 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-sky-blue-700">Galería - Restaurante La Tradición</h3>
+          <h3 class="text-lg font-semibold text-sky-blue-700">Galería - Restaurante La Tradición</h3>
         </div>
         <div slot="content">
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @for (image of galleryImages; track image) {
-              <div class="tw-aspect-square tw-bg-beige-100 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
-                <span class="tw-text-beige-500">{{ image }}</span>
+              <div class="aspect-square bg-beige-100 rounded-lg flex items-center justify-center">
+                <span class="text-beige-500">{{ image }}</span>
               </div>
             }
           </div>
@@ -391,10 +391,10 @@ import { Button, ModalComponent, InputComponent, BadgeComponent, CardComponent }
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-coral-700">¿Eliminar negocio?</h3>
+          <h3 class="text-lg font-semibold text-coral-700">¿Eliminar negocio?</h3>
         </div>
         <div slot="content">
-          <p class="tw-text-beige-700">
+          <p class="text-beige-700">
             Esta acción eliminará permanentemente el negocio <strong>"Restaurante La Tradición"</strong>
             de la plataforma. Esta acción no se puede deshacer.
           </p>

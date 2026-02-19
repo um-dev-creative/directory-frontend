@@ -148,7 +148,7 @@ export class IconComponent {
   }
 
   get customClasses(): string {
-    let classes = `tw-inline-block tw-flex-shrink-0`;
+    let classes = `inline-block shrink-0`;
 
     if (this.class) {
       classes += ` ${this.class}`;

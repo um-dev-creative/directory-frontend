@@ -1,38 +1,217 @@
-/* You can add global styles to this file, and also import other style files */
-/* html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*
-*/
-/* Import brand colors and variables */
+/* ==========================================================================
+   Tailwind CSS v4 — Directory Frontend
+   Migrated from v3 (tailwind.config.js → CSS-first config)
+   ========================================================================== */
+
+/* 1. Import Tailwind v4 (no prefix — classes are standard: flex, bg-*, etc.) */
+@import "tailwindcss";
+
+/* 2. Import brand colors and custom utility classes */
 @import './styles/brand-colors.css';
 
-/* The following lines require Tailwind CSS processing via PostCSS or a compatible build tool.
-   If you see an error like "Unknown at rule @tailwind", make sure your build process includes Tailwind CSS.
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-*/
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 3. Plugins (aspect-ratio is now native in v4, no longer needed) */
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
 
-/* CSS Variables for Tailwind BorderRadius */
+/* ==========================================================================
+   THEME CONFIGURATION (migrated from tailwind.config.js)
+   ========================================================================== */
+@theme {
+  /* ---- Breakpoints ---- */
+  --breakpoint-sm: 640px;
+  --breakpoint-demo-sm: 720px;
+  --breakpoint-md: 768px;
+  --breakpoint-custom-md: 990px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ---- Font Families ---- */
+  --font-sans: 'Nunito', sans-serif;
+  --font-hand: 'Patrick Hand', cursive;
+  --font-mono: 'Fira Code', monospace;
+
+  /* ---- Brand Colors — Emerald Green ---- */
+  --color-emerald-green-50: #f0f9f4;
+  --color-emerald-green-100: #dcf2e3;
+  --color-emerald-green-200: #bce5ca;
+  --color-emerald-green-300: #8dd1a7;
+  --color-emerald-green-400: #5bb67d;
+  --color-emerald-green-500: #2E8B57;
+  --color-emerald-green-600: #267048;
+  --color-emerald-green-700: #1f5a3a;
+  --color-emerald-green-800: #1a4730;
+  --color-emerald-green-900: #163a28;
+
+  /* ---- Brand Colors — Coral ---- */
+  --color-coral-50: #fef7f6;
+  --color-coral-100: #fdeeed;
+  --color-coral-200: #fbd5d1;
+  --color-coral-300: #f8b5ae;
+  --color-coral-400: #f48b7f;
+  --color-coral-500: #FF6F61;
+  --color-coral-600: #e55a4f;
+  --color-coral-700: #c1453c;
+  --color-coral-800: #a03832;
+  --color-coral-900: #84302e;
+
+  /* ---- Brand Colors — Sky Blue ---- */
+  --color-sky-blue-50: #f0f9ff;
+  --color-sky-blue-100: #e0f2fe;
+  --color-sky-blue-200: #bae6fd;
+  --color-sky-blue-300: #87CEEB;
+  --color-sky-blue-400: #38bdf8;
+  --color-sky-blue-500: #0ea5e9;
+  --color-sky-blue-600: #0284c7;
+  --color-sky-blue-700: #0369a1;
+  --color-sky-blue-800: #075985;
+  --color-sky-blue-900: #0c4a6e;
+
+  /* ---- Brand Colors — Beige ---- */
+  --color-beige-50: #fefefe;
+  --color-beige-100: #F5F5DC;
+  --color-beige-200: #f0f0d5;
+  --color-beige-300: #e8e8c8;
+  --color-beige-400: #dcdcb8;
+  --color-beige-500: #d0d0a8;
+  --color-beige-600: #b8b890;
+  --color-beige-700: #9a9a78;
+  --color-beige-800: #7c7c60;
+  --color-beige-900: #5e5e48;
+
+  /* ---- Border Radius (preserving v3 custom values) ---- */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-custom: 12px;
+
+  /* ---- Spacing ---- */
+  --spacing-72: 18rem;
+  --spacing-84: 21rem;
+  --spacing-96: 24rem;
+
+  /* ---- Box Shadows ---- */
+  --shadow-custom-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-custom-dark: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 2px 15px -3px rgba(46, 139, 87, 0.08), 0 10px 20px -2px rgba(46, 139, 87, 0.04);
+  --shadow-soft-lg: 0 10px 40px -15px rgba(46, 139, 87, 0.12), 0 20px 25px -5px rgba(46, 139, 87, 0.06);
+  --shadow-warm: 0 2px 15px -3px rgba(255, 111, 97, 0.08), 0 10px 20px -2px rgba(255, 111, 97, 0.04);
+  --shadow-soft-blue: 0 2px 15px -3px rgba(135, 206, 235, 0.08), 0 10px 20px -2px rgba(135, 206, 235, 0.04);
+  --shadow-soft-blue-lg: 0 10px 40px -15px rgba(135, 206, 235, 0.12), 0 20px 25px -5px rgba(135, 206, 235, 0.06);
+
+  /* ---- Background Images / Gradients ---- */
+  --background-image-gradient-primary: linear-gradient(135deg, #2E8B57 0%, #5bb67d 100%);
+  --background-image-gradient-primary-hover: linear-gradient(135deg, #267048 0%, #2E8B57 100%);
+  --background-image-gradient-soft: linear-gradient(135deg, #f0f9f4 0%, #dcf2e3 100%);
+  --background-image-gradient-warm: linear-gradient(135deg, #F5F5DC 0%, #fef7f6 100%);
+  --background-image-gradient-sky: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --background-image-gradient-hero: linear-gradient(135deg, #f0f9f4 0%, #fef7f6 50%, #f0f9ff 100%);
+  --background-image-gradient-card: linear-gradient(135deg, #ffffff 0%, #f0f9f4 100%);
+
+  /* ---- Animation ---- */
+  --animate-fade: fade 1s ease-in-out;
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ---- Blur (preserving v3 custom values) ---- */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 12px;
+
+  /* ---- Aspect Ratio (native in v4, custom numeric values) ---- */
+  --aspect-1: 1;
+  --aspect-2: 2;
+  --aspect-3: 3;
+  --aspect-4: 4;
+  --aspect-5: 5;
+  --aspect-6: 6;
+  --aspect-7: 7;
+  --aspect-8: 8;
+  --aspect-9: 9;
+  --aspect-10: 10;
+  --aspect-11: 11;
+  --aspect-12: 12;
+  --aspect-13: 13;
+  --aspect-14: 14;
+  --aspect-15: 15;
+  --aspect-16: 16;
+}
+
+/* ==========================================================================
+   Shadcn UI Colors (reference CSS variables — @theme inline avoids
+   generating new CSS custom properties, preventing conflicts with
+   brand-colors.css --color-* variables)
+   ========================================================================== */
+@theme inline {
+  /* Shadcn semantic colors */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  /* Legacy semantic colors (inline to avoid conflict with brand-colors.css) */
+  --color-success: #2E8B57;
+  --color-warning: #ff9800;
+  --color-info: #87CEEB;
+  --color-error: #FF6F61;
+}
+
+/* ==========================================================================
+   CONTAINER UTILITY (removed from v4 core, re-defined here)
+   ========================================================================== */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  @media (width >= 640px) { max-width: 640px; }
+  @media (width >= 768px) { max-width: 768px; }
+  @media (width >= 1024px) { max-width: 1024px; }
+  @media (width >= 1280px) { max-width: 1280px; }
+  @media (width >= 1536px) { max-width: 1536px; }
+}
+
+/* ==========================================================================
+   CSS VARIABLES (design tokens for Shadcn UI system)
+   ========================================================================== */
 :root {
-  --radius: 0.75rem; /* 12px - valor base para bordes redondeados */
+  --radius: 0.75rem; /* 12px - base border radius */
 
-  /* Variables adicionales para el sistema de colores (opcional) */
-  --background: 60 20% 99%; /* Very light warm beige */
-  --foreground: 160 25% 15%; /* Dark emerald for text */
-  --card: 0 0% 100%; /* Pure white */
+  /* Shadcn UI HSL color variables */
+  --background: 60 20% 99%;        /* Very light warm beige */
+  --foreground: 160 25% 15%;       /* Dark emerald for text */
+  --card: 0 0% 100%;               /* Pure white */
   --card-foreground: 160 25% 15%;
   --popover: 0 0% 100%;
   --popover-foreground: 160 25% 15%;
-  --primary: 160 50% 35%; /* Emerald green */
+  --primary: 160 50% 35%;          /* Emerald green */
   --primary-foreground: 0 0% 98%;
-  --secondary: 160 30% 97%; /* Very light emerald tint */
+  --secondary: 160 30% 97%;        /* Very light emerald tint */
   --secondary-foreground: 160 25% 15%;
   --muted: 160 20% 96%;
   --muted-foreground: 160 10% 45%;
-  --accent: 9 100% 69%; /* Coral */
+  --accent: 9 100% 69%;            /* Coral */
   --accent-foreground: 0 0% 98%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
@@ -46,7 +225,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*
   --chart-5: 160 30% 60%;
 }
 
-/* Experimental: Scroll personalizado */
+/* ==========================================================================
+   CUSTOM SCROLLBAR
+   ========================================================================== */
 ::-webkit-scrollbar {
   width: 6px;
 }

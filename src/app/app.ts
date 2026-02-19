@@ -77,7 +77,7 @@ export class App implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     if (typeof document !== 'undefined') {
-      document.body.classList.add('tw-antialiased', 'tw-bg-white', 'tw-text-slate-500');
+      document.body.classList.add('antialiased', 'bg-white', 'text-slate-500');
     }
   }
 

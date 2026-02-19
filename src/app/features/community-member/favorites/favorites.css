@@ -5,7 +5,7 @@
 }
 
 /* Custom line clamp utilities - fallback for older browsers */
-.tw-line-clamp-2 {
+.line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;

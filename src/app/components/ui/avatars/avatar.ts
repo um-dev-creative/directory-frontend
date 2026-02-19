@@ -51,24 +51,24 @@ export class Avatar {
   }
 
   get avatarClasses(): string {
-    const baseClasses = 'tw-relative tw-inline-flex tw-items-center tw-justify-center tw-bg-emerald-green-100 tw-text-emerald-green-700 tw-font-medium tw-overflow-hidden';
+    const baseClasses = 'relative inline-flex items-center justify-center bg-emerald-green-100 text-emerald-green-700 font-medium overflow-hidden';
 
     const sizeClasses = {
-      'xs': 'tw-w-6 tw-h-6 tw-text-xs',
-      'sm': 'tw-w-8 tw-h-8 tw-text-sm',
-      'md': 'tw-w-12 tw-h-12 tw-text-base',
-      'lg': 'tw-w-16 tw-h-16 tw-text-lg',
-      'xl': 'tw-w-20 tw-h-20 tw-text-xl',
-      '2xl': 'tw-w-32 tw-h-32 tw-text-2xl'
+      'xs': 'w-6 h-6 text-xs',
+      'sm': 'w-8 h-8 text-sm',
+      'md': 'w-12 h-12 text-base',
+      'lg': 'w-16 h-16 text-lg',
+      'xl': 'w-20 h-20 text-xl',
+      '2xl': 'w-32 h-32 text-2xl'
     };
 
     const variantClasses = {
-      'circular': 'tw-rounded-full',
-      'rounded': 'tw-rounded-lg',
-      'square': 'tw-rounded-none'
+      'circular': 'rounded-full',
+      'rounded': 'rounded-lg',
+      'square': 'rounded-none'
     };
 
-    const loadingClasses = this.loading ? 'tw-animate-pulse' : '';
+    const loadingClasses = this.loading ? 'animate-pulse' : '';
 
     return [
       baseClasses,
@@ -79,24 +79,24 @@ export class Avatar {
   }
 
   get imageClasses(): string {
-    return 'tw-w-full tw-h-full tw-object-cover';
+    return 'w-full h-full object-cover';
   }
 
   get initialsClasses(): string {
-    return 'tw-select-none';
+    return 'select-none';
   }
 
   get iconClasses(): string {
     const sizeClasses = {
-      'xs': 'tw-w-3 tw-h-3',
-      'sm': 'tw-w-4 tw-h-4',
-      'md': 'tw-w-6 tw-h-6',
-      'lg': 'tw-w-8 tw-h-8',
-      'xl': 'tw-w-10 tw-h-10',
-      '2xl': 'tw-w-16 tw-h-16'
+      'xs': 'w-3 h-3',
+      'sm': 'w-4 h-4',
+      'md': 'w-6 h-6',
+      'lg': 'w-8 h-8',
+      'xl': 'w-10 h-10',
+      '2xl': 'w-16 h-16'
     };
 
-    return `tw-text-emerald-green-400 ${sizeClasses[this.size]}`;
+    return `text-emerald-green-400 ${sizeClasses[this.size]}`;
   }
 
   onImageError(): void {

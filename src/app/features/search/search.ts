@@ -72,30 +72,30 @@ export class Search {
 
   get containerClasses(): string {
     const baseClasses = [
-      'tw-w-full',
-      'tw-flex',
-      'tw-items-center',
-      'tw-bg-beige-100',
-      'tw-rounded-full',
-      'tw-px-1.5',
-      'tw-h-10',
-      'tw-shadow-soft',
-      'tw-transition-all',
-      'tw-duration-200',
-      'tw-border',
-      'tw-border-beige-300'
+      'w-full',
+      'flex',
+      'items-center',
+      'bg-beige-100',
+      'rounded-full',
+      'px-1.5',
+      'h-10',
+      'shadow-soft',
+      'transition-all',
+      'duration-200',
+      'border',
+      'border-beige-300'
     ];
 
     const stateClasses = [];
 
     if (this.disabled) {
-      stateClasses.push('tw-opacity-50', 'tw-cursor-not-allowed');
+      stateClasses.push('opacity-50', 'cursor-not-allowed');
     } else {
       stateClasses.push(
-        'hover:tw-bg-beige-200',
-        'focus-within:tw-border-emerald-400',
-        'focus-within:tw-shadow-lg',
-        'focus-within:tw-shadow-emerald-20'
+        'hover:bg-beige-200',
+        'focus-within:border-emerald-400',
+        'focus-within:shadow-lg',
+        'focus-within:shadow-emerald-20'
       );
     }
 

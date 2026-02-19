@@ -1,9 +1,11 @@
+@reference "../../../styles.css";
+
 @media (max-width: 639px) {
   .custom-small-styles {
-    @apply tw-m-[7px] tw-mx-[16px];
+    @apply m-[7px] mx-[16px];
   }
 }
 
 .container-center {
-  @apply tw-mx-4 tw-mt-4 tw-relative tw-max-w-[1200px] md:tw-mx-auto sm:tw-text-center;
+  @apply mx-4 mt-4 relative max-w-[1200px] md:mx-auto sm:text-center;
 }

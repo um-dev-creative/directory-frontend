@@ -157,23 +157,23 @@ export class NotificationService {
   }
 
   private getContainerClasses(position: string): string {
-    const baseClasses = 'tw-fixed tw-z-50 tw-flex tw-flex-col tw-gap-2 tw-p-4';
+    const baseClasses = 'fixed z-50 flex flex-col gap-2 p-4';
 
     switch (position) {
       case 'top-right':
-        return `${baseClasses} tw-top-0 tw-right-0`;
+        return `${baseClasses} top-0 right-0`;
       case 'top-left':
-        return `${baseClasses} tw-top-0 tw-left-0`;
+        return `${baseClasses} top-0 left-0`;
       case 'bottom-right':
-        return `${baseClasses} tw-bottom-0 tw-right-0`;
+        return `${baseClasses} bottom-0 right-0`;
       case 'bottom-left':
-        return `${baseClasses} tw-bottom-0 tw-left-0`;
+        return `${baseClasses} bottom-0 left-0`;
       case 'top-center':
-        return `${baseClasses} tw-top-0 tw-left-1/2 tw-transform -tw-translate-x-1/2`;
+        return `${baseClasses} top-0 left-1/2 transform -translate-x-1/2`;
       case 'bottom-center':
-        return `${baseClasses} tw-bottom-0 tw-left-1/2 tw-transform -tw-translate-x-1/2`;
+        return `${baseClasses} bottom-0 left-1/2 transform -translate-x-1/2`;
       default:
-        return `${baseClasses} tw-top-0 tw-right-0`;
+        return `${baseClasses} top-0 right-0`;
     }
   }
 }

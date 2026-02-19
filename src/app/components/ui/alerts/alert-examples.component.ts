@@ -7,13 +7,13 @@ import { AlertComponent } from './alert';
   standalone: true,
   imports: [CommonModule, AlertComponent],
   template: `
-    <div class="tw-space-y-8">
+    <div class="space-y-8">
       <!-- Basic Alerts -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Alertas Básicas
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="info"
             title="Información"
@@ -41,11 +41,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Dismissible Alerts -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Alertas Desechables
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="info"
             title="Información Desechable"
@@ -65,11 +65,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Alerts with Actions -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Alertas con Acciones
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="warning"
             title="Confirmación Requerida"
@@ -93,11 +93,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Bordered Alerts -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Alertas con Borde
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="info"
             title="Información Destacada"
@@ -117,11 +117,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Different Sizes -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Diferentes Tamaños
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="info"
             size="sm"
@@ -146,11 +146,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Custom Content -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Contenido Personalizado
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="info"
             title="Alerta con Contenido Personalizado"
@@ -158,25 +158,25 @@ import { AlertComponent } from './alert';
             [dismissible]="true"
             (dismiss)="onAlertDismiss('custom')"
           >
-            <p class="tw-mb-3">
+            <p class="mb-3">
               Esta alerta contiene contenido personalizado con texto enriquecido y múltiples párrafos.
             </p>
-            <p class="tw-mb-3">
+            <p class="mb-3">
               Puedes incluir <strong>texto en negrita</strong>, <em>cursiva</em>,
               y otros elementos HTML dentro del contenido de la alerta.
             </p>
 
-            <div slot="actions" class="tw-flex tw-space-x-3">
+            <div slot="actions" class="flex space-x-3">
               <button
                 type="button"
-                class="tw-text-sm tw-font-medium tw-text-blue-800 tw-bg-blue-100 hover:tw-bg-blue-200 tw-rounded-md tw-px-3 tw-py-2 tw-transition-colors tw-duration-200"
+                class="text-sm font-medium text-blue-800 bg-blue-100 hover:bg-blue-200 rounded-md px-3 py-2 transition-colors duration-200"
                 (click)="onAlertAction('primary')"
               >
                 Acción Principal
               </button>
               <button
                 type="button"
-                class="tw-text-sm tw-font-medium tw-text-blue-600 hover:tw-text-blue-800 tw-transition-colors tw-duration-200"
+                class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
                 (click)="onAlertAction('secondary')"
               >
                 Acción Secundaria
@@ -187,11 +187,11 @@ import { AlertComponent } from './alert';
       </div>
 
       <!-- Alert without Title -->
-      <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">
+      <div class="bg-white rounded-xl shadow-soft p-6">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">
           Alertas sin Título
         </h3>
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-alert
             variant="success"
             description="Esta alerta solo tiene descripción, sin título."
