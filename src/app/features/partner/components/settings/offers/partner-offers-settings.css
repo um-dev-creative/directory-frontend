@@ -1,8 +1,8 @@
-.tw-animate-spin {
+.animate-spin {
   animation: spin 1s linear infinite;
 }
 
-.tw-animate-fade-in {
+.animate-fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
 

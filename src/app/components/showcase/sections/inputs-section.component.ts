@@ -10,132 +10,132 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
   standalone: true,
   imports: [CommonModule, FormsModule, InputComponent, TextareaComponent, SelectComponent, Button, InputExamplesComponent, SearchUsageExampleComponent],
   template: `
-    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Inputs</h2>
-      <p class="tw-text-beige-700 tw-mb-6">
+    <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+      <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Inputs</h2>
+      <p class="text-beige-700 mb-6">
         Ejemplos de diferentes tipos de inputs con estilos consistentes
       </p>
 
       <!-- Inputs Básicos -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Inputs Básicos</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Inputs Básicos</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               Nombre
             </label>
             <input
               type="text"
               [(ngModel)]="formData.name"
               placeholder="Ingresa tu nombre"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 placeholder:tw-text-beige-400 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 placeholder:text-beige-400 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all"
             />
           </div>
 
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               Email
             </label>
             <input
               type="email"
               [(ngModel)]="formData.email"
               placeholder="ejemplo@correo.com"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 placeholder:tw-text-beige-400 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 placeholder:text-beige-400 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all"
             />
           </div>
 
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               Teléfono
             </label>
             <input
               type="tel"
               [(ngModel)]="formData.phone"
               placeholder="+1 234 567 8900"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 placeholder:tw-text-beige-400 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 placeholder:text-beige-400 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all"
             />
           </div>
 
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               Sitio Web
             </label>
             <input
               type="url"
               [(ngModel)]="formData.website"
               placeholder="https://tusitio.com"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 placeholder:tw-text-beige-400 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 placeholder:text-beige-400 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all"
             />
           </div>
         </div>
       </div>
 
       <!-- Estados de Input -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Estados de Input</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Estados de Input</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Input con error -->
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-alert-600 tw-mb-2">
+            <label class="block text-sm font-medium text-alert-600 mb-2">
               Campo con Error
             </label>
             <input
               type="text"
               value="Texto con error"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border-2 tw-border-alert-500 tw-rounded-lg tw-text-beige-800 tw-bg-alert-50 focus:tw-ring-2 focus:tw-ring-alert-500 focus:tw-border-alert-500 tw-transition-all"
+              class="w-full px-4 py-3 border-2 border-alert-500 rounded-lg text-beige-800 bg-alert-50 focus:ring-2 focus:ring-alert-500 focus:border-alert-500 transition-all"
             />
-            <p class="tw-text-sm tw-text-alert-600 tw-mt-1">Este campo contiene errores</p>
+            <p class="text-sm text-alert-600 mt-1">Este campo contiene errores</p>
           </div>
 
           <!-- Input exitoso -->
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-success-600 tw-mb-2">
+            <label class="block text-sm font-medium text-success-600 mb-2">
               Campo Válido
             </label>
             <input
               type="text"
               value="Texto válido"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border-2 tw-border-success-500 tw-rounded-lg tw-text-beige-800 tw-bg-success-50 focus:tw-ring-2 focus:tw-ring-success-500 focus:tw-border-success-500 tw-transition-all"
+              class="w-full px-4 py-3 border-2 border-success-500 rounded-lg text-beige-800 bg-success-50 focus:ring-2 focus:ring-success-500 focus:border-success-500 transition-all"
             />
-            <p class="tw-text-sm tw-text-success-600 tw-mt-1">Campo completado correctamente</p>
+            <p class="text-sm text-success-600 mt-1">Campo completado correctamente</p>
           </div>
 
           <!-- Input deshabilitado -->
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-beige-500 tw-mb-2">
+            <label class="block text-sm font-medium text-beige-500 mb-2">
               Campo Deshabilitado
             </label>
             <input
               type="text"
               value="Campo no editable"
               disabled
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-200 tw-rounded-lg tw-text-beige-500 tw-bg-beige-100 tw-cursor-not-allowed"
+              class="w-full px-4 py-3 border border-beige-200 rounded-lg text-beige-500 bg-beige-100 cursor-not-allowed"
             />
           </div>
 
           <!-- Input de solo lectura -->
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-beige-600 tw-mb-2">
+            <label class="block text-sm font-medium text-beige-600 mb-2">
               Campo de Solo Lectura
             </label>
             <input
               type="text"
               value="Contenido de solo lectura"
               readonly
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-700 tw-bg-beige-50"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-700 bg-beige-50"
             />
           </div>
         </div>
       </div>
 
       <!-- Textarea Components -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Componentes de Área de Texto</h3>
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Componentes de Área de Texto</h3>
 
         <!-- Textarea básico -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Textarea Básico</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Textarea Básico</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <app-textarea
               label="Descripción"
               placeholder="Escribe tu descripción aquí..."
@@ -154,9 +154,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Textarea con límite de caracteres -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Con Límite de Caracteres</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Con Límite de Caracteres</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <app-textarea
               label="Mensaje Corto"
               placeholder="Máximo 100 caracteres..."
@@ -179,9 +179,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Estados de Textarea -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados de Validación</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Estados de Validación</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <app-textarea
               label="Estado de Éxito"
               placeholder="Campo válido..."
@@ -212,9 +212,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Tamaños de Textarea -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Diferentes Tamaños</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Diferentes Tamaños</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <app-textarea
               label="Tamaño Pequeño"
               placeholder="Textarea pequeño..."
@@ -242,9 +242,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Textarea deshabilitado y requerido -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados Especiales</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Estados Especiales</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <app-textarea
               label="Campo Requerido"
               placeholder="Este campo es obligatorio..."
@@ -266,29 +266,29 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Textarea Básico (HTML nativo para comparación) -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Textarea Nativo (Comparación)</h3>
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Textarea Nativo (Comparación)</h3>
         <div>
-          <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+          <label class="block text-sm font-medium text-emerald-green-700 mb-2">
             Mensaje (HTML Nativo)
           </label>
           <textarea
             [(ngModel)]="formData.message"
             placeholder="Escribe tu mensaje aquí..."
             rows="4"
-            class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 placeholder:tw-text-beige-400 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all tw-resize-y"
+            class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 placeholder:text-beige-400 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all resize-y"
           ></textarea>
         </div>
       </div>
 
       <!-- Select Components -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Componentes Select</h3>
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Componentes Select</h3>
 
         <!-- Select básico -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Select Básico</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Select Básico</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <app-select
               label="País"
               placeholder="Selecciona tu país"
@@ -308,9 +308,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Estados de Select -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados de Validación</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Estados de Validación</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <app-select
               label="Estado de Éxito"
               placeholder="Selección válida"
@@ -344,9 +344,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Tamaños de Select -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Diferentes Tamaños</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Diferentes Tamaños</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <app-select
               label="Tamaño Pequeño"
               placeholder="Select pequeño..."
@@ -377,9 +377,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
         </div>
 
         <!-- Select deshabilitado y requerido -->
-        <div class="tw-mb-6">
-          <h4 class="tw-text-md tw-font-medium tw-text-emerald-green-600 tw-mb-3">Estados Especiales</h4>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-6">
+          <h4 class="text-md font-medium text-emerald-green-600 mb-3">Estados Especiales</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <app-select
               label="Campo Requerido"
               placeholder="Este campo es obligatorio"
@@ -403,16 +403,16 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Select Nativo (HTML para comparación) -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Select Nativo (Comparación)</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Select Nativo (Comparación)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               País (HTML Nativo)
             </label>
             <select
               [(ngModel)]="formData.country"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all tw-bg-white"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all bg-white"
             >
               <option value="">Selecciona un país</option>
               <option value="mx">México</option>
@@ -423,12 +423,12 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
           </div>
 
           <div>
-            <label class="tw-block tw-text-sm tw-font-medium tw-text-emerald-green-700 tw-mb-2">
+            <label class="block text-sm font-medium text-emerald-green-700 mb-2">
               Categoría (HTML Nativo)
             </label>
             <select
               [(ngModel)]="formData.category"
-              class="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-beige-300 tw-rounded-lg tw-text-beige-800 focus:tw-ring-2 focus:tw-ring-emerald-green-500 focus:tw-border-emerald-green-500 tw-transition-all tw-bg-white"
+              class="w-full px-4 py-3 border border-beige-300 rounded-lg text-beige-800 focus:ring-2 focus:ring-emerald-green-500 focus:border-emerald-green-500 transition-all bg-white"
             >
               <option value="">Selecciona una categoría</option>
               <option value="tech">Tecnología</option>
@@ -441,73 +441,73 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Checkboxes y Radio buttons -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Checkboxes y Radio Buttons</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Checkboxes y Radio Buttons</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Checkboxes -->
           <div>
-            <h4 class="tw-text-md tw-font-medium tw-text-beige-700 tw-mb-3">Intereses</h4>
-            <div class="tw-space-y-3">
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+            <h4 class="text-md font-medium text-beige-700 mb-3">Intereses</h4>
+            <div class="space-y-3">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   [(ngModel)]="formData.interests.tech"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 tw-rounded focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 rounded focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Tecnología</span>
+                <span class="ml-3 text-beige-700">Tecnología</span>
               </label>
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   [(ngModel)]="formData.interests.design"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 tw-rounded focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 rounded focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Diseño</span>
+                <span class="ml-3 text-beige-700">Diseño</span>
               </label>
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   [(ngModel)]="formData.interests.marketing"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 tw-rounded focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 rounded focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Marketing</span>
+                <span class="ml-3 text-beige-700">Marketing</span>
               </label>
             </div>
           </div>
 
           <!-- Radio buttons -->
           <div>
-            <h4 class="tw-text-md tw-font-medium tw-text-beige-700 tw-mb-3">Tamaño de Empresa</h4>
-            <div class="tw-space-y-3">
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+            <h4 class="text-md font-medium text-beige-700 mb-3">Tamaño de Empresa</h4>
+            <div class="space-y-3">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="radio"
                   name="companySize"
                   value="small"
                   [(ngModel)]="formData.companySize"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Pequeña (1-10 empleados)</span>
+                <span class="ml-3 text-beige-700">Pequeña (1-10 empleados)</span>
               </label>
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="radio"
                   name="companySize"
                   value="medium"
                   [(ngModel)]="formData.companySize"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Mediana (11-100 empleados)</span>
+                <span class="ml-3 text-beige-700">Mediana (11-100 empleados)</span>
               </label>
-              <label class="tw-flex tw-items-center tw-cursor-pointer">
+              <label class="flex items-center cursor-pointer">
                 <input
                   type="radio"
                   name="companySize"
                   value="large"
                   [(ngModel)]="formData.companySize"
-                  class="tw-w-4 tw-h-4 tw-text-emerald-green-600 tw-border-beige-300 focus:tw-ring-emerald-green-500 focus:tw-ring-2"
+                  class="w-4 h-4 text-emerald-green-600 border-beige-300 focus:ring-emerald-green-500 focus:ring-2"
                 />
-                <span class="tw-ml-3 tw-text-beige-700">Grande (100+ empleados)</span>
+                <span class="ml-3 text-beige-700">Grande (100+ empleados)</span>
               </label>
             </div>
           </div>
@@ -515,23 +515,23 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Valores del formulario -->
-      <div class="tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-beige-700 tw-mb-4">Valores del Formulario</h3>
-        <pre class="tw-bg-beige-50 tw-p-4 tw-rounded-lg tw-text-sm tw-text-beige-700 tw-overflow-auto">{{ getFormDataJson() }}</pre>
+      <div class="border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-beige-700 mb-4">Valores del Formulario</h3>
+        <pre class="bg-beige-50 p-4 rounded-lg text-sm text-beige-700 overflow-auto">{{ getFormDataJson() }}</pre>
       </div>
     </div>
 
     <!-- Componente Input -->
-    <div class="tw-bg-white tw-rounded-xl tw-shadow-soft tw-p-8 tw-mb-8">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Componente Input</h2>
-      <p class="tw-text-beige-700 tw-mb-6">
+    <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+      <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Componente Input</h2>
+      <p class="text-beige-700 mb-6">
         Componente Input reutilizable con colores de marca y funcionalidades avanzadas
       </p>
 
       <!-- Inputs Básicos -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Inputs Básicos</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Inputs Básicos</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-input
             label="Nombre completo"
             placeholder="Ingresa tu nombre"
@@ -564,7 +564,7 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
             [leadingIcon]="true"
             [(ngModel)]="inputValues.phone"
             style="border: none; padding: 0; background: transparent;">
-            <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
             </svg>
           </app-input>
@@ -572,9 +572,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Tamaños -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Tamaños</h3>
-        <div class="tw-space-y-4">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Tamaños</h3>
+        <div class="space-y-4">
           <app-input
             label="Input Pequeño"
             size="sm"
@@ -599,9 +599,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Variantes -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Variantes de Estado</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Variantes de Estado</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-input
             label="Input Exitoso"
             variant="success"
@@ -636,9 +636,9 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Con Iconos -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Con Iconos y Funciones</h3>
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Con Iconos y Funciones</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-input
             label="Buscar"
             type="search"
@@ -647,7 +647,7 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
             [clearable]="true"
             [(ngModel)]="inputValues.search"
             style="border: none; padding: 0; background: transparent;">
-            <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </app-input>
@@ -659,7 +659,7 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
             [leadingIcon]="true"
             [(ngModel)]="inputValues.website"
             style="border: none; padding: 0; background: transparent;">
-            <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
           </app-input>
@@ -667,11 +667,11 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Formulario Completo de Ejemplo -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Formulario Completo</h3>
-        <div class="tw-bg-beige-50 tw-p-6 tw-rounded-lg tw-border tw-border-beige-200">
-          <form class="tw-space-y-6">
-            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Formulario Completo</h3>
+        <div class="bg-beige-50 p-6 rounded-lg border border-beige-200">
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <app-input
                 label="Nombre"
                 placeholder="Tu nombre"
@@ -708,7 +708,7 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
               </app-input>
             </div>
 
-            <div class="tw-flex tw-gap-4 tw-pt-4">
+            <div class="flex gap-4 pt-4">
               <app-button
                 variant="primary"
                 (buttonClick)="showFormSubmissionDemo()">
@@ -727,16 +727,16 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
       </div>
 
       <!-- Valores Actuales (Demo) -->
-      <div class="tw-border-t tw-border-beige-200 tw-pt-6">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-beige-700 tw-mb-4">Valores Actuales (Demo)</h3>
-        <div class="tw-bg-beige-50 tw-p-4 tw-rounded-lg tw-text-sm">
-          <pre class="tw-text-beige-700 tw-overflow-x-auto">{{ getInputValuesForDisplay() }}</pre>
+      <div class="border-t border-beige-200 pt-6">
+        <h3 class="text-lg font-semibold text-beige-700 mb-4">Valores Actuales (Demo)</h3>
+        <div class="bg-beige-50 p-4 rounded-lg text-sm">
+          <pre class="text-beige-700 overflow-x-auto">{{ getInputValuesForDisplay() }}</pre>
         </div>
       </div>
     </div>
 
-    <div class="tw-mb-8">
-      <div class="tw-bg-beige-50 tw-p-6 tw-rounded-lg tw-border tw-border-beige-200">
+    <div class="mb-8">
+      <div class="bg-beige-50 p-6 rounded-lg border border-beige-200">
         <app-input-examples></app-input-examples>
       </div>
     </div>

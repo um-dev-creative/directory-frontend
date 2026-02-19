@@ -66,8 +66,9 @@ export class Contact {
       this.dropdownState[key as 'country' ] = key === type ? !this.dropdownState[key] : false;
     });
   }
-  @HostListener('document:click', ['$event.target'])
-  closeDropdown(target: HTMLElement): void {
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: Event): void {
+    const target = event.target as HTMLElement;
     const countryButton = document.querySelector('[aria-labelledby="country-label"]');
     if (!countryButton?.contains(target)) {
       this.dropdownState.country = false;

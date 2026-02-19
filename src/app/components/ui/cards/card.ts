@@ -66,12 +66,12 @@ export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
       <!-- Loading Overlay -->
       @if (loading) {
         <div [class]="loadingOverlayClasses">
-          <div class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
-            <svg class="tw-animate-spin tw-h-8 tw-w-8 tw-text-emerald-green-500" fill="none" viewBox="0 0 24 24">
-              <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <div class="flex flex-col items-center justify-center space-y-2">
+            <svg class="animate-spin h-8 w-8 text-emerald-green-500" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <span class="tw-text-sm tw-text-gray-600">Cargando...</span>
+            <span class="text-sm text-gray-600">Cargando...</span>
           </div>
         </div>
       }
@@ -100,57 +100,57 @@ export class CardComponent {
 
   get cardClasses(): string {
     const baseClasses = [
-      'tw-relative',
-      'tw-bg-white',
-      'tw-transition-all',
-      'tw-duration-200',
-      'tw-ease-in-out',
-      'tw-overflow-hidden'
+      'relative',
+      'bg-white',
+      'transition-all',
+      'duration-200',
+      'ease-in-out',
+      'overflow-hidden'
     ];
 
     // Size classes (affects overall dimensions)
     const sizeClasses = {
-      sm: ['tw-max-w-sm'],
-      md: ['tw-max-w-md'],
-      lg: ['tw-max-w-lg'],
-      xl: ['tw-max-w-xl'],
+      sm: ['max-w-sm'],
+      md: ['max-w-md'],
+      lg: ['max-w-lg'],
+      xl: ['max-w-xl'],
       full: [] // No max-width restriction, takes full available width
     };
 
     // Border radius classes
     const radiusClasses = {
-      none: ['tw-rounded-none'],
-      sm: ['tw-rounded-sm'],
-      md: ['tw-rounded-md'],
-      lg: ['tw-rounded-lg'],
-      xl: ['tw-rounded-xl']
+      none: ['rounded-none'],
+      sm: ['rounded-sm'],
+      md: ['rounded-md'],
+      lg: ['rounded-lg'],
+      xl: ['rounded-xl']
     };
 
     // Variant classes
     const variantClasses = this.getVariantClasses();
 
     // Width classes
-    const widthClasses = this.fullWidth ? ['tw-w-full'] : [];
+    const widthClasses = this.fullWidth ? ['w-full'] : [];
 
     // Interactive classes
     const interactiveClasses = [];
     if (this.clickable && !this.disabled && !this.loading) {
       interactiveClasses.push(
-        'tw-cursor-pointer',
-        'focus:tw-outline-none',
-        // 'focus:tw-ring-2',
-        // 'focus:tw-ring-emerald-green-500',
-        // 'focus:tw-ring-offset-2'
+        'cursor-pointer',
+        'focus:outline-none',
+        // 'focus:ring-2',
+        // 'focus:ring-emerald-green-500',
+        // 'focus:ring-offset-2'
       );
     }
 
     // State classes
     const stateClasses = [];
     if (this.disabled) {
-      stateClasses.push('tw-opacity-50', 'tw-cursor-not-allowed');
+      stateClasses.push('opacity-50', 'cursor-not-allowed');
     }
     if (this.loading) {
-      stateClasses.push('tw-pointer-events-none');
+      stateClasses.push('pointer-events-none');
     }
 
     return [
@@ -167,68 +167,68 @@ export class CardComponent {
   private getVariantClasses(): string[] {
     const variantClasses = {
       default: [
-        'tw-border',
-        'tw-border-gray-200',
-        'tw-shadow-sm'
+        'border',
+        'border-gray-200',
+        'shadow-sm'
       ],
       elevated: [
-        'tw-border',
-        'tw-border-gray-100',
-        'tw-shadow-lg',
-        'tw-shadow-gray-200/50',
+        'border',
+        'border-gray-100',
+        'shadow-lg',
+        'shadow-gray-200/50',
         ...(this.clickable ? [
-          'hover:tw-shadow-xl',
-          'hover:tw-shadow-gray-300/50',
-          'hover:tw-translate-y-1'
+          'hover:shadow-xl',
+          'hover:shadow-gray-300/50',
+          'hover:translate-y-1'
         ] : [])
       ],
       outlined: [
-        'tw-border-2',
-        'tw-border-gray-300',
+        'border-2',
+        'border-gray-300',
         ...(this.clickable ? [
-          'hover:tw-border-emerald-green-400',
-          'hover:tw-shadow-md',
+          'hover:border-emerald-green-400',
+          'hover:shadow-md',
         ] : [])
       ],
       interactive: [
-        'tw-border',
-        'tw-border-gray-200',
-        'tw-shadow-md',
+        'border',
+        'border-gray-200',
+        'shadow-md',
         ...(this.clickable ? [
-          'hover:tw-shadow-lg',
-          'hover:tw-shadow-emerald-green-500/20',
-          'hover:tw-border-emerald-green-300',
-          'hover:tw-translate-y-0.5',
-          'active:tw-translate-y-0',
-          'active:tw-shadow-md'
+          'hover:shadow-lg',
+          'hover:shadow-emerald-green-500/20',
+          'hover:border-emerald-green-300',
+          'hover:translate-y-0.5',
+          'active:translate-y-0',
+          'active:shadow-md'
         ] : [])
       ],
       gradient: [
-        'tw-border',
-        'tw-border-transparent',
-        'tw-bg-gradient-to-br',
-        'tw-from-emerald-green-50',
-        'tw-via-white',
-        'tw-to-sky-blue-50',
-        'tw-shadow-lg',
-        'tw-shadow-emerald-green-500/10',
+        'border',
+        'border-transparent',
+        'bg-gradient-to-br',
+        'from-emerald-green-50',
+        'via-white',
+        'to-sky-blue-50',
+        'shadow-lg',
+        'shadow-emerald-green-500/10',
         ...(this.clickable ? [
-          'hover:tw-shadow-xl',
-          'hover:tw-shadow-emerald-green-500/20',
-          'hover:tw-translate-y-1'
+          'hover:shadow-xl',
+          'hover:shadow-emerald-green-500/20',
+          'hover:translate-y-1'
         ] : [])
       ],
       'outlined-blue': [
-        'tw-my-2',
-        'tw-border',
-        'tw-border-sky-blue-200',
-        // 'tw-border-sky-300',
-        // 'tw-shadow-lg',
-        'tw-bg-gradient-sky',
+        'my-2',
+        'border',
+        'border-sky-blue-200',
+        // 'border-sky-300',
+        // 'shadow-lg',
+        'bg-gradient-sky',
         ...(this.clickable ? [
-          'hover:tw-border-sky-blue-400',
-          'hover:tw-bg-sky-blue-50/50',
-          'hover:tw-shadow-md'
+          'hover:border-sky-blue-400',
+          'hover:bg-sky-blue-50/50',
+          'hover:shadow-md'
         ] : [])
       ]
     };
@@ -238,11 +238,11 @@ export class CardComponent {
 
   get headerClasses(): string {
     const baseClasses = [
-      'tw-flex',
-      'tw-items-center',
-      'tw-justify-between',
-      'tw-border-b',
-      'tw-border-gray-100'
+      'flex',
+      'items-center',
+      'justify-between',
+      'border-b',
+      'border-gray-100'
     ];
 
     const paddingClasses = this.getPaddingClasses();
@@ -252,17 +252,17 @@ export class CardComponent {
 
   get mediaClasses(): string {
     return [
-      'tw-w-full',
-      'tw-overflow-hidden',
-      'tw-bg-gray-50'
+      'w-full',
+      'overflow-hidden',
+      'bg-gray-50'
     ].join(' ');
   }
 
   get contentClasses(): string {
     const baseClasses = [
-      'tw-flex',
-      'tw-flex-col',
-      'tw-flex-1'
+      'flex',
+      'flex-col',
+      'flex-1'
     ];
 
     const paddingClasses = this.getPaddingClasses();
@@ -272,11 +272,11 @@ export class CardComponent {
 
   get titleClasses(): string {
     const baseClasses = [
-      'tw-text-lg',
-      'tw-font-bold',
-      'tw-text-gray-900',
-      'tw-mb-1',
-      'tw-leading-tight'
+      'text-lg',
+      'font-bold',
+      'text-gray-900',
+      'mb-1',
+      'leading-tight'
     ];
 
     return baseClasses.join(' ');
@@ -284,11 +284,11 @@ export class CardComponent {
 
   get subtitleClasses(): string {
     const baseClasses = [
-      'tw-text-md',
-      'tw-font-semibold',
-      'tw-text-gray-600',
-      'tw-mb-2',
-      'tw-leading-relaxed'
+      'text-md',
+      'font-semibold',
+      'text-gray-600',
+      'mb-2',
+      'leading-relaxed'
     ];
 
     return baseClasses.join(' ');
@@ -296,9 +296,9 @@ export class CardComponent {
 
   get bodyClasses(): string {
     const baseClasses = [
-      'tw-text-gray-700',
-      'tw-text-sm',
-      'tw-leading-relaxed'
+      'text-gray-700',
+      'text-sm',
+      'leading-relaxed'
     ];
 
     return baseClasses.join(' ');
@@ -306,12 +306,12 @@ export class CardComponent {
 
   get footerClasses(): string {
     const baseClasses = [
-      'tw-flex',
-      'tw-items-center',
-      'tw-justify-between',
-      'tw-border-t',
-      'tw-border-gray-100',
-      'tw-bg-gray-50/50'
+      'flex',
+      'items-center',
+      'justify-between',
+      'border-t',
+      'border-gray-100',
+      'bg-gray-50/50'
     ];
 
     const paddingClasses = this.getPaddingClasses();
@@ -321,23 +321,23 @@ export class CardComponent {
 
   get loadingOverlayClasses(): string {
     return [
-      'tw-absolute',
-      'tw-inset-0',
-      'tw-bg-white/80',
-      'tw-backdrop-blur-sm',
-      'tw-flex',
-      'tw-items-center',
-      'tw-justify-center',
-      'tw-z-10'
+      'absolute',
+      'inset-0',
+      'bg-white/80',
+      'backdrop-blur-sm',
+      'flex',
+      'items-center',
+      'justify-center',
+      'z-10'
     ].join(' ');
   }
 
   private getPaddingClasses(): string[] {
     const paddingClasses = {
       none: [],
-      sm: ['tw-p-3'],
-      md: ['tw-p-4'],
-      lg: ['tw-p-6']
+      sm: ['p-3'],
+      md: ['p-4'],
+      lg: ['p-6']
     };
 
     return paddingClasses[this.padding];

@@ -19,12 +19,12 @@ export type SocialButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
       <!-- Spinner de Carga -->
       @if (loading) {
         <svg
-          class="tw-animate-spin tw--ml-1 tw-mr-2 tw-h-4 tw-w-4"
+          class="animate-spin -ml-1 mr-2 h-4 w-4"
           fill="none"
           viewBox="0 0 24 24"
         >
           <circle
-            class="tw-opacity-25"
+            class="opacity-25"
             cx="12"
             cy="12"
             r="10"
@@ -32,7 +32,7 @@ export type SocialButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
             stroke-width="4"
           ></circle>
           <path
-            class="tw-opacity-75"
+            class="opacity-75"
             fill="currentColor"
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
@@ -124,45 +124,45 @@ export class SocialLoginButton {
 
   get buttonClasses(): string {
     const baseClasses = [
-      'tw-font-semibold',
-      'tw-inline-flex',
-      'tw-items-center',
-      'tw-justify-center',
-      'tw-rounded-md',
-      'tw-transition-all',
-      'tw-duration-300',
-      'tw-ease-in-out',
-      'tw-whitespace-nowrap',
-      'tw-border',
-      'focus:tw-outline-none',
-      'focus:tw-ring-2',
-      'focus:tw-ring-emerald-green-600',
-      'focus:tw-ring-offset-2',
-      'disabled:tw-opacity-50',
-      'disabled:tw-cursor-not-allowed',
-      'disabled:tw-transform-none',
+      'font-semibold',
+      'inline-flex',
+      'items-center',
+      'justify-center',
+      'rounded-md',
+      'transition-all',
+      'duration-300',
+      'ease-in-out',
+      'whitespace-nowrap',
+      'border',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-emerald-green-600',
+      'focus:ring-offset-2',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed',
+      'disabled:transform-none',
       // Estilos específicos para login social - usando colores de marca LatinHub
-      'tw-bg-white',
-      'tw-text-gray-900',
-      'tw-border-gray-300',
-      'hover:tw-bg-gray-50',
-      'hover:tw-border-gray-400',
-      'hover:tw-scale-[1.02]',
-      'active:tw-bg-gray-100',
-      'active:tw-scale-[0.98]'
+      'bg-white',
+      'text-gray-900',
+      'border-gray-300',
+      'hover:bg-gray-50',
+      'hover:border-gray-400',
+      'hover:scale-[1.02]',
+      'active:bg-gray-100',
+      'active:scale-[0.98]'
     ];
 
     // Clases de tamaño que coinciden con el componente Button
     const sizeClasses = {
-      sm: ['tw-text-xs', 'tw-px-3', 'tw-py-1.5', 'tw-h-8', 'tw-min-w-[200px]'],
-      md: ['tw-text-sm', 'tw-px-4', 'tw-py-2', 'tw-h-[42px]', 'tw-min-w-[250px]'],
-      lg: ['tw-text-base', 'tw-px-6', 'tw-py-3', 'tw-h-12', 'tw-min-w-[300px]'],
-      xl: ['tw-text-base', 'tw-px-8', 'tw-py-4', 'tw-h-14', 'tw-min-w-[350px]'],
-      xxl: ['tw-text-lg', 'tw-px-8', 'tw-py-4', 'tw-h-16', 'tw-min-w-[400px]']
+      sm: ['text-xs', 'px-3', 'py-1.5', 'h-8', 'min-w-[200px]'],
+      md: ['text-sm', 'px-4', 'py-2', 'h-[42px]', 'min-w-[250px]'],
+      lg: ['text-base', 'px-6', 'py-3', 'h-12', 'min-w-[300px]'],
+      xl: ['text-base', 'px-8', 'py-4', 'h-14', 'min-w-[350px]'],
+      xxl: ['text-lg', 'px-8', 'py-4', 'h-16', 'min-w-[400px]']
     };
 
     // Clases de ancho
-    const widthClasses = this.fullWidth ? ['tw-w-full'] : [];
+    const widthClasses = this.fullWidth ? ['w-full'] : [];
 
     // Combinar todas las clases
     const allClasses = [
@@ -176,18 +176,18 @@ export class SocialLoginButton {
 
   get iconClasses(): string {
     const sizeMap = {
-      sm: 'tw-w-4 tw-h-4',
-      md: 'tw-w-6 tw-h-6',
-      lg: 'tw-w-7 tw-h-7',
-      xl: 'tw-w-8 tw-h-8',
-      xxl: 'tw-w-9 tw-h-9'
+      sm: 'w-4 h-4',
+      md: 'w-6 h-6',
+      lg: 'w-7 h-7',
+      xl: 'w-8 h-8',
+      xxl: 'w-9 h-9'
     };
 
-    return `tw-flex-shrink-0 tw-mr-2 ${sizeMap[this.size]}`;
+    return `shrink-0 mr-2 ${sizeMap[this.size]}`;
   }
 
   get textClasses(): string {
-    return 'tw-font-semibold';
+    return 'font-semibold';
   }
 
   get buttonText(): string {

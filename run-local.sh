@@ -10,11 +10,12 @@ rm -rf dist/ .angular/
 
 echo "🔑 Configurando variables de entorno..."
 export VAULT_TOKEN=<tu_token_de_vault_aqui>
-export ENVM=qa
-# export ENVM=qa-cloud
+export VAULT_URL=<url_de_vault_aqui>
+export ENVM=<entorno_aqui>
 
 echo "📋 Variables configuradas:"
 echo "VAULT_TOKEN: $VAULT_TOKEN"
+echo "VAULT_URL: $VAULT_URL"
 echo "ENVM: $ENVM"
 
 echo "🏗️  Construyendo la aplicación SSR..."
@@ -22,4 +23,4 @@ npm run build:ssr
 
 echo "🚀 Iniciando servidor de desarrollo..."
 npm run dev:unix
-echo "🌐 Accede a la aplicación en http://localhost:7001"
+echo "🌐 Accede a la aplicación en https://localhost:7001"

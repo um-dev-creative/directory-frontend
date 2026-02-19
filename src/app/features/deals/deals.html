@@ -1,13 +1,13 @@
-<main class="tw-relative tw-mx-auto">
+<main class="relative mx-auto">
   <!-- Imágenes de fondo visibles solo en pantallas grandes -->
-  <div class="tw-hidden sm:tw-block">
+  <div class="hidden sm:block">
     <!--img
       alt=""
       fetchpriority="high"
       width="2170"
       height="1494"
       decoding="async"
-      class="tw-absolute tw-top-[-6.25rem] tw-left-1/2 tw-max-w-none tw-w-[67.8125rem] tw-ml-[-46.875rem] tw-pointer-events-none"
+      class="absolute top-[-6.25rem] left-1/2 max-w-none w-[67.8125rem] ml-[-46.875rem] pointer-events-none"
       src="/assets/images/media_bg.jpg"
     /-->
     <!-- Si no quieres ninguna imagen de fondo en móvil,
@@ -15,13 +15,13 @@
   </div>
   <!-- Contenedor central -->
   <div class="container">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+    <div class="relative max-w-[1200px] mx-auto sm:text-center">
       @if (isAuthenticated) {
-        <div class="tw-text-base sm:tw-text-lg tw-font-semibold tw-mb-4 tw-text-sky-blue-700 tw-bg-gradient-warm tw-rounded-xl tw-px-4 tw-py-2 tw-text-left">
+        <div class="text-base sm:text-lg font-semibold mb-4 text-sky-blue-700 bg-gradient-warm rounded-xl px-4 py-2 text-left">
           👋 Hola, {{ userFullName }}!
         </div>
       } @else {
-        <div class="tw-text-base sm:tw-text-lg tw-font-semibold tw-mb-4 tw-text-sky-700 tw-bg-gradient-warm tw-rounded-lg tw-px-4 tw-py-2 tw-text-left">
+        <div class="text-base sm:text-lg font-semibold mb-4 text-sky-700 bg-gradient-warm rounded-lg px-4 py-2 text-left">
           👋 Hola! Bienvenido 😊
         </div>
       }
@@ -29,37 +29,37 @@
     </div>
   </div>
   <div class="container">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+    <div class="relative max-w-[1200px] mx-auto sm:text-center">
       <!-- Title now comes from the component -->
       <app-offer-slider [sliderTitle]="'Los mas reclamados'"/>
 
     </div>
   </div>
   @if (!isAuthenticated) {
-      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+      <div class="relative max-w-[1200px] mx-auto">
         <app-banner bannerType="mid"></app-banner>
       </div>
   }
   <div class="container">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+    <div class="relative max-w-[1200px] mx-auto sm:text-center">
       <!-- Title now comes from the component -->
       <app-offer-slider [sliderTitle]="'Moda'"/>
 
     </div>
   </div>
   <div class="container">
-    <div class="tw-relative tw-max-w-[1200px] tw-mx-auto sm:tw-text-center">
+    <div class="relative max-w-[1200px] mx-auto sm:text-center">
       <!-- Title now comes from the component -->
       <app-offer-slider [sliderTitle]="'Tecnologia'"/>
     </div>
   </div>
   @if (!isAuthenticated) {
-      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+      <div class="relative max-w-[1200px] mx-auto">
         <app-banner bannerType="mid"></app-banner>
       </div>
   }
   <div class="container">
-      <div class="tw-relative tw-max-w-[1200px] tw-mx-auto">
+      <div class="relative max-w-[1200px] mx-auto">
       <!-- Title now comes from the component -->
       <app-offer-slider [sliderTitle]="'Hogar'"/>
     </div>

@@ -6,10 +6,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="loading-container tw-fixed tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-beige-50/90 tw-z-[9999]">
-      <div class="loading-content tw-text-center">
-        <div class="spinner tw-w-[50px] tw-h-[50px] tw-mx-auto tw-border-4 tw-border-beige-200 tw-rounded-full tw-relative tw-shadow-lg">
-          <div class="tw-absolute tw-inset-0 tw-border-4 tw-border-emerald-green-500 tw-border-t-transparent tw-rounded-full tw-animate-spin"></div>
+    <div class="loading-container fixed inset-0 flex items-center justify-center bg-beige-50/90 z-[9999]">
+      <div class="loading-content text-center">
+        <div class="spinner w-[50px] h-[50px] mx-auto border-4 border-beige-200 rounded-full relative shadow-lg">
+          <div class="absolute inset-0 border-4 border-emerald-green-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     </div>

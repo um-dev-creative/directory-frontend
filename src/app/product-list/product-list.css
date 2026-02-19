@@ -1,8 +1,8 @@
-.tw-hide-scrollbar::-webkit-scrollbar {
+.hide-scrollbar::-webkit-scrollbar {
   display: none; /* Oculta el scrollbar en navegadores basados en WebKit */
 }
 
-.tw-hide-scrollbar {
+.hide-scrollbar {
   -ms-overflow-style: none; /* Oculta el scrollbar en IE y Edge */
   scrollbar-width: none; /* Oculta el scrollbar en Firefox */
 }

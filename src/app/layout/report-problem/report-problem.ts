@@ -52,18 +52,18 @@ export class ReportProblem {
 
   // Getters para clases CSS dinámicas
   protected get buttonClasses(): string {
-    const baseClasses = 'tw-inline-flex tw-items-center tw-gap-2 tw-transition-all tw-duration-200 tw-font-medium';
+    const baseClasses = 'inline-flex items-center gap-2 transition-all duration-200 font-medium';
 
     const variantClasses = {
-      'link': 'tw-text-emerald-green-600 hover:tw-text-emerald-green-700 tw-underline tw-decoration-dotted hover:tw-decoration-solid',
-      'button': 'tw-bg-emerald-green-600 hover:tw-bg-emerald-green-700 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg tw-shadow-sm hover:tw-shadow-md',
-      'card': 'tw-bg-white tw-border tw-border-emerald-green-200 hover:tw-border-emerald-green-300 tw-p-4 tw-rounded-lg tw-shadow-sm hover:tw-shadow-md tw-text-emerald-green-700'
+      'link': 'text-emerald-green-600 hover:text-emerald-green-700 underline decoration-dotted hover:decoration-solid',
+      'button': 'bg-emerald-green-600 hover:bg-emerald-green-700 text-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md',
+      'card': 'bg-white border border-emerald-green-200 hover:border-emerald-green-300 p-4 rounded-lg shadow-sm hover:shadow-md text-emerald-green-700'
     };
 
     const sizeClasses = {
-      'sm': this.variant === 'link' ? 'tw-text-sm' : 'tw-text-sm tw-px-3 tw-py-1.5',
-      'md': this.variant === 'link' ? 'tw-text-base' : 'tw-text-base tw-px-4 tw-py-2',
-      'lg': this.variant === 'link' ? 'tw-text-lg' : 'tw-text-lg tw-px-5 tw-py-3'
+      'sm': this.variant === 'link' ? 'text-sm' : 'text-sm px-3 py-1.5',
+      'md': this.variant === 'link' ? 'text-base' : 'text-base px-4 py-2',
+      'lg': this.variant === 'link' ? 'text-lg' : 'text-lg px-5 py-3'
     };
 
     return `${baseClasses} ${variantClasses[this.variant]} ${sizeClasses[this.size]}`;
@@ -71,9 +71,9 @@ export class ReportProblem {
 
   protected get iconSize(): string {
     const iconSizes = {
-      'sm': 'tw-w-3 tw-h-3',
-      'md': 'tw-w-4 tw-h-4',
-      'lg': 'tw-w-5 tw-h-5'
+      'sm': 'w-3 h-3',
+      'md': 'w-4 h-4',
+      'lg': 'w-5 h-5'
     };
     return iconSizes[this.size];
   }

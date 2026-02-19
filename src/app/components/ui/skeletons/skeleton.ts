@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type SkeletonVariant = 'default' | 'card' | 'list' | 'profile' | 'table' | 'custom';
-export type SkeletonAnimation = 'pulse' | 'none';
+export type SkeletonAnimation = 'pulse' | 'wave' | 'shimmer' | 'none';
 export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
 @Component({
@@ -11,17 +11,17 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
   imports: [CommonModule],
   template: `
     <div
-      class="tw-skeleton-container"
+      class="skeleton-container"
       [ngClass]="getContainerClasses()"
       [attr.aria-label]="ariaLabel"
       [attr.role]="role"
     >
       <!-- Default Skeleton -->
       @if (variant === 'default') {
-        <div class="tw-space-y-3">
+        <div class="space-y-3">
           @for (line of lines; track $index) {
             <div
-              class="tw-skeleton-line"
+              class="skeleton-line"
               [ngClass]="getLineClasses(line, $index)"
               [style.height.px]="line.height"
               [style.width]="line.width"
@@ -32,28 +32,28 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
       <!-- Card Skeleton -->
       @if (variant === 'card') {
-        <div class="tw-skeleton-card tw-space-y-4">
+        <div class="skeleton-card space-y-4">
           <!-- Card Image -->
           @if (showImage) {
             <div
-              class="tw-skeleton-element"
+              class="skeleton-element"
               [ngClass]="getElementClasses('rectangle')"
               [style.height.px]="imageHeight"
             ></div>
           }
 
           <!-- Card Content -->
-          <div class="tw-space-y-3">
+          <div class="space-y-3">
             <!-- Title -->
             <div
-              class="tw-skeleton-element"
+              class="skeleton-element"
               [ngClass]="getElementClasses('rounded')"
               style="height: 20px; width: 80%;"
             ></div>
 
             <!-- Subtitle -->
             <div
-              class="tw-skeleton-element"
+              class="skeleton-element"
               [ngClass]="getElementClasses('rounded')"
               style="height: 16px; width: 60%;"
             ></div>
@@ -61,7 +61,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
             <!-- Content lines -->
             @for (i of [1,2]; track i) {
               <div
-                class="tw-skeleton-element"
+                class="skeleton-element"
                 [ngClass]="getElementClasses('rounded')"
                 [style.height.px]="14"
                 [style.width]="i === 2 ? '45%' : '90%'"
@@ -73,13 +73,13 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
       <!-- List Skeleton -->
       @if (variant === 'list') {
-        <div class="tw-skeleton-list tw-space-y-4">
+        <div class="skeleton-list space-y-4">
           @for (item of listItems; track $index) {
-            <div class="tw-flex tw-items-center tw-space-x-4">
+            <div class="flex items-center space-x-4">
               <!-- Avatar -->
               @if (showAvatar) {
                 <div
-                  class="tw-skeleton-element tw-flex-shrink-0"
+                  class="skeleton-element shrink-0"
                   [ngClass]="getElementClasses('circle')"
                   [style.width.px]="avatarSize"
                   [style.height.px]="avatarSize"
@@ -87,14 +87,14 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
               }
 
               <!-- Content -->
-              <div class="tw-flex-1 tw-space-y-2">
+              <div class="flex-1 space-y-2">
                 <div
-                  class="tw-skeleton-element"
+                  class="skeleton-element"
                   [ngClass]="getElementClasses('rounded')"
                   style="height: 16px; width: 75%;"
                 ></div>
                 <div
-                  class="tw-skeleton-element"
+                  class="skeleton-element"
                   [ngClass]="getElementClasses('rounded')"
                   style="height: 14px; width: 50%;"
                 ></div>
@@ -103,7 +103,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
               <!-- Action -->
               @if (showAction) {
                 <div
-                  class="tw-skeleton-element tw-flex-shrink-0"
+                  class="skeleton-element shrink-0"
                   [ngClass]="getElementClasses('rounded')"
                   style="width: 80px; height: 32px;"
                 ></div>
@@ -115,28 +115,28 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
       <!-- Profile Skeleton -->
       @if (variant === 'profile') {
-        <div class="tw-skeleton-profile tw-text-center tw-space-y-4">
+        <div class="skeleton-profile text-center space-y-4">
           <!-- Profile Avatar -->
-          <div class="tw-flex tw-justify-center">
+          <div class="flex justify-center">
             <div
-              class="tw-skeleton-element"
+              class="skeleton-element"
               [ngClass]="getElementClasses('circle')"
               style="width: 80px; height: 80px;"
             ></div>
           </div>
 
           <!-- Profile Info -->
-          <div class="tw-space-y-3">
+          <div class="space-y-3">
             <!-- Name -->
             <div
-              class="tw-skeleton-element tw-mx-auto"
+              class="skeleton-element mx-auto"
               [ngClass]="getElementClasses('rounded')"
               style="height: 20px; width: 60%;"
             ></div>
 
             <!-- Title -->
             <div
-              class="tw-skeleton-element tw-mx-auto"
+              class="skeleton-element mx-auto"
               [ngClass]="getElementClasses('rounded')"
               style="height: 16px; width: 40%;"
             ></div>
@@ -144,7 +144,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
             <!-- Description -->
             @for (i of [1,2,3]; track i) {
               <div
-                class="tw-skeleton-element tw-mx-auto"
+                class="skeleton-element mx-auto"
                 [ngClass]="getElementClasses('rounded')"
                 [style.height.px]="14"
                 [style.width]="i === 3 ? '30%' : '80%'"
@@ -156,12 +156,12 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
       <!-- Table Skeleton -->
       @if (variant === 'table') {
-        <div class="tw-skeleton-table tw-space-y-3">
+        <div class="skeleton-table space-y-3">
           <!-- Table Header -->
-          <div class="tw-flex tw-space-x-4">
+          <div class="flex space-x-4">
             @for (col of tableColumnsArray; track $index) {
               <div
-                class="tw-skeleton-element tw-flex-1"
+                class="skeleton-element flex-1"
                 [ngClass]="getElementClasses('rounded')"
                 style="height: 18px;"
               ></div>
@@ -170,10 +170,10 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 
           <!-- Table Rows -->
           @for (row of tableRowsArray; track $index) {
-            <div class="tw-flex tw-space-x-4">
+            <div class="flex space-x-4">
               @for (col of tableColumnsArray; track $index) {
                 <div
-                  class="tw-skeleton-element tw-flex-1"
+                  class="skeleton-element flex-1"
                   [ngClass]="getElementClasses('rounded')"
                   style="height: 16px;"
                 ></div>
@@ -190,50 +190,52 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
     </div>
   `,
   styles: [`
-    .tw-skeleton-container {
-      @apply tw-w-full;
+    @reference "../../../../styles.css";
+
+    .skeleton-container {
+      @apply w-full;
     }
 
-    .tw-skeleton-element {
-      @apply tw-bg-gradient-to-r tw-from-beige-200 tw-via-beige-300 tw-to-beige-200;
+    .skeleton-element {
+      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
     }
 
-    .tw-skeleton-line {
-      @apply tw-bg-gradient-to-r tw-from-beige-200 tw-via-beige-300 tw-to-beige-200;
+    .skeleton-line {
+      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
     }
 
     /* Animation Classes */
-    .tw-skeleton-pulse {
-      @apply tw-animate-pulse;
+    .skeleton-pulse {
+      @apply animate-pulse;
     }
 
-    .tw-skeleton-wave {
+    .skeleton-wave {
       animation: skeleton-wave 1.6s ease-in-out infinite;
       background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
       background-size: 200px 100%;
     }
 
-    .tw-skeleton-shimmer {
+    .skeleton-shimmer {
       animation: skeleton-shimmer 2s infinite;
       background: linear-gradient(90deg,
-        rgb(var(--tw-color-beige-200)) 0%,
-        rgb(var(--tw-color-beige-300)) 50%,
-        rgb(var(--tw-color-beige-200)) 100%
+        rgb(var(--color-beige-200)) 0%,
+        rgb(var(--color-beige-300)) 50%,
+        rgb(var(--color-beige-200)) 100%
       );
       background-size: 200% 100%;
     }
 
     /* Shape Classes */
-    .tw-skeleton-rectangle {
-      @apply tw-rounded-none;
+    .skeleton-rectangle {
+      @apply rounded-none;
     }
 
-    .tw-skeleton-rounded {
-      @apply tw-rounded-md;
+    .skeleton-rounded {
+      @apply rounded-md;
     }
 
-    .tw-skeleton-circle {
-      @apply tw-rounded-full;
+    .skeleton-circle {
+      @apply rounded-full;
     }
 
     /* Keyframes */
@@ -259,20 +261,20 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
     }
 
     /* Variant Specific Styles */
-    .tw-skeleton-card {
-      @apply tw-p-4 tw-border tw-border-beige-200 tw-rounded-lg;
+    .skeleton-card {
+      @apply p-4 border border-beige-200 rounded-lg;
     }
 
-    .tw-skeleton-list {
-      @apply tw-space-y-4;
+    .skeleton-list {
+      @apply space-y-4;
     }
 
-    .tw-skeleton-profile {
-      @apply tw-p-6 tw-border tw-border-beige-200 tw-rounded-lg;
+    .skeleton-profile {
+      @apply p-6 border border-beige-200 rounded-lg;
     }
 
-    .tw-skeleton-table {
-      @apply tw-p-4 tw-border tw-border-beige-200 tw-rounded-lg;
+    .skeleton-table {
+      @apply p-4 border border-beige-200 rounded-lg;
     }
   `]
 })
@@ -332,20 +334,20 @@ export class SkeletonComponent {
     const classes: string[] = [];
 
     if (!this.loading) {
-      classes.push('tw-hidden');
+      classes.push('hidden');
     }
 
     return classes.join(' ');
   }
 
   getElementClasses(elementShape?: SkeletonShape): string {
-    const classes: string[] = ['tw-skeleton-element'];
+    const classes: string[] = ['skeleton-element'];
     const currentShape = elementShape || this.shape;
 
     // Animation
     switch (this.animation) {
       case 'pulse':
-        classes.push('tw-skeleton-pulse');
+        classes.push('skeleton-pulse');
         break;
       case 'none':
         // No animation
@@ -355,13 +357,13 @@ export class SkeletonComponent {
     // Shape
     switch (currentShape) {
       case 'rectangle':
-        classes.push('tw-skeleton-rectangle');
+        classes.push('skeleton-rectangle');
         break;
       case 'rounded':
-        classes.push('tw-skeleton-rounded');
+        classes.push('skeleton-rounded');
         break;
       case 'circle':
-        classes.push('tw-skeleton-circle');
+        classes.push('skeleton-circle');
         break;
     }
 
@@ -369,12 +371,12 @@ export class SkeletonComponent {
   }
 
   getLineClasses(line: {height: number, width: string}, index: number): string {
-    const classes: string[] = ['tw-skeleton-line'];
+    const classes: string[] = ['skeleton-line'];
 
     // Animation
     switch (this.animation) {
       case 'pulse':
-        classes.push('tw-skeleton-pulse');
+        classes.push('skeleton-pulse');
         break;
       case 'none':
         // No animation
@@ -384,13 +386,13 @@ export class SkeletonComponent {
     // Shape
     switch (this.shape) {
       case 'rectangle':
-        classes.push('tw-skeleton-rectangle');
+        classes.push('skeleton-rectangle');
         break;
       case 'rounded':
-        classes.push('tw-skeleton-rounded');
+        classes.push('skeleton-rounded');
         break;
       case 'circle':
-        classes.push('tw-skeleton-circle');
+        classes.push('skeleton-circle');
         break;
     }
 

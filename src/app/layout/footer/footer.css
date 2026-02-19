@@ -1,92 +1,94 @@
+@reference "../../../styles.css";
+
 /* Clean and Minimal Footer Styles */
 .footer-container {
-  @apply tw-bg-gray-50 tw-border-t tw-border-gray-200 tw-relative;
+  @apply bg-gray-50 border-t border-gray-200 relative;
 }
 
 .footer-content {
-  @apply tw-max-w-6xl tw-mx-auto tw-px-4 tw-py-8;
+  @apply max-w-6xl mx-auto px-4 py-8;
 }
 
 /* Simplified Single Row Layout */
 .footer-main {
-  @apply tw-flex tw-flex-col tw-gap-6 tw-items-center tw-text-center;
+  @apply flex flex-col gap-6 items-center text-center;
 }
 
 .footer-logo {
-  @apply tw-h-8 tw-w-auto tw-opacity-80 tw-transition-opacity tw-duration-200 tw-ease-out;
+  @apply h-8 w-auto opacity-80 transition-opacity duration-200 ease-out;
 }
 
 .footer-logo:hover {
-  @apply tw-opacity-100;
+  @apply opacity-100;
 }
 
 .footer-description {
-  @apply tw-text-sm tw-text-gray-500 tw-max-w-md tw-leading-6 tw-m-0;
+  @apply text-sm text-gray-500 max-w-md leading-6 m-0;
 }
 
 /* Simplified Links - Single Row */
 .footer-links {
-  @apply tw-flex tw-flex-wrap tw-gap-6 tw-justify-center tw-items-center;
+  @apply flex flex-wrap gap-6 justify-center items-center;
 }
 
 .footer-link {
-  @apply tw-text-sm tw-text-gray-500 tw-no-underline tw-transition-colors tw-duration-200 tw-ease-out tw-py-1 tw-px-2 tw-rounded;
+  @apply text-sm text-gray-500 no-underline transition-colors duration-200 ease-out py-1 px-2 rounded;
 }
 
 .footer-link:hover {
-  @apply tw-text-emerald-600 tw-bg-emerald-50;
+  @apply text-emerald-600 bg-emerald-50;
 }
 
 /* Divider */
 .footer-divider {
-  @apply tw-w-full tw-h-px tw-bg-gray-200 tw-my-4;
+  @apply w-full h-px bg-gray-200 my-4;
 }
 
 /* Bottom Section */
 .footer-bottom {
-  @apply tw-flex tw-flex-col tw-gap-3 tw-items-center tw-text-center tw-pt-4 tw-border-t tw-border-gray-100;
+  @apply flex flex-col gap-3 items-center text-center pt-4 border-t border-gray-100;
 }
 
 .footer-copyright {
-  @apply tw-text-xs tw-text-gray-400 tw-m-0;
+  @apply text-xs text-gray-400 m-0;
 }
 
 .footer-bottom-links {
-  @apply tw-flex tw-gap-4 tw-flex-wrap tw-justify-center;
+  @apply flex gap-4 flex-wrap justify-center;
 }
 
 .footer-bottom-link {
-  @apply tw-text-xs tw-text-gray-400 tw-no-underline tw-transition-colors tw-duration-200 tw-ease-out;
+  @apply text-xs text-gray-400 no-underline transition-colors duration-200 ease-out;
 }
 
 .footer-bottom-link:hover {
-  @apply tw-text-emerald-600;
+  @apply text-emerald-600;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .footer-content {
-    @apply tw-px-4 tw-py-6;
+    @apply px-4 py-6;
   }
 
   .footer-main {
-    @apply tw-gap-4;
+    @apply gap-4;
   }
 
   .footer-links {
-    @apply tw-gap-4 tw-text-xs;
+    @apply gap-4 text-xs;
   }
 
   .footer-logo {
-    @apply tw-h-6;
+    @apply h-6;
   }
 
   .footer-description {
-    @apply tw-text-xs;
+    @apply text-xs;
   }
 
   .footer-bottom {
-    @apply tw-gap-2 tw-pt-3;
+    @apply gap-2 pt-3;
   }
 }
 
@@ -95,6 +97,6 @@
   .footer-link,
   .footer-logo,
   .footer-bottom-link {
-    @apply tw-transition-none;
+    @apply transition-none;
   }
 }

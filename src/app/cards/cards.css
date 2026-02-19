@@ -1,13 +1,13 @@
-.tw-scrollbar-hide {
+.scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.tw-scrollbar-hide::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Edge */
 }
 
 /* Smooth scrolling for better UX */
-.tw-smooth-scroll {
+.smooth-scroll {
   scroll-behavior: smooth;
 }

@@ -20,19 +20,19 @@ import {LoggerService} from '@app/core/services/logger.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
   template: `
-    <form [formGroup]="reactiveForm" (ngSubmit)="onContinue()" class="tw-space-y-6">
+    <form [formGroup]="reactiveForm" (ngSubmit)="onContinue()" class="space-y-6">
       <!-- Step Header -->
-      <div class="tw-text-center tw-pb-4 tw-border-b tw-border-beige-200">
-        <h2 class="tw-text-xl tw-font-semibold tw-text-emerald-green-700 tw-mb-2">
+      <div class="text-center pb-4 border-b border-beige-200">
+        <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
           Información Básica de tu Negocio
         </h2>
-        <p class="tw-text-beige-600">
+        <p class="text-beige-600">
           Cuéntanos sobre tu negocio para que podamos crear tu perfil
         </p>
       </div>
 
       <!-- Form Fields -->
-      <div class="tw-space-y-6">
+      <div class="space-y-6">
         <!-- Business Name -->
         <app-input
           label="Nombre del Negocio"
@@ -62,13 +62,13 @@ import {LoggerService} from '@app/core/services/logger.service';
 
       <!-- Example Card -->
       <app-card variant="outlined-blue" margin="sm">
-        <div class="tw-flex tw-items-center tw-mb-2">
-          <app-icon name="information-circle" size="md" class="tw-text-sky-blue-700 tw-mr-1"></app-icon>
-          <h4 class="tw-text-md tw-font-semibold tw-text-sky-blue-700">
+        <div class="flex items-center mb-2">
+          <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-1"></app-icon>
+          <h4 class="text-md font-semibold text-sky-blue-700">
             Ejemplo de buena descripción:
           </h4>
         </div>
-        <p class="tw-text-sm tw-text-sky-blue-700">
+        <p class="text-sm text-sky-blue-700">
           "Restaurante familiar especializado en cocina tradicional mexicana.
           Ofrecemos desayunos, comidas y cenas preparadas con ingredientes frescos y locales.
           Ambiente acogedor ideal para familias y eventos especiales."
@@ -76,7 +76,7 @@ import {LoggerService} from '@app/core/services/logger.service';
       </app-card>
 
       <!-- Action Buttons -->
-      <div class="tw-flex tw-justify-end tw-pt-4 tw-border-t tw-border-beige-200">
+      <div class="flex justify-end pt-4 border-t border-beige-200">
         <app-button
           type="submit"
           variant="primary"

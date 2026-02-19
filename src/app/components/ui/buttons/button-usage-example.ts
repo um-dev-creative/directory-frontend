@@ -10,15 +10,15 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, Button],
   template: `
-    <div class="tw-p-6 tw-space-y-6">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700">
+    <div class="p-6 space-y-6">
+      <h2 class="text-2xl font-bold text-emerald-green-700">
         Ejemplo de Uso del Componente Button
       </h2>
 
       <!-- Botones básicos -->
-      <div class="tw-space-y-4">
-        <h3 class="tw-text-lg tw-font-semibold">Formulario de contacto</h3>
-        <div class="tw-flex tw-gap-4">
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Formulario de contacto</h3>
+        <div class="flex gap-4">
           <app-button
             variant="primary"
             [loading]="isSubmitting"
@@ -38,9 +38,9 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Acciones de usuario -->
-      <div class="tw-space-y-4">
-        <h3 class="tw-text-lg tw-font-semibold">Acciones de usuario</h3>
-        <div class="tw-flex tw-flex-wrap tw-gap-3">
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Acciones de usuario</h3>
+        <div class="flex flex-wrap gap-3">
           <app-button variant="secondary" size="sm">
             Editar Perfil
           </app-button>
@@ -56,9 +56,9 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Estados dinámicos -->
-      <div class="tw-space-y-4">
-        <h3 class="tw-text-lg tw-font-semibold">Estados dinámicos</h3>
-        <div class="tw-flex tw-gap-4">
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Estados dinámicos</h3>
+        <div class="flex gap-4">
           <app-button
             [variant]="downloadStatus === 'completed' ? 'success' : 'primary'"
             [loading]="downloadStatus === 'loading'"
@@ -78,8 +78,8 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Botón de ancho completo -->
-      <div class="tw-space-y-4">
-        <h3 class="tw-text-lg tw-font-semibold">Llamada a la acción</h3>
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Llamada a la acción</h3>
         <app-button
           variant="primary"
           size="lg"

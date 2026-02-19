@@ -12,7 +12,7 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'success' | 'warning
   imports: [CommonModule],
   template: `
     <div
-      class="tw-relative tw-inline-block"
+      class="relative inline-block"
       #triggerElement
       (mouseenter)="onMouseEnter()"
       (mouseleave)="onMouseLeave()"
@@ -87,26 +87,26 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
   }
 
   get tooltipClasses(): string {
-    const baseClasses = 'tw-absolute tw-z-50 tw-transition-all tw-duration-200 tw-transform';
+    const baseClasses = 'absolute z-50 transition-all duration-200 transform';
     const positionClasses = this.getPositionClasses();
     const variantClasses = this.getVariantClasses();
     const sizeClasses = this.getSizeClasses();
-    const visibilityClasses = this.isVisible ? 'tw-opacity-100 tw-scale-100' : 'tw-opacity-0 tw-scale-95 tw-pointer-events-none';
+    const visibilityClasses = this.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none';
 
     return `${baseClasses} ${positionClasses} ${variantClasses} ${sizeClasses} ${visibilityClasses}`.trim();
   }
 
   get contentClasses(): string {
-    const baseClasses = 'tw-rounded-lg tw-font-medium tw-text-center tw-break-words';
+    const baseClasses = 'rounded-lg font-medium text-center break-words';
     const sizeClasses = this.getContentSizeClasses();
 
     return `${baseClasses} ${sizeClasses}`.trim();
   }
 
   get arrowClasses(): string {
-    if (!this.arrow) return 'tw-hidden';
+    if (!this.arrow) return 'hidden';
 
-    const baseClasses = 'tw-absolute tw-w-2 tw-h-2 tw-transform tw-rotate-45';
+    const baseClasses = 'absolute w-2 h-2 transform rotate-45';
     const positionClasses = this.getArrowPositionClasses();
     const variantClasses = this.getArrowVariantClasses();
 
@@ -115,57 +115,57 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
 
   private getPositionClasses(): string {
     const positionMap = {
-      top: 'tw-bottom-full tw-left-1/2 -tw-translate-x-1/2 tw-mb-2',
-      bottom: 'tw-top-full tw-left-1/2 -tw-translate-x-1/2 tw-mt-2',
-      left: 'tw-right-full tw-top-1/2 -tw-translate-y-1/2 tw-mr-2',
-      right: 'tw-left-full tw-top-1/2 -tw-translate-y-1/2 tw-ml-2'
+      top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+      bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
+      left: 'right-full top-1/2 -translate-y-1/2 mr-2',
+      right: 'left-full top-1/2 -translate-y-1/2 ml-2'
     };
     return positionMap[this.position];
   }
 
   private getVariantClasses(): string {
     const variantMap = {
-      default: 'tw-bg-gray-900 tw-text-white',
-      dark: 'tw-bg-black tw-text-white',
-      light: 'tw-bg-white tw-text-gray-900 tw-border tw-border-gray-200 tw-shadow-lg',
-      success: 'tw-bg-emerald-green-600 tw-text-white',
-      warning: 'tw-bg-yellow-500 tw-text-white',
-      error: 'tw-bg-red-600 tw-text-white'
+      default: 'bg-gray-900 text-white',
+      dark: 'bg-black text-white',
+      light: 'bg-white text-gray-900 border border-gray-200 shadow-lg',
+      success: 'bg-emerald-green-600 text-white',
+      warning: 'bg-yellow-500 text-white',
+      error: 'bg-red-600 text-white'
     };
     return variantMap[this.variant];
   }
 
   private getSizeClasses(): string {
-    return `tw-max-w-[${this.maxWidth}]`;
+    return `max-w-[${this.maxWidth}]`;
   }
 
   private getContentSizeClasses(): string {
     const sizeMap = {
-      sm: 'tw-px-2 tw-py-1 tw-text-xs',
-      md: 'tw-px-3 tw-py-2 tw-text-sm',
-      lg: 'tw-px-4 tw-py-3 tw-text-base'
+      sm: 'px-2 py-1 text-xs',
+      md: 'px-3 py-2 text-sm',
+      lg: 'px-4 py-3 text-base'
     };
     return sizeMap[this.size];
   }
 
   private getArrowPositionClasses(): string {
     const positionMap = {
-      top: 'tw-top-full tw-left-1/2 -tw-translate-x-1/2 -tw-mt-1',
-      bottom: 'tw-bottom-full tw-left-1/2 -tw-translate-x-1/2 -tw-mb-1',
-      left: 'tw-left-full tw-top-1/2 -tw-translate-y-1/2 -tw-ml-1',
-      right: 'tw-right-full tw-top-1/2 -tw-translate-y-1/2 -tw-mr-1'
+      top: 'top-full left-1/2 -translate-x-1/2 -mt-1',
+      bottom: 'bottom-full left-1/2 -translate-x-1/2 -mb-1',
+      left: 'left-full top-1/2 -translate-y-1/2 -ml-1',
+      right: 'right-full top-1/2 -translate-y-1/2 -mr-1'
     };
     return positionMap[this.position];
   }
 
   private getArrowVariantClasses(): string {
     const variantMap = {
-      default: 'tw-bg-gray-900',
-      dark: 'tw-bg-black',
-      light: 'tw-bg-white tw-border tw-border-gray-200',
-      success: 'tw-bg-emerald-green-600',
-      warning: 'tw-bg-yellow-500',
-      error: 'tw-bg-red-600'
+      default: 'bg-gray-900',
+      dark: 'bg-black',
+      light: 'bg-white border border-gray-200',
+      success: 'bg-emerald-green-600',
+      warning: 'bg-yellow-500',
+      error: 'bg-red-600'
     };
     return variantMap[this.variant];
   }

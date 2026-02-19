@@ -18,7 +18,7 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
     }
   ],
   template: `
-    <div class="tw-relative tw-w-full">
+    <div class="relative w-full">
       <!-- Label -->
       @if (label) {
         <label
@@ -27,17 +27,17 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
         >
           {{ label }}
           @if (required) {
-            <span class="tw-text-coral-500 tw-ml-1">*</span>
+            <span class="text-coral-500 ml-1">*</span>
           }
         </label>
       }
 
       <!-- Input Container -->
-      <div class="tw-relative">
+      <div class="relative">
         <!-- Leading Icon -->
         @if (leadingIcon) {
           <div
-            class="tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
           >
             <ng-content select="[slot=leading-icon]"></ng-content>
           </div>
@@ -62,7 +62,7 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
 
         <!-- Character Count Inside Input -->
         @if (showCharacterCount && maxLength) {
-          <div class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-xs tw-text-gray-400 tw-pointer-events-none">
+          <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
             {{ characterCountDisplay }}
           </div>
         }
@@ -70,7 +70,7 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
         <!-- Trailing Icon -->
         @if (trailingIcon) {
           <div
-            class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-pointer-events-none"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
           >
             <ng-content select="[slot=trailing-icon]"></ng-content>
           </div>
@@ -80,11 +80,11 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
         @if (clearable && value && !disabled && !readonly) {
           <button
             type="button"
-            class="tw-absolute tw-right-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400 hover:tw-text-gray-600 tw-transition-colors"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             (click)="clearValue()"
             [attr.aria-label]="'Clear ' + (label || 'input')"
           >
-            <svg class="tw-w-4 tw-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -151,18 +151,18 @@ export class InputComponent implements ControlValueAccessor {
 
   get labelClasses(): string {
     const baseClasses = [
-      'tw-block',
-      'tw-text-sm',
-      'tw-font-medium',
-      'tw-my-2',
-      'tw-transition-colors'
+      'block',
+      'text-sm',
+      'font-medium',
+      'my-2',
+      'transition-colors'
     ];
 
     const variantClasses = {
-      default: ['tw-text-emerald-green-700'],
-      success: ['tw-text-success-600'],
-      error: ['tw-text-coral-600'],
-      info: ['tw-text-sky-blue-700']
+      default: ['text-emerald-green-700'],
+      success: ['text-success-600'],
+      error: ['text-coral-600'],
+      info: ['text-sky-blue-700']
     };
 
     return [...baseClasses, ...variantClasses[this.variant]].join(' ');
@@ -170,74 +170,74 @@ export class InputComponent implements ControlValueAccessor {
 
   get inputClasses(): string {
     const baseClasses = [
-      'tw-w-full',
-      'tw-border',
-      'tw-rounded-lg',
-      'tw-transition-all',
-      'tw-duration-200',
-      'tw-ease-in-out',
-      'placeholder:tw-text-gray-400',
-      'focus:tw-outline-none',
-      'focus:tw-ring-2',
-      'focus:tw-ring-offset-1',
-      'disabled:tw-opacity-50',
-      'disabled:tw-cursor-not-allowed',
-      'disabled:tw-bg-gray-50',
-      'readonly:tw-bg-gray-50',
-      'readonly:tw-cursor-default'
+      'w-full',
+      'border',
+      'rounded-lg',
+      'transition-all',
+      'duration-200',
+      'ease-in-out',
+      'placeholder:text-gray-400',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-1',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed',
+      'disabled:bg-gray-50',
+      'readonly:bg-gray-50',
+      'readonly:cursor-default'
     ];
 
     // Size classes
     const sizeClasses = {
-      sm: ['tw-text-sm', 'tw-px-3', 'tw-py-2', 'tw-h-9'],
-      md: ['tw-text-md', 'tw-px-4', 'tw-py-3', 'tw-h-11'],
-      lg: ['tw-text-base', 'tw-px-5', 'tw-py-4', 'tw-h-13']
+      sm: ['text-sm', 'px-3', 'py-2', 'h-9'],
+      md: ['text-md', 'px-4', 'py-3', 'h-11'],
+      lg: ['text-base', 'px-5', 'py-4', 'h-13']
     };
 
     // Variant classes
     const variantClasses = {
       default: [
-        'tw-border-gray-300',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'hover:tw-border-emerald-green-400',
-        'focus:tw-border-emerald-green-500',
-        'focus:tw-ring-emerald-green-500/20'
+        'border-gray-300',
+        'bg-white',
+        'text-gray-900',
+        'hover:border-emerald-green-400',
+        'focus:border-emerald-green-500',
+        'focus:ring-emerald-green-500/20'
       ],
       success: [
-        'tw-border-emerald-green-500',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-border-emerald-green-600',
-        'focus:tw-ring-emerald-green-500/20'
+        'border-emerald-green-500',
+        'bg-white',
+        'text-gray-900',
+        'focus:border-emerald-green-600',
+        'focus:ring-emerald-green-500/20'
       ],
       error: [
-        'tw-border-coral-500',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-border-coral-600',
-        'focus:tw-ring-coral-500/20'
+        'border-coral-500',
+        'bg-white',
+        'text-gray-900',
+        'focus:border-coral-600',
+        'focus:ring-coral-500/20'
       ],
       info: [
-        'tw-border-sky-blue-400',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-border-sky-blue-500',
-        'focus:tw-ring-sky-blue-500/20'
+        'border-sky-blue-400',
+        'bg-white',
+        'text-gray-900',
+        'focus:border-sky-blue-500',
+        'focus:ring-sky-blue-500/20'
       ]
     };
 
     // Icon padding adjustments
     const iconClasses = [];
     if (this.leadingIcon) {
-      iconClasses.push('tw-pl-10');
+      iconClasses.push('pl-10');
     }
     if (this.trailingIcon || this.clearable || (this.showCharacterCount && this.maxLength)) {
-      iconClasses.push('tw-pr-10');
+      iconClasses.push('pr-10');
     }
 
     // Full width class
-    const widthClasses = this.fullWidth ? ['tw-w-full'] : ['tw-w-auto'];
+    const widthClasses = this.fullWidth ? ['w-full'] : ['w-auto'];
 
     return [
       ...baseClasses,
@@ -250,16 +250,16 @@ export class InputComponent implements ControlValueAccessor {
 
   get descriptionClasses(): string {
     const baseClasses = [
-      'tw-mt-2',
-      'tw-text-xs',
-      'tw-transition-colors'
+      'mt-2',
+      'text-xs',
+      'transition-colors'
     ];
 
     const variantClasses = {
-      default: ['tw-text-gray-600'],
-      success: ['tw-text-emerald-green-600'],
-      error: ['tw-text-coral-600'],
-      info: ['tw-text-sky-blue-600']
+      default: ['text-gray-600'],
+      success: ['text-emerald-green-600'],
+      error: ['text-coral-600'],
+      info: ['text-sky-blue-600']
     };
 
     return [...baseClasses, ...variantClasses[this.variant]].join(' ');

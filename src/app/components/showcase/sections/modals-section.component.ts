@@ -11,16 +11,16 @@ import { BadgeComponent } from '../../ui/badges/badge';
   standalone: true,
   imports: [CommonModule, FormsModule, ModalComponent, Button, InputComponent, BadgeComponent],
   template: `
-    <section class="tw-mb-12">
-      <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Modal/Dialog Components</h2>
-      <p class="tw-text-beige-700 tw-mb-6">
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Modal/Dialog Components</h2>
+      <p class="text-beige-700 mb-6">
         Componentes Modal versátiles para formularios, confirmaciones y detalles. Incluye variantes, tamaños y slots para header/content/footer.
       </p>
 
       <!-- Modal Variants -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Variantes de Modal</h3>
-        <div class="tw-flex tw-gap-4 tw-flex-wrap">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Variantes de Modal</h3>
+        <div class="flex gap-4 flex-wrap">
           <app-button variant="primary" (buttonClick)="openCentered()">
             Modal Centrado
           </app-button>
@@ -37,9 +37,9 @@ import { BadgeComponent } from '../../ui/badges/badge';
       </div>
 
       <!-- Modal Sizes -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Tamaños</h3>
-        <div class="tw-flex tw-gap-4 tw-flex-wrap">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Tamaños</h3>
+        <div class="flex gap-4 flex-wrap">
           <app-button size="sm" variant="outline" (buttonClick)="openSize('xs')">XS</app-button>
           <app-button size="sm" variant="outline" (buttonClick)="openSize('sm')">SM</app-button>
           <app-button size="sm" variant="outline" (buttonClick)="openSize('md')">MD</app-button>
@@ -49,9 +49,9 @@ import { BadgeComponent } from '../../ui/badges/badge';
       </div>
 
       <!-- Casos de Uso Reales -->
-      <div class="tw-mb-8">
-        <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700 tw-mb-4">Casos de Uso Reales</h3>
-        <div class="tw-flex tw-gap-4 tw-flex-wrap">
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-emerald-green-700 mb-4">Casos de Uso Reales</h3>
+        <div class="flex gap-4 flex-wrap">
           <app-button variant="success" (buttonClick)="openContactForm()">
             Formulario de Contacto
           </app-button>
@@ -74,11 +74,11 @@ import { BadgeComponent } from '../../ui/badges/badge';
         ariaLabel="Modal centrado de ejemplo"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700">Modal Centrado</h3>
-          <p class="tw-text-sm tw-text-beige-600">Ejemplo de modal tradicional</p>
+          <h3 class="text-lg font-semibold text-emerald-green-700">Modal Centrado</h3>
+          <p class="text-sm text-beige-600">Ejemplo de modal tradicional</p>
         </div>
         <div slot="content">
-          <p class="tw-mb-4 tw-text-beige-700">
+          <p class="mb-4 text-beige-700">
             Este es un modal centrado clásico. Perfecto para formularios rápidos o confirmaciones.
           </p>
           <app-input
@@ -106,14 +106,14 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-coral-700">Modal Ancho</h3>
+          <h3 class="text-lg font-semibold text-coral-700">Modal Ancho</h3>
           <app-badge variant="info" size="sm">Responsive</app-badge>
         </div>
         <div slot="content">
-          <p class="tw-mb-4 tw-text-beige-700">
+          <p class="mb-4 text-beige-700">
             Ideal para mostrar tablas, formularios extensos o contenido que necesita más espacio horizontal.
           </p>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <app-input label="Campo 1" [(ngModel)]="modalData.field1"></app-input>
             <app-input label="Campo 2" [(ngModel)]="modalData.field2"></app-input>
             <app-input label="Campo 3" [(ngModel)]="modalData.field3"></app-input>
@@ -139,22 +139,22 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-sky-blue-700">Filtros Avanzados</h3>
+          <h3 class="text-lg font-semibold text-sky-blue-700">Filtros Avanzados</h3>
           <app-badge variant="secondary" size="sm">Drawer</app-badge>
         </div>
         <div slot="content">
-          <div class="tw-space-y-4">
+          <div class="space-y-4">
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Categoría</h4>
+              <h4 class="font-medium text-beige-800 mb-2">Categoría</h4>
               <app-input label="Buscar categoría" [(ngModel)]="modalData.category"></app-input>
             </div>
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Ubicación</h4>
+              <h4 class="font-medium text-beige-800 mb-2">Ubicación</h4>
               <app-input label="Ciudad o región" [(ngModel)]="modalData.location"></app-input>
             </div>
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Precio</h4>
-              <div class="tw-grid tw-grid-cols-2 tw-gap-2">
+              <h4 class="font-medium text-beige-800 mb-2">Precio</h4>
+              <div class="grid grid-cols-2 gap-2">
                 <app-input label="Mín" type="number" [(ngModel)]="modalData.priceMin"></app-input>
                 <app-input label="Máx" type="number" [(ngModel)]="modalData.priceMax"></app-input>
               </div>
@@ -180,62 +180,62 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-xl tw-font-bold tw-text-emerald-green-700">Experiencia Fullscreen</h3>
+          <h3 class="text-xl font-bold text-emerald-green-700">Experiencia Fullscreen</h3>
           <app-badge variant="primary">Inmersivo</app-badge>
         </div>
         <div slot="content">
-          <div class="tw-max-w-6xl tw-mx-auto tw-space-y-8">
+          <div class="max-w-6xl mx-auto space-y-8">
             <!-- Header Introduction -->
-            <div class="tw-text-center tw-max-w-3xl tw-mx-auto">
-              <p class="tw-text-xl tw-text-beige-700 tw-leading-relaxed tw-mb-2">
+            <div class="text-center max-w-3xl mx-auto">
+              <p class="text-xl text-beige-700 leading-relaxed mb-2">
                 El modal fullscreen es ideal para experiencias inmersivas, formularios muy largos,
                 o cuando necesitas mostrar mucho contenido sin distracciones.
               </p>
-              <p class="tw-text-sm tw-text-beige-600">
+              <p class="text-sm text-beige-600">
                 Complete todos los campos requeridos para continuar con el proceso.
               </p>
             </div>
 
             <!-- Progress Indicator -->
-            <div class="tw-flex tw-justify-center tw-mb-8">
-              <div class="tw-flex tw-items-center tw-space-x-4">
-                <div class="tw-flex tw-items-center tw-space-x-2">
-                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-emerald-green-500 tw-flex tw-items-center tw-justify-center">
-                    <span class="tw-text-white tw-text-sm tw-font-medium">1</span>
+            <div class="flex justify-center mb-8">
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-full bg-emerald-green-500 flex items-center justify-center">
+                    <span class="text-white text-sm font-medium">1</span>
                   </div>
-                  <span class="tw-text-sm tw-font-medium tw-text-emerald-green-600">Información Personal</span>
+                  <span class="text-sm font-medium text-emerald-green-600">Información Personal</span>
                 </div>
-                <div class="tw-w-8 tw-h-0.5 tw-bg-beige-300"></div>
-                <div class="tw-flex tw-items-center tw-space-x-2">
-                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-emerald-green-500 tw-flex tw-items-center tw-justify-center">
-                    <span class="tw-text-white tw-text-sm tw-font-medium">2</span>
+                <div class="w-8 h-0.5 bg-beige-300"></div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-full bg-emerald-green-500 flex items-center justify-center">
+                    <span class="text-white text-sm font-medium">2</span>
                   </div>
-                  <span class="tw-text-sm tw-font-medium tw-text-emerald-green-600">Información Empresarial</span>
+                  <span class="text-sm font-medium text-emerald-green-600">Información Empresarial</span>
                 </div>
-                <div class="tw-w-8 tw-h-0.5 tw-bg-beige-300"></div>
-                <div class="tw-flex tw-items-center tw-space-x-2">
-                  <div class="tw-w-8 tw-h-8 tw-rounded-full tw-bg-beige-300 tw-flex tw-items-center tw-justify-center">
-                    <span class="tw-text-beige-600 tw-text-sm tw-font-medium">3</span>
+                <div class="w-8 h-0.5 bg-beige-300"></div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-full bg-beige-300 flex items-center justify-center">
+                    <span class="text-beige-600 text-sm font-medium">3</span>
                   </div>
-                  <span class="tw-text-sm tw-font-medium tw-text-beige-600">Preferencias</span>
+                  <span class="text-sm font-medium text-beige-600">Preferencias</span>
                 </div>
               </div>
             </div>
 
             <!-- Main Form Content -->
-            <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <!-- Información Personal -->
-              <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
-                <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
-                  <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-emerald-green-100 tw-flex tw-items-center tw-justify-center">
-                    <span class="tw-text-emerald-green-600 tw-text-lg">👤</span>
+              <div class="bg-white rounded-lg p-6 shadow-sm border border-beige-200">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 rounded-full bg-emerald-green-100 flex items-center justify-center">
+                    <span class="text-emerald-green-600 text-lg">👤</span>
                   </div>
                   <div>
-                    <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Información Personal</h4>
-                    <p class="tw-text-sm tw-text-beige-600">Datos básicos de contacto</p>
+                    <h4 class="font-semibold text-beige-800 text-lg">Información Personal</h4>
+                    <p class="text-sm text-beige-600">Datos básicos de contacto</p>
                   </div>
                 </div>
-                <div class="tw-space-y-4">
+                <div class="space-y-4">
                   <app-input
                     label="Nombre completo"
                     placeholder="Ej: Juan Pérez García"
@@ -269,17 +269,17 @@ import { BadgeComponent } from '../../ui/badges/badge';
               </div>
 
               <!-- Información Empresarial -->
-              <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
-                <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
-                  <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-sky-blue-100 tw-flex tw-items-center tw-justify-center">
-                    <span class="tw-text-sky-blue-600 tw-text-lg">🏢</span>
+              <div class="bg-white rounded-lg p-6 shadow-sm border border-beige-200">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 rounded-full bg-sky-blue-100 flex items-center justify-center">
+                    <span class="text-sky-blue-600 text-lg">🏢</span>
                   </div>
                   <div>
-                    <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Información Empresarial</h4>
-                    <p class="tw-text-sm tw-text-beige-600">Detalles de su empresa</p>
+                    <h4 class="font-semibold text-beige-800 text-lg">Información Empresarial</h4>
+                    <p class="text-sm text-beige-600">Detalles de su empresa</p>
                   </div>
                 </div>
-                <div class="tw-space-y-4">
+                <div class="space-y-4">
                   <app-input
                     label="Nombre de empresa"
                     placeholder="Ej: Innovación S.A."
@@ -306,17 +306,17 @@ import { BadgeComponent } from '../../ui/badges/badge';
             </div>
 
             <!-- Sección de Dirección -->
-            <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
-              <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
-                <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-coral-100 tw-flex tw-items-center tw-justify-center">
-                  <span class="tw-text-coral-600 tw-text-lg">📍</span>
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-beige-200">
+              <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-coral-100 flex items-center justify-center">
+                  <span class="text-coral-600 text-lg">📍</span>
                 </div>
                 <div>
-                  <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Dirección</h4>
-                  <p class="tw-text-sm tw-text-beige-600">Información de ubicación</p>
+                  <h4 class="font-semibold text-beige-800 text-lg">Dirección</h4>
+                  <p class="text-sm text-beige-600">Información de ubicación</p>
                 </div>
               </div>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <app-input
                   label="País"
                   placeholder="Ej: México"
@@ -332,7 +332,7 @@ import { BadgeComponent } from '../../ui/badges/badge';
                   placeholder="Ej: Ciudad de México"
                   [(ngModel)]="modalData.city">
                 </app-input>
-                <div class="md:tw-col-span-2">
+                <div class="md:col-span-2">
                   <app-input
                     label="Dirección completa"
                     placeholder="Ej: Av. Reforma 123, Col. Centro"
@@ -348,17 +348,17 @@ import { BadgeComponent } from '../../ui/badges/badge';
             </div>
 
             <!-- Sección de Preferencias -->
-            <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-sm tw-border tw-border-beige-200">
-              <div class="tw-flex tw-items-center tw-space-x-3 tw-mb-6">
-                <div class="tw-w-10 tw-h-10 tw-rounded-full tw-bg-purple-100 tw-flex tw-items-center tw-justify-center">
-                  <span class="tw-text-purple-600 tw-text-lg">⚙️</span>
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-beige-200">
+              <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                  <span class="text-purple-600 text-lg">⚙️</span>
                 </div>
                 <div>
-                  <h4 class="tw-font-semibold tw-text-beige-800 tw-text-lg">Preferencias y Notas</h4>
-                  <p class="tw-text-sm tw-text-beige-600">Información adicional opcional</p>
+                  <h4 class="font-semibold text-beige-800 text-lg">Preferencias y Notas</h4>
+                  <p class="text-sm text-beige-600">Información adicional opcional</p>
                 </div>
               </div>
-              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <app-input
                   label="Industria"
                   placeholder="Ej: Tecnología, Salud, Educación"
@@ -369,7 +369,7 @@ import { BadgeComponent } from '../../ui/badges/badge';
                   placeholder="Ej: $10,000 - $50,000"
                   [(ngModel)]="modalData.budget">
                 </app-input>
-                <div class="md:tw-col-span-2">
+                <div class="md:col-span-2">
                   <app-input
                     label="Comentarios adicionales"
                     placeholder="Comparta cualquier información adicional que considere importante..."
@@ -380,25 +380,25 @@ import { BadgeComponent } from '../../ui/badges/badge';
             </div>
 
             <!-- Summary Stats -->
-            <div class="tw-bg-gradient-to-r tw-from-emerald-green-50 tw-to-sky-blue-50 tw-rounded-lg tw-p-6 tw-border tw-border-emerald-green-200">
-              <div class="tw-text-center">
-                <h5 class="tw-font-semibold tw-text-beige-800 tw-mb-4">Resumen del Formulario</h5>
-                <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-4">
-                  <div class="tw-text-center">
-                    <div class="tw-text-2xl tw-font-bold tw-text-emerald-green-600">12</div>
-                    <div class="tw-text-sm tw-text-beige-600">Campos Totales</div>
+            <div class="bg-gradient-to-r from-emerald-green-50 to-sky-blue-50 rounded-lg p-6 border border-emerald-green-200">
+              <div class="text-center">
+                <h5 class="font-semibold text-beige-800 mb-4">Resumen del Formulario</h5>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-emerald-green-600">12</div>
+                    <div class="text-sm text-beige-600">Campos Totales</div>
                   </div>
-                  <div class="tw-text-center">
-                    <div class="tw-text-2xl tw-font-bold tw-text-sky-blue-600">3</div>
-                    <div class="tw-text-sm tw-text-beige-600">Requeridos</div>
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-sky-blue-600">3</div>
+                    <div class="text-sm text-beige-600">Requeridos</div>
                   </div>
-                  <div class="tw-text-center">
-                    <div class="tw-text-2xl tw-font-bold tw-text-coral-600">4</div>
-                    <div class="tw-text-sm tw-text-beige-600">Secciones</div>
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-coral-600">4</div>
+                    <div class="text-sm text-beige-600">Secciones</div>
                   </div>
-                  <div class="tw-text-center">
-                    <div class="tw-text-2xl tw-font-bold tw-text-purple-600">~5min</div>
-                    <div class="tw-text-sm tw-text-beige-600">Tiempo Est.</div>
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-600">~5min</div>
+                    <div class="text-sm text-beige-600">Tiempo Est.</div>
                   </div>
                 </div>
               </div>
@@ -424,10 +424,10 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700">Modal {{ currentSize.toUpperCase() }}</h3>
+          <h3 class="text-lg font-semibold text-emerald-green-700">Modal {{ currentSize.toUpperCase() }}</h3>
         </div>
         <div slot="content">
-          <p class="tw-text-beige-700">
+          <p class="text-beige-700">
             Este modal está configurado en tamaño <strong>{{ currentSize }}</strong>.
             Cada tamaño se adapta perfectamente a diferentes tipos de contenido.
           </p>
@@ -449,11 +449,11 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [loading]="contactLoading"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-emerald-green-700">Contactar Empresa</h3>
+          <h3 class="text-lg font-semibold text-emerald-green-700">Contactar Empresa</h3>
           <app-badge variant="success" size="sm">Verificado</app-badge>
         </div>
         <div slot="content">
-          <div class="tw-space-y-4">
+          <div class="space-y-4">
             <app-input
               label="Tu nombre"
               [required]="true"
@@ -498,10 +498,10 @@ import { BadgeComponent } from '../../ui/badges/badge';
         [hasFooter]="true"
       >
         <div slot="header">
-          <h3 class="tw-text-lg tw-font-semibold tw-text-coral-700">¿Confirmar acción?</h3>
+          <h3 class="text-lg font-semibold text-coral-700">¿Confirmar acción?</h3>
         </div>
         <div slot="content">
-          <p class="tw-text-beige-700">
+          <p class="text-beige-700">
             Esta acción no se puede deshacer. ¿Estás seguro de que quieres continuar?
           </p>
         </div>
@@ -525,8 +525,8 @@ import { BadgeComponent } from '../../ui/badges/badge';
       >
         <div slot="header">
           <div>
-            <h3 class="tw-text-lg tw-font-semibold tw-text-sky-blue-700">Restaurante El Buen Sabor</h3>
-            <div class="tw-flex tw-gap-2 tw-mt-2">
+            <h3 class="text-lg font-semibold text-sky-blue-700">Restaurante El Buen Sabor</h3>
+            <div class="flex gap-2 mt-2">
               <app-badge variant="success" size="sm">Verificado</app-badge>
               <app-badge variant="info" size="sm">Premium</app-badge>
               <app-badge variant="secondary" size="sm">Restaurante</app-badge>
@@ -534,23 +534,23 @@ import { BadgeComponent } from '../../ui/badges/badge';
           </div>
         </div>
         <div slot="content">
-          <div class="tw-space-y-4">
-            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Información de Contacto</h4>
-                <p class="tw-text-sm tw-text-beige-600">📍 Av. Principal 123, Centro</p>
-                <p class="tw-text-sm tw-text-beige-600">📞 +1 234-567-8900</p>
-                <p class="tw-text-sm tw-text-beige-600">✉️ info&#64;elbuensabor.com</p>
+                <h4 class="font-medium text-beige-800 mb-2">Información de Contacto</h4>
+                <p class="text-sm text-beige-600">📍 Av. Principal 123, Centro</p>
+                <p class="text-sm text-beige-600">📞 +1 234-567-8900</p>
+                <p class="text-sm text-beige-600">✉️ info&#64;elbuensabor.com</p>
               </div>
               <div>
-                <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Horarios</h4>
-                <p class="tw-text-sm tw-text-beige-600">Lun - Vie: 9:00 AM - 10:00 PM</p>
-                <p class="tw-text-sm tw-text-beige-600">Sáb - Dom: 10:00 AM - 11:00 PM</p>
+                <h4 class="font-medium text-beige-800 mb-2">Horarios</h4>
+                <p class="text-sm text-beige-600">Lun - Vie: 9:00 AM - 10:00 PM</p>
+                <p class="text-sm text-beige-600">Sáb - Dom: 10:00 AM - 11:00 PM</p>
               </div>
             </div>
             <div>
-              <h4 class="tw-font-medium tw-text-beige-800 tw-mb-2">Descripción</h4>
-              <p class="tw-text-sm tw-text-beige-600">
+              <h4 class="font-medium text-beige-800 mb-2">Descripción</h4>
+              <p class="text-sm text-beige-600">
                 Restaurante familiar especializado en comida tradicional con más de 20 años de experiencia.
                 Ofrecemos un ambiente acogedor y platillos preparados con ingredientes frescos y locales.
               </p>

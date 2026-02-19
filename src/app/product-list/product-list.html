@@ -1,32 +1,32 @@
-<div class="tw-w-full tw-py-6 tw-bg-white">
-  <div class="tw-max-w-screen-xl tw-mx-auto">
-    <div class="tw-w-full tw-overflow-x-auto tw-hide-scrollbar">
-      <div class="tw-flex tw-whitespace-nowrap tw-gap-4 md:tw-justify-center tw-cursor-pointer tw-pt-5 tw-pb-8 tw-overflow-visible">
+<div class="w-full py-6 bg-white">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="w-full overflow-x-auto hide-scrollbar">
+      <div class="flex whitespace-nowrap gap-4 md:justify-center cursor-pointer pt-5 pb-8 overflow-visible">
         @for (product of products; track product) {
           <div
-            class="tw-flex-none tw-w-[310px] tw-h-[349px] tw-border tw-rounded-lg tw-shadow-md hover:tw-shadow-emerald-500/50 tw-transition tw-flex tw-items-center tw-justify-center hover:tw-overflow-visible hover:tw-scale-105 tw-duration-300"
+            class="flex-none w-[310px] h-[349px] border rounded-lg shadow-md hover:shadow-emerald-500/50 transition flex items-center justify-center hover:overflow-visible hover:scale-105 duration-300"
           >
             <img
               [src]="product.image"
               [alt]="product.alt"
-              class="tw-w-full tw-h-full tw-object-contain tw-rounded-md tw-my-1">
+              class="w-full h-full object-contain rounded-md my-1">
           </div>
         }
       </div>
     </div>
-    <div class="tw-mt-6 tw-text-center">
+    <div class="mt-6 text-center">
               <!-- Botón de unirse -->
         <app-button
           variant="alert"
           size="xl"
-          class="md:tw-inline-block tw-hidden"
+          class="md:inline-block hidden"
           [routerLink]="['/auth']"
           [queryParams]="{ ref: 'header', isRegistering: true }"
         >
           ¡Únete ya!
         </app-button>
 
-      <p class="tw-mt-2 tw-text-sm tw-text-beige-700">
+      <p class="mt-2 text-sm text-beige-700">
         * For illustrative purposes only. Products, partners, and offers may vary & subject to change at any time without notice.
       </p>
     </div>

@@ -1,5 +1,7 @@
+@reference "../../../styles.css";
+
 .container {
-  @apply tw-my-[30px];
+  @apply my-[30px];
 }
 
 .partner-logo {

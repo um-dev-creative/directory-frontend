@@ -13,7 +13,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
     <span [class]="badgeClasses">
       <!-- Leading Icon -->
       @if (leadingIcon) {
-        <span class="tw-mr-1">
+        <span class="mr-1">
           <ng-content select="[slot=leading-icon]"></ng-content>
         </span>
       }
@@ -30,7 +30,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
 
       <!-- Trailing Icon / Close Button -->
       @if (trailingIcon) {
-        <span class="tw-ml-1">
+        <span class="ml-1">
           <ng-content select="[slot=trailing-icon]"></ng-content>
         </span>
       }
@@ -43,7 +43,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
           (click)="onRemove()"
           [attr.aria-label]="'Remove ' + (label || 'badge')"
         >
-          <svg class="tw-w-3 tw-h-3" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+          <svg class="w-3 h-3" stroke="currentColor" fill="none" viewBox="0 0 8 8">
             <path stroke-linecap="round" stroke-width="1.5" d="m1 1 6 6m0-6L1 7"></path>
           </svg>
         </button>
@@ -70,29 +70,29 @@ export class BadgeComponent {
 
   get badgeClasses(): string {
     const baseClasses = [
-      'tw-inline-flex',
-      'tw-items-center',
-      'tw-font-medium',
-      'tw-transition-all',
-      'tw-duration-200',
-      'tw-ease-in-out',
-      'tw-whitespace-nowrap',
-      'tw-max-w-full'
+      'inline-flex',
+      'items-center',
+      'font-medium',
+      'transition-all',
+      'duration-200',
+      'ease-in-out',
+      'whitespace-nowrap',
+      'max-w-full'
     ];
 
     // Size classes
     const sizeClasses = {
-      xs: ['tw-text-xs', 'tw-px-2', 'tw-py-0.5', 'tw-gap-1'],
-      sm: ['tw-text-xs', 'tw-px-2.5', 'tw-py-1', 'tw-gap-1'],
-      md: ['tw-text-sm', 'tw-px-3', 'tw-py-1.5', 'tw-gap-1.5'],
-      lg: ['tw-text-base', 'tw-px-4', 'tw-py-2', 'tw-gap-2']
+      xs: ['text-xs', 'px-2', 'py-0.5', 'gap-1'],
+      sm: ['text-xs', 'px-2.5', 'py-1', 'gap-1'],
+      md: ['text-sm', 'px-3', 'py-1.5', 'gap-1.5'],
+      lg: ['text-base', 'px-4', 'py-2', 'gap-2']
     };
 
     // Shape classes
     const shapeClasses = {
-      rounded: ['tw-rounded-md'],
-      pill: ['tw-rounded-full'],
-      square: ['tw-rounded-none']
+      rounded: ['rounded-md'],
+      pill: ['rounded-full'],
+      square: ['rounded-none']
     };
 
     // Variant classes
@@ -101,9 +101,9 @@ export class BadgeComponent {
     // State classes
     const stateClasses = [];
     if (this.disabled) {
-      stateClasses.push('tw-opacity-50', 'tw-cursor-not-allowed');
+      stateClasses.push('opacity-50', 'cursor-not-allowed');
     } else if (this.removable) {
-      stateClasses.push('tw-cursor-default');
+      stateClasses.push('cursor-default');
     }
 
     return [
@@ -118,40 +118,40 @@ export class BadgeComponent {
   private getSolidVariantClasses(): string[] {
     const variantClasses = {
       default: [
-        'tw-bg-gray-100',
-        'tw-text-gray-800',
-        'tw-border',
-        'tw-border-gray-200'
+        'bg-gray-100',
+        'text-gray-800',
+        'border',
+        'border-gray-200'
       ],
       primary: [
-        'tw-bg-emerald-green-500',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-emerald-green-500',
+        'text-white',
+        'shadow-sm'
       ],
       secondary: [
-        'tw-bg-sky-blue-500',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-sky-blue-500',
+        'text-white',
+        'shadow-sm'
       ],
       success: [
-        'tw-bg-emerald-green-600',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-emerald-green-600',
+        'text-white',
+        'shadow-sm'
       ],
       error: [
-        'tw-bg-coral-500',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-coral-500',
+        'text-white',
+        'shadow-sm'
       ],
       warning: [
-        'tw-bg-amber-500',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-amber-500',
+        'text-white',
+        'shadow-sm'
       ],
       info: [
-        'tw-bg-sky-blue-400',
-        'tw-text-white',
-        'tw-shadow-sm'
+        'bg-sky-blue-400',
+        'text-white',
+        'shadow-sm'
       ]
     };
 
@@ -161,53 +161,53 @@ export class BadgeComponent {
   private getOutlineVariantClasses(): string[] {
     const variantClasses = {
       default: [
-        'tw-bg-transparent',
-        'tw-text-gray-700',
-        'tw-border',
-        'tw-border-gray-300',
-        'hover:tw-bg-gray-50'
+        'bg-transparent',
+        'text-gray-700',
+        'border',
+        'border-gray-300',
+        'hover:bg-gray-50'
       ],
       primary: [
-        'tw-bg-transparent',
-        'tw-text-emerald-green-700',
-        'tw-border',
-        'tw-border-emerald-green-500',
-        'hover:tw-bg-emerald-green-50'
+        'bg-transparent',
+        'text-emerald-green-700',
+        'border',
+        'border-emerald-green-500',
+        'hover:bg-emerald-green-50'
       ],
       secondary: [
-        'tw-bg-transparent',
-        'tw-text-sky-blue-700',
-        'tw-border',
-        'tw-border-sky-blue-500',
-        'hover:tw-bg-sky-blue-50'
+        'bg-transparent',
+        'text-sky-blue-700',
+        'border',
+        'border-sky-blue-500',
+        'hover:bg-sky-blue-50'
       ],
       success: [
-        'tw-bg-transparent',
-        'tw-text-emerald-green-800',
-        'tw-border',
-        'tw-border-emerald-green-600',
-        'hover:tw-bg-emerald-green-50'
+        'bg-transparent',
+        'text-emerald-green-800',
+        'border',
+        'border-emerald-green-600',
+        'hover:bg-emerald-green-50'
       ],
       error: [
-        'tw-bg-transparent',
-        'tw-text-coral-700',
-        'tw-border',
-        'tw-border-coral-500',
-        'hover:tw-bg-coral-50'
+        'bg-transparent',
+        'text-coral-700',
+        'border',
+        'border-coral-500',
+        'hover:bg-coral-50'
       ],
       warning: [
-        'tw-bg-transparent',
-        'tw-text-amber-700',
-        'tw-border',
-        'tw-border-amber-500',
-        'hover:tw-bg-amber-50'
+        'bg-transparent',
+        'text-amber-700',
+        'border',
+        'border-amber-500',
+        'hover:bg-amber-50'
       ],
       info: [
-        'tw-bg-transparent',
-        'tw-text-sky-blue-700',
-        'tw-border',
-        'tw-border-sky-blue-400',
-        'hover:tw-bg-sky-blue-50'
+        'bg-transparent',
+        'text-sky-blue-700',
+        'border',
+        'border-sky-blue-400',
+        'hover:bg-sky-blue-50'
       ]
     };
 
@@ -216,24 +216,24 @@ export class BadgeComponent {
 
   get dotClasses(): string {
     const baseClasses = [
-      'tw-w-2',
-      'tw-h-2',
-      'tw-rounded-full',
-      'tw-mr-2'
+      'w-2',
+      'h-2',
+      'rounded-full',
+      'mr-2'
     ];
 
     // Pulse animation
-    const pulseClasses = this.pulse ? ['tw-animate-pulse'] : [];
+    const pulseClasses = this.pulse ? ['animate-pulse'] : [];
 
     // Dot variant colors
     const dotVariantClasses = {
-      default: ['tw-bg-gray-500'],
-      primary: ['tw-bg-emerald-green-500'],
-      secondary: ['tw-bg-sky-blue-500'],
-      success: ['tw-bg-emerald-green-600'],
-      error: ['tw-bg-coral-500'],
-      warning: ['tw-bg-amber-500'],
-      info: ['tw-bg-sky-blue-400']
+      default: ['bg-gray-500'],
+      primary: ['bg-emerald-green-500'],
+      secondary: ['bg-sky-blue-500'],
+      success: ['bg-emerald-green-600'],
+      error: ['bg-coral-500'],
+      warning: ['bg-amber-500'],
+      info: ['bg-sky-blue-400']
     };
 
     return [
@@ -244,23 +244,23 @@ export class BadgeComponent {
   }
 
   get contentClasses(): string {
-    return 'tw-truncate tw-flex-1';
+    return 'truncate flex-1';
   }
 
   get removeButtonClasses(): string {
     const baseClasses = [
-      'tw-ml-1.5',
-      'tw-inline-flex',
-      'tw-items-center',
-      'tw-justify-center',
-      'tw-w-4',
-      'tw-h-4',
-      'tw-rounded-full',
-      'tw-transition-colors',
-      'tw-duration-150',
-      'focus:tw-outline-none',
-      'focus:tw-ring-2',
-      'focus:tw-ring-offset-1'
+      'ml-1.5',
+      'inline-flex',
+      'items-center',
+      'justify-center',
+      'w-4',
+      'h-4',
+      'rounded-full',
+      'transition-colors',
+      'duration-150',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-1'
     ];
 
     // Remove button variant colors
@@ -272,46 +272,46 @@ export class BadgeComponent {
   private getSolidRemoveClasses(): string[] {
     const removeClasses = {
       default: [
-        'tw-text-gray-500',
-        'hover:tw-bg-gray-200',
-        'hover:tw-text-gray-700',
-        'focus:tw-ring-gray-400'
+        'text-gray-500',
+        'hover:bg-gray-200',
+        'hover:text-gray-700',
+        'focus:ring-gray-400'
       ],
       primary: [
-        'tw-text-emerald-green-200',
-        'hover:tw-bg-emerald-green-600',
-        'hover:tw-text-white',
-        'focus:tw-ring-emerald-green-300'
+        'text-emerald-green-200',
+        'hover:bg-emerald-green-600',
+        'hover:text-white',
+        'focus:ring-emerald-green-300'
       ],
       secondary: [
-        'tw-text-sky-blue-200',
-        'hover:tw-bg-sky-blue-600',
-        'hover:tw-text-white',
-        'focus:tw-ring-sky-blue-300'
+        'text-sky-blue-200',
+        'hover:bg-sky-blue-600',
+        'hover:text-white',
+        'focus:ring-sky-blue-300'
       ],
       success: [
-        'tw-text-emerald-green-200',
-        'hover:tw-bg-emerald-green-700',
-        'hover:tw-text-white',
-        'focus:tw-ring-emerald-green-300'
+        'text-emerald-green-200',
+        'hover:bg-emerald-green-700',
+        'hover:text-white',
+        'focus:ring-emerald-green-300'
       ],
       error: [
-        'tw-text-coral-200',
-        'hover:tw-bg-coral-600',
-        'hover:tw-text-white',
-        'focus:tw-ring-coral-300'
+        'text-coral-200',
+        'hover:bg-coral-600',
+        'hover:text-white',
+        'focus:ring-coral-300'
       ],
       warning: [
-        'tw-text-amber-200',
-        'hover:tw-bg-amber-600',
-        'hover:tw-text-white',
-        'focus:tw-ring-amber-300'
+        'text-amber-200',
+        'hover:bg-amber-600',
+        'hover:text-white',
+        'focus:ring-amber-300'
       ],
       info: [
-        'tw-text-sky-blue-200',
-        'hover:tw-bg-sky-blue-500',
-        'hover:tw-text-white',
-        'focus:tw-ring-sky-blue-300'
+        'text-sky-blue-200',
+        'hover:bg-sky-blue-500',
+        'hover:text-white',
+        'focus:ring-sky-blue-300'
       ]
     };
 
@@ -321,46 +321,46 @@ export class BadgeComponent {
   private getOutlineRemoveClasses(): string[] {
     const removeClasses = {
       default: [
-        'tw-text-gray-500',
-        'hover:tw-bg-gray-100',
-        'hover:tw-text-gray-700',
-        'focus:tw-ring-gray-400'
+        'text-gray-500',
+        'hover:bg-gray-100',
+        'hover:text-gray-700',
+        'focus:ring-gray-400'
       ],
       primary: [
-        'tw-text-emerald-green-500',
-        'hover:tw-bg-emerald-green-100',
-        'hover:tw-text-emerald-green-700',
-        'focus:tw-ring-emerald-green-300'
+        'text-emerald-green-500',
+        'hover:bg-emerald-green-100',
+        'hover:text-emerald-green-700',
+        'focus:ring-emerald-green-300'
       ],
       secondary: [
-        'tw-text-sky-blue-500',
-        'hover:tw-bg-sky-blue-100',
-        'hover:tw-text-sky-blue-700',
-        'focus:tw-ring-sky-blue-300'
+        'text-sky-blue-500',
+        'hover:bg-sky-blue-100',
+        'hover:text-sky-blue-700',
+        'focus:ring-sky-blue-300'
       ],
       success: [
-        'tw-text-emerald-green-600',
-        'hover:tw-bg-emerald-green-100',
-        'hover:tw-text-emerald-green-800',
-        'focus:tw-ring-emerald-green-300'
+        'text-emerald-green-600',
+        'hover:bg-emerald-green-100',
+        'hover:text-emerald-green-800',
+        'focus:ring-emerald-green-300'
       ],
       error: [
-        'tw-text-coral-500',
-        'hover:tw-bg-coral-100',
-        'hover:tw-text-coral-700',
-        'focus:tw-ring-coral-300'
+        'text-coral-500',
+        'hover:bg-coral-100',
+        'hover:text-coral-700',
+        'focus:ring-coral-300'
       ],
       warning: [
-        'tw-text-amber-500',
-        'hover:tw-bg-amber-100',
-        'hover:tw-text-amber-700',
-        'focus:tw-ring-amber-300'
+        'text-amber-500',
+        'hover:bg-amber-100',
+        'hover:text-amber-700',
+        'focus:ring-amber-300'
       ],
       info: [
-        'tw-text-sky-blue-400',
-        'hover:tw-bg-sky-blue-100',
-        'hover:tw-text-sky-blue-600',
-        'focus:tw-ring-sky-blue-300'
+        'text-sky-blue-400',
+        'hover:bg-sky-blue-100',
+        'hover:text-sky-blue-600',
+        'focus:ring-sky-blue-300'
       ]
     };
 

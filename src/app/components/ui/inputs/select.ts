@@ -23,7 +23,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
     }
   ],
   template: `
-    <div class="tw-relative tw-w-full">
+    <div class="relative w-full">
       <!-- Label -->
       @if (label) {
         <label
@@ -32,13 +32,13 @@ export type SelectSize = 'sm' | 'md' | 'lg';
         >
           {{ label }}
           @if (required) {
-            <span class="tw-text-coral-500 tw-ml-1">*</span>
+            <span class="text-coral-500 ml-1">*</span>
           }
         </label>
       }
 
       <!-- Select Container -->
-      <div class="tw-relative">
+      <div class="relative">
         <!-- Select Button -->
         <button
           #selectButton
@@ -54,15 +54,15 @@ export type SelectSize = 'sm' | 'md' | 'lg';
           (click)="toggle()"
         >
           <span [class]="valueClasses">
-            <span class="tw-block tw-truncate">
+            <span class="block truncate">
               {{ selectedOption?.label || placeholder }}
             </span>
           </span>
 
           <!-- Chevron Icon -->
           <svg
-            class="tw-absolute tw-right-3 tw-top-1/2 -tw-translate-y-1/2 tw-size-5 tw-text-gray-400 tw-transition-transform tw-duration-200"
-            [class.tw-rotate-180]="isOpen"
+            class="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 transition-transform duration-200"
+            [class.rotate-180]="isOpen"
             viewBox="0 0 16 16"
             fill="currentColor"
             aria-hidden="true"
@@ -92,15 +92,15 @@ export type SelectSize = 'sm' | 'md' | 'lg';
                 role="option"
                 (click)="selectOption(option)"
               >
-                <div class="tw-flex tw-items-center">
-                  <span class="tw-block tw-truncate tw-font-normal">
+                <div class="flex items-center">
+                  <span class="block truncate font-normal">
                     {{ option.label }}
                   </span>
 
                   <!-- Check icon for selected option -->
                   @if (isSelected(option)) {
                     <svg
-                      class="tw-ml-auto tw-size-4 tw-text-emerald-green-600"
+                      class="ml-auto size-4 text-emerald-green-600"
                       viewBox="0 0 16 16"
                       fill="currentColor"
                       aria-hidden="true"
@@ -281,81 +281,81 @@ export class SelectComponent implements ControlValueAccessor {
 
   // Computed classes
   get labelClasses(): string {
-    const base = 'tw-block tw-text-sm tw-font-medium tw-my-2';
+    const base = 'block text-sm font-medium my-2';
 
     const variantClasses = {
-      default: 'tw-text-emerald-green-700',
-      success: 'tw-text-success-600',
-      error: 'tw-text-alert-600',
-      info: 'tw-text-info-600'
+      default: 'text-emerald-green-700',
+      success: 'text-success-600',
+      error: 'text-alert-600',
+      info: 'text-info-600'
     };
 
     return `${base} ${variantClasses[this.variant]}`;
   }
 
   get selectClasses(): string {
-    const base = 'tw-relative tw-w-full tw-rounded-lg tw-bg-white tw-text-left tw-transition-all tw-duration-200 focus:tw-outline-none';
+    const base = 'relative w-full rounded-lg bg-white text-left transition-all duration-200 focus:outline-none';
 
     const sizeClasses = {
-      sm: 'tw-h-9 tw-px-3 tw-text-sm',
-      md: 'tw-h-11 tw-px-4 tw-text-base',
-      lg: 'tw-h-12 tw-px-4 tw-text-lg'
-      // sm: 'tw-h-9 tw-px-3 tw-text-sm',
-      // md: 'tw-h-11 tw-px-4 tw-text-md',
-      // lg: 'tw-h-13 tw-px-5 tw-text-base'
+      sm: 'h-9 px-3 text-sm',
+      md: 'h-11 px-4 text-base',
+      lg: 'h-12 px-4 text-lg'
+      // sm: 'h-9 px-3 text-sm',
+      // md: 'h-11 px-4 text-md',
+      // lg: 'h-13 px-5 text-base'
     };
 
     const variantClasses = {
-      default: 'tw-border tw-border-gray-300 hover:tw-border-emerald-green-400 focus:tw-border-emerald-green-500 focus:tw-ring-2 focus:tw-ring-offset-1 focus:tw-ring-emerald-green-500/20',
-      success: 'tw-border-2 tw-border-success-500 tw-bg-success-50 focus:tw-border-success-600 focus:tw-ring-2 focus:tw-ring-offset-1  focus:tw-ring-success-500/20',
-      // error: 'tw-border-2 tw-border-alert-500 tw-bg-alert-50 focus:tw-border-alert-600 focus:tw-ring-2 focus:tw-ring-alert-500/20',
-      error: 'tw-border-2 tw-border-coral-600 tw-bg-coral-50 focus:tw-border-coral-600 focus:tw-ring-2 focus:tw-ring-offset-1  focus:tw-ring-coral-500/20',
-      info: 'tw-border-2 tw-border-info-500 tw-bg-info-50 focus:tw-border-info-600 focus:tw-ring-2 focus:tw-ring-offset-1 focus:tw-ring-info-500/20'
+      default: 'border border-gray-300 hover:border-emerald-green-400 focus:border-emerald-green-500 focus:ring-2 focus:ring-offset-1 focus:ring-emerald-green-500/20',
+      success: 'border-2 border-success-500 bg-success-50 focus:border-success-600 focus:ring-2 focus:ring-offset-1  focus:ring-success-500/20',
+      // error: 'border-2 border-alert-500 bg-alert-50 focus:border-alert-600 focus:ring-2 focus:ring-alert-500/20',
+      error: 'border-2 border-coral-600 bg-coral-50 focus:border-coral-600 focus:ring-2 focus:ring-offset-1  focus:ring-coral-500/20',
+      info: 'border-2 border-info-500 bg-info-50 focus:border-info-600 focus:ring-2 focus:ring-offset-1 focus:ring-info-500/20'
     };
 
     const disabledClasses = this.disabled
-      ? 'tw-opacity-50 tw-cursor-not-allowed tw-bg-gray-100'
-      : 'tw-cursor-pointer';
+      ? 'opacity-50 cursor-not-allowed bg-gray-100'
+      : 'cursor-pointer';
 
     return `${base} ${sizeClasses[this.size]} ${variantClasses[this.variant]} ${disabledClasses}`;
   }
 
   get valueClasses(): string {
-    const base = 'tw-flex tw-items-center tw-pr-8 tw-truncate';
+    const base = 'flex items-center pr-8 truncate';
 
     const colorClasses = this.selectedOption
-      ? 'tw-text-emerald-green-900'
-      : 'tw-text-gray-400';
+      ? 'text-emerald-green-900'
+      : 'text-gray-400';
 
     return `${base} ${colorClasses}`;
   }
 
   get dropdownClasses(): string {
-    return 'tw-absolute tw-z-50 tw-mt-1 tw-max-h-56 tw-w-full tw-overflow-auto tw-rounded-lg tw-bg-white tw-py-1 tw-shadow-xl tw-ring-1 tw-ring-gray-200 focus:tw-outline-none';
+    return 'absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-lg bg-white py-1 shadow-xl ring-1 ring-gray-200 focus:outline-none';
   }
 
   getOptionClasses(option: SelectOption): string {
-    const base = 'tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-px-3 tw-text-emerald-green-900 tw-transition-colors';
+    const base = 'relative cursor-pointer select-none py-2 px-3 text-emerald-green-900 transition-colors';
 
     const stateClasses = option.disabled
-      ? 'tw-opacity-50 tw-cursor-not-allowed'
-      : 'hover:tw-bg-emerald-green-50 hover:tw-text-emerald-green-700';
+      ? 'opacity-50 cursor-not-allowed'
+      : 'hover:bg-emerald-green-50 hover:text-emerald-green-700';
 
     const selectedClasses = this.isSelected(option)
-      ? 'tw-bg-emerald-green-100 tw-text-emerald-green-800 tw-font-medium'
+      ? 'bg-emerald-green-100 text-emerald-green-800 font-medium'
       : '';
 
     return `${base} ${stateClasses} ${selectedClasses}`;
   }
 
   get descriptionClasses(): string {
-    const base = 'tw-text-sm tw-my-1';
+    const base = 'text-sm my-1';
 
     const variantClasses = {
-      default: 'tw-text-gray-600',
-      success: 'tw-text-success-600',
-      error: 'tw-text-coral-600',
-      info: 'tw-text-info-600'
+      default: 'text-gray-600',
+      success: 'text-success-600',
+      error: 'text-coral-600',
+      info: 'text-info-600'
     };
 
     return `${base} ${variantClasses[this.variant]}`;

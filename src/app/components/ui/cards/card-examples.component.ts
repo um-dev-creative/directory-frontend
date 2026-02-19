@@ -13,21 +13,21 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule, CardComponent, BadgeComponent, Button, InputComponent],
   template: `
-    <div class="tw-p-8 tw-bg-gradient-hero tw-min-h-screen">
-      <div class="tw-max-w-7xl tw-mx-auto">
-        <div class="tw-text-center tw-mb-12">
-          <h1 class="tw-text-4xl tw-font-bold tw-text-emerald-green-700 tw-mb-4">
+    <div class="p-8 bg-gradient-hero min-h-screen">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-emerald-green-700 mb-4">
             Card Component Examples
           </h1>
-          <p class="tw-text-lg tw-text-beige-800">
+          <p class="text-lg text-beige-800">
             Ejemplos completos del componente Card para tu directory
           </p>
         </div>
 
         <!-- Basic Card Variants -->
-        <div class="tw-mb-12">
-          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Variantes Básicas</h2>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Variantes Básicas</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <!-- Default Card -->
             <app-card
@@ -83,9 +83,9 @@ import { FormsModule } from '@angular/forms';
         </div>
 
         <!-- Cards with Headers and Footers -->
-        <div class="tw-mb-12">
-          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Cards con Header y Footer</h2>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Cards con Header y Footer</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <!-- Business Card with Status -->
             <app-card
@@ -95,19 +95,19 @@ import { FormsModule } from '@angular/forms';
               [hasHeader]="true"
               [hasFooter]="true">
 
-              <div slot="header" class="tw-flex tw-items-center tw-justify-between tw-w-full">
-                <div class="tw-flex tw-space-x-2">
+              <div slot="header" class="flex items-center justify-between w-full">
+                <div class="flex space-x-2">
                   <app-badge variant="success" [dot]="true">Abierto</app-badge>
                   <app-badge variant="primary" size="xs">Destacado</app-badge>
                 </div>
-                <span class="tw-text-sm tw-text-gray-500">★ 4.8</span>
+                <span class="text-sm text-gray-500">★ 4.8</span>
               </div>
 
-              <p class="tw-mb-3">Auténtica comida tradicional con ingredientes frescos y recetas familiares.</p>
-              <p class="tw-text-sm tw-text-gray-600">📍 Centro Histórico • 📞 +58 412 123 4567</p>
+              <p class="mb-3">Auténtica comida tradicional con ingredientes frescos y recetas familiares.</p>
+              <p class="text-sm text-gray-600">📍 Centro Histórico • 📞 +58 412 123 4567</p>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
-                <div class="tw-flex tw-space-x-2">
+              <div slot="footer" class="flex justify-between items-center w-full">
+                <div class="flex space-x-2">
                   <app-button variant="primary" size="sm" (buttonClick)="contactBusiness('Restaurante El Sabor')">
                     Contactar
                   </app-button>
@@ -115,7 +115,7 @@ import { FormsModule } from '@angular/forms';
                     Ver Menú
                   </app-button>
                 </div>
-                <span class="tw-text-xs tw-text-gray-500">Hace 2 días</span>
+                <span class="text-xs text-gray-500">Hace 2 días</span>
               </div>
             </app-card>
 
@@ -129,19 +129,19 @@ import { FormsModule } from '@angular/forms';
               [clickable]="true"
               (cardClick)="onCardClick('TechFix Solutions')">
 
-              <div slot="header" class="tw-flex tw-items-center tw-justify-between tw-w-full">
-                <div class="tw-flex tw-space-x-2">
+              <div slot="header" class="flex items-center justify-between w-full">
+                <div class="flex space-x-2">
                   <app-badge variant="warning" [dot]="true">Ocupado</app-badge>
                   <app-badge variant="info" size="xs">Verificado</app-badge>
                 </div>
-                <span class="tw-text-sm tw-text-gray-500">★ 4.9</span>
+                <span class="text-sm text-gray-500">★ 4.9</span>
               </div>
 
-              <p class="tw-mb-3">Reparación especializada de computadoras, teléfonos y equipos electrónicos.</p>
-              <p class="tw-text-sm tw-text-gray-600">🔧 Técnicos certificados • ⚡ Servicio rápido</p>
+              <p class="mb-3">Reparación especializada de computadoras, teléfonos y equipos electrónicos.</p>
+              <p class="text-sm text-gray-600">🔧 Técnicos certificados • ⚡ Servicio rápido</p>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
-                <div class="tw-flex tw-space-x-2">
+              <div slot="footer" class="flex justify-between items-center w-full">
+                <div class="flex space-x-2">
                   <app-button variant="primary" size="sm">
                     Solicitar
                   </app-button>
@@ -149,16 +149,16 @@ import { FormsModule } from '@angular/forms';
                     Cotizar
                   </app-button>
                 </div>
-                <span class="tw-text-xs tw-text-gray-500">En línea</span>
+                <span class="text-xs text-gray-500">En línea</span>
               </div>
             </app-card>
           </div>
         </div>
 
         <!-- Cards with Media -->
-        <div class="tw-mb-12">
-          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Cards con Imágenes</h2>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Cards con Imágenes</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <app-card
               variant="elevated"
@@ -167,16 +167,16 @@ import { FormsModule } from '@angular/forms';
               [hasMedia]="true"
               [hasFooter]="true">
 
-              <div slot="media" class="tw-h-48 tw-bg-gradient-to-br tw-from-amber-100 tw-to-orange-200 tw-flex tw-items-center tw-justify-center">
-                <div class="tw-text-center">
-                  <div class="tw-text-4xl tw-mb-2">☕</div>
-                  <span class="tw-text-sm tw-text-gray-600">Imagen del café</span>
+              <div slot="media" class="h-48 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-4xl mb-2">☕</div>
+                  <span class="text-sm text-gray-600">Imagen del café</span>
                 </div>
               </div>
 
-              <p class="tw-mb-3">El mejor café de la ciudad con granos seleccionados y preparación artesanal.</p>
+              <p class="mb-3">El mejor café de la ciudad con granos seleccionados y preparación artesanal.</p>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
+              <div slot="footer" class="flex justify-between items-center w-full">
                 <app-button variant="primary" size="sm">Ver Carta</app-button>
                 <app-badge variant="success" size="xs">Abierto</app-badge>
               </div>
@@ -189,16 +189,16 @@ import { FormsModule } from '@angular/forms';
               [hasMedia]="true"
               [hasFooter]="true">
 
-              <div slot="media" class="tw-h-48 tw-bg-gradient-to-br tw-from-emerald-green-100 tw-to-emerald-green-200 tw-flex tw-items-center tw-justify-center">
-                <div class="tw-text-center">
-                  <div class="tw-text-4xl tw-mb-2">💪</div>
-                  <span class="tw-text-sm tw-text-gray-600">Instalaciones modernas</span>
+              <div slot="media" class="h-48 bg-gradient-to-br from-emerald-green-100 to-emerald-green-200 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-4xl mb-2">💪</div>
+                  <span class="text-sm text-gray-600">Instalaciones modernas</span>
                 </div>
               </div>
 
-              <p class="tw-mb-3">Equipos de última generación y entrenadores profesionales certificados.</p>
+              <p class="mb-3">Equipos de última generación y entrenadores profesionales certificados.</p>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
+              <div slot="footer" class="flex justify-between items-center w-full">
                 <app-button variant="primary" size="sm">Membresía</app-button>
                 <app-badge variant="info" size="xs">24/7</app-badge>
               </div>
@@ -211,16 +211,16 @@ import { FormsModule } from '@angular/forms';
               [hasMedia]="true"
               [hasFooter]="true">
 
-              <div slot="media" class="tw-h-48 tw-bg-gradient-to-br tw-from-sky-blue-100 tw-to-sky-blue-200 tw-flex tw-items-center tw-justify-center">
-                <div class="tw-text-center">
-                  <div class="tw-text-4xl tw-mb-2">📚</div>
-                  <span class="tw-text-sm tw-text-gray-600">Gran variedad de libros</span>
+              <div slot="media" class="h-48 bg-gradient-to-br from-sky-blue-100 to-sky-blue-200 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-4xl mb-2">📚</div>
+                  <span class="text-sm text-gray-600">Gran variedad de libros</span>
                 </div>
               </div>
 
-              <p class="tw-mb-3">Amplio catálogo de libros, material escolar y artículos de oficina.</p>
+              <p class="mb-3">Amplio catálogo de libros, material escolar y artículos de oficina.</p>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
+              <div slot="footer" class="flex justify-between items-center w-full">
                 <app-button variant="outline" size="sm">Catálogo</app-button>
                 <app-badge variant="secondary" size="xs">Nuevo</app-badge>
               </div>
@@ -229,9 +229,9 @@ import { FormsModule } from '@angular/forms';
         </div>
 
         <!-- Contact Form Card -->
-        <div class="tw-mb-12">
-          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Card con Formulario</h2>
-          <div class="tw-max-w-lg tw-mx-auto">
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Card con Formulario</h2>
+          <div class="max-w-lg mx-auto">
 
             <app-card
               variant="elevated"
@@ -240,7 +240,7 @@ import { FormsModule } from '@angular/forms';
               [hasFooter]="true"
               padding="lg">
 
-              <form (ngSubmit)="submitContactForm()" class="tw-space-y-4">
+              <form (ngSubmit)="submitContactForm()" class="space-y-4">
                 <app-input
                   label="Nombre"
                   placeholder="Tu nombre completo"
@@ -267,7 +267,7 @@ import { FormsModule } from '@angular/forms';
                 </app-input>
               </form>
 
-              <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
+              <div slot="footer" class="flex justify-between items-center w-full">
                 <app-button
                   variant="outline"
                   size="sm"
@@ -286,9 +286,9 @@ import { FormsModule } from '@angular/forms';
         </div>
 
         <!-- Interactive Grid -->
-        <div class="tw-mb-12">
-          <h2 class="tw-text-2xl tw-font-bold tw-text-emerald-green-700 tw-mb-6">Directory Interactivo</h2>
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Directory Interactivo</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             @for (business of businesses; track business.name) {
               <app-card
                 variant="interactive"
@@ -299,8 +299,8 @@ import { FormsModule } from '@angular/forms';
                 size="sm"
                 (cardClick)="selectBusiness(business)">
 
-                <p class="tw-text-sm tw-mb-2">{{ business.description }}</p>
-                <div class="tw-flex tw-flex-wrap tw-gap-1 tw-mb-3">
+                <p class="text-sm mb-2">{{ business.description }}</p>
+                <div class="flex flex-wrap gap-1 mb-3">
                   @for (tag of business.tags; track tag) {
                     <app-badge
                       variant="secondary"
@@ -310,8 +310,8 @@ import { FormsModule } from '@angular/forms';
                   }
                 </div>
 
-                <div slot="footer" class="tw-flex tw-justify-between tw-items-center tw-w-full">
-                  <span class="tw-text-xs tw-text-gray-500">{{ business.location }}</span>
+                <div slot="footer" class="flex justify-between items-center w-full">
+                  <span class="text-xs text-gray-500">{{ business.location }}</span>
                   <app-badge
                     [variant]="business.status === 'open' ? 'success' : 'error'"
                     size="xs"
@@ -326,25 +326,25 @@ import { FormsModule } from '@angular/forms';
 
         <!-- Feedback -->
         @if (selectedBusiness) {
-          <div class="tw-fixed tw-bottom-4 tw-right-4 tw-max-w-sm">
+          <div class="fixed bottom-4 right-4 max-w-sm">
             <app-card
               variant="gradient"
               [hasHeader]="true"
               [hasFooter]="true">
 
-            <div slot="header" class="tw-flex tw-justify-between tw-items-center tw-w-full">
-              <span class="tw-font-semibold tw-text-emerald-green-700">Seleccionado</span>
+            <div slot="header" class="flex justify-between items-center w-full">
+              <span class="font-semibold text-emerald-green-700">Seleccionado</span>
               <button
                 (click)="selectedBusiness = null"
-                class="tw-text-gray-400 hover:tw-text-gray-600">
+                class="text-gray-400 hover:text-gray-600">
                 ✕
               </button>
             </div>
 
-            <h4 class="tw-font-semibold tw-mb-1">{{ selectedBusiness.name }}</h4>
-            <p class="tw-text-sm tw-text-gray-600">{{ selectedBusiness.category }}</p>
+            <h4 class="font-semibold mb-1">{{ selectedBusiness.name }}</h4>
+            <p class="text-sm text-gray-600">{{ selectedBusiness.category }}</p>
 
-            <div slot="footer" class="tw-flex tw-space-x-2 tw-w-full">
+            <div slot="footer" class="flex space-x-2 w-full">
               <app-button variant="primary" size="sm">Contactar</app-button>
               <app-button variant="outline" size="sm">Ver Perfil</app-button>
             </div>

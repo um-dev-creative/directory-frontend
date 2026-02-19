@@ -22,19 +22,19 @@ interface Country {
   selector: 'app-partner-step-three',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, Button, CardComponent, SelectComponent, IconComponent],  template: `
-    <form [formGroup]="locationForm" (ngSubmit)="onSubmit()" class="tw-space-y-6">
+    <form [formGroup]="locationForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <!-- Header -->
-      <div class="tw-text-center tw-pb-4 tw-border-b tw-border-beige-200">
-        <h2 class="tw-text-xl tw-font-semibold tw-text-emerald-green-700 tw-mb-2">
+      <div class="text-center pb-4 border-b border-beige-200">
+        <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
           Ubicación del Negocio
         </h2>
-        <p class="tw-text-beige-600">
+        <p class="text-beige-600">
           Selecciona el país donde opera tu negocio principal
         </p>
       </div>
 
       <!-- Country Selection -->
-      <div class="tw-space-y-4">
+      <div class="space-y-4">
         <!-- Country Select Component -->
         <app-select
           label="País de Operación"
@@ -50,14 +50,14 @@ interface Country {
 
       <!-- Selected Country Preview -->
       @if (selectedCountry) {
-        <div class="tw-bg-emerald-green-50 tw-border tw-border-emerald-green-200 tw-rounded-lg tw-p-4">
-          <div class="tw-flex tw-items-center tw-space-x-3">
-            <span class="tw-text-2xl">{{ selectedCountry.flag }}</span>
+        <div class="bg-emerald-green-50 border border-emerald-green-200 rounded-lg p-4">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">{{ selectedCountry.flag }}</span>
             <div>
-              <h3 class="tw-text-lg tw-font-medium tw-text-emerald-green-700">
+              <h3 class="text-lg font-medium text-emerald-green-700">
                 {{ selectedCountry.name }}
               </h3>
-              <p class="tw-text-sm tw-text-emerald-green-600">
+              <p class="text-sm text-emerald-green-600">
                 País seleccionado para tu negocio
               </p>
             </div>
@@ -67,19 +67,19 @@ interface Country {
 
       <!-- Info Card -->
       <app-card variant="outlined-blue">
-        <div class="tw-flex tw-items-center tw-mb-2">
-          <app-icon name="information-circle" size="md" class="tw-text-sky-blue-700 tw-mr-1"></app-icon>
-          <h4 class="tw-text-md tw-font-semibold tw-text-sky-blue-700">
+        <div class="flex items-center mb-2">
+          <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-1"></app-icon>
+          <h4 class="text-md font-semibold text-sky-blue-700">
             ¿Por qué necesitamos esta información?
           </h4>
         </div>
-        <p class="tw-text-sm tw-text-sky-blue-700">
+        <p class="text-sm text-sky-blue-700">
           La ubicación nos ayuda a conectarte con clientes locales y mostrar tu negocio en búsquedas relevantes de tu región.
         </p>
       </app-card>
 
       <!-- Action Buttons -->
-      <div class="tw-flex tw-justify-end tw-pt-4 tw-border-t tw-border-beige-200">
+      <div class="flex justify-end pt-4 border-t border-beige-200">
         <!--app-button
           variant="outline"
           size="lg"

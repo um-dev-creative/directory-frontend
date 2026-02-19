@@ -2,9 +2,9 @@
 <div [class]="containerClasses" (click)="focusInput()">
   <!-- Icon: Search -->
   <svg
-    class="tw-w-6 tw-h-6 tw-text-emerald-green-600 tw-ml-2 tw-flex-shrink-0"
-    [class.tw-text-emerald-green-400]="disabled"
-    [class.tw-animate-pulse]="loading"
+    class="w-6 h-6 text-emerald-green-600 ml-2 shrink-0"
+    [class.text-emerald-green-400]="disabled"
+    [class.animate-pulse]="loading"
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1.5"
@@ -25,23 +25,23 @@
     [maxlength]="maxLength"
     [placeholder]="placeholder | translate"
     [attr.aria-label]="'menu_header.search.aria_label' | translate"
-    class="tw-flex-grow tw-bg-transparent tw-border-none tw-outline-none tw-pl-4 tw-text-emerald-green-800 tw-placeholder-beige-600 focus:tw-ring-0 focus:tw-border-transparent tw-font-medium"
-    [class.tw-cursor-not-allowed]="disabled"
-    [class.tw-text-emerald-green-400]="disabled"
+    class="grow bg-transparent border-none outline-hidden pl-4 text-emerald-green-800 placeholder:text-beige-600 focus:ring-0 focus:border-transparent font-medium"
+    [class.cursor-not-allowed]="disabled"
+    [class.text-emerald-green-400]="disabled"
     autocomplete="off"
     spellcheck="false"
   />
 
   <!-- Loading indicator -->
   @if (loading && !searchText) {
-    <div class="tw-flex tw-items-center tw-justify-center tw-mr-3">
+    <div class="flex items-center justify-center mr-3">
       <svg
-        class="tw-animate-spin tw-h-4 tw-w-4 tw-text-emerald-green-500"
+        class="animate-spin h-4 w-4 text-emerald-green-500"
         fill="none"
         viewBox="0 0 24 24"
       >
         <circle
-          class="tw-opacity-25"
+          class="opacity-25"
           cx="12"
           cy="12"
           r="10"
@@ -49,7 +49,7 @@
           stroke-width="4"
         ></circle>
         <path
-          class="tw-opacity-75"
+          class="opacity-75"
           fill="currentColor"
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         ></path>
@@ -62,7 +62,7 @@
     <button
       (click)="onSubmit()"
       [disabled]="disabled || !isSearchValid"
-      class="tw-flex tw-items-center tw-justify-center tw-bg-emerald-green-500 tw-rounded-full tw-p-2 hover:tw-bg-emerald-green-600 tw-transition-all tw-duration-200 tw-mr-1 tw-shadow-sm disabled:tw-opacity-50 disabled:tw-cursor-not-allowed"
+      class="flex items-center justify-center bg-emerald-green-500 rounded-full p-2 hover:bg-emerald-green-600 transition-all duration-200 mr-1 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
       [attr.aria-label]="'menu_header.search.submit' | translate"
       title="{{ 'menu_header.search.submit' | translate }}"
     >
@@ -71,7 +71,7 @@
         viewBox="0 0 24 24"
         stroke-width="2.5"
         stroke="currentColor"
-        class="tw-w-3 tw-h-3 tw-text-white"
+        class="w-3 h-3 text-white"
       >
         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
@@ -83,7 +83,7 @@
     <button
       (click)="clearSearch()"
       [disabled]="disabled"
-      class="tw-flex tw-items-center tw-justify-center tw-bg-coral-500 tw-rounded-full tw-p-2 hover:tw-bg-coral-600 tw-transition-all tw-duration-200 tw-mr-1 tw-shadow-sm disabled:tw-opacity-50 disabled:tw-cursor-not-allowed"
+      class="flex items-center justify-center bg-coral-500 rounded-full p-2 hover:bg-coral-600 transition-all duration-200 mr-1 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
       [attr.aria-label]="'menu_header.search.clear' | translate"
       title="{{ 'menu_header.search.clear' | translate }}"
     >
@@ -92,7 +92,7 @@
         viewBox="0 0 24 24"
         stroke-width="2.5"
         stroke="currentColor"
-        class="tw-w-3 tw-h-3 tw-text-white"
+        class="w-3 h-3 text-white"
       >
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>

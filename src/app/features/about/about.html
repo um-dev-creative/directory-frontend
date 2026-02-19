@@ -43,18 +43,18 @@
     </div>
   </section>
   <!-- Features Section -->
-  <section class="features-section tw-py-8 sm:tw-py-12 md:tw-py-16">
-    <div class="content-container tw-px-4 sm:tw-px-6 md:tw-px-8">
-      <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 xl:tw-grid-cols-4 tw-gap-6 sm:tw-gap-8 tw-max-w-7xl tw-mx-auto tw-place-items-center sm:tw-place-items-stretch">
+  <section class="features-section py-8 sm:py-12 md:py-16">
+    <div class="content-container px-4 sm:px-6 md:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto place-items-center sm:place-items-stretch">
         @for (feature of companyInfo.features; track feature.icon) {
           <app-card
               variant="elevated"
               size="md"
-              class="feature-card tw-w-full tw-max-w-xs sm:tw-max-w-none tw-h-[320px] sm:tw-h-[340px] lg:tw-h-[320px] tw-flex tw-flex-col tw-border tw-border-emerald-green-300 tw-shadow-lg tw-shadow-emerald-green-100 tw-rounded-xl"
+              class="feature-card w-full max-w-xs sm:max-w-none h-[320px] sm:h-[340px] lg:h-[320px] flex flex-col border border-emerald-green-300 shadow-lg shadow-emerald-green-100 rounded-xl"
               [clickable]="false">
               <div class="feature-icon"><app-icon [name]="feature.icon" size="lg"></app-icon></div>
-                <h3 class="feature-title tw-text-lg sm:tw-text-xl tw-font-bold tw-text-gray-800 tw-line-clamp-2 tw-leading-tight tw-mb-4 tw-h-12 tw-flex tw-items-center tw-justify-center">{{ feature.title }}</h3>
-                <p class="feature-description tw-text-md tw-text-gray-600 tw-leading-relaxed tw-line-clamp-6 tw-h-36 tw-overflow-hidden">{{ feature.description }}</p>
+                <h3 class="feature-title text-lg sm:text-xl font-bold text-gray-800 line-clamp-2 leading-tight mb-4 h-12 flex items-center justify-center">{{ feature.title }}</h3>
+                <p class="feature-description text-md text-gray-600 leading-relaxed line-clamp-6 h-36 overflow-hidden">{{ feature.description }}</p>
           </app-card>
         }
       </div>
@@ -63,18 +63,18 @@
 
   <section class="features-section">
     <div class="content-container">
-      <div class="tw-bg-gradient-sky tw-p-6 sm:tw-p-8 md:tw-p-10 lg:tw-p-12 tw-rounded-xl tw-border tw-border-sky-300 tw-shadow-lg tw-shadow-sky-100 tw-mx-4 sm:tw-mx-6 md:tw-mx-8">
-        <div class="tw-text-center tw-max-w-4xl tw-mx-auto">
-          <h3 class="tw-text-lg sm:tw-text-xl md:tw-text-2xl lg:tw-text-3xl tw-font-bold tw-mb-3 sm:tw-mb-4 tw-text-sky-blue-800 tw-leading-tight">¿Listo para unirte a nuestra comunidad?</h3>
-          <p class="tw-text-sm sm:tw-text-base md:tw-text-lg tw-text-sky-blue-700 tw-mb-6 sm:tw-mb-8 tw-leading-relaxed tw-max-w-2xl tw-mx-auto">Ya sea que busques ofertas o quieras promocionar tu negocio, tenemos algo para ti.</p>
-          <div class="tw-flex tw-flex-col sm:tw-flex-row tw-justify-center tw-items-center tw-gap-3 sm:tw-gap-4 tw-mt-6">
+      <div class="bg-gradient-sky p-6 sm:p-8 md:p-10 lg:p-12 rounded-xl border border-sky-300 shadow-lg shadow-sky-100 mx-4 sm:mx-6 md:mx-8">
+        <div class="text-center max-w-4xl mx-auto">
+          <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 text-sky-blue-800 leading-tight">¿Listo para unirte a nuestra comunidad?</h3>
+          <p class="text-sm sm:text-base md:text-lg text-sky-blue-700 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">Ya sea que busques ofertas o quieras promocionar tu negocio, tenemos algo para ti.</p>
+          <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6">
             <app-button
               variant="secondary"
               size="lg"
               [routerLink]="['/auth']"
               [queryParams]="{ ref: 'about', isRegistering: true }"
               [fullWidth]="true"
-              class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
+              class="w-full sm:w-auto min-w-[200px]">
               Únete a la comunidad
             </app-button>
             <app-button
@@ -82,7 +82,7 @@
               size="lg"
               [routerLink]="['/partner']"
               [fullWidth]="true"
-              class="tw-w-full sm:tw-w-auto tw-min-w-[200px]">
+              class="w-full sm:w-auto min-w-[200px]">
               Para Negocios
             </app-button>
           </div>

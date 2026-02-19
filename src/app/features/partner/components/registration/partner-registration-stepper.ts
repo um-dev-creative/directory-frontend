@@ -32,52 +32,52 @@ export interface StepTwoData {
     ReportProblem
   ],
   template: `
-    <div class="tw-min-h-screen tw-bg-gray-50 tw-py-8">
-      <div class="tw-max-w-2xl tw-mx-auto tw-px-4">
+    <div class="min-h-screen bg-gray-50 py-8">
+      <div class="max-w-2xl mx-auto px-4">
         <!-- Header -->
-        <div class="tw-text-center tw-mb-8">
-          <h1 class="tw-text-3xl tw-font-bold tw-text-emerald-green-700 tw-mb-2">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-emerald-green-700 mb-2">
             Registra tu Negocio
           </h1>
-          <p class="tw-text-gray-600">
+          <p class="text-gray-600">
             Completa los siguientes pasos para crear tu perfil de partner
           </p>
         </div>
 
         <!-- Progress Indicator -->
-        <div class="tw-mb-8">
-          <div class="tw-flex tw-items-center tw-justify-center tw-space-x-4">
+        <div class="mb-8">
+          <div class="flex items-center justify-center space-x-4">
             @for (step of steps; track step.number) {
-              <div class="tw-flex tw-items-center">
+              <div class="flex items-center">
                 <!-- Step Circle -->
-                <div class="tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-border-2 tw-transition-all tw-duration-300"
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300"
                      [class]="getStepCircleClasses(step.number)">
                   @if (step.number < currentStep) {
                     <!-- Completed Step -->
-                    <svg class="tw-w-5 tw-h-5 tw-text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                     </svg>
                   } @else {
                     <!-- Step Number -->
-                    <span class="tw-text-sm tw-font-medium">{{ step.number }}</span>
+                    <span class="text-sm font-medium">{{ step.number }}</span>
                   }
                 </div>
 
                 <!-- Step Label -->
-                <div class="tw-ml-3 tw-hidden sm:tw-block">
-                  <div class="tw-text-sm tw-font-medium tw-transition-colors tw-duration-300"
+                <div class="ml-3 hidden sm:block">
+                  <div class="text-sm font-medium transition-colors duration-300"
                        [class]="getStepLabelClasses(step.number)">
                     {{ step.title }}
                   </div>
-                  <!--div class="tw-text-xs tw-text-gray-500">
+                  <!--div class="text-xs text-gray-500">
                     {{ step.description }}
                   </div-->
                 </div>
 
                 <!-- Connector Line -->
                 @if (step.number < steps.length) {
-                  <div class="tw-hidden sm:tw-block tw-w-16 tw-h-0.5 tw-ml-4 tw-transition-colors tw-duration-300"
-                       [class]="step.number < currentStep ? 'tw-bg-emerald-green-500' : 'tw-bg-gray-300'">
+                  <div class="hidden sm:block w-16 h-0.5 ml-4 transition-colors duration-300"
+                       [class]="step.number < currentStep ? 'bg-emerald-green-500' : 'bg-gray-300'">
                   </div>
                 }
               </div>
@@ -86,9 +86,9 @@ export interface StepTwoData {
         </div>
 
         <!-- Step Content -->
-        <div class="tw-flex tw-justify-center">
+        <div class="flex justify-center">
           <app-card variant="elevated" size="lg" padding="lg">
-            <div class="tw-flex tw-justify-center">
+            <div class="flex justify-center">
               @switch (currentStep) {
                 @case (1) {
                   <app-partner-step-one
@@ -117,19 +117,19 @@ export interface StepTwoData {
 
         <!-- Loading Overlay -->
         @if (isLoading) {
-          <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center tw-z-50">
-            <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-lg">
-              <div class="tw-flex tw-items-center tw-space-x-3">
-                <div class="tw-animate-spin tw-rounded-full tw-h-6 tw-w-6 tw-border-b-2 tw-border-emerald-green-500"></div>
-                <span class="tw-text-gray-700">{{ loadingMessage }}</span>
+          <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+              <div class="flex items-center space-x-3">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-green-500"></div>
+                <span class="text-gray-700">{{ loadingMessage }}</span>
               </div>
             </div>
           </div>
         }
 
         <!-- Support Section -->
-        <div class="tw-text-center tw-pt-6 tw-border-t tw-border-gray-200 tw-mt-8">
-          <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con el registro de tu negocio?</p>
+        <div class="text-center pt-6 border-t border-gray-200 mt-8">
+          <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con el registro de tu negocio?</p>
           <app-report-problem
             [options]="reportProblemOptions"
             variant="link"
@@ -192,19 +192,19 @@ export class PartnerRegistrationStepper implements OnDestroy {
 
   getStepCircleClasses(stepNumber: number): string {
     if (stepNumber < this.currentStep) {
-      return 'tw-bg-emerald-green-500 tw-border-emerald-green-500';
+      return 'bg-emerald-green-500 border-emerald-green-500';
     } else if (stepNumber === this.currentStep) {
-      return 'tw-bg-emerald-green-100 tw-border-emerald-green-500 tw-text-emerald-green-700';
+      return 'bg-emerald-green-100 border-emerald-green-500 text-emerald-green-700';
     } else {
-      return 'tw-bg-white tw-border-gray-300 tw-text-gray-500';
+      return 'bg-white border-gray-300 text-gray-500';
     }
   }
 
   getStepLabelClasses(stepNumber: number): string {
     if (stepNumber <= this.currentStep) {
-      return 'tw-text-emerald-green-700';
+      return 'text-emerald-green-700';
     } else {
-      return 'tw-text-gray-500';
+      return 'text-gray-500';
     }
   }
 

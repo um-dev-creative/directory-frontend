@@ -17,7 +17,7 @@ export type TextareaSize = 'sm' | 'md' | 'lg';
     }
   ],
   template: `
-    <div class="tw-relative tw-w-full">
+    <div class="relative w-full">
       <!-- Label -->
       @if (label) {
         <label
@@ -26,13 +26,13 @@ export type TextareaSize = 'sm' | 'md' | 'lg';
         >
           {{ label }}
           @if (required) {
-            <span class="tw-text-coral-500 tw-ml-1">*</span>
+            <span class="text-coral-500 ml-1">*</span>
           }
         </label>
       }
 
       <!-- Textarea Container -->
-      <div class="tw-relative">
+      <div class="relative">
         <!-- Textarea Field -->
         <textarea
           [id]="textareaId"
@@ -53,7 +53,7 @@ export type TextareaSize = 'sm' | 'md' | 'lg';
 
         <!-- Character Count -->
         @if (showCharacterCount && maxLength) {
-          <div class="tw-absolute tw-bottom-2 tw-right-3 tw-text-xs tw-text-gray-400 tw-bg-white tw-px-1">
+          <div class="absolute bottom-2 right-3 text-xs text-gray-400 bg-white px-1">
             {{ value.length }}/{{ maxLength }}
           </div>
         }
@@ -116,18 +116,18 @@ export class TextareaComponent implements ControlValueAccessor {
 
   get labelClasses(): string {
     const baseClasses = [
-      'tw-block',
-      'tw-text-sm',
-      'tw-font-medium',
-      'tw-my-2',
-      'tw-transition-colors'
+      'block',
+      'text-sm',
+      'font-medium',
+      'my-2',
+      'transition-colors'
     ];
 
     const variantClasses = {
-      default: ['tw-text-emerald-green-700'],
-      success: ['tw-text-success-600'],
-      error: ['tw-text-coral-600'],
-      info: ['tw-text-sky-blue-700']
+      default: ['text-emerald-green-700'],
+      success: ['text-success-600'],
+      error: ['text-coral-600'],
+      info: ['text-sky-blue-700']
     };
 
     return [
@@ -138,67 +138,67 @@ export class TextareaComponent implements ControlValueAccessor {
 
   get textareaClasses(): string {
     const baseClasses = [
-      'tw-block',
-      'tw-w-full',
-      'tw-border',
-      'tw-rounded-lg',
-      'tw-transition-colors',
-      'tw-duration-200',
-      // 'tw-font-medium',
-      'placeholder:tw-text-gray-400',
-      'focus:tw-outline-none',
-      'focus:tw-ring-2',
-      'focus:tw-ring-offset-1',
-      'disabled:tw-bg-gray-50',
-      'disabled:tw-text-gray-500',
-      'disabled:tw-cursor-not-allowed',
-      'readonly:tw-bg-gray-50',
-      'readonly:tw-cursor-default'
+      'block',
+      'w-full',
+      'border',
+      'rounded-lg',
+      'transition-colors',
+      'duration-200',
+      // 'font-medium',
+      'placeholder:text-gray-400',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-1',
+      'disabled:bg-gray-50',
+      'disabled:text-gray-500',
+      'disabled:cursor-not-allowed',
+      'readonly:bg-gray-50',
+      'readonly:cursor-default'
     ];
 
     // Size classes
     const sizeClasses = {
-      // sm: ['tw-px-3', 'tw-py-2', 'tw-text-sm'],
-      // md: ['tw-px-4', 'tw-py-3', 'tw-text-base'],
-      // lg: ['tw-px-5', 'tw-py-4', 'tw-text-lg']
-      sm: ['tw-text-sm', 'tw-px-3', 'tw-py-2'],
-      md: ['tw-text-md', 'tw-px-4', 'tw-py-3'],
-      lg: ['tw-text-base', 'tw-px-5', 'tw-py-4']
+      // sm: ['px-3', 'py-2', 'text-sm'],
+      // md: ['px-4', 'py-3', 'text-base'],
+      // lg: ['px-5', 'py-4', 'text-lg']
+      sm: ['text-sm', 'px-3', 'py-2'],
+      md: ['text-md', 'px-4', 'py-3'],
+      lg: ['text-base', 'px-5', 'py-4']
     };
 
     // Variant classes
     const variantClasses = {
       default: [
-        'tw-border-gray-300',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-ring-emerald-green-500/20',
-        'focus:tw-border-emerald-green-500',
-        'hover:tw-border-emerald-green-400'
+        'border-gray-300',
+        'bg-white',
+        'text-gray-900',
+        'focus:ring-emerald-green-500/20',
+        'focus:border-emerald-green-500',
+        'hover:border-emerald-green-400'
       ],
       success: [
-        'tw-border-emerald-green-300',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-ring-emerald-green-500/20',
-        'focus:tw-ring-emerald-green-500',
-        'focus:tw-border-emerald-green-500'
+        'border-emerald-green-300',
+        'bg-white',
+        'text-gray-900',
+        'focus:ring-emerald-green-500/20',
+        'focus:ring-emerald-green-500',
+        'focus:border-emerald-green-500'
       ],
       error: [
-        'tw-border-coral-500',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-ring-coral-500/20',
-        'focus:tw-ring-coral-500',
-        'focus:tw-border-coral-500'
+        'border-coral-500',
+        'bg-white',
+        'text-gray-900',
+        'focus:ring-coral-500/20',
+        'focus:ring-coral-500',
+        'focus:border-coral-500'
       ],
       info: [
-        'tw-border-sky-blue-300',
-        'tw-bg-white',
-        'tw-text-gray-900',
-        'focus:tw-ring-sky-blue-500/20',
-        'focus:tw-ring-sky-blue-500',
-        'focus:tw-border-sky-blue-500'
+        'border-sky-blue-300',
+        'bg-white',
+        'text-gray-900',
+        'focus:ring-sky-blue-500/20',
+        'focus:ring-sky-blue-500',
+        'focus:border-sky-blue-500'
       ]
     };
 
@@ -210,13 +210,13 @@ export class TextareaComponent implements ControlValueAccessor {
   }
 
   get descriptionClasses(): string {
-    const baseClasses = ['tw-mt-2', 'tw-text-xs'];
+    const baseClasses = ['mt-2', 'text-xs'];
 
     const variantClasses = {
-      default: ['tw-text-gray-600'],
-      success: ['tw-text-emerald-green-600'],
-      error: ['tw-text-coral-600'],
-      info: ['tw-text-sky-blue-600']
+      default: ['text-gray-600'],
+      success: ['text-emerald-green-600'],
+      error: ['text-coral-600'],
+      info: ['text-sky-blue-600']
     };
 
     return [

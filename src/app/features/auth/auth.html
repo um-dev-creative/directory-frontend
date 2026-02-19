@@ -1,23 +1,23 @@
 <app-spinner [key]="'auth'"></app-spinner>
-<div class="auth-screen tw-min-h-screen tw-bg-gradient-hero tw-relative tw-overflow-hidden">
+<div class="auth-screen min-h-screen bg-gradient-hero relative overflow-hidden">
   <!-- Decorative background elements -->
-  <div class="tw-absolute tw-inset-0 tw-bg-white/10 tw-backdrop-blur-3xl"></div>
-  <div class="tw-absolute tw-top-0 tw-left-0 tw-w-72 tw-h-72 tw-bg-emerald-green-300/20 tw-rounded-full tw-blur-3xl tw--translate-x-16 tw--translate-y-16"></div>
-  <div class="tw-absolute tw-bottom-0 tw-right-0 tw-w-96 tw-h-96 tw-bg-coral-300/20 tw-rounded-full tw-blur-3xl tw-translate-x-24 tw-translate-y-24"></div>
-  <div class="tw-absolute tw-top-1/2 tw-left-1/4 tw-w-48 tw-h-48 tw-bg-sky-blue-300/15 tw-rounded-full tw-blur-2xl"></div>
+  <div class="absolute inset-0 bg-white/10 backdrop-blur-3xl"></div>
+  <div class="absolute top-0 left-0 w-72 h-72 bg-emerald-green-300/20 rounded-full blur-3xl -translate-x-16 -translate-y-16"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-coral-300/20 rounded-full blur-3xl translate-x-24 translate-y-24"></div>
+  <div class="absolute top-1/2 left-1/4 w-48 h-48 bg-sky-blue-300/15 rounded-full blur-2xl"></div>
 
-  <div class="tw-relative tw-isolate tw-p-6">
-    <div class="tw-mx-auto tw-pt-16 tw-max-w-sm sm:tw-max-w-md lg:tw-max-w-lg xl:tw-max-w-xl">
-      <div class="tw-bg-white/95 tw-backdrop-blur-sm tw-rounded-2xl tw-shadow-lg tw-shadow-emerald-green-500/20 tw-p-4 sm:tw-p-6 lg:tw-p-8 tw-mb-8 tw-border tw-border-white/20">
+  <div class="relative isolate p-6">
+    <div class="mx-auto pt-16 max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
+      <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg shadow-emerald-green-500/20 p-4 sm:p-6 lg:p-8 mb-8 border border-white/20">
       <!-- Título -->
-      <div class="tw-text-center">
-        <h2 class="tw-text-xl tw-font-semibold tw-text-gray-900">
+      <div class="text-center">
+        <h2 class="text-xl font-semibold text-gray-900">
           {{ isRegistering ? 'Únete y descubre lo mejor de nuestra comunidad' : 'Inicia sesión y conecta con todo lo que tenemos para ti' }}
         </h2>
       </div>
     <!-- Botones sociales -->
     @if(isRegistering){
-      <div class="tw-space-y-4 tw-pt-6">
+      <div class="space-y-4 pt-6">
         <app-social-login-button
           provider="google"
           size="md"
@@ -28,7 +28,7 @@
         </app-social-login-button>
       </div>
     } @else {
-      <div class="tw-space-y-4 tw-pt-6">
+      <div class="space-y-4 pt-6">
         <app-social-login-button
           provider="google"
           size="md"
@@ -40,36 +40,36 @@
       </div>
     }
     <!-- Divider -->
-    <div class="tw-flex tw-items-center tw-space-x-2 tw-mt-4 tw-mb-4">
-      <div class="tw-flex-1 tw-border-t tw-border-gray-300"></div>
-      <p class="tw-text-sm tw-font-semibold tw-text-gray-500">{{ isRegistering ? 'O, crea una cuenta con email.' : 'O, inicia sesión con email.' }}</p>
-      <div class="tw-flex-1 tw-border-t tw-border-gray-300"></div>
+    <div class="flex items-center space-x-2 mt-4 mb-4">
+      <div class="flex-1 border-t border-gray-300"></div>
+      <p class="text-sm font-semibold text-gray-500">{{ isRegistering ? 'O, crea una cuenta con email.' : 'O, inicia sesión con email.' }}</p>
+      <div class="flex-1 border-t border-gray-300"></div>
     </div>
     @if (isRegistering) {
-      <form (submit)="onSubmit()" #registrationForm="ngForm" class="tw-space-y-4">
+      <form (submit)="onSubmit()" #registrationForm="ngForm" class="space-y-4">
         <!-- Nombre y Apellido -->
-        <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label for="first-name" class="tw-sr-only">Nombre</label>
+            <label for="first-name" class="sr-only">Nombre</label>
             <input
               type="text"
               id="first-name"
               name="first-name"
               [(ngModel)]="registerData.firstName"
               (ngModelChange)="validateRegistrationForm()"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               placeholder="Nombre"
               required
             />
           </div>
           <div>
-            <label for="last-name" class="tw-sr-only">Apellido</label>
+            <label for="last-name" class="sr-only">Apellido</label>
             <input
               type="text"
               id="last-name"
               name="last-name"
               [(ngModel)]="registerData.lastName"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               placeholder="Apellido"
               (ngModelChange)="validateRegistrationForm()"
               required
@@ -79,13 +79,13 @@
         <!-- Correo Electrónico -->
         <div>
           <div>
-            <label for="email" class="tw-sr-only">Dirección de correo electrónico</label>
+            <label for="email" class="sr-only">Dirección de correo electrónico</label>
             <input
               type="email"
               id="email"
               name="email"
               [(ngModel)]="registerData.email"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               [placeholder]="placeholders['email']"
               (focus)="onFocus('email')"
               (blur)="onBlur('email')"
@@ -95,34 +95,34 @@
           </div>
           <!-- Error Message -->
           @if (!isEmailValid) {
-            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+            <div class="text-red-500 text-sm mt-1">
               Dirección de correo electrónico inválida.
             </div>
           }
         </div>
         <!-- Contraseña -->
         <div>
-          <label for="password" class="tw-sr-only">Contraseña</label>
-          <div class="tw-relative">
+          <label for="password" class="sr-only">Contraseña</label>
+          <div class="relative">
             <input
               #passwordRegInput
               type="password"
               id="password"
               name="password"
               [(ngModel)]="registerData.password"
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               placeholder="Contraseña"
               (ngModelChange)="validatePassword(); validateRegistrationForm()"
               required
             />
             <button
               type="button"
-              class="tw-absolute tw-inset-y-0 tw-right-3 tw-flex tw-items-center"
+              class="absolute inset-y-0 right-3 flex items-center"
               (click)="togglePasswordVisibility('password', passwordRegInput)"
             >
               @if (!showPassword) {
               <svg
-                class="tw-w-6 tw-h-6 tw-text-gray-600"
+                class="w-6 h-6 text-gray-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
@@ -134,7 +134,7 @@
               </svg>
               } @else {
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="w-6 h-6 text-gray-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -147,46 +147,46 @@
             </button>
           </div>
           @if (!isPasswordValid) {
-            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+            <div class="text-red-500 text-sm mt-1">
               La contraseña debe tener al menos 8 caracteres.
             </div>
           }
         </div>
         <!-- Numero de Telefono -->
         <div>
-          <label for="mobile-number" class="tw-sr-only">Número de teléfono móvil</label>
+          <label for="mobile-number" class="sr-only">Número de teléfono móvil</label>
           <div class="
-          tw-relative
-          tw-flex
-          tw-w-full
-          tw-h-[42px]
-          tw-rounded-md
-          tw-border
-          tw-border-gray-300
-          hover:tw-border-gray-400
-          focus-within:tw-border-emerald-green-600
-          focus-within:tw-ring-1
-          focus-within:tw-ring-emerald-green-600
-          focus-within:hover:tw-border-emerald-green-600"
+          relative
+          flex
+          w-full
+          h-[42px]
+          rounded-md
+          border
+          border-gray-300
+          hover:border-gray-400
+          focus-within:border-emerald-green-600
+          focus-within:ring-1
+          focus-within:ring-emerald-green-600
+          focus-within:hover:border-emerald-green-600"
           >
-            <div class="tw-relative">
+            <div class="relative">
               <button
                 type="button"
-                class="tw-h-full tw-rounded-l-md tw-border-0 tw-bg-transparent tw-pl-3 tw-pr-8 tw-text-gray-900 focus:tw-ring-0 focus:tw-outline-none"
+                class="h-full rounded-l-md border-0 bg-transparent pl-3 pr-8 text-gray-900 focus:ring-0 focus:outline-none"
                 aria-haspopup="listbox"
                 [attr.aria-expanded]="dropdownState.country"
                 aria-labelledby="country-label"
                 (click)="toggleDropdown('country')"
               >
-                <span class="tw-flex tw-items-center tw-gap-3 tw-pr tw-truncate tw-text-gray-400">
+                <span class="flex items-center gap-3 pr truncate text-gray-400">
                   <img
                     [src]="selectedCountry.flag"
                     [alt]="selectedCountry.name"
-                    class="tw-inline tw-h-5 tw-w-5"
+                    class="inline h-5 w-5"
                   />
                 </span>
                 <svg
-                  class="tw-absolute tw-right-2 tw-top-1/2 tw--translate-y-1/2 tw-size-5 tw-text-gray-500 sm:tw-size-4"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
                   viewBox="0 0 16 16"
                   fill="currentColor"
                   aria-hidden="true"
@@ -203,7 +203,7 @@
               <!-- Dropdown menu -->
               <ul
                 *ngIf="dropdownState.country"
-                class="tw-absolute tw-z-10 tw-mt-1 tw-max-h-56 tw-w-full tw-overflow-auto tw-rounded-md tw-bg-white tw-py-1 tw-text-base tw-shadow-lg tw-ring-1 tw-ring-black/5 focus:tw-outline-none sm:tw-text-sm"
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
                 tabindex="-1"
                 role="listbox"
                 aria-labelledby="listbox-label"
@@ -211,30 +211,30 @@
                 <li
                   *ngFor="let country of countries; let i = index"
                   [id]="'listbox-option-' + i"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-emerald-green-600 hover:tw-text-white"
+                  class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
                   role="option"
                   (click)="selectCountry(country)"
                 >
-                  <div class="tw-flex tw-items-center">
+                  <div class="flex items-center">
                     <img
                       [src]="country.flag"
                       [alt]="country.name"
-                      class="tw-inline tw-h-5 tw-w-5 tw-mr"
+                      class="inline h-5 w-5 mr"
                     />
-                    <span class="tw-ml-3 tw-block tw-truncate">{{ country.name }}</span>
+                    <span class="ml-3 block truncate">{{ country.name }}</span>
                   </div>
                 </li>
               </ul>
             </div>
             <!-- Divider -->
-            <div class="tw-w-px tw-h-full tw-bg-gray-300"></div>
+            <div class="w-px h-full bg-gray-300"></div>
             <!-- Phone Input -->
             <input
               type="tel"
               id="mobile-number"
               name="mobile-number"
               [(ngModel)]="registerData.phoneNumber"
-              class="tw-block tw-flex-1 tw-border-0  tw-rounded-r-md tw-bg-transparent tw-px-3 tw-text-gray-900 tw-placeholder-gray-400 focus:tw-ring-0 focus:tw-outline-none"
+              class="block flex-1 border-0  rounded-r-md bg-transparent px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-hidden"
               [placeholder]="placeholders['mobile']"
               (focus)="onFocus('mobile')"
               (blur)="onBlur('mobile')"
@@ -242,32 +242,32 @@
             />
           </div>
           <!-- Error Message -->
-          <div *ngIf="!isValidPhoneNumber" class="tw-text-red-500 tw-text-sm tw-mt-1">
+          <div *ngIf="!isValidPhoneNumber" class="text-red-500 text-sm mt-1">
             Número de teléfono inválido para {{ selectedCountry.name }}.
           </div>
         </div>
         <!-- Fecha de Nacimiento -->
         <div>
-          <div class="tw-grid tw-grid-cols-3 sm:tw-grid-cols-3 tw-gap-4">
+          <div class="grid grid-cols-3 sm:grid-cols-3 gap-4">
             <!-- Botón Mes -->
-            <div class="tw-relative">
+            <div class="relative">
               <button
                 type="button"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-none"
                 aria-haspopup="listbox"
                 [attr.aria-expanded]="dropdownState.month"
                 aria-labelledby="month-label"
                 (click)="toggleDropdown('month')"
               >
-              <span class="tw-flex tw-items-center tw-gap-3 tw-pr-6 tw-truncate"
+              <span class="flex items-center gap-3 pr-6 truncate"
                     [class]="{
-              'tw-text-gray-900': selectedMonth,
-              'tw-text-gray-400': !selectedMonth
+              'text-gray-900': selectedMonth,
+              'text-gray-400': !selectedMonth
               }">
-                <span class="tw-ml-3 tw-block tw-truncate">{{ selectedMonth || 'Mes' }}</span>
+                <span class="ml-3 block truncate">{{ selectedMonth || 'Mes' }}</span>
               </span>
                 <svg
-                  class="tw-absolute tw-right-2 tw-top-1/2 tw--translate-y-1/2 tw-size-5 tw-text-gray-500 sm:tw-size-4"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
                   viewBox="0 0 16 16"
                   fill="currentColor"
                   aria-hidden="true"
@@ -282,32 +282,32 @@
               </button>
               <ul
                 *ngIf="dropdownState.month"
-                class="tw-absolute tw-z-10 tw-mt-1 tw-max-h-56 tw-w-full tw-overflow-auto tw-rounded-md tw-bg-white tw-py-1 tw-text-base tw-shadow-lg tw-ring-1 tw-ring-black/5 focus:tw-outline-none sm:tw-text-sm"
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
                 tabindex="-1"
                 role="listbox"
                 aria-labelledby="listbox-label"
               >
                 <li
                   *ngFor="let month of months"
-                  class="tw-relative tw-cursor-pointer tw-select-none tw-py-2 tw-pl-3 tw-pr-3 tw-text-gray-900 hover:tw-bg-emerald-green-600 hover:tw-text-white"
+                  class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
                   role="option"
                   (click)="selectMonth(month)"
                 >
-                  <div class="tw-flex tw-items-center">
-                    <span class="tw-ml-3 tw-block tw-truncate tw-font-normal">{{ month.name }}</span>
+                  <div class="flex items-center">
+                    <span class="ml-3 block truncate font-normal">{{ month.name }}</span>
                   </div>
                 </li>
               </ul>
             </div>
             <!-- Input Día -->
             <div>
-              <label for="day" class="tw-sr-only">Día</label>
+              <label for="day" class="sr-only">Día</label>
               <input
                 type="text"
                 id="day"
                 name="day"
                 [(ngModel)]="registerData.birthDay"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
                 [placeholder]="placeholders['day']"
                 (focus)="onFocus('day')"
                 (blur)="onBlur('day')"
@@ -318,13 +318,13 @@
 
             <!-- Input Año -->
             <div>
-              <label for="year" class="tw-sr-only">Año</label>
+              <label for="year" class="sr-only">Año</label>
               <input
                 type="text"
                 id="year"
                 name="year"
                 [(ngModel)]="registerData.birthYear"
-                class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
                 [placeholder]="placeholders['year']"
                 (focus)="onFocus('year')"
                 (blur)="onBlur('year')"
@@ -335,30 +335,30 @@
           </div>
           <!-- Error Message -->
           @if (showFullDateError) {
-            <div class="tw-text-red-500 tw-text-sm tw-mt-1">
+            <div class="text-red-500 text-sm mt-1">
               Fecha Invalida
             </div>
           }
         </div>
         <!-- Términos y Condiciones -->
-        <div class="tw-mt-4 tw-text-xs tw-text-gray-600">
+        <div class="mt-4 text-xs text-gray-600">
           <p>
             Registrar tu dirección de correo electrónico con nosotros nos permite enviarte ofertas especiales de LatinHub, así
             como noticias sobre productos y servicios. Puedes cambiar tus preferencias de contacto y darte de baja para no recibir
             ofertas en cualquier momento desde la sección "Perfil" o utilizando el enlace para cancelar la suscripción que se
             encuentra al final de nuestros correos electrónicos.
           </p>
-          <p class="tw-mt-4">
+          <p class="mt-4">
             Al hacer clic en el botón de abajo, aceptas y confirmas haber leído nuestros
             <a
               routerLink="['/terms-and-conditions']"
-              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
+              class="font-semibold text-emerald-green-600 hover:underline">
               Términos y Condiciones
             </a>. Para más detalles sobre cómo usamos la
             información que recopilamos sobre ti, por favor lee nuestra
             <a
               routerLink="['/privacy-policy']"
-              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
+              class="font-semibold text-emerald-green-600 hover:underline">
               Política de Privacidad
             </a>.
           </p>
@@ -377,7 +377,7 @@
       </form>
     } @else {
       <!-- Formulario Inicio Sesion-->
-      <form (submit)="onSubmit()" #loginForm="ngForm" class="tw-space-y-4">
+      <form (submit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
         <div>
           @if (this.isErrorFound) {
             <app-alert
@@ -388,20 +388,20 @@
               (dismiss)="isErrorFound = false">
             </app-alert>
           }
-          <div class="tw-mt-1">
+          <div class="mt-1">
             <input
               id="email_login"
               name="email"
               type="email"
               [(ngModel)]="loginData.email"
               required
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               placeholder="Ingresa tu correo electrónico"
             />
           </div>
         </div>
         <div>
-          <div class="tw-mt-1 tw-relative">
+          <div class="mt-1 relative">
             <input
               #passwordLogInput
               id="password_login"
@@ -409,17 +409,17 @@
               type="password"
               [(ngModel)]="loginData.password"
               required
-              class="tw-block tw-w-full tw-h-[42px] tw-rounded-md tw-bg-white tw-px-3.5 tw-text-gray-900 tw-placeholder-gray-400 tw-text-base tw-border tw-border-gray-300 hover:tw-border-gray-400 focus:tw-border-emerald-green-600 focus:tw-ring-1 focus:tw-ring-emerald-green-600 focus:tw-outline-none"
+              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
               placeholder="Ingresa tu contraseña"
             />
             <button
               type="button"
-              class="tw-absolute tw-inset-y-0 tw-right-3 tw-flex tw-items-center"
+              class="absolute inset-y-0 right-3 flex items-center"
               (click)="togglePasswordVisibility('password', passwordLogInput)"
             >
               @if (!showPassword) {
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="w-6 h-6 text-gray-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -431,7 +431,7 @@
                 </svg>
               } @else {
                 <svg
-                  class="tw-w-6 tw-h-6 tw-text-gray-600"
+                  class="w-6 h-6 text-gray-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -444,26 +444,26 @@
             </button>
           </div>
         </div>
-        <div class="tw-flex tw-justify-end">
+        <div class="flex justify-end">
           <button
             type="button"
-            class="tw-text-sm tw-text-emerald-green-600 hover:tw-underline"
+            class="text-sm text-emerald-green-600 hover:underline"
             (click)="onForgotPassword()">
             ¿Olvidaste tu contraseña?
           </button>
         </div>
-        <div class="tw-mt-4 tw-text-center tw-text-xs tw-text-gray-600">
+        <div class="mt-4 text-center text-xs text-gray-600">
           <p>
             Al iniciar sesión, aceptas los
             <a
               routerLink="['/terms-and-conditions']"
-              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
+              class="font-semibold text-emerald-green-600 hover:underline">
               Términos y Condiciones
             </a>
             y la
             <a
               routerLink="['/privacy-policy']"
-              class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">
+              class="font-semibold text-emerald-green-600 hover:underline">
               Política de Privacidad
             </a>
             de Latinhub.
@@ -482,12 +482,12 @@
       </form>
     }
     <!-- Enlace para registro -->
-    <div class="tw-flex tw-justify-center tw-mt-4 tw-text-sm tw-text-gray-600">
-      @if (!isRegistering) { <div class="tw-text-sm tw-font-semibold tw-pb-4">o</div> }
+    <div class="flex justify-center mt-4 text-sm text-gray-600">
+      @if (!isRegistering) { <div class="text-sm font-semibold pb-4">o</div> }
     </div>
-    <div class="tw-text-center tw-text-gray-600">
+    <div class="text-center text-gray-600">
       @if (isRegistering) {
-        ¿Ya tienes una cuenta? <a (click)="toggleForm()" class="tw-font-semibold tw-text-emerald-green-600 hover:tw-underline">Iniciar sesión</a>
+        ¿Ya tienes una cuenta? <a (click)="toggleForm()" class="font-semibold text-emerald-green-600 hover:underline">Iniciar sesión</a>
           } @else {
         <app-button
           variant="outline"
@@ -500,8 +500,8 @@
     </div>
   </div>
   <!-- Support Section -->
-  <div class="tw-text-center tw-pt-6 tw-mt-8">
-  <p class="tw-text-sm tw-text-gray-600 tw-mb-4">¿Necesitas ayuda con tu cuenta?</p>
+  <div class="text-center pt-6 mt-8">
+  <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con tu cuenta?</p>
     <app-report-problem
       [options]="reportProblemOptions"
       variant="link"

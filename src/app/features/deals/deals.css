@@ -1,10 +1,12 @@
+@reference "../../../styles.css";
+
 @media (max-width: 639px) {
   .custom-small-styles {
-    @apply tw-m-[7px] tw-mx-[16px];
+    @apply m-[7px] mx-[16px];
   }
 }
 .container {
-  @apply tw-p-[22px] tw-pb-[7px];
+  @apply p-[22px] pb-[7px];
 }
 
 @keyframes shake {

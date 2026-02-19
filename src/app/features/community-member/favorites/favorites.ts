@@ -245,16 +245,16 @@ export class Favorites implements OnInit, OnDestroy {
    * Gets CSS classes for type badges
    */
   getTypeBadgeClass(type: string): string {
-    const baseClasses = 'tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-rounded-full';
+    const baseClasses = 'px-2 py-1 text-xs font-medium rounded-full';
     switch (type) {
       case 'offer':
-        return `${baseClasses} tw-bg-coral-100 tw-text-coral-800`;
+        return `${baseClasses} bg-coral-100 text-coral-800`;
       case 'product':
-        return `${baseClasses} tw-bg-blue-100 tw-text-blue-800`;
+        return `${baseClasses} bg-blue-100 text-blue-800`;
       case 'business':
-        return `${baseClasses} tw-bg-emerald-green-100 tw-text-emerald-green-800`;
+        return `${baseClasses} bg-emerald-green-100 text-emerald-green-800`;
       default:
-        return `${baseClasses} tw-bg-gray-100 tw-text-gray-800`;
+        return `${baseClasses} bg-gray-100 text-gray-800`;
     }
   }
 

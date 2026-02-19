@@ -9,16 +9,16 @@ import { Button } from '../buttons/button';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, InputComponent, Button],
   template: `
-    <div class="tw-container tw-mx-auto tw-p-8 tw-max-w-4xl">
-      <h1 class="tw-text-3xl tw-font-bold tw-text-emerald-green-700 tw-mb-8">
+    <div class="container mx-auto p-8 max-w-4xl">
+      <h1 class="text-3xl font-bold text-emerald-green-700 mb-8">
         Ejemplos de Componente Input
       </h1>
 
       <!-- Basic Inputs -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Inputs Básicos</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Inputs Básicos</h2>
 
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Default Input -->
           <div>
             <app-input
@@ -64,7 +64,7 @@ import { Button } from '../buttons/button';
               [leadingIcon]="true"
               [(ngModel)]="basicForm.phone"
               style="border: none; padding: 0; background: transparent;">
-              <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
               </svg>
             </app-input>
@@ -73,10 +73,10 @@ import { Button } from '../buttons/button';
       </section>
 
       <!-- Sizes -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Tamaños</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Tamaños</h2>
 
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-input
             label="Input Pequeño"
             size="sm"
@@ -101,10 +101,10 @@ import { Button } from '../buttons/button';
       </section>
 
       <!-- Variants -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Variantes</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Variantes</h2>
 
-        <div class="tw-space-y-4">
+        <div class="space-y-4">
           <app-input
             label="Input Por Defecto"
             variant="default"
@@ -140,10 +140,10 @@ import { Button } from '../buttons/button';
       </section>
 
       <!-- States -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Estados</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Estados</h2>
 
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-input
             label="Input Deshabilitado"
             placeholder="Este input está deshabilitado"
@@ -162,10 +162,10 @@ import { Button } from '../buttons/button';
       </section>
 
       <!-- With Icons -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Con Iconos</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Con Iconos</h2>
 
-        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Search Input -->
           <app-input
             label="Buscar"
@@ -175,7 +175,7 @@ import { Button } from '../buttons/button';
             [clearable]="true"
             [(ngModel)]="iconForm.search"
             style="border: none; padding: 0; background: transparent;">
-            <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </app-input>
@@ -188,7 +188,7 @@ import { Button } from '../buttons/button';
             [leadingIcon]="true"
             [(ngModel)]="iconForm.website"
             style="border: none; padding: 0; background: transparent;">
-            <svg slot="leading-icon" class="tw-w-4 tw-h-4 tw-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg slot="leading-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
           </app-input>
@@ -196,11 +196,11 @@ import { Button } from '../buttons/button';
       </section>
 
       <!-- Reactive Form Example -->
-      <section class="tw-mb-12">
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-gray-800 tw-mb-6">Formulario Reactivo</h2>
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Formulario Reactivo</h2>
 
-        <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" class="tw-space-y-6">
-          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+        <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <app-input
               label="Nombre"
@@ -242,7 +242,7 @@ import { Button } from '../buttons/button';
             </app-input>
           </div>
 
-          <div class="tw-flex tw-gap-4 tw-pt-4">
+          <div class="flex gap-4 pt-4">
             <app-button
               type="submit"
               variant="primary"
@@ -261,12 +261,12 @@ import { Button } from '../buttons/button';
         </form>
 
         <!-- Form Status -->
-        <div class="tw-mt-6 tw-p-4 tw-bg-gray-50 tw-rounded-lg">
-          <h3 class="tw-font-semibold tw-mb-2">Estado del Formulario:</h3>
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h3 class="font-semibold mb-2">Estado del Formulario:</h3>
           <p><strong>Válido:</strong> {{ reactiveForm.valid ? 'Sí' : 'No' }}</p>
           <p><strong>Tocado:</strong> {{ reactiveForm.touched ? 'Sí' : 'No' }}</p>
           <p><strong>Valores:</strong></p>
-          <pre class="tw-text-xs tw-mt-2 tw-bg-white tw-p-2 tw-rounded">{{ getFormValues() }}</pre>
+          <pre class="text-xs mt-2 bg-white p-2 rounded">{{ getFormValues() }}</pre>
         </div>
       </section>
     </div>

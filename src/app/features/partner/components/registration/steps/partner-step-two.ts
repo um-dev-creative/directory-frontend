@@ -12,26 +12,26 @@ import { LoggerService } from '@app/core/services/logger.service';
   standalone: true,
   imports: [CommonModule, Button, CardComponent, Avatar, IconComponent],
   template: `
-    <div class="tw-space-y-6">
+    <div class="space-y-6">
       <!-- Step Header -->
-      <div class="tw-text-center tw-pb-4 tw-border-b tw-border-beige-200">
-        <h2 class="tw-text-xl tw-font-semibold tw-text-emerald-green-700 tw-mb-2">
+      <div class="text-center pb-4 border-b border-beige-200">
+        <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
           Imagen de tu Negocio
         </h2>
-        <p class="tw-text-beige-600">
+        <p class="text-beige-600">
           Agrega un avatar para personalizar el perfil de tu negocio
         </p>
       </div>
 
       <!-- Upload Sections -->
-      <div class="tw-flex tw-justify-center">
-        <div class="tw-w-full tw-max-w-md">
+      <div class="flex justify-center">
+        <div class="w-full max-w-md">
           <!-- Logo Upload -->
-          <div class="tw-my-2">
+          <div class="my-2">
             <div>
             <!-- Logo Preview -->
-            <div class="tw-flex tw-justify-center tw-py-4">
-              <div class="tw-relative">
+            <div class="flex justify-center py-4">
+              <div class="relative">
                 <app-avatar
                   size="2xl"
                   variant="rounded"
@@ -44,14 +44,14 @@ import { LoggerService } from '@app/core/services/logger.service';
             </div>
 
             <!-- Logo Upload Button -->
-            <div class="tw-flex tw-justify-center">
-              <div class="tw-w-full tw-max-w-xs tw-mt-0 tw-flex tw-justify-center">
+            <div class="flex justify-center">
+              <div class="w-full max-w-xs mt-0 flex justify-center">
                 <input
                   #logoFileInput
                   type="file"
                   accept="image/*"
                   (change)="onLogoSelect($event)"
-                  class="tw-hidden"
+                  class="hidden"
                   [disabled]="uploadingLogo"
                 />
                 <app-button
@@ -60,7 +60,7 @@ import { LoggerService } from '@app/core/services/logger.service';
                   [loading]="uploadingLogo"
                   (buttonClick)="logoFileInput.click()"
                 >
-                  <app-icon name="image" size="sm" class="tw-mr-2"></app-icon>
+                  <app-icon name="image" size="sm" class="mr-2"></app-icon>
                   {{ logoPreview ? 'Cambiar Logo' : 'Seleccionar Logo' }}
                 </app-button>
               </div>
@@ -72,27 +72,27 @@ import { LoggerService } from '@app/core/services/logger.service';
 
       <!-- Guidelines -->
       <app-card variant="outlined-blue" padding="lg">
-        <div class="tw-flex tw-items-start tw-mb-3">
-          <app-icon name="information-circle" size="md" class="tw-text-sky-blue-700 tw-mr-3 tw-mt-0.5 tw-flex-shrink-0"></app-icon>
+        <div class="flex items-start mb-3">
+          <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-3 mt-0.5 shrink-0"></app-icon>
           <div>
-            <h4 class="tw-text-md tw-font-semibold tw-text-sky-blue-700 tw-mb-2">
+            <h4 class="text-md font-semibold text-sky-blue-700 mb-2">
               Recomendaciones para las imágenes:
             </h4>
-            <ul class="tw-text-sm tw-text-sky-blue-700 tw-space-y-1.5 tw-leading-relaxed">
-              <li class="tw-flex tw-items-start">
-                <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
+            <ul class="text-sm text-sky-blue-700 space-y-1.5 leading-relaxed">
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
                 <span><strong>Avatar:</strong> Imagen cuadrada, mínimo 200x200px, ideal para representar tu negocio</span>
               </li>
-              <li class="tw-flex tw-items-start">
-                <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
                 <span><strong>Logo:</strong> Formato horizontal preferido</span>
               </li>
-              <li class="tw-flex tw-items-start">
-                <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
                 <span><strong>Tamaño máximo:</strong> 5MB por imagen</span>
               </li>
-              <li class="tw-flex tw-items-start">
-                <span class="tw-w-1.5 tw-h-1.5 tw-bg-sky-blue-500 tw-rounded-full tw-mt-2 tw-mr-3 tw-flex-shrink-0"></span>
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
                 <span><strong>Formatos aceptados:</strong> JPG, PNG</span>
               </li>
             </ul>
@@ -100,7 +100,7 @@ import { LoggerService } from '@app/core/services/logger.service';
         </div>
       </app-card>
       <!-- Action Buttons -->
-      <div class="tw-flex tw-justify-end tw-pt-4 tw-border-t tw-border-beige-200">
+      <div class="flex justify-end pt-4 border-t border-beige-200">
         <!--app-button
           variant="outline"
           size="lg"
