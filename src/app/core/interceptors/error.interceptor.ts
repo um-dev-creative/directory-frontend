@@ -4,6 +4,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {LoggerService, NotificationService} from '@app/core/services';
+import {DirectoryFrontendConst} from '@shared/constants/app.const';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -34,7 +35,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           case 400:
             errorMessage = 'Bad Request - Please check your input';
             break;
-          case 401:
+          case 401: {
             errorMessage = 'Unauthorized - Please login again';
             // Only redirect to auth if this is NOT a login request
             // Check if the request URL contains auth/token or login endpoints
@@ -45,6 +46,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               shouldRedirect = true;
             }
             break;
+          }
           case 403:
             errorMessage = 'Forbidden - You don\'t have permission';
             break;
@@ -72,7 +74,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         // Redirect to auth page if needed
         if (shouldRedirect) {
-          this.router.navigate(['/auth']);
+          this.router.navigate([DirectoryFrontendConst.RelativePath.AUTH_PATH]);
         }
 
         // Show notification for user-facing errors, but not for auth requests
