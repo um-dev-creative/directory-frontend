@@ -30,7 +30,7 @@ export class AuthClient extends ClientTemplate {
     const tokenURL = `${this.CONTENT_PATH}/access-token`;
     console.debug(`AuthClient.getToken:: ${tokenURL}`);
     return this.httpClient.post(tokenURL, {alias: user, password: password}, {
-      ...{headers: DFC.HttpHeader.STANDARD},
+      headers: DFC.HttpHeader.STANDARD,
       observe: 'response'
     })
       .pipe(map(response => {
@@ -39,7 +39,7 @@ export class AuthClient extends ClientTemplate {
         const sessionTokenBkd = headers.get(SESSION_TOKEN_BACKEND);
         const authorization = headers.get(AUTHORIZATION_TOKEN_KEY);
         return {headers, body, sessionTokenBkd, authorization};
-      }), catchError(this.handlerError));
+      }), catchError(this.handleError));
   }
 
   /**
@@ -50,6 +50,6 @@ export class AuthClient extends ClientTemplate {
   closeSession(backboneToken: any): Observable<any> {
     return this.httpClient.delete<any>(`${this.CONTENT_PATH}/session-end`,
       DFC.HttpHeader.STANDARD_TOKEN_BKD(backboneToken))
-      .pipe(catchError(this.handlerError));
+      .pipe(catchError(this.handleError));
   }
 }

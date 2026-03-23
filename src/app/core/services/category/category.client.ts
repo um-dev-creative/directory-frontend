@@ -20,6 +20,6 @@ export class CategoryClient extends ClientTemplate {
 
   getCategories(): Observable<any> {
     this.logInfo(`CategoryClient.getCategories:: ${this.CATEGORY_CONTENT_PATH}`);
-    return this.http.get<any>(this.CATEGORY_CONTENT_PATH, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+    return this.http.get<any>(this.CATEGORY_CONTENT_PATH, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handleError));
   }
 }

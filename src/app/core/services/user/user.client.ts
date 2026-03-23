@@ -33,7 +33,7 @@ export class UserClient extends ClientTemplate {
    */
   findUserById(userId: string): Observable<any> {
     this.logInfo(`UserClient.getUserById:: ${this.USER_CONTENT_PATH}/${userId}`);
-    return this.httpClient.get<any>(`${this.USER_CONTENT_PATH}/${userId}`).pipe(catchError(this.handlerError));
+    return this.httpClient.get<any>(`${this.USER_CONTENT_PATH}/${userId}`).pipe(catchError(this.handleError));
   }
 
   /**
@@ -44,7 +44,7 @@ export class UserClient extends ClientTemplate {
    */
   createUser(user: any): Observable<any> {
     this.logInfo(`UserClient.createUser:: ${this.CONTENT_PATH}`);
-    return this.httpClient.post(this.CONTENT_PATH + DFC.RelativePath.USER_CREATE_PATH, user, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+    return this.httpClient.post(this.CONTENT_PATH + DFC.RelativePath.USER_CREATE_PATH, user, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handleError));
   }
 
   /**
@@ -61,7 +61,7 @@ export class UserClient extends ClientTemplate {
       headers: DFC.HttpHeader.STANDARD,
       observe: 'response' as 'body'
     })
-      .pipe(catchError(this.handlerError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -73,7 +73,7 @@ export class UserClient extends ClientTemplate {
   deleteUser(userId: string): Observable<any> {
     this.logInfo(`UserClient.deleteUser:: ${this.USER_CONTENT_PATH}/${userId}`);
     return this.httpClient.delete<any>(`${this.USER_CONTENT_PATH}/${userId}`, {headers: DFC.HttpHeader.STANDARD, observe: 'response' as 'body'})
-      .pipe(catchError(this.handlerError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -90,6 +90,6 @@ export class UserClient extends ClientTemplate {
       responseType: 'json',
     });
 
-    return this.httpClient.request(req).pipe(catchError(this.handlerError));
+    return this.httpClient.request(req).pipe(catchError(this.handleError));
   }
 }

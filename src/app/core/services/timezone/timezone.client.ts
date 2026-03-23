@@ -21,6 +21,6 @@ export class TimezoneClient extends ClientTemplate {
   getTimezones(): Observable<any> {
     const url = this.TIMEZONE_CONTENT_PATH + '/all';
     this.logInfo(`TimezoneClient.getTimezones:: ${url}`);
-    return this.http.get<any>(url, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+    return this.http.get<any>(url, {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handleError));
   }
 }
