@@ -18,10 +18,9 @@ const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_REGISTER}] :::`
  * Registers the proxy API for Directory service.
  * @param req
  * @param res
- * @param next
  * @returns {Promise<void>}
  */
-const registerProxyApi = async (req, res, next) => {
+const registerProxyApi = async (req, res) => {
   let response = null;
   const apiURL = getApiEndpoint(req.url, directoryRegisterProxyConfig, API_SERVICE_DIRECTORY_MAP);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);

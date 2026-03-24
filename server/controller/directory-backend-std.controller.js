@@ -32,6 +32,8 @@ const proxyApi = async (req, res) => {
     let httpOptions = createHttpOptions(req, authHeader, sessionToken, apiURL);
 
     logger.debug(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
+    logger.debug(`${LOGGER_TAG_ID} Headers: ${JSON.stringify(httpOptions.headers)}`);
+    logger.debug(`${LOGGER_TAG_ID} Data: ${JSON.stringify(httpOptions.data)}`);
     const axiosResponse = await axios(httpOptions);
     logger.debug(`${LOGGER_TAG_ID} API response status: ${axiosResponse.status}`);
     if (httpOptions.url.endsWith(constants.DS_CREATE_BUSINESS) &&

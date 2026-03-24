@@ -1,13 +1,12 @@
-import {inject, Injectable} from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { HttpService } from './http.service';
-import { StorageMockService } from './storage-mock.service';
-import { LoggerService } from './logger.service';
-import { NotificationService } from './notification.service';
-import { ClientTemplate } from './client-template';
-import { DFC } from '@app/shared/constants/app.const';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {HttpService} from './http.service';
+import {StorageMockService} from './storage-mock.service';
+import {NotificationService} from './notification.service';
+import {ClientTemplate} from './client-template';
+import {DFC} from '@app/shared/constants/app.const';
 
 export interface LoginCredentials {
   email: string;
@@ -110,7 +109,7 @@ export class AuthService extends ClientTemplate {
       catchError(error => {
         this.logger.error('Login failed', error);
         this.notificationService.error('Login failed. Please check your credentials.');
-        this.handlerError(error); // Using inherited error handler
+        this.handleError(error); // Using inherited error handler
         return of(false);
       })
     );
@@ -157,7 +156,7 @@ export class AuthService extends ClientTemplate {
       catchError(error => {
         this.logger.error('Registration failed', error);
         this.notificationService.error('Registration failed. Please try again.');
-        this.handlerError(error);
+        this.handleError(error);
         return of(false);
       })
     );
@@ -177,7 +176,7 @@ export class AuthService extends ClientTemplate {
       map(() => true),
       catchError(error => {
         this.logger.error('Token refresh failed', error);
-        this.handlerError(error);
+        this.handleError(error);
         this.logout();
         return of(false);
       })
@@ -274,7 +273,7 @@ export class AuthService extends ClientTemplate {
       catchError(error => {
         this.logger.error('Profile update failed', error);
         this.notificationService.error('Failed to update profile. Please try again.');
-        this.handlerError(error);
+        this.handleError(error);
         return of(false);
       })
     );

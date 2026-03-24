@@ -14,7 +14,7 @@ export class VerifyCodeClient extends ClientTemplate {
 
   confirmCode(userRegisterRequest: any): Observable<any> {
     this.logInfo(`VerifyCodeClient.confirmCode -> POST ${this.CONTENT_PATH}`);
-    return this.httpClient.post(this.CONTENT_PATH, userRegisterRequest).pipe(catchError(this.handlerError));
+    return this.httpClient.post(this.CONTENT_PATH, userRegisterRequest).pipe(catchError(this.handleError));
   }
 
  }

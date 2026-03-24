@@ -25,7 +25,7 @@ export class BusinessClient extends ClientTemplate {
   create(businessCreateRequest: BusinessCreateRequest): Observable<any> {
     this.logInfo(`BusinessClient.create:: ${this.CONTENT_PATH}`);
     return this.httpClient.post<any>(this.BUSINESS_CONTENT_PATH, businessCreateRequest,
-      {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handlerError));
+      {headers: DFC.HttpHeader.STANDARD}).pipe(catchError(this.handleError));
   }
 
   getBusinessById(id: string): Observable<any> {

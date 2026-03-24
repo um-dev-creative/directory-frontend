@@ -153,8 +153,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
           this.loader.hide();
         },
         error: (error) => {
-          this.setErrorFound('verify-code', error);
-          this.notificationService.error('Error');
+          this.notificationService.warning('Invalid code.');
           this.loader.hide();
         }
       });
@@ -177,6 +176,23 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     } else {
       this.logger.error(`Error occurred while getting ${element}`, errorResponse);
     }
+  }
+
+  onInput(event: Event, next: HTMLElement | null): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value.length === 1 && next && 'focus' in next) {
+      (next as HTMLInputElement).focus();
+    }
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const text = event.clipboardData?.getData('text') ?? '';
+    const digits = text.replaceAll('-', '').slice(0, 8).split('');
+    const controls = ['position1', 'position2', 'position3', 'position4', 'position5', 'position6', 'position7', 'position8'];
+    controls.forEach((ctrl, i) => {
+      this.verificationCodeForm.get(ctrl)?.setValue(digits[i] ?? '');
+    });
   }
 
   private getCodeFormat() {
