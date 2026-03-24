@@ -1,5 +1,5 @@
-# File: docker-entrypoint.sh
 #!/bin/sh
+# File: docker-entrypoint.sh
 set -eu
 
 # Provide defaults
