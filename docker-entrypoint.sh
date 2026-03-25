@@ -1,6 +1,8 @@
 #!/bin/sh
 # File: docker-entrypoint.sh
-set -eu
+# Use separate set invocations to avoid shells that reject combined options (busybox/dash variations)
+set -e
+set -u
 
 # Provide defaults
 : "${PORT:=7001}"
@@ -23,7 +25,8 @@ fi
 
 if [ -n "${VAULT_PATH:-}" ] ; then
   # If app expects a separate --vaultPath flag, include it too (only when set)
-  set -- "$@" --vaultPath "$VAULT_PATH""$ENVM"
+  # Ensure there is exactly one separator between VAULT_PATH and ENVM (e.g. "/path/to/secret/dev")
+  set -- "$@" --vaultPath "${VAULT_PATH%/}/$ENVM"
 fi
 
 # Always pass DEBUG_MODE and ENVM as explicit strings (avoid bare true/false being treated as flags)
