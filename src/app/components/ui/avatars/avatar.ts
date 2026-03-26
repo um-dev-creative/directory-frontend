@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from '@app/components/ui';
+import { IconComponent } from '../icons/icon';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 export type AvatarVariant = 'circular' | 'rounded' | 'square';

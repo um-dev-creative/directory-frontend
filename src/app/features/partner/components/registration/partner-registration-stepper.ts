@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PartnerRegistrationService, Partner } from '@app/features/partner/services';
-import { PartnerStepOne, PartnerStepTwo, PartnerStepThree, StepThreeData} from '@app/features/partner';
+import { PartnerStepOne, PartnerStepTwo, PartnerStepThree, StepThreeData} from './steps';
 
 
 import { CardComponent } from '@app/components/ui';
@@ -143,7 +143,7 @@ export interface StepTwoData {
   `
 })
 export class PartnerRegistrationStepper implements OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   currentStep = 1;
   isLoading = false;

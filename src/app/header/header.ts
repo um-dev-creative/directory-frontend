@@ -24,7 +24,8 @@ import {HeaderType} from '@shared/constants/header-type';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {HeaderService} from '@app/header/header.service';
 import {Search} from '@app/features/search/search';
-import { Button, Avatar } from '@app/components/ui';
+import { Button } from '@app/components/ui/buttons/button';
+import { Avatar } from '@app/components/ui/avatars/avatar';
 import {AuthClient} from '@app/features/auth/auth.client';
 import {LoggerService} from '@app/core/services/logger.service';
 
@@ -214,11 +215,47 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     return (this.headerType as HeaderType) === headerType;
   }
 
+  /**
+   * Checks if the user has business role assigned.
+   * Handles multiple role format shapes:
+   * - Array<string> containing business role ID
+   * - JSON string representation of array
+   * - Comma-separated string
+   * - Single string
+   * @returns {boolean} true if user has business role
+   */
   get hasBusiness(): boolean {
+    const BUSINESS_ROLE_ID = '9a232260-a2e3-4990-b062-b6966efb25f8';
+    const roles = this.businessAssigned;
 
-    if (!this.businessAssigned || this.businessAssigned.length === 0) {
+    // Handle null/undefined
+    if (!roles) {
       return false;
     }
-    return this.businessAssigned === '[9a232260-a2e3-4990-b062-b6966efb25f8]';
+
+    // Handle array
+    if (Array.isArray(roles)) {
+      return roles.includes(BUSINESS_ROLE_ID);
+    }
+
+    // Handle string
+    if (typeof roles === 'string') {
+      // Try to parse as JSON array
+      try {
+        const parsed = JSON.parse(roles);
+        if (Array.isArray(parsed)) {
+          return parsed.includes(BUSINESS_ROLE_ID);
+        }
+      } catch {
+        // Not valid JSON, continue with string parsing
+      }
+
+      // Handle comma-separated or single string
+      const normalized = roles.replaceAll(/\s/g, '');
+      const items = normalized.includes(',') ? normalized.split(',') : [normalized];
+      return items.includes(BUSINESS_ROLE_ID);
+    }
+
+    return false;
   }
 }
