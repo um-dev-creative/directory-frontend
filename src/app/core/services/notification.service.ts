@@ -1,5 +1,6 @@
-import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector } from '@angular/core';
-import { Notification } from '../../shared/components/notification/notification';
+import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Notification } from '@shared/components/notification/notification';
 
 export interface NotificationConfig {
   duration?: number;
@@ -30,7 +31,9 @@ export class NotificationService {
 
   constructor(
     private appRef: ApplicationRef,
-    private injector: EnvironmentInjector
+    private injector: EnvironmentInjector,
+    @Inject(PLATFORM_ID) private platformId: object,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   success(message: string, config?: NotificationConfig): void {
@@ -84,6 +87,10 @@ export class NotificationService {
   }
 
   show(message: string, config?: NotificationConfig): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const finalConfig = {
       ...this.defaultConfig,
       ...config
@@ -144,13 +151,13 @@ export class NotificationService {
 
   private getOrCreateContainer(position: string): HTMLElement {
     const containerId = `notification-container-${position}`;
-    let container = document.getElementById(containerId);
+    let container = this.document.getElementById(containerId);
 
     if (!container) {
-      container = document.createElement('div');
+      container = this.document.createElement('div');
       container.id = containerId;
       container.className = this.getContainerClasses(position);
-      document.body.appendChild(container);
+      this.document.body.appendChild(container);
     }
 
     return container;
