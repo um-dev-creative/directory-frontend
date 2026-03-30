@@ -79,4 +79,3 @@
 6. [ ] Improve search functionality with typeahead
 7. [ ] Enhance header component with responsive design
 8. [ ] Improve footer with better organization of links
-
