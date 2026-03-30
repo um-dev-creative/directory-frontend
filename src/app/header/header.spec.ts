@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Header} from './header';
-import {DebugElement} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -16,8 +15,6 @@ import {provideLocationMocks} from '@angular/common/testing';
 describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
-  let sessionStoreService: any;
-  let debugElement: DebugElement;
   let mockRouter: Router;
   let mockStore: any;
   let mockActivatedRoute: any;
@@ -65,9 +62,7 @@ describe('Header', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(Header);
-    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
-    sessionStoreService = debugElement.injector.get(SessionStoreService);
     fixture.detectChanges();
   });
 

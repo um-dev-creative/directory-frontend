@@ -66,7 +66,6 @@ describe('Stage', () => {
   let fixture: ComponentFixture<Stage>;
   let headerService: MockHeaderService;
   let store: MockStore;
-  let changeDetectorRef: MockChangeDetectorRef;
   const mockLogger = { info: jasmine.createSpy('info'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
 
   beforeEach(async () => {
@@ -89,7 +88,6 @@ describe('Stage', () => {
     component = fixture.componentInstance;
     headerService = TestBed.inject(HeaderService) as any;
     store = TestBed.inject(Store) as any;
-    changeDetectorRef = TestBed.inject(ChangeDetectorRef) as any;
     fixture.detectChanges();
   });
 
@@ -126,9 +124,9 @@ describe('Stage', () => {
 
   it('should call detectChanges after processing session data', () => {
     component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
-    (changeDetectorRef.detectChanges as jasmine.Spy).calls.reset();
+    const spy = spyOn((component as any).changeDetectorRefs, 'detectChanges');
     (component as any).processSessionData();
-    expect((changeDetectorRef.detectChanges as jasmine.Spy).calls.count()).toBeGreaterThan(0);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should log card click event', () => {

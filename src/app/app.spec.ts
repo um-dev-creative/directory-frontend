@@ -1,6 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {App} from './app';
-import {DebugElement} from '@angular/core';
 import {Router} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -11,7 +10,6 @@ import {HttpClient} from '@angular/common/http';
 describe('App', () => {
   let component: App;
   let fixture: ComponentFixture<App>;
-  let debugElement: DebugElement;
   let mockRouter: Router;
   let mockStore: any;
 
@@ -41,7 +39,6 @@ describe('App', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(App);
-    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
   });
 

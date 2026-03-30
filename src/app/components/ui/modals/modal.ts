@@ -248,7 +248,7 @@ export class ModalComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  onBackdropClick(event: MouseEvent) {
+  onBackdropClick(_event: MouseEvent) {
     if (this.closeOnBackdrop && !this.disableClose) {
       this.close();
     }

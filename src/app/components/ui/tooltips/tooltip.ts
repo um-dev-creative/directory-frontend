@@ -225,13 +225,13 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onFocusIn(event: FocusEvent): void {
+  onFocusIn(_event: FocusEvent): void {
     if (this.trigger === 'focus' && !this.disabled) {
       this.showTooltip();
     }
   }
 
-  onFocusOut(event: FocusEvent): void {
+  onFocusOut(_event: FocusEvent): void {
     if (this.trigger === 'focus' && !this.disabled) {
       this.hideTooltip();
     }

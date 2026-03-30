@@ -130,7 +130,7 @@ export class InputComponent implements ControlValueAccessor {
   inputId: string = `input-${Math.random().toString(36).substr(2, 9)}`;
 
   // ControlValueAccessor implementation
-  private onChange = (value: string) => {};
+  private onChange = (_value: string) => {};
   private onTouched = () => {};
 
   writeValue(value: string): void {

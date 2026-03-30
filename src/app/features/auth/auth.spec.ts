@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Auth} from './auth';
-import {DebugElement} from '@angular/core';
 import {ActivatedRoute, convertToParamMap, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -14,11 +13,8 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 describe('AuthComponent', () => {
   let component: Auth;
   let fixture: ComponentFixture<Auth>;
-  let authClient: AuthClient;
-  let debugElement: DebugElement;
   let mockRouter: Router;
   let mockStore: any;
-  let activatedRoute: ActivatedRoute;
 
   beforeEach(async () => {
     mockStore = {
@@ -49,11 +45,8 @@ describe('AuthComponent', () => {
     })
     .compileComponents();
 
-    activatedRoute = TestBed.inject(ActivatedRoute);
     fixture = TestBed.createComponent(Auth);
-    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
-    authClient = debugElement.injector.get(AuthClient);
   });
 
   it('should create', () => {

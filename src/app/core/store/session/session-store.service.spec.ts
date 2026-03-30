@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {of} from 'rxjs';
 import {Router} from '@angular/router';
-import {SessionData, SessionState} from '@app/core/store/session/session.state';
+import {SessionState} from '@app/core/store/session/session.state';
 import {SessionStoreService} from './session-store.service';
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';

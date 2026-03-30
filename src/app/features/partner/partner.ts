@@ -5,7 +5,6 @@ import {Subject, takeUntil} from 'rxjs';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
 import {PartnerRegistrationStepper} from '@app/features/partner/components';
 import {PartnerProfile, PartnerProfileService} from './services/partner-profile.service';
-import {AuthClient} from '@app/features/auth/auth.client';
 import {LoggerService} from '@app/core/services/logger.service';
 
 // import {Modal} from '@app/modal/modal';

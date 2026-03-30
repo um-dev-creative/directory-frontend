@@ -370,7 +370,7 @@ export class SkeletonComponent {
     return classes.join(' ');
   }
 
-  getLineClasses(line: {height: number, width: string}, index: number): string {
+  getLineClasses(_line: {height: number, width: string}, _index: number): string {
     const classes: string[] = ['skeleton-line'];
 
     // Animation

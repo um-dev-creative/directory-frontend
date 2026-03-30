@@ -12,7 +12,6 @@ import {VerifyCodeClient} from '@app/verify-code/verify-code-client.service';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntil} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
-import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
@@ -88,7 +87,6 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
    */
   private readonly notificationService: NotificationService = inject(NotificationService);
 
-  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
 
   /**
    * Router services for navigation
@@ -129,7 +127,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
   }
 
   confirmVerificationCode(): void {
-    let sessionToken = null;
+    
     let sessionTokenBkd = null;
     let uuid = null;
 
@@ -146,13 +144,13 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     this.loader.show();
     this.userRegisterClient.confirmCode(userRegisterRequest).pipe(takeUntil(this.subject$))
       .subscribe({
-        next: (response) => {
+        next: (_response) => {
           this.notificationService.success('Success');
           this.router.navigate([DFC.RelativePath.STAGE_PATH]);
           // }
           this.loader.hide();
         },
-        error: (error) => {
+        error: (_error) => {
           this.notificationService.warning('Invalid code.');
           this.loader.hide();
         }

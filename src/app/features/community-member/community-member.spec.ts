@@ -82,11 +82,6 @@ describe('CommunityMember', () => {
   let component: CommunityMember;
   let fixture: ComponentFixture<CommunityMember>;
   let userClient: MockUserClient;
-  let store: any;
-  let headerService: MockHeaderService;
-  let backboneJwtPipe: MockBackboneJwtPipe;
-  let directoryJwtPipe: MockDirectoryBackendJwtPipe;
-  let userMockService: MockUserMockService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -113,11 +108,6 @@ describe('CommunityMember', () => {
     // Replace component's own pipe instances (component providers) with our mocks
     (component as any).backboneJwtPipe = new MockBackboneJwtPipe();
     (component as any).directoryJwtPipe = new MockDirectoryBackendJwtPipe();
-    store = TestBed.inject(Store) as any;
-    headerService = TestBed.inject(HeaderService) as any;
-    backboneJwtPipe = TestBed.inject(BackboneJwtPipe) as any;
-    directoryJwtPipe = TestBed.inject(DirectoryBackendJwtPipe) as any;
-    userMockService = TestBed.inject(UserMockService) as any;
   });
 
   it('should create', () => {
