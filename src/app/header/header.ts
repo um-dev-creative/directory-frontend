@@ -9,7 +9,7 @@ import {
   Renderer2,
   PLATFORM_ID
 } from '@angular/core';
-import {BreakpointService, CustomBreakpoints} from '@core/services/breakpoint.service';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -85,11 +85,10 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     avatarUrl: ''
   }
 
-  private readonly breakpointService = inject(BreakpointService);
-
   constructor(
     private readonly headerService: HeaderService,
-    private readonly renderer: Renderer2
+    private readonly renderer: Renderer2,
+    private readonly breakpointObserver: BreakpointObserver
   ) {
     this.headerType$ = this.headerService.headerType$;
     this.headerType$.subscribe(headerType => {
@@ -140,8 +139,8 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
    */
   private setupBreakpointObserver(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.breakpointService
-        .observe([CustomBreakpoints.XSmall, CustomBreakpoints.Small])
+      this.breakpointObserver
+        .observe([Breakpoints.XSmall, Breakpoints.Small])
         .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
           this.logger.debug('BreakpointObserver result:', result);

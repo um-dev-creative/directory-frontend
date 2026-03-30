@@ -9,4 +9,3 @@ export * from './theme.service';
 export * from './timezone.service';
 export * from './campaign/campaign.client';
 export * from './campaign/campaign-mapper.service';
-export * from './breakpoint.service';
