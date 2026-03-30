@@ -102,10 +102,6 @@ describe('authGuard', () => {
     });
 
     it('should wait for initialization before evaluating', (done) => {
-      const uninitializedState: SessionState = {
-        ...authenticatedSessionState,
-        isInitialized: false
-      };
       // First emit uninitialized, then initialized
       mockStore.select.and.returnValue(of(authenticatedSessionState));
 
