@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit(src/)",
+      "Write(src/)",
+      "Edit(server/)",
+      "Write(server/)",
+      "Edit(.claude/)",
+      "Write(.claude/)",
+      "Bash(ng:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm install:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(jq:*)"
+    ],
+    "deny": [
+      "Edit(ssl/)",
+      "Write(ssl/)",
+      "Edit(dist/)",
+      "Write(dist/)",
+      "Edit(Dockerfile)",
+      "Write(Dockerfile)",
+      "Edit(docker-entrypoint.sh)",
+      "Write(docker-entrypoint.sh)",
+      "Edit(server/config/app.config.js)",
+      "Write(server/config/app.config.js)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -Rs '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":.}}' .claude/hooks/pre-edit.md 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Verificando convenciones pre-edición..."
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r '.tool_input.command'); echo \"$cmd\" | grep -qE '(^|[ /])(ssl|dist)/|(\\bDockerfile\\b|\\bdocker-entrypoint\\.sh\\b)' && echo '{\"continue\":false,\"stopReason\":\"Bloqueado: el comando afecta archivos protegidos del proyecto (ssl/, dist/, Dockerfile, docker-entrypoint.sh).\"}' || true",
+            "timeout": 5,
+            "statusMessage": "Verificando comando Bash..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -Rs '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":.}}' .claude/hooks/post-edit.md 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Aplicando verificaciones post-edición..."
+          }
+        ]
+      }
+    ]
+  }
+}
