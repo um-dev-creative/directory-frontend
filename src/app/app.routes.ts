@@ -2,12 +2,10 @@ import {Routes} from '@angular/router';
 import {NotFound} from '@app/layout/not-found';
 import {VerifyCode} from '@app/verify-code/verify-code';
 import {authGuard} from '@app/core/guards';
-import {CoreDemoComponent} from './core-demo.component';
 import {BrandShowcase} from './components/brand-showcase';
 
 export const routes: Routes = [
   // Public routes (no authentication required)
-  { path: 'demo', component: CoreDemoComponent }, // Demo route for testing core services - MOVED TO TOP
   { path: 'brand-showcase', component: BrandShowcase }, // Showcase for brand colors
 
   // Lazy loaded feature routes
