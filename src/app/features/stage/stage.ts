@@ -11,7 +11,6 @@ import {PromoSection} from '@app/promo-section/promo-section';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
-import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import { CardImage } from '@app/cards/services/cards.service';
@@ -32,7 +31,6 @@ import {LoggerService} from '@app/core/services/logger.service';
 export class Stage implements OnInit, AfterViewInit {
 
   private readonly headerService: HeaderService = inject(HeaderService);
-  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
   private readonly logger = inject(LoggerService);
 
