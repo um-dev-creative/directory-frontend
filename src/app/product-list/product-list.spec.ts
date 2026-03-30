@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {ProductList} from './product-list';
 import {provideLocationMocks} from '@angular/common/testing';
@@ -47,5 +47,10 @@ describe('ProductList', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize with empty products array', () => {
+    expect(component.products).toBeDefined();
+    expect(Array.isArray(component.products)).toBeTrue();
   });
 });

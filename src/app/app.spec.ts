@@ -50,4 +50,30 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
+  it('should have title "directory-frontend"', () => {
+    expect(component.title).toBe('directory-frontend');
+  });
+
+  it('should have isInitialized$ observable', () => {
+    expect(component.isInitialized$).toBeDefined();
+  });
+
+  it('should have hideLayout$ observable', () => {
+    expect(component.hideLayout$).toBeDefined();
+  });
+
+  it('should return undefined animation data when outlet has no data', () => {
+    const mockOutlet = { activatedRouteData: {} } as any;
+    expect(component.getRouteAnimationData(mockOutlet)).toBeUndefined();
+  });
+
+  it('should return animation data from outlet', () => {
+    const mockOutlet = { activatedRouteData: { animation: 'slide' } } as any;
+    expect(component.getRouteAnimationData(mockOutlet)).toBe('slide');
+  });
+
+  it('should handle null outlet gracefully', () => {
+    expect(component.getRouteAnimationData(null as any)).toBeUndefined();
+  });
+
 });

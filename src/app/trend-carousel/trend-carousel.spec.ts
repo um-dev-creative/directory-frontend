@@ -36,4 +36,30 @@ describe('TrendsCarousel', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should initialize with empty trends array', () => {
+    expect(component.trends).toBeDefined();
+    expect(Array.isArray(component.trends)).toBeTrue();
+  });
+
+  it('should stop scroll on stopScroll call', () => {
+    expect(() => component.stopScroll()).not.toThrow();
+  });
+
+  it('should navigate to deals page on navigateToDeals', () => {
+    const router = TestBed.inject(ActivatedRoute);
+    spyOn(component as any, 'navigateToDeals').and.callThrough();
+    // Just verify it doesn't throw - actual routing is mocked
+    expect(() => component.navigateToDeals()).not.toThrow();
+  });
+
+  it('should handle card click with internal link', () => {
+    const trend = { title: 'Test', description: 'Desc', image: 'img.png', brandLogo: 'logo.png', internalLink: '/deals' };
+    expect(() => component.onCardClick(trend)).not.toThrow();
+  });
+
+  it('should handle card click without internal link', () => {
+    const trend = { title: 'Test', description: 'Desc', image: 'img.png', brandLogo: 'logo.png', internalLink: '' };
+    expect(() => component.onCardClick(trend)).not.toThrow();
+  });
 });

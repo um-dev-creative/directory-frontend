@@ -33,4 +33,14 @@ describe('VerifyCodeClient', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should have confirmCode method', () => {
+    expect(typeof service.confirmCode).toBe('function');
+  });
+
+  it('should return an observable from confirmCode', () => {
+    const result = service.confirmCode({ code: '123456' });
+    expect(result).toBeDefined();
+    expect(typeof result.subscribe).toBe('function');
+  });
 });
