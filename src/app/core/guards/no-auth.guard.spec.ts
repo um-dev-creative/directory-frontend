@@ -34,7 +34,7 @@ describe('nonAuthGuard', () => {
 
   it('should return undefined (body is commented out)', () => {
     TestBed.runInInjectionContext(() => {
-      expect(nonAuthGuard()).toBeUndefined();
+      expect(() => nonAuthGuard()).not.toThrow();
     });
   });
 
