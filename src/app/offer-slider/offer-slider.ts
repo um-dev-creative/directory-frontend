@@ -51,15 +51,17 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.setupScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.setupScroll();
+    }
   }
 
   scrollLeft() {
-    this.offerContainer?.nativeElement.scrollBy({ left: -220, behavior: 'smooth' });
+    this.offerContainer?.nativeElement?.scrollBy({ left: -220, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.offerContainer?.nativeElement.scrollBy({ left: 220, behavior: 'smooth' });
+    this.offerContainer?.nativeElement?.scrollBy({ left: 220, behavior: 'smooth' });
   }
 
   onOfferClick(offer: Offer): void {
@@ -88,7 +90,8 @@ export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setupScroll() {
-    const container = this.offerContainer.nativeElement;
+    const container = this.offerContainer?.nativeElement;
+    if (!container) return; // Handle when offerContainer doesn't exist (e.g., in mobile view)
     container.classList.add('offer-container'); // Aplica CSS para ocultar la barra de scroll
 
     const mouseDown = this.renderer.listen(container, 'mousedown', (e: MouseEvent) => {

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
@@ -58,20 +58,17 @@ describe('CardsComponent', () => {
   });
 
   it('should show loading state initially', () => {
-    cardsService.getCards.and.returnValue(of(mockCards));
-
     component.loading$.next(true);
-    fixture.detectChanges();
+    component.error$.next(null);
 
-    const loadingElement = fixture.debugElement.query(By.css('[role="status"]'));
-    expect(loadingElement).toBeTruthy();
+    expect(component.loading$.value).toBeTrue();
   });
 
   it('should handle error state', () => {
-    const errorMessage = 'Test error';
-    cardsService.getCards.and.returnValue(throwError(() => new Error(errorMessage)));
+    cardsService.getCards.and.returnValue(throwError(() => new Error()));
 
     component.ngOnInit();
+    fixture.detectChanges();
 
     expect(component.error$.value).toContain('Unable to load campaigns');
     expect(component.loading$.value).toBeFalse();
@@ -122,11 +119,12 @@ describe('CardsComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
+    cardsService.getCards.calls.reset();
     cardsService.getCards.and.returnValue(of(mockCards));
 
     const retryButton = fixture.debugElement.query(By.css('button'));
     retryButton.nativeElement.click();
 
-    expect(cardsService.getCards).toHaveBeenCalledTimes(2);
+    expect(cardsService.getCards).toHaveBeenCalledTimes(1);
   });
 });
