@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Marquee } from './marquee';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
