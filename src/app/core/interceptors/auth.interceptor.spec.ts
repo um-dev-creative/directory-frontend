@@ -3,7 +3,7 @@ import { HttpRequest, HttpHandler, HttpResponse, HttpHeaders } from '@angular/co
 import { of, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthInterceptor } from './auth.interceptor';
-import { SessionState, SessionData } from '@app/core/store/session/session.state';
+import { SessionData } from '@app/core/store/session/session.state';
 import { DFC } from '@shared/constants/app.const';
 
 describe('AuthInterceptor', () => {
