@@ -11,7 +11,7 @@ Guía de trabajo para Claude Code en este repositorio. Lee este archivo antes de
 | Framework | Angular 20.3.3 con SSR (`@angular/ssr`) |
 | Estado global | NgRx 20 (Store, Effects, Devtools) |
 | Estado local | Signals de Angular (solo en componentes) |
-| Estilos | Tailwind CSS v4 + Angular Material (tema Azure Blue) |
+| Estilos | Tailwind CSS v4 |
 | Traducciones | `@ngx-translate/core` v16 — idioma por defecto: `es` |
 | BFF | Express.js en `server/` — intermediario obligatorio hacia el backend Java |
 | Sesión | Redis + fallback en memoria (`server/shared/redis-session-store.js`) |
