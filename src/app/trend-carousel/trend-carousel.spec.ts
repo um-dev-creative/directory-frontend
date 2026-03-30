@@ -47,7 +47,6 @@ describe('TrendsCarousel', () => {
   });
 
   it('should navigate to deals page on navigateToDeals', () => {
-    const router = TestBed.inject(ActivatedRoute);
     spyOn(component as any, 'navigateToDeals').and.callThrough();
     // Just verify it doesn't throw - actual routing is mocked
     expect(() => component.navigateToDeals()).not.toThrow();
