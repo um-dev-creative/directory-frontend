@@ -39,7 +39,7 @@ Mensaje de parada:
 
 Si detectas código muerto en el archivo **existente**, no lo propagues ni lo copies en tu edición. Menciónalo al usuario.
 
-> Motivo: `tsconfig.json` tiene activos `noUnusedLocals` y `noUnusedParameters` — el compilador rechazará el build si hay código sin uso.
+> Motivo: `tsconfig.json` tiene activo `noUnusedLocals` — el compilador rechazará el build si hay imports o variables locales sin uso.
 
 ---
 
