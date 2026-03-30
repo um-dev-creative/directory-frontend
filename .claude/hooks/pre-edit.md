@@ -29,7 +29,21 @@ Mensaje de parada:
 
 ---
 
-### 3. Verificar convenciones según tipo de archivo
+### 3. Sin código muerto — imports, variables y funciones sin uso
+
+**Antes de escribir cualquier código**, verifica que no introduces:
+- Imports sin usar (`import { Foo } from '...'` si `Foo` no aparece en el archivo)
+- Variables declaradas pero nunca leídas (`const x = ...` que no se usa)
+- Parámetros de función que no se referencian en el cuerpo
+- Funciones o métodos privados que no se llaman desde ningún sitio
+
+Si detectas código muerto en el archivo **existente**, no lo propagues ni lo copies en tu edición. Menciónalo al usuario.
+
+> Motivo: `tsconfig.json` tiene activos `noUnusedLocals` y `noUnusedParameters` — el compilador rechazará el build si hay código sin uso.
+
+---
+
+### 4. Verificar convenciones según tipo de archivo
 
 #### Si es un componente Angular (`*.component.ts`)
 
@@ -67,7 +81,7 @@ Verifica:
 
 ---
 
-### 4. Comprobación SSR
+### 5. Comprobación SSR
 
 Si el archivo modificado usa cualquiera de estas APIs:
 - `window`, `document`, `navigator`, `location`
@@ -95,17 +109,20 @@ Si el archivo modificado tiene un `*.spec.ts` correspondiente:
 
 2. Leer el archivo completo
 
-3. ¿Es un componente Angular?
+3. ¿El código que voy a escribir tiene imports, variables o funciones sin uso?
+   → Eliminarlos antes de editar
+
+4. ¿Es un componente Angular?
    → Verificar standalone, inject(), sin NgModule
 
-4. ¿Es un template?
+5. ¿Es un template?
    → Verificar @if/@for/@let, | translate, sin strings en duro
 
-5. ¿Usa APIs browser-only?
+6. ¿Usa APIs browser-only?
    → Verificar protección SSR
 
-6. ¿Tiene spec correspondiente?
+7. ¿Tiene spec correspondiente?
    → Avisar sobre posible actualización de tests
 
-7. Proceder con la edición
+8. Proceder con la edición
 ```
