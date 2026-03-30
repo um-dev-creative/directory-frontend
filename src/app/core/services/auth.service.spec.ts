@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { AuthService, LoginCredentials, User } from './auth.service';
+import { AuthService, User } from './auth.service';
 import { HttpService } from './http.service';
 import { StorageMockService } from './storage-mock.service';
 import { NotificationService } from './notification.service';
