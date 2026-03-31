@@ -10,6 +10,18 @@ describe('ThemeService', () => {
     mockStorage = jasmine.createSpyObj('StorageMockService', ['getLocal', 'setLocal', 'removeLocal']);
     mockStorage.getLocal.and.returnValue(null);
 
+    // Mock matchMedia to always report light mode preference
+    spyOn(window, 'matchMedia').and.returnValue({
+      matches: false,
+      media: '(prefers-color-scheme: dark)',
+      addEventListener: jasmine.createSpy('addEventListener'),
+      removeEventListener: jasmine.createSpy('removeEventListener'),
+      dispatchEvent: jasmine.createSpy('dispatchEvent'),
+      onchange: null,
+      addListener: jasmine.createSpy('addListener'),
+      removeListener: jasmine.createSpy('removeListener'),
+    } as unknown as MediaQueryList);
+
     TestBed.configureTestingModule({
       providers: [
         ThemeService,
