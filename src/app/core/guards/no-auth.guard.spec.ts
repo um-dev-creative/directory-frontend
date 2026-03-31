@@ -27,7 +27,7 @@ describe('noAuthGuard', () => {
     configureWithSession({ isInitialized: true, sessionData: {} });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard({} as any, {} as any);
+      const result = noAuthGuard();
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeTrue();
         expect(mockRouter.navigate).not.toHaveBeenCalled();
@@ -46,7 +46,7 @@ describe('noAuthGuard', () => {
     });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard({} as any, {} as any);
+      const result = noAuthGuard();
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeFalse();
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/deals']);
@@ -61,7 +61,7 @@ describe('noAuthGuard', () => {
     let emitted = false;
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard({} as any, {} as any);
+      const result = noAuthGuard();
       (result as Observable<boolean>).subscribe(() => { emitted = true; });
     });
 
