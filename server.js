@@ -3,6 +3,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 process.env.NODE_CONFIG_DIR = __dirname + "/server/config";
 
+// Zone.js polyfill for Node — MUST be loaded before any Angular code.
+// Without this, NgZone constructor throws NG0908 (typeof Zone === "undefined").
+require('zone.js/node');
+
 const express = require('express');
 const fs = require('node:fs');
 const https = require('node:https');
