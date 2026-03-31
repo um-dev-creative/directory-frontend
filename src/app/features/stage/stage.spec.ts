@@ -11,6 +11,7 @@ import { BannerService } from '@app/banner/services/banner.service';
 import { CardsService } from '@app/cards/services/cards.service';
 import { of } from 'rxjs';
 import { LoggerService } from '@app/core/services/logger.service';
+import { HeaderType } from '@shared/constants/header-type';
 
 // Mocks
 class MockHeaderService {
@@ -112,14 +113,14 @@ describe('Stage', () => {
     component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
     (headerService.setHeaderType as jasmine.Spy).calls.reset();
     (component as any).processSessionData();
-    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual('USER_AUTH_HEADER');
+    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual(HeaderType.USER_AUTH_HEADER);
   });
 
   it('should call setHeaderType with GENERAL_HEADER if token does not exist', () => {
     component.sessionData = { userAuth: { fullName: 'Test User' } } as any;
     (headerService.setHeaderType as jasmine.Spy).calls.reset();
     (component as any).processSessionData();
-    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual('GENERAL_HEADER');
+    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual(HeaderType.GENERAL_HEADER);
   });
 
   it('should call detectChanges after processing session data', () => {
