@@ -11,7 +11,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 })
 export class SessionEffects {
   private readonly SESSION_KEY = 'currentSession';
-  // SSR: browser-only — sessionStorage does not exist in Node; guard every access
+  // SSR: browser-only — localStorage does not exist in Node; guard every access
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   constructor(private readonly action$: Actions, private readonly store: Store<{ session: SessionState }>) {}
@@ -20,7 +20,7 @@ export class SessionEffects {
       ofType(saveSession),
       tap(action => {
         if (this.isBrowser) {
-          sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(action.sessionData));
+          localStorage.setItem(this.SESSION_KEY, JSON.stringify(action.sessionData));
         }
       })
     ),
@@ -31,7 +31,7 @@ export class SessionEffects {
       ofType(clearSession),
       tap(() => {
         if (this.isBrowser) {
-          sessionStorage.removeItem(this.SESSION_KEY);
+          localStorage.removeItem(this.SESSION_KEY);
         }
       })
     ),
@@ -42,8 +42,8 @@ export class SessionEffects {
       this.action$.pipe(
         ofType(loadSession),
         tap(() => {
-          if (this.isBrowser && this.isSessionStorageAvailable()) {
-            const storedSession = sessionStorage.getItem(this.SESSION_KEY);
+          if (this.isBrowser && this.isLocalStorageAvailable()) {
+            const storedSession = localStorage.getItem(this.SESSION_KEY);
             if (storedSession) {
               const sessionData: SessionData = JSON.parse(storedSession);
               this.store.dispatch(saveSession({ sessionData, isInitialized: true }));
@@ -54,12 +54,12 @@ export class SessionEffects {
     { dispatch: false }
   );
 
-  private isSessionStorageAvailable(): boolean {
+  private isLocalStorageAvailable(): boolean {
     if (!this.isBrowser) return false;
     try {
       const testKey = '__test__';
-      sessionStorage.setItem(testKey, testKey);
-      sessionStorage.removeItem(testKey);
+      localStorage.setItem(testKey, testKey);
+      localStorage.removeItem(testKey);
       return true;
     } catch (e) {
       return false;
