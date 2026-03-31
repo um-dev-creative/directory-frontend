@@ -4,7 +4,6 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {routes} from '@app/app.routes';
 import {HttpClient, provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';
-import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideStore} from '@ngrx/store';
 import {sessionReducer} from '@app/core/store/session/session.reducer';
@@ -34,8 +33,7 @@ export const appConfig: ApplicationConfig = {
       }
     ).providers!,
 
-    // Animations
-    provideAnimations(),
+    // Animations — use async variant only; provideNoopAnimations() overrides this on the server
     provideAnimationsAsync(),
 
     // HTTP Client with interceptors support

@@ -19,8 +19,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.error instanceof ProgressEvent) {
-          // Verifica si el error es un problema de red o de tipo de contenido
+        // SSR: browser-only — ProgressEvent does not exist in Node.js
+        if (typeof ProgressEvent !== 'undefined' && error.error instanceof ProgressEvent) {
           console.error('Network or parsing error:', error.message);
           return throwError(() => new Error('Network error or invalid response format'));
         }
