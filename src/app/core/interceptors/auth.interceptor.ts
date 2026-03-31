@@ -62,7 +62,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           this.sessionStoreService.clearSessionData();
           this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-          this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+          this.router.navigate([DFC.RelativePath.AUTH_PATH]);
         }
         return throwError(() => error);
       })

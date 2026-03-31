@@ -165,7 +165,7 @@ describe('AuthInterceptor', () => {
       expect(mockHeaderService.setHeaderType).toHaveBeenCalledWith(HeaderType.GENERAL_HEADER);
     });
 
-    it('should navigate to STAGE_PATH on 401 response', () => {
+    it('should navigate to AUTH_PATH on 401 response', () => {
       const req = new HttpRequest('GET', '/api/data');
 
       interceptor.intercept(req, mockHandler).subscribe({ error: () => {} });
