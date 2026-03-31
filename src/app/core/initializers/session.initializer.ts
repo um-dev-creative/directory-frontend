@@ -1,17 +1,32 @@
-import { inject, APP_INITIALIZER } from '@angular/core';
+import { inject, APP_INITIALIZER, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
 
 /**
- * Simple session initializer - loads existing session from storage on app start
+ * Async session initializer - loads existing session from storage on app start.
+ * In SSR, skips localStorage access and marks initialized immediately.
+ * In browser, dispatches loadSession and yields one macrotask so the NgRx effect
+ * can process it (read localStorage, dispatch saveSession) before marking initialized.
  */
-export function initializeSession(): () => void {
+export function initializeSession(): () => Promise<void> {
   const sessionStoreService = inject(SessionStoreService);
+  const platformId = inject(PLATFORM_ID);
 
   return () => {
-    // Load session data from storage
+    // SSR: browser-only — no localStorage in Node
+    if (!isPlatformBrowser(platformId)) {
+      sessionStoreService.setInitialized();
+      return Promise.resolve();
+    }
+
     sessionStoreService.loadSessionData();
-    // Mark initialization as complete
-    sessionStoreService.setInitialized();
+
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        sessionStoreService.setInitialized();
+        resolve();
+      }, 0);
+    });
   };
 }
 

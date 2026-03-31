@@ -9,8 +9,8 @@
     "build:ssr": "cross-env-shell \"ng build --configuration $ENVM && ng run directory-frontend:server\"",
     "watch": "ng build --watch --configuration development",
     "watch:ssr": "ng build --watch --configuration development && ng run directory-frontend:server --watch",
-    "dev:win": "concurrently \"npm run watch:ssr\" \"npm run start-dev:win\"",
-    "dev:unix": "concurrently \"npm run watch:ssr\" \"npm run start-dev:unix\"",
+    "dev:win": "concurrently \"pnpm run watch:ssr\" \"pnpm run start-dev:win\"",
+    "dev:unix": "concurrently \"pnpm run watch:ssr\" \"pnpm run start-dev:unix\"",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
     "test:browser": "ng test --code-coverage",
     "server:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs"

@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 import {NotFound} from '@app/layout/not-found';
 import {VerifyCode} from '@app/verify-code/verify-code';
-import {authGuard} from '@app/core/guards';
+import {authGuard, noAuthGuard} from '@app/core/guards';
 import {BrandShowcase} from './components/brand-showcase';
 
 export const routes: Routes = [
@@ -16,6 +16,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadComponent: () => import('./features/auth/auth').then(m => m.Auth),
+    canActivate: [noAuthGuard],
     data: { hideFooter: true }
   },
   {

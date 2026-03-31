@@ -1,17 +1,30 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { SessionState } from '@app/core/store/session/session.state';
+import { filter, map, take } from 'rxjs/operators';
 
-export const nonAuthGuard = () => {
-  /*if (!authService.isLoggedIn()) {
-    return true;
-  }
+/**
+ * Guard that prevents authenticated users from accessing guest-only routes (e.g. /auth).
+ * Redirects to /deals if the user already has a valid session.
+ */
+export const noAuthGuard: CanActivateFn = () => {
+  const store = inject(Store<{ session: SessionState }>);
+  const router = inject(Router);
 
-  // If user is already logged in, redirect based on role
-  const role = authService.getUserRole();
-  if (role === 'user') {
-    router.navigate(['/dashboard/user']);
-  } else if (role === 'business') {
-    router.navigate(['/dashboard/business']);
-  }
+  return store.select(state => state.session).pipe(
+    filter(s => s?.isInitialized === true),
+    take(1),
+    map(s => {
+      const userAuth = s?.sessionData?.userAuth;
+      const token = s?.sessionData?.token;
+      const isAuthenticated = !!(token && token.trim() && userAuth?.sessionToken?.trim() && userAuth?.alias?.trim());
 
-  return false;
-  */
+      if (isAuthenticated) {
+        router.navigate(['/deals']);
+        return false;
+      }
+      return true;
+    })
+  );
 };
