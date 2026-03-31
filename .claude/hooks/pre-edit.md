@@ -58,7 +58,8 @@ Si detectas una violación existente, **no la propagues** en tu edición y menci
 
 Verifica que el template objetivo usa (o seguirá usando tras el cambio):
 - `@if` / `@for` / `@let` — **no** `*ngIf` / `*ngFor` / `*ngSwitch`
-- `{{ 'clave' | translate }}` para cualquier texto visible — **no** strings en duro
+- Si la clave i18n ya existe → usa `{{ 'clave' | translate }}`
+- Si el texto es nuevo o de prototipado → string en duro es aceptable, añade `<!-- TODO: i18n -->`
 - Sin URLs hardcodeadas en `href`, `src` o `[routerLink]` absolutas externas
 
 #### Si es un effect NgRx (`*.effects.ts`)

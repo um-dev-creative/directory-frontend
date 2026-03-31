@@ -208,33 +208,47 @@
     </app-card>
 
     <!-- Form Status - Development Section (Temporal) -->
-    <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-      <h3 class="font-semibold mb-3 text-gray-800">Estado del Formulario (Desarrollo):</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <div>
-          <p><strong>Válido:</strong> @if (profileForm.valid) { Sí } @else { No }</p>
-          <p><strong>Tocado:</strong> @if (profileForm.touched) { Sí } @else { No }</p>
-          <p><strong>Sucio:</strong> @if (profileForm.dirty) { Sí } @else { No }</p>
+     @if(!isProd) {
+      <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <h3 class="font-semibold mb-3 text-gray-800">Estado del Formulario (Desarrollo):</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <p title="Todos los campos pasan las validaciones definidas"><strong>Válido:</strong> @if (profileForm.valid) { Sí } @else { No }</p>
+            <p title="El usuario interactuó con al menos un campo (focus + blur)"><strong>Tocado:</strong> @if (profileForm.touched) { Sí } @else { No }</p>
+            <p title="Al menos un campo fue modificado respecto al valor inicial"><strong>Sucio:</strong> @if (profileForm.dirty) { Sí } @else { No }</p>
+          </div>
+          <div>
+            <p title="VALID | INVALID | PENDING | DISABLED — estado global calculado por Angular"><strong>Estado:</strong> {{ profileForm.status }}</p>
+            <p title="Hay validadores asíncronos en ejecución (ej. verificación en servidor)"><strong>Pendiente:</strong> @if (profileForm.pending) { Sí } @else { No }</p>
+            <p title="El formulario está siendo enviado al servidor en este momento"><strong>Enviando:</strong> @if (isSubmitting) { Sí } @else { No }</p>
+          </div>
         </div>
-        <div>
-          <p><strong>Estado:</strong> {{ profileForm.status }}</p>
-          <p><strong>Pendiente:</strong> @if (profileForm.pending) { Sí } @else { No }</p>
-          <p><strong>Enviando:</strong> @if (isSubmitting) { Sí } @else { No }</p>
-        </div>
-      </div>
+        <!-- Leyenda -->
+        <details class="mt-3">
+          <summary class="text-xs text-gray-400 cursor-pointer hover:text-gray-600">¿Qué significa cada estado?</summary>
+          <ul class="mt-2 text-xs text-gray-500 space-y-1 pl-2 border-l-2 border-gray-200">
+            <li><strong>Válido</strong> — todos los campos cumplen las validaciones (required, minLength, pattern…)</li>
+            <li><strong>Tocado</strong> — el usuario hizo foco y salió de al menos un campo</li>
+            <li><strong>Sucio</strong> — al menos un campo fue modificado respecto al valor original</li>
+            <li><strong>Estado</strong> — valor Angular: VALID · INVALID · PENDING · DISABLED</li>
+            <li><strong>Pendiente</strong> — hay validadores asíncronos corriendo (consulta al servidor)</li>
+            <li><strong>Enviando</strong> — el submit está en curso (isSubmitting = true)</li>
+          </ul>
+        </details>
 
-      <div class="mt-4">
-        <p class="font-medium mb-2">Valores del Formulario:</p>
-        <pre class="text-xs bg-white p-3 rounded border overflow-auto max-h-40">{{ getFormValues() }}</pre>
-      </div>
-
-      @if (!profileForm.valid) {
         <div class="mt-4">
-          <p class="font-medium mb-2 text-red-600">Errores del Formulario:</p>
-          <pre class="text-xs bg-red-50 p-3 rounded border border-red-200 overflow-auto max-h-32">{{ getFormErrors() }}</pre>
+          <p class="font-medium mb-2">Valores del Formulario:</p>
+          <pre class="text-xs bg-white p-3 rounded border overflow-auto max-h-40">{{ getFormValues() }}</pre>
         </div>
-      }
-    </div>
+
+        @if (!profileForm.valid) {
+          <div class="mt-4">
+            <p class="font-medium mb-2 text-red-600">Errores del Formulario:</p>
+            <pre class="text-xs bg-red-50 p-3 rounded border border-red-200 overflow-auto max-h-32">{{ getFormErrors() }}</pre>
+          </div>
+        }
+      </div>
+     }
 
     <!-- Support Section -->
     <div class="text-center pt-6 border-t border-gray-200 mt-8">

@@ -138,7 +138,7 @@ import { SocialLoginButton, SocialProvider } from '@app/components/ui/buttons/so
         </div>
 
         <!-- Ejemplo con diferentes tamaños -->
-        <div class="bg-gradient-to-r from-emerald-green-500 to-sky-blue-500 p-6 rounded-lg">
+        <div class="bg-linear-to-r from-emerald-green-500 to-sky-blue-500 p-6 rounded-lg">
           <h4 class="text-white font-semibold mb-3">Diferentes tamaños sobre gradiente</h4>
           <div class="flex flex-wrap items-center gap-4">
             <app-button variant="contrast-light" size="sm">
