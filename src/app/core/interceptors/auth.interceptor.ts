@@ -1,14 +1,22 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
+import {Router} from '@angular/router';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
+import {HeaderService} from '@app/header/header.service';
+import {HeaderType} from '@shared/constants/header-type';
 import {DFC} from '@shared/constants/app.const';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   private readonly store: Store<{ session: SessionState }> = inject(Store);
+  private readonly sessionStoreService = inject(SessionStoreService);
+  private readonly headerService = inject(HeaderService);
+  private readonly router = inject(Router);
   private sessionData: SessionData | undefined;
 
   constructor() {
@@ -30,16 +38,16 @@ export class AuthInterceptor implements HttpInterceptor {
     const bearerToken = this.sessionData?.userAuth?.authorization;
     const directorySessionToken = this.sessionData?.userAuth?.sessionToken;
 
+    let outReq = req;
+
     if (bearerToken && directorySessionToken) {
       // Clone the request and add the authorization header correctly
-      let authReq;
       if (req.body instanceof FormData) {
-        authReq = req.clone({
-          headers: req.headers
-            .set('session-token', directorySessionToken)
+        outReq = req.clone({
+          headers: req.headers.set('session-token', directorySessionToken)
         });
       } else {
-        authReq = req.clone({
+        outReq = req.clone({
           setHeaders: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${bearerToken}`,
@@ -47,10 +55,17 @@ export class AuthInterceptor implements HttpInterceptor {
           }
         });
       }
-
-      return next.handle(authReq);
     }
 
-    return next.handle(req);
+    return next.handle(outReq).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.sessionStoreService.clearSessionData();
+          this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+          this.router.navigate([DFC.RelativePath.STAGE_PATH]);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }
