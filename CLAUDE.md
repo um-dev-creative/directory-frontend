@@ -42,7 +42,7 @@ Usa siempre estos aliases; nunca rutas relativas que suban más de dos niveles.
 - **Siempre `standalone: true`** — no uses NgModule bajo ninguna circunstancia.
 - La inyección de dependencias se hace con la función `inject()`, no con el constructor (salvo herencia que lo requiera).
 - Usa **`@if` / `@for` / `@let`** del nuevo control flow — nunca `*ngIf` / `*ngFor` / `*ngSwitch`.
-- Todos los textos visibles al usuario deben pasar por el pipe **`| translate`** de ngx-translate. Cero strings en duro en templates.
+- Usa `| translate` de ngx-translate para textos visibles al usuario cuando la clave ya exista en los archivos i18n. Para strings nuevos o de prototipado rápido está bien dejarlos en duro temporalmente, pero añade un comentario `// TODO: i18n` para revisarlo después.
 - Importa explícitamente en el array `imports: []` del decorador todo lo que el template necesite.
 
 ### Estado

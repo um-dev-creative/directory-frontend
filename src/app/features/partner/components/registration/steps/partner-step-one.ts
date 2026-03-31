@@ -10,7 +10,6 @@ import {Store} from '@ngrx/store';
 import { SessionData, SessionState} from '@core/store/session/session.state';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Subject, switchMap, takeUntil} from 'rxjs';
-import {AuthClient} from '@app/features/auth/auth.client';
 import {SessionStoreService} from '@core/store/session/session-store.service';
 import {NotificationService} from '@core/services/notification.service';
 import {LoggerService} from '@app/core/services/logger.service';
@@ -102,7 +101,6 @@ export class PartnerStepOne implements OnInit {
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   private readonly businessClient: BusinessClient = inject(BusinessClient);
-  private readonly authClient: AuthClient = inject(AuthClient);
   private readonly store: Store<{ session: SessionState }> = inject(Store);
   private readonly destroy$ = new Subject<void>();
   private readonly fb: FormBuilder = inject(FormBuilder);

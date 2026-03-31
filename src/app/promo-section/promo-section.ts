@@ -2,11 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '@env/environment';
 import {LoggerService} from '@app/core/services/logger.service';
-interface DownloadButton {
-  platform: string;
-  image: string;
-  url: string;
-}
 
 interface Promotion {
   title: string;

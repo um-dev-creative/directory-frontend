@@ -81,24 +81,30 @@ describe('CardsService', () => {
     service.getCards().subscribe({
       next: () => fail('Expected an error'),
       error: (error) => {
-        expect(error.message).toContain('Failed to load cards');
+        expect(error.message).toEqual('Server error - please try again later');
       }
     });
 
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    req.flush('Error', { status: 500, statusText: 'Server Error' });
+    // Should retry 2 times, so we need to respond to 3 requests total
+    for (let i = 0; i < 3; i++) {
+      const req = httpMock.expectOne('assets/mocks/images.json');
+      req.flush('Error', { status: 500, statusText: 'Server Error' });
+    }
   });
 
   it('should handle network error', () => {
     service.getCards().subscribe({
       next: () => fail('Expected an error'),
       error: (error) => {
-        expect(error.message).toContain('Network error');
+        expect(error.message).toEqual('Network error - please check your connection');
       }
     });
 
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    req.flush('Error', { status: 0, statusText: 'Network Error' });
+    // Should retry 2 times, so we need to respond to 3 requests total
+    for (let i = 0; i < 3; i++) {
+      const req = httpMock.expectOne('assets/mocks/images.json');
+      req.flush('Error', { status: 0, statusText: 'Network Error' });
+    }
   });
 
   it('should cache requests', () => {
@@ -128,12 +134,10 @@ describe('CardsService', () => {
   });
 
   it('should retry failed requests', () => {
-    let callCount = 0;
-
     service.getCards().subscribe({
       next: () => fail('Expected an error'),
       error: (error) => {
-        expect(error.message).toContain('Failed to load cards');
+        expect(error.message).toEqual('Server error - please try again later');
       }
     });
 

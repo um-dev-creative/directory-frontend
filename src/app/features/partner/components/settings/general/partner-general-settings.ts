@@ -121,10 +121,6 @@ export class PartnerGeneralSettings implements OnInit {
     this.logger.debug('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
   }
 
-  private loadTimezoneData(): void {
-    this.logger.debug('Loading timezone data...');
-    // TODO: Implement social login logic
-  }
 
   private loadCategories(): void {
     this.loadingCategories = true;

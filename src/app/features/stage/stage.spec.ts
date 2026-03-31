@@ -14,7 +14,7 @@ import { LoggerService } from '@app/core/services/logger.service';
 
 // Mocks
 class MockHeaderService {
-  setHeaderType = jasmine.createSpy();
+  setHeaderType = jasmine.createSpy('setHeaderType');
 }
 class MockChangeDetectorRef {
   detectChanges = jasmine.createSpy();
@@ -66,7 +66,6 @@ describe('Stage', () => {
   let fixture: ComponentFixture<Stage>;
   let headerService: MockHeaderService;
   let store: MockStore;
-  let changeDetectorRef: MockChangeDetectorRef;
   const mockLogger = { info: jasmine.createSpy('info'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
 
   beforeEach(async () => {
@@ -89,7 +88,6 @@ describe('Stage', () => {
     component = fixture.componentInstance;
     headerService = TestBed.inject(HeaderService) as any;
     store = TestBed.inject(Store) as any;
-    changeDetectorRef = TestBed.inject(ChangeDetectorRef) as any;
     fixture.detectChanges();
   });
 
@@ -103,7 +101,7 @@ describe('Stage', () => {
   });
 
   it('should set isAuthenticated to false if user is not authenticated', () => {
-    spyOn(store, 'select').and.returnValue({
+    (store.select as jasmine.Spy).and.returnValue({
       subscribe: (fn: (state: any) => void) => fn({ sessionData: {} })
     });
     component.ngOnInit();
@@ -112,20 +110,23 @@ describe('Stage', () => {
 
   it('should call setHeaderType with USER_AUTH_HEADER if token exists', () => {
     component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
-    component['processSessionData']();
-    expect(headerService.setHeaderType).toHaveBeenCalledWith('USER_AUTH_HEADER');
+    (headerService.setHeaderType as jasmine.Spy).calls.reset();
+    (component as any).processSessionData();
+    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual('USER_AUTH_HEADER');
   });
 
   it('should call setHeaderType with GENERAL_HEADER if token does not exist', () => {
     component.sessionData = { userAuth: { fullName: 'Test User' } } as any;
-    component['processSessionData']();
-    expect(headerService.setHeaderType).toHaveBeenCalledWith('GENERAL_HEADER');
+    (headerService.setHeaderType as jasmine.Spy).calls.reset();
+    (component as any).processSessionData();
+    expect((headerService.setHeaderType as jasmine.Spy).calls.mostRecent().args[0]).toEqual('GENERAL_HEADER');
   });
 
   it('should call detectChanges after processing session data', () => {
     component.sessionData = { token: 'token', userAuth: { fullName: 'Test User' } } as any;
-    component['processSessionData']();
-    expect(changeDetectorRef.detectChanges).toHaveBeenCalled();
+    const spy = spyOn((component as any).changeDetectorRefs, 'detectChanges');
+    (component as any).processSessionData();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should log card click event', () => {

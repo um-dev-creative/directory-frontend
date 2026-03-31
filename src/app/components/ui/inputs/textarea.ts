@@ -95,7 +95,7 @@ export class TextareaComponent implements ControlValueAccessor {
   textareaId: string = `textarea-${Math.random().toString(36).substr(2, 9)}`;
 
   // ControlValueAccessor implementation
-  private onChange = (value: string) => {};
+  private onChange = (_value: string) => {};
   private onTouched = () => {};
 
   writeValue(value: string): void {

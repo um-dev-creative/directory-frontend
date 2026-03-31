@@ -13,7 +13,7 @@ const _sessionReducer = createReducer(
     debugLog('🔐 Saving session:', sessionData?.userAuth?.email);
     return {...state, sessionData, isInitialized: isInitialized ?? state.isInitialized};
   }),
-  on(clearSession, (state) => {
+  on(clearSession, (_state) => {
     debugLog('🔒 Session cleared from the Local Storage');
     return {
       ...initialState,

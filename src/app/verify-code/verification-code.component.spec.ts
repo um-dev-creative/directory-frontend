@@ -20,4 +20,16 @@ describe('VerificationCodeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a fixture', () => {
+    expect(fixture).toBeDefined();
+  });
+
+  it('should be an instance of VerificationCodeComponent', () => {
+    expect(component instanceof VerificationCodeComponent).toBeTrue();
+  });
+
+  it('should render without errors', () => {
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
 });

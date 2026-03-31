@@ -84,12 +84,12 @@ export const authGuard: CanActivateFn = (route, state) => {
 };
 
 // Guard para rutas hijas
-export const authGuardChild: CanActivateChildFn = (childRoute, state) => {
+export const authGuardChild: CanActivateChildFn = (_childRoute, state) => {
   return checkAuthState(state.url);
 };
 
 // Guard para rutas con carga diferida (lazy loading)
-export const authMatchGuard: CanMatchFn = (route, segments) => {
+export const authMatchGuard: CanMatchFn = (_route, segments) => {
   const targetUrl = '/' + segments.map(s => s.path).join('/');
   return checkAuthState(targetUrl);
 };

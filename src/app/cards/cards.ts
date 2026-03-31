@@ -129,7 +129,7 @@ export class Cards implements OnInit, OnDestroy {
     }
   }
 
-  trackByCardSrc(index: number, card: CardImage): string {
+  trackByCardSrc(_index: number, card: CardImage): string {
     return card.src;
   }
 }

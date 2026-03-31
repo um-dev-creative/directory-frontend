@@ -13,7 +13,6 @@ describe('Favorites', () => {
   let component: Favorites;
   let fixture: ComponentFixture<Favorites>;
   let favoritesService: jasmine.SpyObj<FavoritesService>;
-  let activatedRoute: ActivatedRoute;
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('FavoritesService', ['getFavorites', 'removeFromFavorites']);

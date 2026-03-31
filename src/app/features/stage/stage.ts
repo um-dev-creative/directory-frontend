@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
 import {Carousel} from '@app/carousel/carousel';
@@ -11,14 +11,10 @@ import {PromoSection} from '@app/promo-section/promo-section';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
-import {SessionStoreService} from '@app/core/store/session/session-store.service';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import { CardImage } from '@app/cards/services/cards.service';
 import {LoggerService} from '@app/core/services/logger.service';
-
-interface OnAfterViewInit {
-}
 
 /**
  * Main stage component
@@ -32,10 +28,9 @@ interface OnAfterViewInit {
   animations: [],
   providers: [BackboneJwtPipe]
 })
-export class Stage implements OnInit, OnAfterViewInit {
+export class Stage implements OnInit, AfterViewInit {
 
   private readonly headerService: HeaderService = inject(HeaderService);
-  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
   private readonly logger = inject(LoggerService);
 
@@ -73,7 +68,11 @@ export class Stage implements OnInit, OnAfterViewInit {
     this.processSessionData();
   }
 
-  private processSessionData(): void  {
+  ngAfterViewInit(): void {
+    // Placeholder for AfterViewInit logic
+  }
+
+  protected processSessionData(): void  {
     if (this.sessionData?.token) {
       this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
       this.logger.debug('User is authenticated');

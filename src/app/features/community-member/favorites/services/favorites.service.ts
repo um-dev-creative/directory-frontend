@@ -12,9 +12,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FavoriteItem } from '../favorites';
 
 export interface AddToFavoritesRequest {
@@ -41,11 +40,10 @@ export interface FavoritesResponse {
   providedIn: 'root'
 })
 export class FavoritesService {
-  private readonly apiUrl = '/api/v1/favorites'; // Update with actual API endpoint
   private favoritesSubject = new BehaviorSubject<FavoriteItem[]>([]);
   public favorites$ = this.favoritesSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  
 
   /**
    * Fetches user's favorite items from the backend

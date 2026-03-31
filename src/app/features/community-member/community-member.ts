@@ -45,7 +45,6 @@ import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Avatar, Button, CardComponent, InputComponent, ModalComponent} from '@app/components/ui';
 import {Subject, takeUntil} from 'rxjs';
-import {UserMockService} from './services/user-mock.service';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 import {UserClient} from '@core/services/user/user.client';
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
@@ -80,8 +79,6 @@ export class CommunityMember implements OnInit, OnDestroy {
   private readonly userClient = inject(UserClient);
   /** Service to manage the UI header */
   private readonly headerService: HeaderService = inject(HeaderService);
-  /** Mock service for user-related operations */
-  private readonly userMockService = inject(UserMockService);
   /** Service for displaying notifications */
   private readonly notificationService: NotificationService = inject(NotificationService);
   /** Service to manage session state */

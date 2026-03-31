@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Banner} from '@app/banner/banner';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
@@ -8,9 +8,6 @@ import {LoggerService} from '@app/core/services/logger.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
-
-interface OnAfterViewInit {
-}
 
 /**
  * Main deals component
@@ -24,7 +21,7 @@ interface OnAfterViewInit {
   animations: [],
   providers: [BackboneJwtPipe]
 })
-export class Deals implements OnInit, OnAfterViewInit {
+export class Deals implements OnInit, AfterViewInit {
 
   private readonly headerService: HeaderService = inject(HeaderService);
   private readonly changeDetectorRefs = inject(ChangeDetectorRef);
@@ -62,7 +59,11 @@ export class Deals implements OnInit, OnAfterViewInit {
     this.processSessionData();
   }
 
-  private processSessionData(): void  {
+  ngAfterViewInit(): void {
+    // Placeholder for AfterViewInit logic
+  }
+
+  protected processSessionData(): void  {
     if (this.sessionData?.token) {
       this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER);
       this.logger.debug('User is authenticated');

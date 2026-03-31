@@ -17,7 +17,6 @@ describe('Partner', () => {
   let component: Partner;
   let fixture: ComponentFixture<Partner>;
   let mockStore: any;
-  let backboneJwtPipe: MockBackboneJwtPipe;
 
   beforeEach(async () => {
     mockStore = {
@@ -41,7 +40,6 @@ describe('Partner', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(Partner);
-    backboneJwtPipe = TestBed.inject(BackboneJwtPipe) as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

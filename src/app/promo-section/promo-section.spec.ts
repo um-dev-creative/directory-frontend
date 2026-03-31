@@ -28,4 +28,12 @@ describe('PromoSection', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should initialize with null promo data', () => {
+    expect(component.promo).toBeNull();
+  });
+
+  it('should have imageBucketUrl defined', () => {
+    expect(component.imageBucketUrl).toBeDefined();
+  });
 });

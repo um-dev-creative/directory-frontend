@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Spinner} from '@app/shared/components/spinner/spinner';
 import {Store} from '@ngrx/store';
-import {concatMap, Observable, of, Subject, switchMap} from 'rxjs';
+import {concatMap, Observable, of, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
 import {LoadingService} from '@app/core/services/loading.service';
@@ -16,7 +16,6 @@ import {loadSession} from '@app/core/store/session/session.action';
 import {SessionData, UserAuth} from '@app/core/store/session/session.state';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 // App Components & Services
-import {App} from '@app/app';
 import {AuthClient} from './auth.client';
 import {HeaderService} from '@app/header/header.service';
 import {UserClient} from '@core/services/user/user.client';
@@ -246,9 +245,9 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Creates an instance of Auth.
-   * @param appComponent - App component services
+
    */
-  constructor(private readonly appComponent: App) {
+  constructor() {
   }
 
   /**
@@ -408,7 +407,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * @param field - The field to toggle.
    * @param passwordField - The password input element.
    */
-  togglePasswordVisibility(field: string, passwordField: HTMLInputElement): void {
+  togglePasswordVisibility(_field: string, passwordField: HTMLInputElement): void {
     this.showPassword = !this.showPassword;
     passwordField.type = this.showPassword ? 'text' : 'password';
   }
@@ -502,7 +501,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Validates the date of birth.
    * @param user - The user to validate.
    */
-  private validateDateOfBirth(user: User): void {
+  private validateDateOfBirth(_user: User): void {
     const {birthDay: day, birthMonth: month, birthYear: year} = this.registerData;
 
     if (day && month && year) {

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-
 import { Marquee } from './marquee';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
@@ -30,5 +29,13 @@ describe('Marquee', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize with empty images array', () => {
+    expect(component.images).toBeDefined();
+  });
+
+  it('should initialize with empty duplicatedImages array', () => {
+    expect(component.duplicatedImages).toBeDefined();
   });
 });

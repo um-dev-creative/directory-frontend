@@ -155,7 +155,7 @@ export class SelectComponent implements ControlValueAccessor {
   selectId: string = `select-${Math.random().toString(36).substr(2, 9)}`;
 
   // ControlValueAccessor implementation
-  private onChange = (value: any) => {};
+  private onChange = (_value: any) => {};
   private onTouched = () => {};
 
   constructor(private elementRef: ElementRef) {}
