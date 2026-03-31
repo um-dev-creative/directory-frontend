@@ -36,7 +36,6 @@
  */
 
 import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Store} from '@ngrx/store';
@@ -57,17 +56,18 @@ import {SessionStoreService} from '@core/store/session/session-store.service';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-community-member',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent],
+  imports: [ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent],
   templateUrl: './community-member.html',
   animations: [],
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class CommunityMember implements OnInit, OnDestroy {
-
+  protected readonly isProd = environment.production;
   /** Pipe to decode Backbone JWT */
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
   /** Pipe to decode Directory Backend JWT */
@@ -87,7 +87,7 @@ export class CommunityMember implements OnInit, OnDestroy {
   /** Store for session state */
   private readonly store: Store<{ session: SessionState }> = inject(Store);
   /** Reactive form for user profile */
-  profileForm!: FormGroup;
+  protected profileForm!: FormGroup;
   private readonly formBuilder = inject(FormBuilder);
   /** Subject to manage component destruction */
   private readonly destroy$ = new Subject<void>();

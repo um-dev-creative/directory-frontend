@@ -10,9 +10,8 @@ import {
   PLATFORM_ID
 } from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, NgClass} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
@@ -36,10 +35,8 @@ import {LoggerService} from '@app/core/services/logger.service';
 @Component({
   selector: 'app-header',
   imports: [
-    CommonModule,
+    NgClass,
     RouterModule,
-    ReactiveFormsModule,
-    FormsModule,
     TranslateModule,
     Search,
     Button,

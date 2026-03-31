@@ -56,9 +56,10 @@ async function initAngularSSR() {
         return next();
       }
       try {
+        const absoluteUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
         const html = await serverModule.renderApplication(bootstrap, {
           document: getIndexHtml(),
-          url: req.url,
+          url: absoluteUrl,
           platformProviders: []
         });
         res.send(html);

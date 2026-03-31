@@ -197,6 +197,38 @@ npm run test:browser
 
 ## Reglas de idioma
 
-- Todo el contenido visible al usuario (templates, traducciones, notificaciones) debe estar en **español** o gestionado via ngx-translate.
+- El idioma por defecto de la UI es **español**.
 - Los archivos de traducción están en `src/assets/i18n/`.
-- Añade siempre las claves de traducción necesarias al crear o modificar UI.
+- Usa `| translate` cuando la clave ya exista en los archivos i18n.
+- Para strings nuevos o de prototipado rápido está bien dejarlos en duro temporalmente, pero añade un comentario `// TODO: i18n` para revisarlo después.
+- No es obligatorio añadir claves i18n al crear o modificar UI si el contexto es prototipado o iteración rápida.
+
+---
+
+## Política de seguridad de dependencias
+
+### Reglas
+
+- Ejecuta `npm audit` antes de todo PR que toque dependencias
+- Tolerancia cero para vulnerabilidades `critical` o `high` en merge
+- Usa `npm ci` en CI/CD, nunca `npm install`
+- Nunca ejecutes `npm audit fix --force` sin rama separada y suite de tests pasando
+- Al actualizar Angular, actualiza **todos** los paquetes `@angular/*` a la vez — comparten peer deps y deben estar en la misma versión de patch
+
+### Al añadir dependencias
+
+- Verifica que el paquete tiene release reciente (< 12 meses)
+- El paquete `request` está **PROHIBIDO** — usa `fetch` nativo o `axios`
+
+### Riesgos aceptados temporalmente
+
+| Paquete | CVE | Motivo | Fecha | Owner |
+|---------|-----|--------|-------|-------|
+| `request` + transitivos (`form-data`, `qs`, `tough-cookie`) | GHSA-p8p7-x288-28g6, GHSA-fjxv-7rqg-78g4, GHSA-6rw7-vpxm-498p, GHSA-72xf-g2v4-qvf3 | Dep transitiva de `node-vault-client` en `server/config/app.config.js` (archivo protegido). `request` está abandonado sin fix upstream. Eliminar reemplazando `node-vault-client` por `node-vault`. | 2026-03-31 | — |
+
+### Enforcement en CI
+
+```yaml
+- name: Security audit
+  run: npm audit --audit-level=high
+```

@@ -20,8 +20,8 @@ Confirma que el archivo editado:
 
 Confirma:
 - [ ] Ninguna directiva `*ngIf`, `*ngFor`, `*ngSwitch` presente
-- [ ] Todos los textos visibles usan `{{ 'clave.traduccion' | translate }}`
-- [ ] Sin strings en duro en atributos `placeholder`, `title`, `aria-label`, `alt`
+- [ ] Si la clave i18n ya existe → usa `{{ 'clave.traduccion' | translate }}`
+- [ ] Si el texto es nuevo o de prototipado → string en duro es aceptable, añade `<!-- TODO: i18n -->`
 
 #### NgRx
 

@@ -120,10 +120,10 @@ describe('CommunityMember', () => {
     // Replace spy to ensure no network call during this test
     userClient.findUserById = jasmine.createSpy().and.returnValue(NEVER);
     fixture.detectChanges();
-    expect(component.profileForm.get('firstName')?.value).toBe('');
-    expect(component.profileForm.get('lastName')?.value).toBe('');
+    expect(component['profileForm'].get('firstName')?.value).toBe('');
+    expect(component['profileForm'].get('lastName')?.value).toBe('');
     // email control is disabled; use get to read its value
-    expect(component.profileForm.get('email')?.value).toBe('john@example.com');
+    expect(component['profileForm'].get('email')?.value).toBe('john@example.com');
   });
 
   it('should load profile data on init', () => {
@@ -161,11 +161,11 @@ describe('CommunityMember', () => {
     };
     (component as any).setProfileData(userData);
     fixture.detectChanges();
-    expect(component.profileForm.get('firstName')?.value).toBe('John');
-    expect(component.profileForm.get('lastName')?.value).toBe('Doe');
-    expect(component.profileForm.get('displayName')?.value).toBe('John Doe');
+    expect(component['profileForm'].get('firstName')?.value).toBe('John');
+    expect(component['profileForm'].get('lastName')?.value).toBe('Doe');
+    expect(component['profileForm'].get('displayName')?.value).toBe('John Doe');
     // confirm disabled email control has the expected value
-    expect(component.profileForm.get('email')?.value).toBe('john@example.com');
+    expect(component['profileForm'].get('email')?.value).toBe('john@example.com');
   });
 
   it('should submit profile update and reload user data', fakeAsync(() => {
@@ -203,7 +203,7 @@ describe('CommunityMember', () => {
     fixture.detectChanges();
 
     // Make some changes on the form to simulate an update
-    component.profileForm.patchValue({
+    component['profileForm'].patchValue({
       firstName: 'Jane',
       lastName: 'Smith',
       displayName: 'Jane Smith',
@@ -235,7 +235,7 @@ describe('CommunityMember', () => {
     component.loadProfileData();
     fixture.detectChanges();
     userClient.updateUser.and.returnValue(throwError(() => new Error('Update failed')));
-    component.profileForm.patchValue({
+    component['profileForm'].patchValue({
       firstName: 'Jane',
       lastName: 'Smith',
       displayName: 'Jane Smith',
@@ -276,14 +276,14 @@ describe('CommunityMember', () => {
   }));
 
   it('should mark form fields as touched on invalid submit', () => {
-    spyOn(component.profileForm, 'markAllAsTouched');
-    component.profileForm.markAllAsTouched = jasmine.createSpy();
-    component.profileForm.setErrors({ invalid: true });
+    spyOn(component['profileForm'], 'markAllAsTouched');
+    component['profileForm'].markAllAsTouched = jasmine.createSpy();
+    component['profileForm'].setErrors({ invalid: true });
     expect(component.isSubmitting).toBe(false);
   });
 
   it('should get field error messages', () => {
-    const field = component.profileForm.get('firstName');
+    const field = component['profileForm'].get('firstName');
     field?.setErrors({ required: true });
     field?.markAsTouched();
     expect(component.getFieldError('firstName')).toContain('requerido');
