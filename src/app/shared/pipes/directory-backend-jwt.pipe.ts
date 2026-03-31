@@ -20,7 +20,7 @@ export class DirectoryBackendJwtPipe implements PipeTransform {
       if (token) {
         return jwtDecode<DirectoryBackendJwtPayload>(token);
       }
-      this.logger.warn('JWT token is empty or undefined');
+      this.logger.debug('JWT token is empty or undefined');
       return null;
     } catch (error) {
       this.logger.error('Invalid JWT token', error);

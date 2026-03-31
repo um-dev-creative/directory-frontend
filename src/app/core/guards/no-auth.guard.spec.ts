@@ -1,49 +1,79 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { nonAuthGuard } from './no-auth.guard';
-import { AuthService } from '../services/auth.service';
+import { noAuthGuard } from './no-auth.guard';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-describe('nonAuthGuard', () => {
+describe('noAuthGuard', () => {
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockAuthService: jasmine.SpyObj<AuthService>;
+  let sessionSubject: BehaviorSubject<any>;
 
-  beforeEach(() => {
+  function configureWithSession(sessionState: any) {
+    sessionSubject = new BehaviorSubject(sessionState);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockAuthService = jasmine.createSpyObj('AuthService', [
-      'isLoggedIn', 'getUserRole', 'isAuthenticated', 'getCurrentUser'
-    ]);
+
+    const mockStore = jasmine.createSpyObj('Store', ['select']);
+    mockStore.select.and.returnValue(sessionSubject.asObservable());
 
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService }
+        { provide: Store, useValue: mockStore }
       ]
     });
-  });
+  }
 
-  it('should be defined as a function', () => {
-    expect(nonAuthGuard).toBeDefined();
-    expect(typeof nonAuthGuard).toBe('function');
-  });
+  it('should allow access when user is NOT authenticated', (done) => {
+    configureWithSession({ isInitialized: true, sessionData: {} });
 
-  it('should execute without errors', () => {
     TestBed.runInInjectionContext(() => {
-      expect(() => nonAuthGuard()).not.toThrow();
+      const result = noAuthGuard({} as any, {} as any);
+      (result as Observable<boolean>).subscribe(allowed => {
+        expect(allowed).toBeTrue();
+        expect(mockRouter.navigate).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 
-  it('should return undefined (body is commented out)', () => {
+  it('should redirect to /stage when user IS authenticated', (done) => {
+    configureWithSession({
+      isInitialized: true,
+      sessionData: {
+        token: 'jwt-token',
+        userAuth: { sessionToken: 'session-tok', alias: 'user1' }
+      }
+    });
+
     TestBed.runInInjectionContext(() => {
-      expect(() => nonAuthGuard()).not.toThrow();
+      const result = noAuthGuard({} as any, {} as any);
+      (result as Observable<boolean>).subscribe(allowed => {
+        expect(allowed).toBeFalse();
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/deals']);
+        done();
+      });
     });
   });
 
-  it('should inject AuthService and Router from injection context', () => {
-    // Guard injects dependencies even though body is commented out
+  it('should wait for initialization before deciding', (done) => {
+    configureWithSession({ isInitialized: false, sessionData: {} });
+
+    let emitted = false;
+
     TestBed.runInInjectionContext(() => {
-      nonAuthGuard();
-      // No errors means inject() calls resolved correctly
+      const result = noAuthGuard({} as any, {} as any);
+      (result as Observable<boolean>).subscribe(() => { emitted = true; });
     });
-    expect(true).toBeTrue(); // Passes if no injection error thrown
+
+    // Should not have emitted yet
+    expect(emitted).toBeFalse();
+
+    // Now mark initialized
+    sessionSubject.next({ isInitialized: true, sessionData: {} });
+
+    setTimeout(() => {
+      expect(emitted).toBeTrue();
+      done();
+    }, 0);
   });
 });
