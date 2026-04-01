@@ -4,8 +4,6 @@ import { noAuthGuard } from './no-auth.guard';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-const mockRoute = {} as ActivatedRouteSnapshot;
-
 describe('noAuthGuard', () => {
   let mockRouter: jasmine.SpyObj<Router>;
   let sessionSubject: BehaviorSubject<any>;
