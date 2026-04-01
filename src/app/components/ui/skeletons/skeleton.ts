@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, input } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 export type SkeletonVariant = 'default' | 'card' | 'list' | 'profile' | 'table' | 'custom';
 export type SkeletonAnimation = 'pulse' | 'wave' | 'shimmer' | 'none';
@@ -8,18 +8,18 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
 @Component({
   selector: 'app-skeleton',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgClass],
   template: `
     <div
       class="skeleton-container"
       [ngClass]="getContainerClasses()"
-      [attr.aria-label]="ariaLabel"
-      [attr.role]="role"
+      [attr.aria-label]="ariaLabel()"
+      [attr.role]="role()"
     >
       <!-- Default Skeleton -->
-      @if (variant === 'default') {
+      @if (variant() === 'default') {
         <div class="space-y-3">
-          @for (line of lines; track $index) {
+          @for (line of lines(); track $index) {
             <div
               class="skeleton-line"
               [ngClass]="getLineClasses(line, $index)"
@@ -31,14 +31,14 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
       }
 
       <!-- Card Skeleton -->
-      @if (variant === 'card') {
+      @if (variant() === 'card') {
         <div class="skeleton-card space-y-4">
           <!-- Card Image -->
-          @if (showImage) {
+          @if (showImage()) {
             <div
               class="skeleton-element"
               [ngClass]="getElementClasses('rectangle')"
-              [style.height.px]="imageHeight"
+              [style.height.px]="imageHeight()"
             ></div>
           }
 
@@ -72,17 +72,17 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
       }
 
       <!-- List Skeleton -->
-      @if (variant === 'list') {
+      @if (variant() === 'list') {
         <div class="skeleton-list space-y-4">
-          @for (item of listItems; track $index) {
+          @for (item of listItems(); track $index) {
             <div class="flex items-center space-x-4">
               <!-- Avatar -->
-              @if (showAvatar) {
+              @if (showAvatar()) {
                 <div
                   class="skeleton-element shrink-0"
                   [ngClass]="getElementClasses('circle')"
-                  [style.width.px]="avatarSize"
-                  [style.height.px]="avatarSize"
+                  [style.width.px]="avatarSize()"
+                  [style.height.px]="avatarSize()"
                 ></div>
               }
 
@@ -101,7 +101,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
               </div>
 
               <!-- Action -->
-              @if (showAction) {
+              @if (showAction()) {
                 <div
                   class="skeleton-element shrink-0"
                   [ngClass]="getElementClasses('rounded')"
@@ -114,7 +114,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
       }
 
       <!-- Profile Skeleton -->
-      @if (variant === 'profile') {
+      @if (variant() === 'profile') {
         <div class="skeleton-profile text-center space-y-4">
           <!-- Profile Avatar -->
           <div class="flex justify-center">
@@ -155,11 +155,11 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
       }
 
       <!-- Table Skeleton -->
-      @if (variant === 'table') {
+      @if (variant() === 'table') {
         <div class="skeleton-table space-y-3">
           <!-- Table Header -->
           <div class="flex space-x-4">
-            @for (col of tableColumnsArray; track $index) {
+            @for (col of tableColumnsArray(); track $index) {
               <div
                 class="skeleton-element flex-1"
                 [ngClass]="getElementClasses('rounded')"
@@ -169,9 +169,9 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
           </div>
 
           <!-- Table Rows -->
-          @for (row of tableRowsArray; track $index) {
+          @for (row of tableRowsArray(); track $index) {
             <div class="flex space-x-4">
-              @for (col of tableColumnsArray; track $index) {
+              @for (col of tableColumnsArray(); track $index) {
                 <div
                   class="skeleton-element flex-1"
                   [ngClass]="getElementClasses('rounded')"
@@ -184,187 +184,74 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
       }
 
       <!-- Custom Skeleton -->
-      @if (variant === 'custom') {
+      @if (variant() === 'custom') {
         <ng-content></ng-content>
       }
     </div>
-  `,
-  styles: [`
-    @reference "../../../../styles.css";
-
-    .skeleton-container {
-      @apply w-full;
-    }
-
-    .skeleton-element {
-      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
-    }
-
-    .skeleton-line {
-      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
-    }
-
-    /* Animation Classes */
-    .skeleton-pulse {
-      @apply animate-pulse;
-    }
-
-    .skeleton-wave {
-      animation: skeleton-wave 1.6s ease-in-out infinite;
-      background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
-      background-size: 200px 100%;
-    }
-
-    .skeleton-shimmer {
-      animation: skeleton-shimmer 2s infinite;
-      background: linear-gradient(90deg,
-        rgb(var(--color-beige-200)) 0%,
-        rgb(var(--color-beige-300)) 50%,
-        rgb(var(--color-beige-200)) 100%
-      );
-      background-size: 200% 100%;
-    }
-
-    /* Shape Classes */
-    .skeleton-rectangle {
-      @apply rounded-none;
-    }
-
-    .skeleton-rounded {
-      @apply rounded-md;
-    }
-
-    .skeleton-circle {
-      @apply rounded-full;
-    }
-
-    /* Keyframes */
-    @keyframes skeleton-wave {
-      0% {
-        transform: translateX(-100%);
-      }
-      50% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(100%);
-      }
-    }
-
-    @keyframes skeleton-shimmer {
-      0% {
-        background-position: -200% 0;
-      }
-      100% {
-        background-position: 200% 0;
-      }
-    }
-
-    /* Variant Specific Styles */
-    .skeleton-card {
-      @apply p-4 border border-beige-200 rounded-lg;
-    }
-
-    .skeleton-list {
-      @apply space-y-4;
-    }
-
-    .skeleton-profile {
-      @apply p-6 border border-beige-200 rounded-lg;
-    }
-
-    .skeleton-table {
-      @apply p-4 border border-beige-200 rounded-lg;
-    }
-  `]
+  `
 })
+
 export class SkeletonComponent {
-  @Input() variant: SkeletonVariant = 'default';
-  @Input() animation: SkeletonAnimation = 'pulse';
-  @Input() shape: SkeletonShape = 'rounded';
-  @Input() loading: boolean = true;
-  @Input() count: number = 3;
-  @Input() height: number = 20;
-  @Input() width: string = '100%';
+  variant = input<SkeletonVariant>('default');
+  animation = input<SkeletonAnimation>('pulse');
+  shape = input<SkeletonShape>('rounded');
+  loading = input<boolean>(true);
+  count = input<number>(3);
+  height = input<number>(20);
+  width = input<string>('100%');
 
   // Card specific
-  @Input() showImage: boolean = true;
-  @Input() imageHeight: number = 200;
+  showImage = input<boolean>(true);
+  imageHeight = input<number>(200);
 
   // List specific
-  @Input() showAvatar: boolean = true;
-  @Input() showAction: boolean = false;
-  @Input() avatarSize: number = 40;
+  showAvatar = input<boolean>(true);
+  showAction = input<boolean>(false);
+  avatarSize = input<number>(40);
 
   // Table specific
-  @Input() tableColumns: number = 4;
-  @Input() tableRows: number = 5;
+  tableColumns = input<number>(4);
+  tableRows = input<number>(5);
 
   // Custom lines for default variant
-  @Input() customLines: Array<{height: number, width: string}> = [];
+  customLines = input<Array<{height: number, width: string}>>([]);
 
   // Accessibility
-  @Input() ariaLabel: string = 'Loading content';
-  @Input() role: string = 'status';
+  ariaLabel = input<string>('Loading content');
+  role = input<string>('status');
 
-  get lines() {
-    if (this.customLines.length > 0) {
-      return this.customLines;
-    }
-
-    return Array.from({ length: this.count }, (_, index) => ({
-      height: this.height,
-      width: index === this.count - 1 ? '60%' : this.width
+  lines = computed(() => {
+    const custom = this.customLines();
+    if (custom.length > 0) return custom;
+    const n = this.count();
+    const h = this.height();
+    const w = this.width();
+    return Array.from({ length: n }, (_, index) => ({
+      height: h,
+      width: index === n - 1 ? '60%' : w
     }));
-  }
+  });
 
-  get listItems() {
-    return Array.from({ length: this.count }, (_, index) => index);
-  }
+  listItems = computed(() => Array.from({ length: this.count() }, (_, i) => i));
 
-  get tableColumnsArray() {
-    return Array.from({ length: this.tableColumns }, (_, index) => index);
-  }
+  tableColumnsArray = computed(() => Array.from({ length: this.tableColumns() }, (_, i) => i));
 
-  get tableRowsArray() {
-    return Array.from({ length: this.tableRows }, (_, index) => index);
-  }
+  tableRowsArray = computed(() => Array.from({ length: this.tableRows() }, (_, i) => i));
 
   getContainerClasses(): string {
-    const classes: string[] = [];
-
-    if (!this.loading) {
-      classes.push('hidden');
-    }
-
-    return classes.join(' ');
+    return this.loading() ? '' : 'hidden';
   }
 
   getElementClasses(elementShape?: SkeletonShape): string {
     const classes: string[] = ['skeleton-element'];
-    const currentShape = elementShape || this.shape;
+    const currentShape = elementShape ?? this.shape();
 
-    // Animation
-    switch (this.animation) {
-      case 'pulse':
-        classes.push('skeleton-pulse');
-        break;
-      case 'none':
-        // No animation
-        break;
-    }
+    if (this.animation() === 'pulse') classes.push('skeleton-pulse');
 
-    // Shape
     switch (currentShape) {
-      case 'rectangle':
-        classes.push('skeleton-rectangle');
-        break;
-      case 'rounded':
-        classes.push('skeleton-rounded');
-        break;
-      case 'circle':
-        classes.push('skeleton-circle');
-        break;
+      case 'rectangle': classes.push('skeleton-rectangle'); break;
+      case 'rounded':   classes.push('skeleton-rounded');   break;
+      case 'circle':    classes.push('skeleton-circle');    break;
     }
 
     return classes.join(' ');
@@ -373,27 +260,12 @@ export class SkeletonComponent {
   getLineClasses(_line: {height: number, width: string}, _index: number): string {
     const classes: string[] = ['skeleton-line'];
 
-    // Animation
-    switch (this.animation) {
-      case 'pulse':
-        classes.push('skeleton-pulse');
-        break;
-      case 'none':
-        // No animation
-        break;
-    }
+    if (this.animation() === 'pulse') classes.push('skeleton-pulse');
 
-    // Shape
-    switch (this.shape) {
-      case 'rectangle':
-        classes.push('skeleton-rectangle');
-        break;
-      case 'rounded':
-        classes.push('skeleton-rounded');
-        break;
-      case 'circle':
-        classes.push('skeleton-circle');
-        break;
+    switch (this.shape()) {
+      case 'rectangle': classes.push('skeleton-rectangle'); break;
+      case 'rounded':   classes.push('skeleton-rounded');   break;
+      case 'circle':    classes.push('skeleton-circle');    break;
     }
 
     return classes.join(' ');

@@ -51,7 +51,7 @@ export class Avatar {
   }
 
   get avatarClasses(): string {
-    const baseClasses = 'relative inline-flex items-center justify-center bg-emerald-green-100 text-emerald-green-700 font-medium overflow-hidden';
+    const baseClasses = 'relative inline-flex items-center justify-center bg-sky-blue-100 text-sky-blue-700 font-medium overflow-hidden';
 
     const sizeClasses = {
       'xs': 'w-6 h-6 text-xs',
@@ -96,7 +96,7 @@ export class Avatar {
       '2xl': 'w-16 h-16'
     };
 
-    return `text-emerald-green-400 ${sizeClasses[this.size]}`;
+    return `text-sky-blue-400 ${sizeClasses[this.size]}`;
   }
 
   onImageError(): void {

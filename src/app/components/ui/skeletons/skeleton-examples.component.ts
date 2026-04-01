@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SkeletonComponent, type SkeletonVariant, type SkeletonAnimation, type SkeletonShape } from '..';
 
 @Component({
   selector: 'app-skeleton-examples',
   standalone: true,
-  imports: [CommonModule, FormsModule, SkeletonComponent],
+  imports: [FormsModule, SkeletonComponent],
   template: `
     <div class="max-w-6xl mx-auto p-8 space-y-12">
       <!-- Header -->
@@ -487,34 +486,15 @@ import { SkeletonComponent, type SkeletonVariant, type SkeletonAnimation, type S
         </div>
       </section>
     </div>
-  `,
-  styles: [`
-    @reference "../../../../styles.css";
-
-    .skeleton-element {
-      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
-    }
-
-    .skeleton-pulse {
-      @apply animate-pulse;
-    }
-
-    .skeleton-rounded {
-      @apply rounded-md;
-    }
-
-    .skeleton-circle {
-      @apply rounded-full;
-    }
-  `]
+  `
 })
-export class SkeletonExamplesComponent implements OnInit {
+export class SkeletonExamplesComponent {
   selectedAnimation: SkeletonAnimation = 'pulse';
   selectedShape: SkeletonShape = 'rounded';
   isLoading: boolean = true;
   simulationLoading: boolean = false;
 
-  customLinePattern = [
+  readonly customLinePattern = [
     { height: 24, width: '100%' },
     { height: 20, width: '85%' },
     { height: 20, width: '70%' },
@@ -522,45 +502,15 @@ export class SkeletonExamplesComponent implements OnInit {
     { height: 16, width: '40%' }
   ];
 
-  mockData = [
-    {
-      id: 1,
-      name: 'John Smith',
-      description: 'Senior Developer at Tech Corp',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      name: 'Sarah Johnson',
-      description: 'Product Manager at Design Inc',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      name: 'Mike Wilson',
-      description: 'UX Designer at Creative Studio',
-      status: 'Pending'
-    }
+  readonly mockData = [
+    { id: 1, name: 'John Smith',    description: 'Senior Developer at Tech Corp',   status: 'Active'  },
+    { id: 2, name: 'Sarah Johnson', description: 'Product Manager at Design Inc',   status: 'Active'  },
+    { id: 3, name: 'Mike Wilson',   description: 'UX Designer at Creative Studio',  status: 'Pending' }
   ];
-
-  ngOnInit() {
-    // Demo auto-toggle for visibility
-    setInterval(() => {
-      if (!this.simulationLoading) {
-        // Auto demo toggle every 5 seconds if not in simulation mode
-        // this.isLoading = !this.isLoading;
-      }
-    }, 5000);
-  }
 
   simulateLoading() {
     this.simulationLoading = true;
-
-    // Simulate API call with random delay
-    const delay = Math.random() * 2000 + 1000; // 1-3 seconds
-
-    setTimeout(() => {
-      this.simulationLoading = false;
-    }, delay);
+    const delay = Math.random() * 2000 + 1000;
+    setTimeout(() => { this.simulationLoading = false; }, delay); // SSR: browser-only
   }
 }

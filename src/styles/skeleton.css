@@ -1,0 +1,69 @@
+/* ==========================================================================
+   Skeleton utility classes — global scope required for ng-content projection
+   (variant="custom" injects children from parent component contexts)
+   ========================================================================== */
+
+.skeleton-element,
+.skeleton-line {
+  @apply bg-linear-to-r from-beige-200 via-beige-300 to-beige-200;
+}
+
+/* --- Animation --- */
+.skeleton-pulse {
+  @apply animate-pulse;
+}
+
+.skeleton-wave {
+  animation: skeleton-wave 1.6s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
+  background-size: 200px 100%;
+}
+
+.skeleton-shimmer {
+  animation: skeleton-shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    var(--color-beige-200) 0%,
+    var(--color-beige-300) 50%,
+    var(--color-beige-200) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* --- Shape --- */
+.skeleton-rectangle {
+  @apply rounded-none;
+}
+
+.skeleton-rounded {
+  @apply rounded-md;
+}
+
+.skeleton-circle {
+  @apply rounded-full;
+}
+
+/* --- Variant containers --- */
+.skeleton-card {
+  @apply p-4 border border-beige-200 rounded-lg;
+}
+
+.skeleton-profile {
+  @apply p-6 border border-beige-200 rounded-lg;
+}
+
+.skeleton-table {
+  @apply p-4 border border-beige-200 rounded-lg;
+}
+
+/* --- Keyframes --- */
+@keyframes skeleton-wave {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
