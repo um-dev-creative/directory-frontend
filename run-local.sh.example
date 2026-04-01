@@ -6,6 +6,9 @@
 set -e  # Salir si algún comando falla
 
 echo "🧹 Limpiando archivos de build anteriores..."
+# rm -rf ./node_modules dist/ .angular/
+# echo "🔧 Instalando dependencias..."
+# pnpm install
 rm -rf dist/ .angular/
 
 echo "🔑 Configurando variables de entorno..."

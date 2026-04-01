@@ -170,7 +170,7 @@ describe('AuthInterceptor', () => {
 
       interceptor.intercept(req, mockHandler).subscribe({ error: () => {} });
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith([DFC.RelativePath.STAGE_PATH]);
+      expect(mockRouter.navigate).toHaveBeenCalledWith([DFC.RelativePath.AUTH_PATH]);
     });
 
     it('should re-throw the 401 error after handling', (done) => {
