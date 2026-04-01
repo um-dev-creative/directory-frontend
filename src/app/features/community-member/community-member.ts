@@ -56,6 +56,7 @@ import {SessionStoreService} from '@core/store/session/session-store.service';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
+import {getInitials} from '@shared/utils/get-initials.helper';
 import { environment } from '@env/environment';
 
 @Component({
@@ -133,7 +134,7 @@ export class CommunityMember implements OnInit, OnDestroy {
       year: ''
     },
     // avatar: null,
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', // URL de un avatar de ejemplo
+    avatar: '',
     emailConfirmed: true,
     privacyOptOut: false,
     notifications: {
@@ -219,9 +220,7 @@ export class CommunityMember implements OnInit, OnDestroy {
    * Returns the initials of the user's first and last name for avatar display.
    */
   getAvatarDisplay(): string {
-    const firstInitial = this.profileData.firstName?.charAt(0) || '';
-    const lastInitial = this.profileData.lastName?.charAt(0) || '';
-    return firstInitial + lastInitial;
+    return getInitials(this.profileData.firstName ?? '', this.profileData.lastName ?? '');
   }
 
   /**

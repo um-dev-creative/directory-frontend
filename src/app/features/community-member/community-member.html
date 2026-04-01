@@ -11,14 +11,16 @@
     <!-- Avatar Section -->
     <div class="flex flex-col items-center mb-4 bg-gradient-primary text-white py-8 rounded-xl shadow-soft">
       <div class="relative mb-4">
-        <app-avatar
-          [src]="avatarPreview || profileData.avatar"
-          [initials]="getAvatarDisplay()"
-          [alt]="'Avatar de ' + profileData.displayName"
-          size="2xl"
-          variant="circular"
-          [loading]="uploadingAvatar">
-        </app-avatar>
+        @if (avatarPreview || profileData.avatar || getAvatarDisplay()) {
+          <app-avatar
+            [src]="avatarPreview || profileData.avatar"
+            [initials]="getAvatarDisplay()"
+            [alt]="'Avatar de ' + profileData.displayName"
+            size="2xl"
+            variant="circular"
+            [loading]="uploadingAvatar">
+          </app-avatar>
+        }
       </div>
 
       <!-- Hidden file input -->

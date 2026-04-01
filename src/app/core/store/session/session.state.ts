@@ -29,6 +29,7 @@ export class UserAuth {
   // Optional field for user avatar URL
   verifiedComplete?: boolean;
   avatarUrl?: string;
+  initials?: string;
 }
 
 export const initialState: SessionState = {
@@ -43,7 +44,8 @@ export const initialState: SessionState = {
       features: [],
       businesses: [],
       verifiedComplete: false,
-      avatarUrl: ''
+      avatarUrl: '',
+      initials: ''
     },
     token: ''
   },

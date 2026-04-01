@@ -23,7 +23,9 @@ describe('Header', () => {
     mockStore = {
       select: jasmine.createSpy().and.returnValue(of({
         logged: false,
-        userAuth: {alias: 'testAlias', fullName: 'Pepe Perez'}
+        sessionData: {
+          userAuth: {alias: 'testAlias', fullName: 'Pepe Perez', avatarUrl: '', initials: 'PP'}
+        }
       })),
       dispatch: jasmine.createSpy()
     };
@@ -68,6 +70,11 @@ describe('Header', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should populate userLogger initials from session data', () => {
+    expect((component as any).userLogger.initials).toBe('PP');
+    expect((component as any).userLogger.avatarUrl).toBe('');
   });
 
   describe('hasBusiness getter - business role detection', () => {

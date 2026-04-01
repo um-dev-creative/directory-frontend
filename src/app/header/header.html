@@ -36,16 +36,19 @@
       @if (validateHeader(HeaderType.USER_AUTH_HEADER)) {
         <div class="relative">
           <button
-            class="relative flex rounded-full bg-emerald-green-50 focus:outline-none focus:ring-2 focus:ring-emerald-green-300"
+            class="relative flex rounded-full bg-sky-blue-50 focus:outline-none focus:ring-2 focus:ring-sky-blue-300"
             [attr.aria-label]="'Open ' + (isMobile ? 'mobile' : 'desktop') + ' menu'"
             (click)="openMenu()"
           >
             <div class="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
-              <img
-                class="w-full h-full object-cover"
-                src= '{{ userLogger.avatarUrl }}'
-                alt="Profile"
-              />
+              @if (userLogger.avatarUrl || userLogger.initials) {
+                <app-avatar
+                  size="sm"
+                  [src]="userLogger.avatarUrl"
+                  [initials]="userLogger.initials"
+                  alt="Profile">
+                </app-avatar>
+              }
             </div>
             <!--img
               [src]="userProfileImage"
@@ -261,11 +264,13 @@
               tabindex="-1"
               id="menu-item-0"
             >
-              <img
-                class="w-6 h-6 mr-2 rounded-full ring-2 ring-emerald-green-300"
-                src= '{{ userLogger.avatarUrl }}'
-                alt="Profile"
-              />
+              <app-avatar
+                class="mr-2"
+                size="xs"
+                [src]="userLogger.avatarUrl"
+                [initials]="userLogger.initials"
+                alt="Profile">
+              </app-avatar>
               <div class="flex flex-col gap-1 text-emerald-green-600" role="none">
                 <p role="none">{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
                 <p
@@ -316,7 +321,8 @@
                   <div class="flex items-center gap-2 py-2">
                     <app-avatar
                       size="xs"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      [src]="userLogger.avatarUrl"
+                      [initials]="userLogger.initials"
                       alt="Avatar XS">
                     </app-avatar>
                     Mi negocio (UM DEV Creative)

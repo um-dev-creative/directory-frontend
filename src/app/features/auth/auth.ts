@@ -40,6 +40,7 @@ import {DEFAULT_COUNTRY_CODE, INITIAL_DROPDOWN_STATE, INITIAL_PLACEHOLDERS} from
 import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe';
 import {AlertComponent, Button, SocialLoginButton, SocialProvider} from '@app/components/ui';
 import {LoggerService} from '@app/core/services/logger.service';
+import {getInitials} from '@shared/utils/get-initials.helper';
 
 /**
  * Component for handling user authentication.
@@ -642,8 +643,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private saveSession(data: { userDetail: any, userDetailResponse: any }): UserAuth {
-    const avatar = data?.userDetail?.data?.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.userDetail.data.profileImageRef}` :
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
+    const avatar = data?.userDetail?.data?.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.userDetail.data.profileImageRef}` : '';
     const decodedTokenBackbone = this.backboneJwtPipe.transform(data.userDetailResponse.sessionTokenBkd);
     const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(data.userDetailResponse.body.token);
     if (!decodedTokenBackbone || !decodedTokenBackbone?.uid || !decodedTokenDirectory) {
@@ -659,7 +659,8 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       features: [],
       businesses: data?.userDetail?.data?.businessIds || [],
       verifiedComplete: decodedTokenDirectory.vcCompleted === 'true',
-      avatarUrl: avatar
+      avatarUrl: avatar,
+      initials: getInitials(decodedTokenBackbone.firstname ?? '', decodedTokenBackbone.lastname ?? '')
     };
     this.sessionData = {userAuth, token: decodedTokenBackbone?.uid};
     this.sessionStoreService.saveSessionData(this.sessionData);
