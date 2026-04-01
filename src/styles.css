@@ -8,6 +8,7 @@
 
 /* 2. Import brand colors and custom utility classes */
 @import './styles/brand-colors.css';
+@import './styles/skeleton.css';
 
 /* 3. Plugins (aspect-ratio is now native in v4, no longer needed) */
 @plugin "@tailwindcss/forms";

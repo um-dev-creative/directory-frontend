@@ -42,7 +42,7 @@ import {Store} from '@ngrx/store';
 import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
-import {Avatar, Button, CardComponent, InputComponent, ModalComponent} from '@app/components/ui';
+import {Avatar, Button, CardComponent, InputComponent, ModalComponent, SkeletonComponent} from '@app/components/ui';
 import {Subject, takeUntil} from 'rxjs';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 import {UserClient} from '@core/services/user/user.client';
@@ -62,7 +62,7 @@ import { environment } from '@env/environment';
 @Component({
   selector: 'app-community-member',
   standalone: true,
-  imports: [ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent],
+  imports: [ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent, SkeletonComponent],
   templateUrl: './community-member.html',
   animations: [],
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
@@ -106,6 +106,8 @@ export class CommunityMember implements OnInit, OnDestroy {
   protected userFullName: string | undefined;
   /** Preview URL for the avatar image */
   protected avatarPreview: string | null = null;
+  /** Indica si la página está en estado de carga inicial */
+  isLoading = true;
   /** Indicates if the form is currently submitting */
   isSubmitting = false;
   /** Indicates if an avatar is being uploaded */
@@ -203,16 +205,21 @@ export class CommunityMember implements OnInit, OnDestroy {
           next: (response: any) => {
             if (!response.headers.status || response.headers.status !== 200) {
               this.logger.error('Unexpected response status:', response.status);
+              this.isLoading = false;
               return;
             }
             this.setProfileData(response.data);
             this.updateFormWithSessionData();
+            this.isLoading = false;
             this.logger.info('Profile data loaded:', this.profileData);
           },
           error: (error: any) => {
             this.logger.error('Error loading profile data:', error);
+            this.isLoading = false;
           }
         });
+    } else {
+      this.isLoading = false;
     }
   }
 

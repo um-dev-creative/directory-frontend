@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SkeletonComponent, Button, type SkeletonAnimation, type SkeletonShape } from '../../ui';
 
 @Component({
   selector: 'app-skeletons-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, SkeletonComponent, Button],
+  imports: [FormsModule, SkeletonComponent, Button],
   template: `
     <section class="space-y-8">
       <!-- Header -->
@@ -361,26 +360,7 @@ import { SkeletonComponent, Button, type SkeletonAnimation, type SkeletonShape }
         </div>
       </div>
     </section>
-  `,
-  styles: [`
-    @reference "../../../../styles.css";
-
-    .skeleton-element {
-      @apply bg-gradient-to-r from-beige-200 via-beige-300 to-beige-200;
-    }
-
-    .skeleton-pulse {
-      @apply animate-pulse;
-    }
-
-    .skeleton-rounded {
-      @apply rounded-md;
-    }
-
-    .skeleton-circle {
-      @apply rounded-full;
-    }
-  `]
+  `
 })
 export class SkeletonsSectionComponent {
   selectedAnimation: SkeletonAnimation = 'pulse';
@@ -394,21 +374,21 @@ export class SkeletonsSectionComponent {
   toggleBusinessLoad() {
     this.businessLoading = !this.businessLoading;
     if (this.businessLoading) {
-      setTimeout(() => this.businessLoading = false, 5000);
+      setTimeout(() => { this.businessLoading = false; }, 5000); // SSR: browser-only
     }
   }
 
   toggleDashboardLoad() {
     this.dashboardLoading = !this.dashboardLoading;
     if (this.dashboardLoading) {
-      setTimeout(() => this.dashboardLoading = false, 4000);
+      setTimeout(() => { this.dashboardLoading = false; }, 4000); // SSR: browser-only
     }
   }
 
   toggleTableLoad() {
     this.tableLoading = !this.tableLoading;
     if (this.tableLoading) {
-      setTimeout(() => this.tableLoading = false, 3000);
+      setTimeout(() => { this.tableLoading = false; }, 3000); // SSR: browser-only
     }
   }
 }
