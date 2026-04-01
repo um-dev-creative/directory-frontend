@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { noAuthGuard } from './no-auth.guard';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
+
+const mockRoute = {} as ActivatedRouteSnapshot;
+const mockState = {} as RouterStateSnapshot;
 
 describe('noAuthGuard', () => {
   let mockRouter: jasmine.SpyObj<Router>;
@@ -27,7 +30,7 @@ describe('noAuthGuard', () => {
     configureWithSession({ isInitialized: true, sessionData: {} });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard();
+      const result = noAuthGuard(mockRoute, mockState);
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeTrue();
         expect(mockRouter.navigate).not.toHaveBeenCalled();
@@ -46,7 +49,7 @@ describe('noAuthGuard', () => {
     });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard();
+      const result = noAuthGuard(mockRoute, mockState);
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeFalse();
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/deals']);
@@ -61,7 +64,7 @@ describe('noAuthGuard', () => {
     let emitted = false;
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard();
+      const result = noAuthGuard(mockRoute, mockState);
       (result as Observable<boolean>).subscribe(() => { emitted = true; });
     });
 

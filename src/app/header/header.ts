@@ -27,6 +27,7 @@ import { Button } from '@app/components/ui/buttons/button';
 import { Avatar } from '@app/components/ui/avatars/avatar';
 import {AuthClient} from '@app/features/auth/auth.client';
 import {LoggerService} from '@app/core/services/logger.service';
+import { HeaderMenu } from '@app/header/menu/header-menu';
 
 
 /**
@@ -40,7 +41,8 @@ import {LoggerService} from '@app/core/services/logger.service';
     TranslateModule,
     Search,
     Button,
-    Avatar
+    Avatar,
+    HeaderMenu
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'], // Ensure the correct plural naming
@@ -74,7 +76,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
 
   private businessAssigned: any = []; // Indica si el usuario tiene un negocio asignado
 
-  isPartnerMenuOpen = false; // Estado para controlar la apertura/cierre del submenú de partners
   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
   userLogger = {
     alias: '@',
@@ -159,22 +160,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   openMenu() {
     this.logger.debug('User clicked the menu');
     this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  /**
-   * Alternar visibilidad del submenú de soporte
-   */
-  openPartnerSubmenu(open: boolean = true): void {
-    this.isPartnerMenuOpen = open;
-  }
-
-  onSubMenuClick(event: Event, action: 'back' | 'partner'): void {
-    event.preventDefault();
-    if (action === 'partner') {
-      this.openPartnerSubmenu(true);
-    } else {
-      this.openPartnerSubmenu(false);
-    }
   }
 
   logout(): void {
