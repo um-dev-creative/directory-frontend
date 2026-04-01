@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { noAuthGuard } from './no-auth.guard';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
