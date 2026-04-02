@@ -34,7 +34,7 @@ describe('businessOwnerGuard', () => {
 
   function runGuard(businessId: string): Observable<boolean> {
     return TestBed.runInInjectionContext(() =>
-      businessOwnerGuard(buildRoute(businessId), {} as any)
+      businessOwnerGuard(buildRoute(businessId))
     ) as Observable<boolean>;
   }
 
