@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Spinner} from '@app/shared/components/spinner/spinner';
-import {Store} from '@ngrx/store';
+//import {Store} from '@ngrx/store';
 import {concatMap, Observable, of, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
@@ -12,7 +12,6 @@ import {LoadingService} from '@app/core/services/loading.service';
 import {NotificationService} from '@app/core/services/notification.service';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 // App Store
-import {loadSession} from '@app/core/store/session/session.action';
 import {SessionData, UserAuth} from '@app/core/store/session/session.state';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 // App Components & Services
@@ -83,7 +82,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Partner services for session data management
    * @type {Store<{ session: SessionData }>}
    */
-  private readonly store: Store<{ session: SessionData }> = inject(Store);
+  // private readonly store: Store<{ session: SessionData }> = inject(Store);
 
   /**
    * Header services for changing the header type
@@ -275,7 +274,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Lifecycle hook that is called after the component's view has been fully initialized.
    */
   ngAfterViewInit(): void {
-    this.store.dispatch(loadSession());
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
     this.changeDetectorRefs.detectChanges();
   }
 

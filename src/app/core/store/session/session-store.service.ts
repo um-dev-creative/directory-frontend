@@ -50,7 +50,7 @@ export class SessionStoreService {
   readonly session$: Observable<SessionData> = inject(Store).select(state => state.session?.sessionData);
 
   constructor(private readonly store: Store<{ session: SessionState }>) {
-    this.loadSessionData();
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
   }
 
   saveSessionData(sessionData: SessionData): void {

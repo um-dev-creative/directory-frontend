@@ -50,7 +50,7 @@ const proxyApi = async (req, res) => {
   } catch (error) {
     logger.error(`${LOGGER_TAG_ID} Error during API request: ${error.message}`);
     if (error.response != null) {
-      logger.error(`${LOGGER_TAG_ID} API response error: ${error.response.status} - ${error.response.data}`);
+      logger.error(`${LOGGER_TAG_ID} API response error: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
       response = error.response.data;
       res.status(error.response.status);
     } else if (error.errors != null) {

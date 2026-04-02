@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SessionData, SessionState } from '@app/core/store/session/session.state';
-import { take, filter, switchMap } from 'rxjs/operators';
+import { take, filter, switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LoggerService, StorageMockService } from '../services';
 
@@ -38,6 +38,12 @@ function checkAuthState(targetUrl: string): Observable<boolean> {
 
   // First, wait for initialization to complete
   return store.select(state => state.session).pipe(
+    tap(sessionState => {
+      const hasToken = !!(sessionState?.sessionData?.token && sessionState.sessionData.token.trim() !== '');
+      console.debug(
+        `[Guard] pre-filter | ts=${new Date().toISOString()} | isInitialized=${sessionState?.isInitialized} | hasToken=${hasToken} | url=${targetUrl}`
+      );
+    }),
     filter(sessionState => {
       console.log(`[Guard] Checking if initialized:`, sessionState?.isInitialized);
       return sessionState?.isInitialized === true;

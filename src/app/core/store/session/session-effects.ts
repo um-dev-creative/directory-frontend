@@ -2,8 +2,8 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { SessionData, SessionState } from '@app/core/store/session/session.state';
-import { clearSession, loadSession, saveSession } from '@app/core/store/session/session.action';
-import { tap } from 'rxjs';
+import { clearSession, loadSession, saveSession, setInitialized } from '@app/core/store/session/session.action';
+import { tap, withLatestFrom } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 @Injectable({
@@ -41,13 +41,31 @@ export class SessionEffects {
   loadSession$ = createEffect(() =>
       this.action$.pipe(
         ofType(loadSession),
-        tap(() => {
+        withLatestFrom(this.store.select(state => state.session.isInitialized)),
+        tap(([_action, isInitialized]) => {
+          const caller = new Error().stack?.split('\n')[2]?.trim() ?? 'unknown';
+          console.debug(
+            `[SessionEffect] loadSession$ fired | ts=${new Date().toISOString()} | isInitialized=${isInitialized} | caller: ${caller}`
+          );
+
+          if (isInitialized) {
+            console.debug('[SessionEffect] Already initialized, skipping');
+            return;
+          }
+
           if (this.isBrowser && this.isLocalStorageAvailable()) {
             const storedSession = localStorage.getItem(this.SESSION_KEY);
             if (storedSession) {
               const sessionData: SessionData = JSON.parse(storedSession);
+              console.debug('[SessionEffect] Found stored session, dispatching saveSession');
               this.store.dispatch(saveSession({ sessionData, isInitialized: true }));
+            } else {
+              console.debug('[SessionEffect] No stored session found, dispatching setInitialized');
+              this.store.dispatch(setInitialized());
             }
+          } else {
+            console.debug('[SessionEffect] Not browser or localStorage unavailable, dispatching setInitialized');
+            this.store.dispatch(setInitialized());
           }
         })
       ),

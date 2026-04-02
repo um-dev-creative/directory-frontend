@@ -97,7 +97,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.sessionStoreService.loadSessionData();
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
 
     if (isPlatformBrowser(this.platformId)) {
       this.scrollListener = this.renderer.listen('window', 'scroll', () => {

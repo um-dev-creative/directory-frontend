@@ -13,8 +13,11 @@ export function initializeSession(): () => Promise<void> {
   const platformId = inject(PLATFORM_ID);
 
   return () => {
+    console.debug(`[SessionInitializer] start | ts=${new Date().toISOString()} | platform=${isPlatformBrowser(platformId) ? 'browser' : 'server'}`);
+
     // SSR: browser-only — no localStorage in Node
     if (!isPlatformBrowser(platformId)) {
+      console.debug(`[SessionInitializer] SSR detected, calling setInitialized immediately`);
       sessionStoreService.setInitialized();
       return Promise.resolve();
     }
@@ -23,6 +26,7 @@ export function initializeSession(): () => Promise<void> {
 
     return new Promise<void>(resolve => {
       setTimeout(() => {
+        console.debug(`[SessionInitializer] setTimeout resolved, calling setInitialized | ts=${new Date().toISOString()}`);
         sessionStoreService.setInitialized();
         resolve();
       }, 0);

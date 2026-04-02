@@ -6,6 +6,14 @@ import {Router} from '@angular/router';
 import {LoggerService, NotificationService} from '@app/core/services';
 import {DirectoryFrontendConst} from '@shared/constants/app.const';
 
+/**
+ * ErrorInterceptor — responsabilidad: logging centralizado y notificaciones
+ * de errores HTTP al usuario (toast con enlace a "Reportar un problema").
+ *
+ * NO maneja redirección ni limpieza de sesión en 401; esa responsabilidad
+ * pertenece exclusivamente a AuthInterceptor para evitar doble navegación
+ * y estados inconsistentes.
+ */
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
@@ -37,14 +45,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             break;
           case 401: {
             errorMessage = 'Unauthorized - Please login again';
-            // Only redirect to auth if this is NOT a login request
-            // Check if the request URL contains auth/token or login endpoints
-            const isAuthRequest = req.url.includes('/auth/token') ||
-              req.url.includes('/login') ||
-              req.url.includes('/auth/drb/api/v1/auth');
-            if (!isAuthRequest) {
-              shouldRedirect = true;
-            }
+            // 401 redirect y limpieza de sesión los maneja AuthInterceptor.
+            // Aquí solo logueamos; no redirigimos ni mostramos toast para
+            // evitar doble navegación y notificaciones duplicadas.
+            shouldRedirect = false;
+            shouldNotify = false;
             break;
           }
           case 403:
