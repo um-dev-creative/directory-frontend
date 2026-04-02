@@ -557,13 +557,13 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
           this.loader.hide('auth');
       },
       error: (error: any) => {
+        this.sessionStoreService.clearSessionData();
         this.isErrorFound = true;
         if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
           error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
           this.notificationService.error('Invalid credentials. Please check your email and password.');
-        } else {
-          this.notificationService.error('Login failed. Please try again later.');
         }
+        // Para otros errores (500, red, etc.) el ErrorInterceptor ya mostró el toast — no duplicar.
         this.logger.error('Error authenticating user:', error);
         this.loader.hide('auth');
       }
