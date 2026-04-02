@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { businessOwnerGuard } from './business-owner.guard';
@@ -33,8 +33,9 @@ describe('businessOwnerGuard', () => {
   }
 
   function runGuard(businessId: string): Observable<boolean> {
+    const mockState = { url: '' } as RouterStateSnapshot;
     return TestBed.runInInjectionContext(() =>
-      businessOwnerGuard(buildRoute(businessId))
+      businessOwnerGuard(buildRoute(businessId), mockState)
     ) as Observable<boolean>;
   }
 
