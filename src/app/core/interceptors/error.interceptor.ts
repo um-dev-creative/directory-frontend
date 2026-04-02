@@ -86,7 +86,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         // as the component should handle its own error messaging
         const isAuthRequest = req.url.includes('/auth/token') ||
           req.url.includes('/login') ||
-          req.url.includes('/auth/drb/api/v1/auth');
+          req.url.includes('/auth/drb/api/v1/auth') ||
+          req.url.includes('/drb/api/v1/general/users');
         if (shouldNotify && (error.status !== 401 || !isAuthRequest)) {
           const sanitizedMessage = (errorMessage || '')
             .substring(0, 100) // Limit to 100 characters

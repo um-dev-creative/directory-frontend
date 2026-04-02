@@ -130,10 +130,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   protected sessionData: SessionData | undefined;
 
   /**
-   * Flag to indicate if an error was found
-   * @type {boolean}
+   * Tipo de error en el login: null = sin error, 'credentials' = credenciales inválidas,
+   * 'server' = error del servidor (no culpa del usuario).
    */
-  protected isErrorFound: boolean = false;
+  protected loginErrorType: 'credentials' | 'server' | null = null;
 
   /**
    * Flag to indicate if the user is registering
@@ -531,8 +531,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    */
   private authenticateUser(email: string, password: string): void {
     this.loader.show('auth'); // Usando una key específica para auth
+    let tokenObtained = false;
     this.authClient.getToken(email, password).pipe(takeUntil(this.subject$), concatMap((response: any) => {
         this.logger.debug('Authentication response:', response);
+        tokenObtained = true; // getToken exitoso — cualquier error a partir de aquí es del servidor
 
         const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
         let resull: any;
@@ -558,12 +560,9 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
       },
       error: (error: any) => {
         this.sessionStoreService.clearSessionData();
-        this.isErrorFound = true;
-        if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
-          error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
-          this.notificationService.error('Invalid credentials. Please check your email and password.');
-        }
-        // Para otros errores (500, red, etc.) el ErrorInterceptor ya mostró el toast — no duplicar.
+        // Si getToken no completó, el error es de credenciales (sin importar el status code).
+        // Si getToken ya completó, el error viene de findUserById — culpa del servidor.
+        this.loginErrorType = tokenObtained ? 'server' : 'credentials';
         this.logger.error('Error authenticating user:', error);
         this.loader.hide('auth');
       }
