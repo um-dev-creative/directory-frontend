@@ -9,9 +9,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { convertToParamMap } from '@angular/router';
 import { BannerService } from '@app/banner/services/banner.service';
 import { CardsService } from '@app/cards/services/cards.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { LoggerService } from '@app/core/services/logger.service';
 import { HeaderType } from '@shared/constants/header-type';
+import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 
 // Mocks
 class MockHeaderService {
@@ -25,6 +26,19 @@ class MockStore {
     subscribe: (fn: (state: any) => void) => fn({ sessionData: { userAuth: { fullName: 'Test User' }, token: 'token' } })
   });
   dispatch = jasmine.createSpy('dispatch');
+}
+
+class MockLandingStoreService {
+  isReady$ = new BehaviorSubject<boolean>(false);
+  banners$ = new BehaviorSubject<any>(null);
+  slides$ = new BehaviorSubject<any[]>([]);
+  cards$ = new BehaviorSubject<any[]>([]);
+  partnerLogos$ = new BehaviorSubject<any[]>([]);
+  featuredProducts$ = new BehaviorSubject<any[]>([]);
+  offers$ = new BehaviorSubject<any[]>([]);
+  isLoading$ = new BehaviorSubject<boolean>(false);
+  error$ = new BehaviorSubject<string | null>(null);
+  loadLanding = jasmine.createSpy('loadLanding');
 }
 
 const mockBannerData = {
@@ -67,6 +81,7 @@ describe('Stage', () => {
   let fixture: ComponentFixture<Stage>;
   let headerService: MockHeaderService;
   let store: MockStore;
+  let landingStore: MockLandingStoreService;
   const mockLogger = { info: jasmine.createSpy('info'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
 
   beforeEach(async () => {
@@ -76,6 +91,7 @@ describe('Stage', () => {
       providers: [
         { provide: CardsService, useClass: MockCardsService },
         { provide: BannerService, useClass: MockBannerService },
+        { provide: LandingStoreService, useClass: MockLandingStoreService },
         { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: HeaderService, useClass: MockHeaderService },
@@ -89,6 +105,7 @@ describe('Stage', () => {
     component = fixture.componentInstance;
     headerService = TestBed.inject(HeaderService) as any;
     store = TestBed.inject(Store) as any;
+    landingStore = TestBed.inject(LandingStoreService) as any;
     fixture.detectChanges();
   });
 
@@ -107,6 +124,20 @@ describe('Stage', () => {
     });
     component.ngOnInit();
     expect(component.isAuthenticated).toBeFalse();
+  });
+
+  it('should dispatch loadLanding when isReady$ emits false', () => {
+    landingStore.loadLanding.calls.reset();
+    landingStore.isReady$.next(false);
+    component.ngOnInit();
+    expect(landingStore.loadLanding).toHaveBeenCalled();
+  });
+
+  it('should NOT dispatch loadLanding when isReady$ emits true', () => {
+    landingStore.loadLanding.calls.reset();
+    landingStore.isReady$.next(true);
+    component.ngOnInit();
+    expect(landingStore.loadLanding).not.toHaveBeenCalled();
   });
 
   it('should call setHeaderType with USER_AUTH_HEADER if token exists', () => {

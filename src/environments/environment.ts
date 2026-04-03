@@ -8,7 +8,8 @@ export const environment = {
   apiUrl: '', // Empty because APIs are served from the same server as the frontend
   appName: 'Directory Frontend',
   version: '1.0.0',
-  appImgBaseHref: 'https://prx-qa.tst/latinhub/media/assets/'
+  appImgBaseHref: 'https://prx-qa.tst/latinhub/media/assets/',
+  useMocks: true
 };
 
 /*

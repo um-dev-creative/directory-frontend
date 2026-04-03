@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { map, catchError, retry, shareReplay } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { LandingBanners } from '@shared/models/landing.model';
+import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 
 export interface Category {
   name: string;
@@ -29,45 +30,34 @@ export interface BannerData {
   providedIn: 'root'
 })
 export class BannerService {
-  private readonly apiUrl = 'assets/mocks/banner.json';
-  private readonly cache$ = new Map<string, Observable<BannerData>>();
-
-  constructor(private readonly http: HttpClient) {}
+  private readonly landingStore = inject(LandingStoreService);
 
   getBannerData(): Observable<BannerData> {
-    if (this.cache$.has(this.apiUrl)) {
-      return this.cache$.get(this.apiUrl)!;
-    }
-
-    const bannerData$ = this.http.get<{ banner: BannerData }>(this.apiUrl)
-      .pipe(
-        retry(2),
-        map(response => response.banner),
-        shareReplay(1),
-        catchError(this.handleError)
-      );
-
-    this.cache$.set(this.apiUrl, bannerData$);
-    return bannerData$;
+    return this.landingStore.banners$.pipe(
+      filter((banners): banners is LandingBanners => banners !== null),
+      map(banners => ({
+        title: '',
+        categories: [], // TODO: add categories to LandingResponse when backend ready
+        banners: {
+          top: banners.top ? {
+            desktop: banners.top.imageDesktop,
+            tablet: banners.top.imageTablet,
+            mobile: banners.top.imageMobile,
+            alt: banners.top.altText,
+            route: banners.top.route
+          } : undefined,
+          mid: banners.mid ? {
+            desktop: banners.mid.imageDesktop,
+            tablet: banners.mid.imageTablet,
+            mobile: banners.mid.imageMobile,
+            alt: banners.mid.altText,
+            route: banners.mid.route
+          } : undefined
+        }
+      }))
+    );
   }
 
-  clearCache(): void {
-    this.cache$.clear();
-  }
-
-  private handleError(error: any): Observable<never> {
-    console.error('Banner loading error:', error);
-
-    let errorMessage = 'Failed to load banner data';
-
-    if (error.status === 0) {
-      errorMessage = 'Network error - please check your connection';
-    } else if (error.status >= 400 && error.status < 500) {
-      errorMessage = 'Banner data not found';
-    } else if (error.status >= 500) {
-      errorMessage = 'Server error - please try again later';
-    }
-
-    return throwError(() => new Error(errorMessage));
-  }
+  // No-op: caching is handled by the NgRx store
+  clearCache(): void {}
 }
