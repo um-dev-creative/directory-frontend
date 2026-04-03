@@ -9,7 +9,7 @@
 }
 
 .marquee-block {
-  @apply relative h-[60px] box-border mt-[24px] mb-[24px];
+  @apply relative h-[60px] box-border my-[24px];
 }
 
 .marquee-inner {

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '@app/core/services/logger.service';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import { SkeletonComponent } from '@app/components/ui';
 import {environment} from '@env/environment';
 
 interface Slide {
@@ -19,7 +20,7 @@ interface Slide {
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SkeletonComponent],
   templateUrl: './carousel.html',
 })
 export class Carousel implements OnInit, OnDestroy {
@@ -33,11 +34,12 @@ export class Carousel implements OnInit, OnDestroy {
 
   // Inputs configurables
   @Input() index: number = 0;
-  currentSlide = 0;
-  isAutoPlaying = true;
+  protected  currentSlide = 0;
+  protected  isAutoPlaying = true;
   private autoplayInterval?: any;
 
-  slides: Slide[] = [];
+  protected slides: Slide[] = [];
+  protected readonly loading$ = this.landingStore.isLoading$;
 
   ngOnInit() {
     this.landingStore.slides$.pipe(takeUntil(this.destroy$)).subscribe(slides => {
@@ -49,8 +51,10 @@ export class Carousel implements OnInit, OnDestroy {
         alt: s.altText,
         link: s.route
       }));
+      if (this.slides.length > 0 && !this.autoplayInterval) {
+        this.startAutoplay();
+      }
     });
-    this.startAutoplay();
   }
 
   ngOnDestroy() {
@@ -60,10 +64,12 @@ export class Carousel implements OnInit, OnDestroy {
   }
 
   nextSlide(): void {
+    if (this.slides.length === 0) return;
     this.currentSlide = (this.currentSlide + 1) % this.slides.length;
   }
 
   prevSlide(): void {
+    if (this.slides.length === 0) return;
     this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
   }
 

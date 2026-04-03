@@ -4,14 +4,22 @@
 
   <!-- Loading State -->
   @if (loading$ | async) {
-    <div class="flex justify-center py-8" role="status" aria-label="Loading campaigns">
-      <div class="flex space-x-4">
-        @for (skeleton of [1,2,3]; track skeleton) {
-          <div class="animate-pulse shrink-0 w-80 lg:w-96 h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 bg-beige-200 rounded-xl"></div>
-        }
+    <app-skeleton variant="custom">
+      <div
+        class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6"
+        role="status"
+        aria-label="Loading campaign cards">
+        <div class="flex gap-4 min-w-max lg:min-w-0 lg:justify-between lg:max-w-full">
+          @for (i of [1, 2, 3]; track i) {
+            <div class="shrink-0 w-80 lg:w-[calc(33.333%-1rem)] lg:max-w-sm rounded-xl overflow-hidden">
+              <div class="skeleton-element skeleton-shimmer
+                          h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-full"></div>
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  }
+    </app-skeleton>
+  } @else {
 
   <!-- Error State -->
   @if (error$ | async; as error) {
@@ -71,16 +79,5 @@
     </div>
   }
 
-  <!-- Empty State -->
-  @if ((cardsData$ | async)?.length === 0 && !(loading$ | async) && !(error$ | async)) {
-    <div class="text-center py-12">
-      <div class="text-6xl mb-4">📸</div>
-      <h3 class="text-lg font-semibold text-beige-800 mb-2">
-        No campaigns available
-      </h3>
-      <p class="text-beige-600">
-        Check back later for new campaigns
-      </p>
-    </div>
-  }
+  } <!-- end @else -->
 </section>

@@ -1,3 +1,23 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="w-full py-6">
+      <div class="flex gap-4 justify-center pt-5 pb-8 overflow-hidden">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                      flex-none w-[310px] h-[349px]"></div>
+        }
+      </div>
+      <div class="mt-6 text-center">
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                    md:inline-block hidden w-[160px] h-[48px]"></div>
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                    mx-auto mt-2 w-[420px] h-[16px]"></div>
+      </div>
+    </div>
+  </app-skeleton>
+} @else {
+
 <div class="w-full py-6 bg-white">
   <div class="max-w-screen-xl mx-auto">
     <div class="w-full overflow-x-auto hide-scrollbar">
@@ -9,7 +29,8 @@
             <img
               [src]="product.image"
               [alt]="product.alt"
-              class="w-full h-full object-contain rounded-md my-1">
+              class="w-full h-full object-contain rounded-md my-1"
+              (error)="$any($event.target).src = 'assets/images/placeholder-square.svg'">
           </div>
         }
       </div>
@@ -27,8 +48,10 @@
         </app-button>
 
       <p class="mt-2 text-sm text-beige-700">
-        * For illustrative purposes only. Products, partners, and offers may vary & subject to change at any time without notice.
+        <sup>*</sup> Solo con fines ilustrativos. Productos, aliados y ofertas pueden variar sin previo aviso.
       </p>
     </div>
   </div>
 </div>
+
+} <!-- end @else -->

@@ -1,3 +1,10 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="skeleton-element skeleton-shimmer skeleton-rounded w-full h-[60px] my-[24px]"></div>
+  </app-skeleton>
+} @else {
+
 <div class="marquee-container">
   <div class="marquee-wrapper">
     <div class="marquee-block">
@@ -26,3 +33,5 @@
     </div>
   </div>
 </div>
+
+} <!-- end @else -->

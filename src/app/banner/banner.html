@@ -1,9 +1,9 @@
 <!-- Loading state -->
 @if (loading$ | async) {
-  <div class="flex justify-center items-center py-8" role="status" aria-label="Loading banner">
-    <div class="animate-pulse bg-gray-200 rounded-lg h-32 w-full max-w-md"></div>
-    <span class="sr-only">Loading banner content...</span>
-  </div>
+  <app-skeleton variant="custom">
+    <div class="skeleton-element skeleton-shimmer skeleton-rounded w-full
+                h-[150px] md:h-[90px] lg:h-[100px]"></div>
+  </app-skeleton>
 }
 
 <!-- Error state -->
