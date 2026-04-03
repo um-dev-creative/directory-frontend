@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
 import { Cards } from './cards';
@@ -10,6 +10,7 @@ describe('CardsComponent', () => {
   let component: Cards;
   let fixture: ComponentFixture<Cards>;
   let cardsService: jasmine.SpyObj<CardsService>;
+  let loadingSubject: BehaviorSubject<boolean>;
 
   const mockCards: Image[] = [
     {
@@ -29,7 +30,9 @@ describe('CardsComponent', () => {
   ];
 
   beforeEach(async () => {
+    loadingSubject = new BehaviorSubject<boolean>(false);
     const cardsServiceSpy = jasmine.createSpyObj('CardsService', ['getCards']);
+    cardsServiceSpy.isLoading$ = loadingSubject;
 
     await TestBed.configureTestingModule({
       imports: [Cards, HttpClientTestingModule],
@@ -54,14 +57,14 @@ describe('CardsComponent', () => {
 
     expect(cardsService.getCards).toHaveBeenCalled();
     expect(component.cardsData$.value).toEqual(mockCards);
-    expect(component.loading$.value).toBeFalse();
+    expect(loadingSubject.value).toBeFalse();
   });
 
   it('should show loading state initially', () => {
-    component.loading$.next(true);
+    loadingSubject.next(true);
     component.error$.next(null);
 
-    expect(component.loading$.value).toBeTrue();
+    expect(loadingSubject.value).toBeTrue();
   });
 
   it('should handle error state', () => {
@@ -71,7 +74,7 @@ describe('CardsComponent', () => {
     fixture.detectChanges();
 
     expect(component.error$.value).toContain('Unable to load campaigns');
-    expect(component.loading$.value).toBeFalse();
+    expect(loadingSubject.value).toBeFalse();
   });
 
   it('should emit cardClick event when card is clicked', () => {
@@ -105,7 +108,7 @@ describe('CardsComponent', () => {
     cardsService.getCards.and.returnValue(of([]));
 
     component.cardsData$.next([]);
-    component.loading$.next(false);
+    loadingSubject.next(false);
     component.error$.next(null);
     fixture.detectChanges();
 

@@ -22,6 +22,7 @@ const mockCards: LandingCard[] = [
     id: 'card-1',
     name: 'Card One',
     description: 'Description one',
+    altText: 'Card One',
     imageUrl: 'http://example.com/card1.jpg',
     internalLink: '/category/one'
   },
@@ -29,6 +30,7 @@ const mockCards: LandingCard[] = [
     id: 'card-2',
     name: 'Card Two',
     description: 'Description two',
+    altText: 'Card Two',
     imageUrl: 'http://example.com/card2.jpg',
     internalLink: '/category/two'
   }

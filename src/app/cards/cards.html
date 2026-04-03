@@ -37,6 +37,11 @@
 
   <!-- Cards Grid -->
   @if (cardsData$ | async; as cards) {
+    @if (cards.length === 0) {
+      <div class="text-center py-8">
+        <p>No campaigns available</p>
+      </div>
+    }
     <div
       class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6 smooth-scroll"
       role="group"

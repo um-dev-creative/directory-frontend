@@ -35,7 +35,7 @@ export class ProductList implements OnInit, OnDestroy {
       this.products = items.map(p => ({
         id: p.id,
         name: p.name,
-        image: `${this.imageBucketUrl}${p.imageUrl}`,
+        image: p.imageUrl.startsWith('http://') || p.imageUrl.startsWith('https://') ? p.imageUrl : `${this.imageBucketUrl}${p.imageUrl}`,
         alt: p.altText
       }));
     });
