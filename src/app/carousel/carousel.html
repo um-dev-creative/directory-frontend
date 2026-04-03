@@ -1,3 +1,11 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="skeleton-element skeleton-shimmer skeleton-rounded my-5 w-full
+                h-[280px] md:h-[240px] lg:h-[320px]"></div>
+  </app-skeleton>
+} @else {
+
 <div class="relative w-full overflow-hidden group my-5"
      (mouseenter)="pauseAutoplay()"
      (mouseleave)="resumeAutoplay()">
@@ -85,3 +93,5 @@
     </div>
   </div>
 </div>
+
+}

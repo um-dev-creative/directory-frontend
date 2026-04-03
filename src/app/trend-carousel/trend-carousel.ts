@@ -2,7 +2,8 @@ import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@an
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Button } from '@app/components/ui';
+import { CommonModule } from '@angular/common';
+import { Button, SkeletonComponent } from '@app/components/ui';
 import { LoggerService } from '@app/core/services/logger.service';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 
@@ -10,14 +11,16 @@ interface Trend {
   title: string;
   description: string;
   image: string;
+  altText: string;
   brandLogo: string;
+  brandLogoAlt: string;
   internalLink: string;
 }
 
 @Component({
   selector: 'app-trend-carousel',
   standalone: true,
-  imports: [Button],
+  imports: [CommonModule, Button, SkeletonComponent],
   templateUrl: './trend-carousel.html',
   styleUrl: './trend-carousel.css'
 })
@@ -25,6 +28,7 @@ export class TrendCarousel implements OnInit, OnDestroy {
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
 
   trends: Trend[] = [];
+  readonly loading$ = inject(LandingStoreService).isLoading$;
 
   private scrollInterval: any;
   private readonly scrollSpeed = 200;
@@ -39,7 +43,9 @@ export class TrendCarousel implements OnInit, OnDestroy {
         title: o.name,
         description: o.description,
         image: o.imageUrl,
+        altText: o.altText,
         brandLogo: o.brandLogoUrl,
+        brandLogoAlt: o.altTextLogo ?? o.name,
         internalLink: o.internalLink
       }));
     });
@@ -82,6 +88,6 @@ export class TrendCarousel implements OnInit, OnDestroy {
   }
 
   onBrandLogoError(event: Event): void {
-    (event.target as HTMLImageElement).src = this.fallbackImage;
+    (event.target as HTMLImageElement).src = 'assets/images/placeholder-logo.svg';
   }
 }

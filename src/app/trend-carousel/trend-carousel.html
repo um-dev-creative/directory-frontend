@@ -1,3 +1,23 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="mt-4 mb-6">
+      <div class="skeleton-element skeleton-shimmer skeleton-rounded mx-auto my-5 w-[200px] h-[36px]"></div>
+      <div class="relative w-full max-w-[1200px] mx-auto py-5 px-0 md:px-16">
+        <div class="flex gap-6 overflow-hidden">
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                        shrink-0 w-[320px] h-[404px]"></div>
+          }
+        </div>
+      </div>
+      <div class="flex justify-center my-7">
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded w-[280px] h-[48px]"></div>
+      </div>
+    </div>
+  </app-skeleton>
+} @else {
+
 <div class="mt-4 mb-6">
   <div>
       <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">Tendencia</h1>
@@ -23,7 +43,7 @@
             <div class="hover:scale-105 relative inline-block w-[300px] h-[246px] overflow-hidden rounded-[8.5px] mx-auto">
               <img
                 [src]="trend.image"
-                [alt]="trend.title"
+                [alt]="trend.altText"
                 (error)="onImageError(trend)"
                 class="w-full h-full object-cover"
               >
@@ -36,7 +56,7 @@
             <div class="flex items-center gap-4 w-full px-4 py-2">
               <!-- Logo de la Marca -->
               <div class="flex items-center justify-center w-20 h-20 border border-gray-300 rounded-full">
-                <img [src]="trend.brandLogo" alt="brand-logo" class="w-[54px] h-[54px] object-contain" (error)="onBrandLogoError($event)">
+                <img [src]="trend.brandLogo" [alt]="trend.brandLogoAlt" class="w-[54px] h-[54px] object-contain" (error)="onBrandLogoError($event)">
               </div>
 
               <!-- Contenedor de Texto -->
@@ -70,6 +90,8 @@
     >DESCUBRIR MÁS</app-button>
   </div>
 </div>
+
+} <!-- end @else -->
 
 
 

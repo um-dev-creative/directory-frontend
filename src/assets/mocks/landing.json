@@ -48,6 +48,7 @@
       "id": "mock-card-1",
       "name": "Community First",
       "description": "Supporting local businesses in our community",
+      "altText": "Community First Card Image",
       "imageUrl": "SecondaryBanner_Card1.png",
       "internalLink": "https://instagram.com/latinhub.info"
     },
@@ -55,6 +56,7 @@
       "id": "mock-card-2",
       "name": "Local Focus",
       "description": "Discover amazing local businesses near you",
+      "altText": "Local Focus Card Image",
       "imageUrl": "SecondaryBanner_Card2.png",
       "internalLink": "https://latinhubinfo.wordpress.com/"
     },
@@ -62,6 +64,7 @@
       "id": "mock-card-3",
       "name": "Exclusive Deals",
       "description": "Special offers only for directory members",
+      "altText": "Exclusive Deals Card Image",
       "imageUrl": "SecondaryBanner_Card3.png",
       "internalLink": "/about"
     }
@@ -88,39 +91,39 @@
   "featuredProducts": [
     {
       "id": "mock-prod-1",
-      "name": "ASUS Laptop",
-      "imageUrl": "https://storage.spccard.ca/EN_ASUS_ProductTile_103024.png",
-      "altText": "Homepage Partner Products - ASUS",
-      "regularPrice": 999.99,
-      "discountedPrice": 719.10,
+      "name": "Wow Plush Toy",
+      "imageUrl": "PromoEjemplo_1.webp",
+      "altText": "Homepage Partner Products - Wow Plush Toy",
+      "regularPrice": 19.90,
+      "discountedPrice": 15.01,
       "currency": "USD",
       "isOnline": true,
       "isInStore": false,
-      "businessName": "ASUS"
+      "businessName": "Wow Custom Toys"
     },
     {
       "id": "mock-prod-2",
-      "name": "Muji Stationery",
-      "imageUrl": "https://storage.spccard.ca/EN_Muji_ProductTile_103024.png",
-      "altText": "Home Page Partner Product: Muji",
-      "regularPrice": 18.90,
-      "discountedPrice": 17.01,
+      "name": "User Oriented Table",
+      "imageUrl": "PromoEjemplo_2.webp",
+      "altText": "Home Page Partner Product: User Oriented Table",
+      "regularPrice": 390.00,
+      "discountedPrice": 360.00,
       "currency": "USD",
       "isOnline": true,
       "isInStore": true,
-      "businessName": "MUJI"
+      "businessName": "User Oriented Tech"
     },
     {
       "id": "mock-prod-3",
-      "name": "New Balance Sneakers",
-      "imageUrl": "https://storage.spccard.ca/EN_New%20Balance_ProductTile_103024-2.png",
-      "altText": "Home Page Partner Product: New Balance",
-      "regularPrice": 79.99,
-      "discountedPrice": 67.00,
+      "name": "Spring Collection Dress",
+      "imageUrl": "PromoEjemplo_3.webp",
+      "altText": "Home Page Partner Product: Spring Collection Dress",
+      "regularPrice": 90.00,
+      "discountedPrice": 60.00,
       "currency": "USD",
       "isOnline": true,
       "isInStore": true,
-      "businessName": "New Balance"
+      "businessName": "Spring Collection Fashion"
     }
   ],
   "offers": [
@@ -129,7 +132,9 @@
       "name": "TaxHelper Pro",
       "description": "TaxHelper Pro ONLINE FREE for Students*",
       "imageUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop",
+      "altText": "TaxHelper Pro Offer Image",
       "brandLogoUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=192&h=192&fit=crop",
+      "altTextLogo": "TaxHelper Pro Logo",
       "internalLink": "/auth",
       "businessName": "TaxHelper Pro"
     },
@@ -138,7 +143,9 @@
       "name": "DenimCraft",
       "description": "15% off regular and sale price. Select locations only.*",
       "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=400&fit=crop",
+      "altText": "DenimCraft Offer Image",
       "brandLogoUrl": "https://storage.spccard.ca/levis%20logo%5B1%5D_2019-08-02-132119.png",
+      "altTextLogo": "DenimCraft Logo",
       "internalLink": "/partner/nike",
       "businessName": "Levi's"
     },
@@ -147,7 +154,9 @@
       "name": "GlowUp Beauty",
       "description": "20% off $45+*",
       "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=400&fit=crop",
-      "brandLogoUrl": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=192&h=192&fit=crop",
+      "altText": "GlowUp Beauty Offer Image",
+      "brandLogoUrl": "https://storage.spccard.ca/ELF-logo-192x192.webp",
+      "altTextLogo": "GlowUp Beauty Logo",
       "internalLink": "/partner/muji",
       "businessName": "GlowUp Beauty"
     },
@@ -156,7 +165,9 @@
       "name": "TechGadget Store",
       "description": "10% off all electronics*",
       "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop",
+      "altText": "TechGadget Store Offer Image",
       "brandLogoUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=192&h=192&fit=crop",
+      "altTextLogo": "TechGadget Store Logo",
       "internalLink": "/offers/tech",
       "businessName": "TechGadget Store"
     },
@@ -165,7 +176,9 @@
       "name": "HomeStyle Furniture",
       "description": "Free delivery on orders $500+*",
       "imageUrl": "https://images.unsplash.com/photo-1493666438817-866a91353ca9?w=600&h=400&fit=crop",
+      "altText": "HomeStyle Furniture Offer Image",
       "brandLogoUrl": "https://images.unsplash.com/photo-1503602642458-232111445657?w=192&h=192&fit=crop",
+      "altTextLogo": "HomeStyle Furniture Logo",
       "internalLink": "/offers/furniture",
       "businessName": "HomeStyle Furniture"
     },
@@ -174,7 +187,9 @@
       "name": "FitLife Gym",
       "description": "50% off first month membership*",
       "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+      "altText": "FitLife Gym Offer Image",
       "brandLogoUrl": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=192&h=192&fit=crop",
+      "altTextLogo": "FitLife Gym Logo",
       "internalLink": "/offers/gym",
       "businessName": "FitLife Gym"
     },
@@ -183,7 +198,9 @@
       "name": "BookNook",
       "description": "Buy 2 get 1 free on all books*",
       "imageUrl": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=400&fit=crop",
+      "altText": "BookNook Offer Image",
       "brandLogoUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=192&h=192&fit=crop",
+      "altTextLogo": "BookNook Logo",
       "internalLink": "/offers/books",
       "businessName": "BookNook"
     },
@@ -192,7 +209,9 @@
       "name": "GourmetBites Restaurant",
       "description": "15% off total bill*",
       "imageUrl": "https://images.unsplash.com/photo-1555992336-03a23c0f0bdb?w=600&h=400&fit=crop",
-      "brandLogoUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=192&h=192&fit=crop",
+      "altText": "GourmetBites Offer Image",
+      "brandLogoUrl": "https://images.unsplash.com/photo-154018954936-e6e99c3679fe?w=192&h=192&fit=crop",
+      "altTextLogo": "GourmetBites Logo",
       "internalLink": "/offers/restaurant",
       "businessName": "GourmetBites"
     }

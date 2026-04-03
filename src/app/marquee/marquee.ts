@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import { SkeletonComponent } from '@app/components/ui';
 
 interface MarqueeImage {
   id: string;
@@ -15,12 +16,13 @@ interface MarqueeImage {
 @Component({
   selector: 'app-marquee',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, SkeletonComponent],
   templateUrl: './marquee.html',
   styleUrl: './marquee.css',
 })
 export class Marquee implements OnInit, OnDestroy {
   images: MarqueeImage[] = [];
+  readonly loading$ = inject(LandingStoreService).isLoading$;
 
   private readonly landingStore = inject(LandingStoreService);
   private readonly platformId = inject(PLATFORM_ID);

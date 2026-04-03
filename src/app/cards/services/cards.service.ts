@@ -18,12 +18,15 @@ export interface CardImage {
 export class CardsService {
   private readonly landingStore = inject(LandingStoreService);
 
+  readonly isLoading$ = this.landingStore.isLoading$;
+  readonly storeError$ = this.landingStore.error$;
+
   getCards(): Observable<CardImage[]> {
     return this.landingStore.cards$.pipe(
       map(cards => cards.map(card => ({
         id: card.id,
         src: card.imageUrl,
-        alt: card.name,
+        alt: card.altText,
         title: card.name,
         description: card.description,
         link: card.internalLink

@@ -25,6 +25,7 @@ export interface LandingCard {
   id: string;
   name: string;
   description: string;
+  altText: string;
   imageUrl: string;
   internalLink: string;
 }
@@ -54,7 +55,9 @@ export interface LandingOffer {
   name: string;
   description: string;
   imageUrl: string;
+  altText: string;
   brandLogoUrl: string;
+  altTextLogo?: string;
   internalLink: string;
   businessName: string;
 }
