@@ -8,8 +8,10 @@ import {HttpClient, provideHttpClient, withFetch, withInterceptorsFromDi} from '
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideStore} from '@ngrx/store';
 import {sessionReducer} from '@app/core/store/session/session.reducer';
+import {landingReducer} from '@app/core/store/landing/landing.reducer';
 import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
+import {LandingEffects} from '@app/core/store/landing/landing.effects';
 import {provideCore} from '@core/core.module';
 import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
 
@@ -59,8 +61,8 @@ export const appConfig: ApplicationConfig = {
     ),
 
     // NgRx Store
-    provideStore({ session: sessionReducer}),
-    provideEffects([SessionEffects]),
+    provideStore({ session: sessionReducer, landing: landingReducer }),
+    provideEffects([SessionEffects, LandingEffects]),
 
     // Session initialization
     SESSION_INITIALIZER_PROVIDER,

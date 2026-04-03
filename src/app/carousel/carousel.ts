@@ -1,18 +1,35 @@
 import {Component, OnInit, OnDestroy, Input, inject, PLATFORM_ID} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { Slide, CAROUSEL_SLIDES } from '../../assets/mocks/carousel-slides.mock';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { LoggerService } from '@app/core/services/logger.service';
+import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import {environment} from '@env/environment';
+
+interface Slide {
+  id: string;
+  desktop: string;
+  tablet: string;
+  mobile: string;
+  alt: string;
+  link: string;
+}
 
 @Component({
   selector: 'app-carousel',
-  imports: [
-    CommonModule,
-  ],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './carousel.html',
 })
 export class Carousel implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly router = inject(Router);
+  private readonly logger = inject(LoggerService);
+  private readonly imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
+
+  private readonly landingStore = inject(LandingStoreService);
+  private readonly destroy$ = new Subject<void>();
 
   // Inputs configurables
   @Input() index: number = 0;
@@ -20,14 +37,26 @@ export class Carousel implements OnInit, OnDestroy {
   isAutoPlaying = true;
   private autoplayInterval?: any;
 
-  slides: Slide[] = CAROUSEL_SLIDES;
+  slides: Slide[] = [];
 
   ngOnInit() {
+    this.landingStore.slides$.pipe(takeUntil(this.destroy$)).subscribe(slides => {
+      this.slides = slides.map(s => ({
+        id: s.id,
+        desktop: `${this.imageBucketUrl}${s.imageDesktop}`,
+        tablet: `${this.imageBucketUrl}${s.imageTablet}`,
+        mobile: `${this.imageBucketUrl}${s.imageMobile}`,
+        alt: s.altText,
+        link: s.route
+      }));
+    });
     this.startAutoplay();
   }
 
   ngOnDestroy() {
     this.stopAutoplay();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   nextSlide(): void {
@@ -78,6 +107,7 @@ export class Carousel implements OnInit, OnDestroy {
           window.open(currentSlideObj.link, '_blank', 'noopener,noreferrer');
         }
       } else {
+        this.logger.warn(`Navigating to internal link: ${currentSlideObj.link}`);
         this.router.navigateByUrl(currentSlideObj.link);
       }
     }

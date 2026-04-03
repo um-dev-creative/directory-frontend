@@ -119,6 +119,7 @@ appConfig.bootstrapConfiguration().then(async config => {
     app.use("/", require("./server/routes/directory-backend-auth.routes"));
     app.use("/", require("./server/routes/multimedia.routes"));
     app.use("/", require("./server/routes/backbone.routes"));
+    app.use("/api/landing", require("./server/routes/landing.routes"));
     app.use(express.static(path.join(DIST_FOLDER, 'browser')));
     app.get("/*", (req, res) => {
       logger.info(`SSR request for: ${req.url}`);
