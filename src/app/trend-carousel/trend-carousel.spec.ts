@@ -26,6 +26,7 @@ const mockOffers: LandingOffer[] = [
     name: 'Offer One',
     description: 'Desc one',
     imageUrl: 'http://example.com/offer1.jpg',
+    altText: 'Offer One',
     brandLogoUrl: 'http://example.com/brand1.png',
     internalLink: '/offer/one',
     businessName: 'Biz A'
@@ -35,6 +36,7 @@ const mockOffers: LandingOffer[] = [
     name: 'Offer Two',
     description: 'Desc two',
     imageUrl: 'http://example.com/offer2.jpg',
+    altText: 'Offer Two',
     brandLogoUrl: 'http://example.com/brand2.png',
     internalLink: '/offer/two',
     businessName: 'Biz B'
@@ -108,7 +110,7 @@ describe('TrendCarousel', () => {
 
   it('should navigate to internalLink on card click', () => {
     const navigateSpy = spyOn(router, 'navigate');
-    const trend = { title: 'Test', description: 'Desc', image: 'img.png', brandLogo: 'logo.png', internalLink: '/offer/one' };
+    const trend = { title: 'Test', description: 'Desc', image: 'img.png', altText: '', brandLogo: 'logo.png', brandLogoAlt: '', internalLink: '/offer/one' };
 
     component.onCardClick(trend);
 
@@ -117,7 +119,7 @@ describe('TrendCarousel', () => {
 
   it('should log warning when card click has no internalLink', () => {
     mockLogger.warn.calls.reset();
-    const trend = { title: 'Test', description: 'Desc', image: 'img.png', brandLogo: 'logo.png', internalLink: '' };
+    const trend = { title: 'Test', description: 'Desc', image: 'img.png', altText: '', brandLogo: 'logo.png', brandLogoAlt: '', internalLink: '' };
 
     component.onCardClick(trend);
 

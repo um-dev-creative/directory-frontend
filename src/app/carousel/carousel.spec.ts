@@ -49,49 +49,49 @@ describe('CarouselComponent', () => {
   });
 
   it('should start with first slide', () => {
-    expect(component.currentSlide).toBe(0);
+    expect((component as any).currentSlide).toBe(0);
   });
 
   it('should have slides loaded', () => {
-    expect(component.slides.length).toBeGreaterThan(0);
+    expect((component as any).slides.length).toBeGreaterThan(0);
   });
 
   it('should advance to next slide', () => {
     component.nextSlide();
-    expect(component.currentSlide).toBe(1);
+    expect((component as any).currentSlide).toBe(1);
   });
 
   it('should wrap to first slide when going past last', () => {
-    component.currentSlide = component.slides.length - 1;
+    (component as any).currentSlide = (component as any).slides.length - 1;
     component.nextSlide();
-    expect(component.currentSlide).toBe(0);
+    expect((component as any).currentSlide).toBe(0);
   });
 
   it('should go to previous slide', () => {
-    component.currentSlide = 1;
+    (component as any).currentSlide = 1;
     component.prevSlide();
-    expect(component.currentSlide).toBe(0);
+    expect((component as any).currentSlide).toBe(0);
   });
 
   it('should wrap to last slide when going before first', () => {
-    component.currentSlide = 0;
+    (component as any).currentSlide = 0;
     component.prevSlide();
-    expect(component.currentSlide).toBe(component.slides.length - 1);
+    expect((component as any).currentSlide).toBe((component as any).slides.length - 1);
   });
 
   it('should go to a specific slide', () => {
     component.goToSlide(1);
-    expect(component.currentSlide).toBe(1);
+    expect((component as any).currentSlide).toBe(1);
   });
 
   it('should pause autoplay', () => {
     component.pauseAutoplay();
-    expect(component.isAutoPlaying).toBeFalse();
+    expect((component as any).isAutoPlaying).toBeFalse();
   });
 
   it('should resume autoplay', () => {
     component.pauseAutoplay();
     component.resumeAutoplay();
-    expect(component.isAutoPlaying).toBeTrue();
+    expect((component as any).isAutoPlaying).toBeTrue();
   });
 });
