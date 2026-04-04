@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, inject, PLATFORM_ID} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, inject, signal, PLATFORM_ID} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -39,6 +39,7 @@ export class Carousel implements OnInit, OnDestroy {
   private autoplayInterval?: any;
 
   protected slides: Slide[] = [];
+  readonly imageErrors = signal<Set<string>>(new Set());
   protected readonly loading$ = this.landingStore.isLoading$;
 
   ngOnInit() {
@@ -103,6 +104,10 @@ export class Carousel implements OnInit, OnDestroy {
   resumeAutoplay(): void {
     this.isAutoPlaying = true;
     this.startAutoplay();
+  }
+
+  onImageError(slideId: string): void {
+    this.imageErrors.update(s => new Set(s).add(slideId));
   }
 
   onSlideClick(): void {

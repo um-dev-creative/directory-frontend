@@ -22,15 +22,31 @@
   <div class="max-w-screen-xl mx-auto">
     <div class="w-full overflow-x-auto hide-scrollbar">
       <div class="flex whitespace-nowrap gap-4 md:justify-center cursor-pointer pt-5 pb-8 overflow-visible">
-        @for (product of products; track product) {
+        @for (product of products; track product.id) {
           <div
             class="flex-none w-[310px] h-[349px] border rounded-lg shadow-md hover:shadow-emerald-500/50 transition flex items-center justify-center hover:overflow-visible hover:scale-105 duration-300"
           >
-            <img
-              [src]="product.image"
-              [alt]="product.alt"
-              class="w-full h-full object-contain rounded-md my-1"
-              (error)="$any($event.target).src = 'assets/images/placeholder-square.svg'">
+            @if (!imageErrors().has(product.id)) {
+              <img
+                [src]="product.image"
+                [alt]="product.alt"
+                class="w-full h-full object-contain rounded-md my-1"
+                (error)="onImageError(product.id)"
+              >
+            } @else {
+              <div
+                class="flex items-center justify-center w-full h-full bg-gray-100 rounded-md"
+                role="img"
+                [attr.aria-label]="product.alt"
+              >
+                <img
+                  src="assets/images/placeholder-logo.svg"
+                  alt=""
+                  aria-hidden="true"
+                  class="h-16 opacity-40"
+                >
+              </div>
+            }
           </div>
         }
       </div>
