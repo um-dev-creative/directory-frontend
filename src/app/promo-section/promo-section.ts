@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '@env/environment';
 import {LoggerService} from '@app/core/services/logger.service';
@@ -20,13 +20,18 @@ interface PromoSectionData {
 })
 export class PromoSection implements OnInit {
   promo: PromoSectionData | null = null;
-  imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
+  imageBucketUrl = environment.appImgBaseHref || '';
+  readonly imageErrors = signal<Set<string>>(new Set());
   private readonly logger = inject(LoggerService);
 
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadPromoData();
+  }
+
+  onImageError(imageKey: string): void {
+    this.imageErrors.update(s => new Set(s).add(imageKey));
   }
 
   private loadPromoData(): void {

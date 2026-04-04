@@ -1,150 +1,122 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { CardsService, CardImage as Image } from './cards.service';
+import { CardsService, CardImage } from './cards.service';
+import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import { LandingCard } from '@shared/models/landing.model';
+import { BehaviorSubject } from 'rxjs';
+
+class MockLandingStoreService {
+  cards$ = new BehaviorSubject<LandingCard[]>([]);
+  banners$ = new BehaviorSubject<any>(null);
+  slides$ = new BehaviorSubject<any[]>([]);
+  partnerLogos$ = new BehaviorSubject<any[]>([]);
+  featuredProducts$ = new BehaviorSubject<any[]>([]);
+  offers$ = new BehaviorSubject<any[]>([]);
+  isLoading$ = new BehaviorSubject<boolean>(false);
+  error$ = new BehaviorSubject<string | null>(null);
+  isReady$ = new BehaviorSubject<boolean>(false);
+  loadLanding = jasmine.createSpy('loadLanding');
+}
+
+const mockCards: LandingCard[] = [
+  {
+    id: 'card-1',
+    name: 'Card One',
+    description: 'Description one',
+    altText: 'Card One',
+    imageUrl: 'http://example.com/card1.jpg',
+    internalLink: '/category/one'
+  },
+  {
+    id: 'card-2',
+    name: 'Card Two',
+    description: 'Description two',
+    altText: 'Card Two',
+    imageUrl: 'http://example.com/card2.jpg',
+    internalLink: '/category/two'
+  }
+];
 
 describe('CardsService', () => {
   let service: CardsService;
-  let httpMock: HttpTestingController;
-
-  const mockCardsData = {
-    images: [
-      {
-        id: 'test1',
-        src: 'https://example.com/image1.jpg',
-        alt: 'Test Image 1',
-        title: 'Test Card 1',
-        description: 'Test Description 1'
-      },
-      {
-        id: 'test2',
-        src: 'https://example.com/image2.jpg',
-        alt: 'Test Image 2',
-        title: 'Test Card 2',
-        description: 'Test Description 2'
-      }
-    ]
-  };
+  let landingStore: MockLandingStoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CardsService]
+      providers: [
+        CardsService,
+        { provide: LandingStoreService, useClass: MockLandingStoreService }
+      ]
     });
-    service = TestBed.inject(CardsService);
-    httpMock = TestBed.inject(HttpTestingController);
-  });
 
-  afterEach(() => {
-    httpMock.verify();
+    service = TestBed.inject(CardsService);
+    landingStore = TestBed.inject(LandingStoreService) as any;
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch cards successfully', () => {
-    service.getCards().subscribe((cards: Image[]) => {
-      expect(cards).toEqual(mockCardsData.images);
+  it('should map LandingCard[] to CardImage[] correctly', (done: DoneFn) => {
+    landingStore.cards$.next(mockCards);
+
+    service.getCards().subscribe((cards: CardImage[]) => {
       expect(cards.length).toBe(2);
-      expect(cards[0].title).toBe('Test Card 1');
-    });
 
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    expect(req.request.method).toBe('GET');
-    req.flush(mockCardsData);
+      expect(cards[0].id).toBe('card-1');
+      expect(cards[0].src).toBe('http://example.com/card1.jpg');
+      expect(cards[0].alt).toBe('Card One');
+      expect(cards[0].title).toBe('Card One');
+      expect(cards[0].description).toBe('Description one');
+      expect(cards[0].link).toBe('/category/one');
+
+      expect(cards[1].id).toBe('card-2');
+      expect(cards[1].src).toBe('http://example.com/card2.jpg');
+      expect(cards[1].alt).toBe('Card Two');
+      expect(cards[1].title).toBe('Card Two');
+      expect(cards[1].link).toBe('/category/two');
+
+      done();
+    });
   });
 
-  it('should handle empty response', () => {
-    const emptyResponse = { images: [] };
+  it('should map imageUrl to src', (done: DoneFn) => {
+    landingStore.cards$.next([mockCards[0]]);
 
-    service.getCards().subscribe((cards: Image[]) => {
+    service.getCards().subscribe((cards: CardImage[]) => {
+      expect(cards[0].src).toBe(mockCards[0].imageUrl);
+      done();
+    });
+  });
+
+  it('should map name to alt and title', (done: DoneFn) => {
+    landingStore.cards$.next([mockCards[0]]);
+
+    service.getCards().subscribe((cards: CardImage[]) => {
+      expect(cards[0].alt).toBe(mockCards[0].name);
+      expect(cards[0].title).toBe(mockCards[0].name);
+      done();
+    });
+  });
+
+  it('should map internalLink to link', (done: DoneFn) => {
+    landingStore.cards$.next([mockCards[0]]);
+
+    service.getCards().subscribe((cards: CardImage[]) => {
+      expect(cards[0].link).toBe(mockCards[0].internalLink);
+      done();
+    });
+  });
+
+  it('should emit empty array when store cards$ is empty', (done: DoneFn) => {
+    landingStore.cards$.next([]);
+
+    service.getCards().subscribe((cards: CardImage[]) => {
       expect(cards).toEqual([]);
-      expect(cards.length).toBe(0);
+      done();
     });
-
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    req.flush(emptyResponse);
   });
 
-  it('should handle malformed response', () => {
-    const malformedResponse = { data: [] }; // Wrong structure
-
-    service.getCards().subscribe((cards: Image[]) => {
-      expect(cards).toEqual([]);
-    });
-
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    req.flush(malformedResponse);
-  });
-
-  it('should handle HTTP error', () => {
-    service.getCards().subscribe({
-      next: () => fail('Expected an error'),
-      error: (error) => {
-        expect(error.message).toEqual('Server error - please try again later');
-      }
-    });
-
-    // Should retry 2 times, so we need to respond to 3 requests total
-    for (let i = 0; i < 3; i++) {
-      const req = httpMock.expectOne('assets/mocks/images.json');
-      req.flush('Error', { status: 500, statusText: 'Server Error' });
-    }
-  });
-
-  it('should handle network error', () => {
-    service.getCards().subscribe({
-      next: () => fail('Expected an error'),
-      error: (error) => {
-        expect(error.message).toEqual('Network error - please check your connection');
-      }
-    });
-
-    // Should retry 2 times, so we need to respond to 3 requests total
-    for (let i = 0; i < 3; i++) {
-      const req = httpMock.expectOne('assets/mocks/images.json');
-      req.flush('Error', { status: 0, statusText: 'Network Error' });
-    }
-  });
-
-  it('should cache requests', () => {
-    // First call
-    service.getCards().subscribe();
-    // Second call should use cache
-    service.getCards().subscribe();
-
-    // Should only make one HTTP request due to caching
-    const req = httpMock.expectOne('assets/mocks/images.json');
-    req.flush(mockCardsData);
-  });
-
-  it('should clear cache when requested', () => {
-    // First call
-    service.getCards().subscribe();
-    const req1 = httpMock.expectOne('assets/mocks/images.json');
-    req1.flush(mockCardsData);
-
-    // Clear cache
-    service.clearCache();
-
-    // Second call should make new HTTP request
-    service.getCards().subscribe();
-    const req2 = httpMock.expectOne('assets/mocks/images.json');
-    req2.flush(mockCardsData);
-  });
-
-  it('should retry failed requests', () => {
-    service.getCards().subscribe({
-      next: () => fail('Expected an error'),
-      error: (error) => {
-        expect(error.message).toEqual('Server error - please try again later');
-      }
-    });
-
-    // Should retry 2 times before failing (total 3 requests)
-    for (let i = 0; i < 3; i++) {
-      const req = httpMock.expectOne('assets/mocks/images.json');
-      req.flush('Error', { status: 500, statusText: 'Server Error' });
-    }
+  it('should have a no-op clearCache method', () => {
+    expect(() => service.clearCache()).not.toThrow();
   });
 });

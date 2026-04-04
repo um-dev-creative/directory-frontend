@@ -1,34 +1,61 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="skeleton-element skeleton-shimmer skeleton-rounded my-5 w-full
+                h-[280px] md:h-[240px] lg:h-[320px]"></div>
+  </app-skeleton>
+} @else {
+
 <div class="relative w-full overflow-hidden group my-5"
      (mouseenter)="pauseAutoplay()"
      (mouseleave)="resumeAutoplay()">
   <!-- Carrusel -->
   <div class="flex transition-transform duration-500 ease-in-out cursor-pointer"
        [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
-    @for (slide of slides; track slide.desktop) {
+    @for (slide of slides; track slide.id) {
       <div class="shrink-0 w-full pb-2">
-        <picture>
-          <!-- Desktop -->
-          <img
-            class="hidden lg:block rounded-[15px] shadow-sm"
-            [src]="slide.desktop"
-            [alt]="slide.alt"
+        @if (!imageErrors().has(slide.id)) {
+          <picture>
+            <!-- Desktop -->
+            <img
+              class="hidden lg:block rounded-[15px] shadow-sm"
+              [src]="slide.desktop"
+              [alt]="slide.alt"
+              (click)="onSlideClick()"
+              (error)="onImageError(slide.id)"
+            >
+            <!-- Tablet -->
+            <img
+              class="hidden md:block lg:hidden rounded-[15px] shadow-sm"
+              [src]="slide.tablet"
+              [alt]="slide.alt"
+              (click)="onSlideClick()"
+              (error)="onImageError(slide.id)"
+            >
+            <!-- Mobile -->
+            <img
+              class="block md:hidden rounded-[15px] shadow-sm"
+              [src]="slide.mobile"
+              [alt]="slide.alt"
+              (click)="onSlideClick()"
+              (error)="onImageError(slide.id)"
+            >
+          </picture>
+        } @else {
+          <div
+            class="flex items-center justify-center w-full h-[280px] md:h-[240px] lg:h-[320px] bg-gray-100 rounded-[15px] cursor-pointer"
+            role="img"
+            [attr.aria-label]="slide.alt"
             (click)="onSlideClick()"
           >
-          <!-- Tablet -->
-          <img
-            class="hidden md:block lg:hidden rounded-[15px] shadow-sm"
-            [src]="slide.tablet"
-            [alt]="slide.alt"
-            (click)="onSlideClick()"
-          >
-          <!-- Mobile -->
-          <img
-            class="block md:hidden rounded-[15px] shadow-sm"
-            [src]="slide.mobile"
-            [alt]="slide.alt"
-            (click)="onSlideClick()"
-          >
-        </picture>
+            <img
+              src="assets/images/placeholder-logo.svg"
+              alt=""
+              aria-hidden="true"
+              class="h-12 opacity-40"
+            >
+          </div>
+        }
       </div>
     }
   </div>
@@ -38,7 +65,7 @@
       <!-- Botón Anterior -->
       <button
         (click)="prevSlide()"
-        class="bg-white/90 p-2 rounded-md shadow-lg hover:bg-white transition-colors duration-200"
+        class="bg-white/90 p-2 rounded-md shadow-lg hover:bg-white transition-colors duration-200 cursor-pointer"
         aria-label="Previous slide"
       >
         <svg
@@ -67,7 +94,7 @@
       <!-- Botón Siguiente -->
       <button
         (click)="nextSlide()"
-        class="bg-white/90 p-2 rounded-md shadow-lg hover:bg-white transition-colors duration-200"
+        class="bg-white/90 p-2 rounded-md shadow-lg hover:bg-white transition-colors duration-200 cursor-pointer"
         aria-label="Next slide"
       >
         <svg
@@ -85,3 +112,5 @@
     </div>
   </div>
 </div>
+
+}

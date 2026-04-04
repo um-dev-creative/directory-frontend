@@ -1,3 +1,23 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="mt-4 mb-6">
+      <div class="skeleton-element skeleton-shimmer skeleton-rounded mx-auto my-5 w-[200px] h-[36px]"></div>
+      <div class="relative w-full max-w-[1200px] mx-auto py-5 px-0 md:px-16">
+        <div class="flex gap-6 overflow-hidden">
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                        shrink-0 w-[320px] h-[404px]"></div>
+          }
+        </div>
+      </div>
+      <div class="flex justify-center my-7">
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded w-[280px] h-[48px]"></div>
+      </div>
+    </div>
+  </app-skeleton>
+} @else {
+
 <div class="mt-4 mb-6">
   <div>
       <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">Tendencia</h1>
@@ -17,12 +37,26 @@
     <!-- Contenedor del Carrusel -->
     <div #carousel class="overflow-container overflow-x-auto hide-scrollbar scroll-smooth w-full py-5 px-0 md:px-16">
       <ul class="flex h-[410px] w-max">
-        @for (trend of trends; track trend; let isLast = $last) {
+        @for (trend of trends; track trend.image; let isLast = $last) {
           <li [class]="'w-[320px] h-[404px] shrink-0 rounded-2xl bg-white shadow-md hover:shadow-lg transition-all flex flex-col items-center justify-between p-[10px] ml-1 ' + (isLast ? 'mr-1' : 'mr-2 md:mr-6')" (click)="onCardClick(trend)">
             <!-- Imagen principal -->
-            <div class="hover:scale-105 relative inline-block w-[300px] h-[246px] overflow-hidden rounded-[8.5px] mx-auto"
-                 [style.backgroundImage]="'url(' + trend.image + ')'"
-                 style="background-size: cover; background-position: center;">
+            <div class="hover:scale-105 relative inline-block w-[300px] h-[246px] overflow-hidden rounded-[8.5px] mx-auto">
+              @if (!imageErrors().has(trend.image)) {
+                <img
+                  [src]="trend.image"
+                  [alt]="trend.altText"
+                  class="w-full h-full object-cover"
+                  (error)="onImageError(trend.image)"
+                >
+              } @else {
+                <div
+                  class="flex items-center justify-center w-full h-full bg-gray-100 rounded-[8.5px]"
+                  role="img"
+                  [attr.aria-label]="trend.altText"
+                >
+                  <img src="assets/images/placeholder-logo.svg" alt="" aria-hidden="true" class="h-12 opacity-40">
+                </div>
+              }
               <!-- Etiqueta (pill) superior izquierda -->
               <div class="absolute top-3 left-3 bg-sky-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
                 Online
@@ -32,7 +66,16 @@
             <div class="flex items-center gap-4 w-full px-4 py-2">
               <!-- Logo de la Marca -->
               <div class="flex items-center justify-center w-20 h-20 border border-gray-300 rounded-full">
-                <img [src]="trend.brandLogo" alt="brand-logo" class="w-[54px] h-[54px] object-contain">
+                @if (!brandLogoErrors().has(trend.brandLogo)) {
+                  <img
+                    [src]="trend.brandLogo"
+                    [alt]="trend.brandLogoAlt"
+                    class="w-[54px] h-[54px] object-contain"
+                    (error)="onBrandLogoError(trend.brandLogo)"
+                  >
+                } @else {
+                  <img src="assets/images/placeholder-logo.svg" [alt]="trend.brandLogoAlt" class="w-[54px] h-[54px] object-contain opacity-40">
+                }
               </div>
 
               <!-- Contenedor de Texto -->
@@ -66,6 +109,8 @@
     >DESCUBRIR MÁS</app-button>
   </div>
 </div>
+
+} <!-- end @else -->
 
 
 

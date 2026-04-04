@@ -73,7 +73,8 @@ export class Button {
       // 'focus:ring-offset-2',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
-      'disabled:transform-none'
+      'disabled:transform-none',
+      'cursor-pointer'
     ];
 
     // Size classes

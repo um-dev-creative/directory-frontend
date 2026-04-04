@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CardsService, CardImage } from './services/cards.service';
 import { Router } from '@angular/router';
 import {environment} from '@env/environment';
+import { SkeletonComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SkeletonComponent],
   templateUrl: './cards.html',
   styleUrls: ['./cards.css']
 })
@@ -18,7 +19,8 @@ export class Cards implements OnInit, OnDestroy {
   @Output() imageError = new EventEmitter<{card: CardImage, index: number}>();
 
   cardsData$ = new BehaviorSubject<CardImage[]>([]);
-  loading$ = new BehaviorSubject<boolean>(false);
+  readonly imageErrors = signal<Set<string>>(new Set());
+  loading$ = this.cardsService.isLoading$;
   error$ = new BehaviorSubject<string | null>(null);
 
   imageBucketUrl = environment.appImgBaseHref || ''; // Ensure apiUrl is set correctly
@@ -90,7 +92,6 @@ export class Cards implements OnInit, OnDestroy {
   }
 
   loadCards(): void {
-    this.loading$.next(true);
     this.error$.next(null);
 
     this.cardsService.getCards()
@@ -98,11 +99,9 @@ export class Cards implements OnInit, OnDestroy {
       .subscribe({
         next: (cards) => {
           this.cardsData$.next(cards);
-          this.loading$.next(false);
         },
         error: (error) => {
           this.error$.next(error.message || 'Unable to load campaigns. Please try again.');
-          this.loading$.next(false);
           console.error('Cards loading error:', error);
         }
       });
@@ -122,11 +121,7 @@ export class Cards implements OnInit, OnDestroy {
 
   onImageError(event: Event, card: CardImage, index: number): void {
     this.imageError.emit({ card, index });
-    // Set fallback image
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'https://placehold.co/389x180/f3f4f6/6b7280/webp?text=Image+Not+Found';
-    }
+    this.imageErrors.update(s => new Set(s).add(card.src));
   }
 
   trackByCardSrc(_index: number, card: CardImage): string {

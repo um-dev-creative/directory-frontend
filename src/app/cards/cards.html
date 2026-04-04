@@ -4,14 +4,22 @@
 
   <!-- Loading State -->
   @if (loading$ | async) {
-    <div class="flex justify-center py-8" role="status" aria-label="Loading campaigns">
-      <div class="flex space-x-4">
-        @for (skeleton of [1,2,3]; track skeleton) {
-          <div class="animate-pulse shrink-0 w-80 lg:w-96 h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 bg-beige-200 rounded-xl"></div>
-        }
+    <app-skeleton variant="custom">
+      <div
+        class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6"
+        role="status"
+        aria-label="Loading campaign cards">
+        <div class="flex gap-4 min-w-max lg:min-w-0 lg:justify-between lg:max-w-full">
+          @for (i of [1, 2, 3]; track i) {
+            <div class="shrink-0 w-80 lg:w-[calc(33.333%-1rem)] lg:max-w-sm rounded-xl overflow-hidden">
+              <div class="skeleton-element skeleton-shimmer
+                          h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-full"></div>
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  }
+    </app-skeleton>
+  } @else {
 
   <!-- Error State -->
   @if (error$ | async; as error) {
@@ -29,6 +37,11 @@
 
   <!-- Cards Grid -->
   @if (cardsData$ | async; as cards) {
+    @if (cards.length === 0) {
+      <div class="text-center py-8">
+        <p>No campaigns available</p>
+      </div>
+    }
     <div
       class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6 smooth-scroll"
       role="group"
@@ -47,14 +60,29 @@
             (keydown.enter)="onCardClick(card, i)"
             (keydown.space)="onCardClick(card, i); $event.preventDefault()">
             <div class="relative h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 overflow-hidden group">
-              <img
-                [src]="imageBucketUrl + card.src"
-                [alt]="card.alt || 'Campaign image'"
-                class="w-full h-full object-cover object-center transition duration-300"
-                loading="lazy"
-                [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
-                (error)="onImageError($event, card, i)"
-              >
+              @if (!imageErrors().has(card.src)) {
+                <img
+                  [src]="imageBucketUrl + card.src"
+                  [alt]="card.alt || 'Campaign image'"
+                  class="w-full h-full object-cover object-center transition duration-300"
+                  loading="lazy"
+                  [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
+                  (error)="onImageError($event, card, i)"
+                >
+              } @else {
+                <div
+                  class="flex items-center justify-center w-full h-full bg-gray-100"
+                  role="img"
+                  [attr.aria-label]="card.alt || 'Campaign image'"
+                >
+                  <img
+                    src="assets/images/placeholder-logo.svg"
+                    alt=""
+                    aria-hidden="true"
+                    class="h-12 opacity-40"
+                  >
+                </div>
+              }
 
               <!-- Overlay -->
               <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300">
@@ -71,16 +99,5 @@
     </div>
   }
 
-  <!-- Empty State -->
-  @if ((cardsData$ | async)?.length === 0 && !(loading$ | async) && !(error$ | async)) {
-    <div class="text-center py-12">
-      <div class="text-6xl mb-4">📸</div>
-      <h3 class="text-lg font-semibold text-beige-800 mb-2">
-        No campaigns available
-      </h3>
-      <p class="text-beige-600">
-        Check back later for new campaigns
-      </p>
-    </div>
-  }
+  } <!-- end @else -->
 </section>

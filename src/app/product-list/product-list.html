@@ -1,15 +1,52 @@
+<!-- Loading state -->
+@if (loading$ | async) {
+  <app-skeleton variant="custom">
+    <div class="w-full py-6">
+      <div class="flex gap-4 justify-center pt-5 pb-8 overflow-hidden">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                      flex-none w-[310px] h-[349px]"></div>
+        }
+      </div>
+      <div class="mt-6 text-center">
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                    md:inline-block hidden w-[160px] h-[48px]"></div>
+        <div class="skeleton-element skeleton-shimmer skeleton-rounded
+                    mx-auto mt-2 w-[420px] h-[16px]"></div>
+      </div>
+    </div>
+  </app-skeleton>
+} @else {
+
 <div class="w-full py-6 bg-white">
   <div class="max-w-screen-xl mx-auto">
     <div class="w-full overflow-x-auto hide-scrollbar">
       <div class="flex whitespace-nowrap gap-4 md:justify-center cursor-pointer pt-5 pb-8 overflow-visible">
-        @for (product of products; track product) {
+        @for (product of products; track product.id) {
           <div
             class="flex-none w-[310px] h-[349px] border rounded-lg shadow-md hover:shadow-emerald-500/50 transition flex items-center justify-center hover:overflow-visible hover:scale-105 duration-300"
           >
-            <img
-              [src]="product.image"
-              [alt]="product.alt"
-              class="w-full h-full object-contain rounded-md my-1">
+            @if (!imageErrors().has(product.id)) {
+              <img
+                [src]="product.image"
+                [alt]="product.alt"
+                class="w-full h-full object-contain rounded-md my-1"
+                (error)="onImageError(product.id)"
+              >
+            } @else {
+              <div
+                class="flex items-center justify-center w-full h-full bg-gray-100 rounded-md"
+                role="img"
+                [attr.aria-label]="product.alt"
+              >
+                <img
+                  src="assets/images/placeholder-logo.svg"
+                  alt=""
+                  aria-hidden="true"
+                  class="h-16 opacity-40"
+                >
+              </div>
+            }
           </div>
         }
       </div>
@@ -27,8 +64,10 @@
         </app-button>
 
       <p class="mt-2 text-sm text-beige-700">
-        * For illustrative purposes only. Products, partners, and offers may vary & subject to change at any time without notice.
+        <sup>*</sup> Solo con fines ilustrativos. Productos, aliados y ofertas pueden variar sin previo aviso.
       </p>
     </div>
   </div>
 </div>
+
+} <!-- end @else -->
