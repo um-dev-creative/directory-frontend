@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ClientTemplate} from '@core/services/client-template';
 import {DFC} from '@shared/constants/app.const';
 import {catchError, Observable, throwError} from 'rxjs';
-import {BusinessCreateRequest} from '@shared/models/business.model';
+import { BusinessCreateRequest, BusinessUpdateRequest, BusinessDetailResponse } from '@shared/models/business.model';
 import {sanitizeError} from '@shared/handler/error.handler';
 
 @Injectable({
@@ -34,6 +34,18 @@ export class BusinessClient extends ClientTemplate {
       catchError((err) => {
         const normalized = sanitizeError(err);
         this.logError('BusinessClient.create error', normalized);
+        return throwError(() => normalized);
+      })
+    );
+  }
+
+  updateBusiness(id: string, data: BusinessUpdateRequest): Observable<BusinessDetailResponse> {
+    const url = `${this.BUSINESS_CONTENT_PATH}/${id}`;
+    return this.httpClient.patch<BusinessDetailResponse>(url, data,
+      { headers: DFC.HttpHeader.STANDARD }).pipe(
+      catchError((err) => {
+        const normalized = sanitizeError(err);
+        this.logError('BusinessClient.updateBusiness error', normalized);
         return throwError(() => normalized);
       })
     );

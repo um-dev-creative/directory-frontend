@@ -379,13 +379,23 @@
       <!-- Formulario Inicio Sesion-->
       <form (submit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
         <div>
-          @if (this.isErrorFound) {
+          @if (loginErrorType === 'credentials') {
             <app-alert
               variant="error"
               size="md"
-              description="Usuario y/o clave incorrecto."
+              description="Usuario y/o clave incorrectos. Por favor verifica tus datos."
               [dismissible]="true"
-              (dismiss)="isErrorFound = false">
+              (dismiss)="loginErrorType = null">
+            </app-alert>
+          }
+          @if (loginErrorType === 'server') {
+            <app-alert
+              variant="warning"
+              size="md"
+              title="Problema temporal"
+              description="Ocurrió un error en el servicio. Tu sesión no fue guardada. Por favor intenta de nuevo en unos momentos."
+              [dismissible]="true"
+              (dismiss)="loginErrorType = null">
             </app-alert>
           }
           <div class="mt-1">

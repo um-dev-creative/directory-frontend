@@ -1,55 +1,68 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subject, takeUntil} from 'rxjs';
-import {OfferSlider} from '@app/offer-slider/offer-slider';
-import {PartnerRegistrationStepper} from '@app/features/partner/components';
-import {PartnerProfile, PartnerProfileService} from './services/partner-profile.service';
-import {LoggerService} from '@app/core/services/logger.service';
+import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { OfferSlider } from '@app/offer-slider/offer-slider';
+import { PartnerRegistrationStepper } from '@app/features/partner/components';
+import { PartnerProfile, PartnerProfileService } from './services/partner-profile.service';
+import { LoggerService } from '@app/core/services/logger.service';
+import { SessionStoreService } from '@app/core/store/session/session-store.service';
 
 // import {Modal} from '@app/modal/modal';
 
 @Component({
   selector: 'app-partner',
+  standalone: true,
   imports: [CommonModule, OfferSlider, PartnerRegistrationStepper],
   templateUrl: './partner.html',
   styleUrl: './partner.css'
 })
 export class Partner implements OnInit, OnDestroy {
-  showModal = false;
-  isRegistration = false;
-  partnerSlug: string | null = null;
-  partnerProfile: PartnerProfile | null = null;
-  isLoading = false;
-  similarPartners: PartnerProfile[] = [];
-  showTermsAndConditions = false;
+  protected readonly showModal = signal(false);
+  protected readonly isRegistration = signal(false);
+  protected readonly partnerSlug = signal<string | null>(null);
+  protected readonly partnerProfile = signal<PartnerProfile | null>(null);
+  protected readonly isLoading = signal(false);
+  protected readonly similarPartners = signal<PartnerProfile[]>([]);
+  protected readonly showTermsAndConditions = signal(false);
+  protected readonly isOwner = signal(false);
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly partnerProfileService = inject(PartnerProfileService);
+  private readonly sessionStore = inject(SessionStoreService);
   private readonly logger = inject(LoggerService);
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private partnerProfileService: PartnerProfileService
-  ) {}
+  private readonly platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
     // Check if this is a registration flow or viewing a partner profile
-    this.route.paramMap.subscribe(params => {
-      this.partnerSlug = params.get('slug');
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.partnerSlug.set(params.get('slug'));
       // If partner slug is provided, show profile, otherwise show registration
-      this.isRegistration = !this.partnerSlug;
+      this.isRegistration.set(!this.partnerSlug());
 
-      if (this.partnerSlug) {
-        this.loadPartnerProfile(this.partnerSlug);
+      if (this.partnerSlug()) {
+        this.loadPartnerProfile(this.partnerSlug()!);
       }
     });
 
     // Also check query params for registration flow
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['register'] === 'true') {
-        this.isRegistration = true;
+        this.isRegistration.set(true);
       }
+    });
+
+    // Subscribe to session to determine ownership
+    this.sessionStore.session$.pipe(takeUntil(this.destroy$)).subscribe(sessionData => {
+      const profile = this.partnerProfile();
+      if (!sessionData || !profile) {
+        this.isOwner.set(false);
+        return;
+      }
+      const businesses = sessionData.userAuth?.businesses ?? [];
+      this.isOwner.set(businesses.includes(String(profile.id)));
     });
   }
 
@@ -58,23 +71,32 @@ export class Partner implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private loadPartnerProfile(partnerSlug: string): void {
-    this.isLoading = true;
+  private loadPartnerProfile(slug: string): void {
+    this.isLoading.set(true);
 
-    this.partnerProfileService.getPartnerBySlug(partnerSlug)
+    this.partnerProfileService.getPartnerBySlug(slug)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (profile) => {
-          this.partnerProfile = profile;
-          this.isLoading = false;
+          this.partnerProfile.set(profile);
+          this.isLoading.set(false);
 
           if (profile) {
             this.loadSimilarPartners(profile.id);
+            // Re-evaluate ownership now that the profile is available
+            this.sessionStore.session$.pipe(takeUntil(this.destroy$)).subscribe(sessionData => {
+              if (!sessionData) {
+                this.isOwner.set(false);
+                return;
+              }
+              const businesses = sessionData.userAuth?.businesses ?? [];
+              this.isOwner.set(businesses.includes(String(profile.id)));
+            });
           }
         },
         error: (error) => {
           this.logger.error('Error loading partner profile:', error);
-          this.isLoading = false;
+          this.isLoading.set(false);
         }
       });
   }
@@ -84,21 +106,25 @@ export class Partner implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (partners) => {
-          this.similarPartners = partners;
+          this.similarPartners.set(partners);
         },
         error: (error) => {
           this.logger.error('Error loading similar partners:', error);
         }
       });
-  }  toggleBookmark(): void {
-    if (!this.partnerProfile) return;
+  }
 
-    this.partnerProfileService.toggleBookmark(this.partnerProfile.id)
+  toggleBookmark(): void {
+    const profile = this.partnerProfile();
+    if (!profile) return;
+
+    this.partnerProfileService.toggleBookmark(profile.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (isBookmarked) => {
-          if (this.partnerProfile) {
-            this.partnerProfile.isBookmarked = isBookmarked;
+          const current = this.partnerProfile();
+          if (current) {
+            this.partnerProfile.set({ ...current, isBookmarked });
           }
         },
         error: (error) => {
@@ -108,12 +134,12 @@ export class Partner implements OnInit, OnDestroy {
   }
 
   editPartner(): void {
-    if (!this.partnerProfile) return;
+    const profile = this.partnerProfile();
+    if (!profile) return;
 
-    // Navigate to partner settings page using the partner slug
-    this.router.navigate(['/partner/settings', 'general'])
+    this.router.navigate(['/partner/edit', profile.id])
       .catch(error => {
-        this.logger.error('Error navigating to partner settings:', error);
+        this.logger.error('Error navigating to partner edit:', error);
       });
   }
 
@@ -122,10 +148,14 @@ export class Partner implements OnInit, OnDestroy {
   }
 
   sharePartner(): void {
-    if (this.partnerProfile && navigator.share) {
+    // SSR: browser-only
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const profile = this.partnerProfile();
+    if (profile && navigator.share) {
       navigator.share({
-        title: this.partnerProfile.name,
-        text: this.partnerProfile.shortDescription,
+        title: profile.name,
+        text: profile.shortDescription,
         url: window.location.href
       }).catch(err => {
         this.logger.debug('Error sharing:', err);
@@ -134,11 +164,15 @@ export class Partner implements OnInit, OnDestroy {
       });
     } else {
       // Fallback: copy to clipboard
-      this.copyToClipboard(window.location.href);
+      // SSR: browser-only
+      if (isPlatformBrowser(this.platformId)) {
+        this.copyToClipboard(window.location.href);
+      }
     }
   }
 
   private copyToClipboard(text: string): void {
+    // SSR: browser-only
     navigator.clipboard.writeText(text).then(() => {
       this.logger.info('Link copied to clipboard');
       // Here you could show a toast notification
@@ -148,20 +182,24 @@ export class Partner implements OnInit, OnDestroy {
   }
 
   redeemOnline(): void {
-    if (this.partnerProfile?.website) {
-      window.open(this.partnerProfile.website, '_blank');
+    // SSR: browser-only
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const profile = this.partnerProfile();
+    if (profile?.website) {
+      window.open(profile.website, '_blank');
     }
   }
 
   openModal(): void {
-    this.showModal = true;
+    this.showModal.set(true);
   }
 
   closeModal(): void {
-    this.showModal = false;
+    this.showModal.set(false);
   }
 
   toggleTermsAndConditions(): void {
-    this.showTermsAndConditions = !this.showTermsAndConditions;
+    this.showTermsAndConditions.set(!this.showTermsAndConditions());
   }
 }

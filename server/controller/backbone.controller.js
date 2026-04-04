@@ -94,11 +94,11 @@ let getBackboneClient = function (relativePath) {
 const sessionToken = async (req) => {
   const alias = req.body.alias;
   let sessionData = {};
-  
+
   // Check if the session already exists in the store
   logger.info(`${LOGGER_TAG_ID} Checking session for alias: ${alias}`);
   let session = await redisSessionStore.getUserSession(redisClient, alias);
-  
+
   if (session && session.backboneSession && session.backboneBearerToken && session.backboneSessionExpiresAt > Date.now()) {
     return {
       backboneSession: session.backboneSession,
@@ -106,17 +106,17 @@ const sessionToken = async (req) => {
       backboneSessionExpiresAt: session.backboneSessionExpiresAt
     };
   }
-  
+
   logger.debug(`${LOGGER_TAG_ID} No valid session found for alias: ${alias}, creating a new one.`);
   const backboneBearerToken = await getOAuthClient(backboneOauthClientConfig).getBearerToken();
   logger.debug(`${LOGGER_TAG_ID} Obtained Backbone Bearer Token for alias: ${alias}`);
-  
+
   sessionData = {
     backboneSession: null,
     backboneBearerToken: backboneBearerToken,
     backboneSessionExpiresAt: Date.now() + 60 * 60 * 1000 // 1 hora
   };
-  
+
   if (req.url === constants.INNER_ACCESS_TOKEN_PATH) {
     logger.debug(`${LOGGER_TAG_ID} Creating Backbone session for alias: ${alias}`);
     const backboneSession = await getBackboneClient(constants.BACKBONE_TOKEN_RELATIVE_PATH).getToken(
@@ -126,16 +126,16 @@ const sessionToken = async (req) => {
       backboneBearerToken
     );
     sessionData.backboneSession = backboneSession.token;
-    
+
     // Update expiration based on token response if available
     if (backboneSession.expires_in) {
       sessionData.backboneSessionExpiresAt = Date.now() + (backboneSession.expires_in * 1000);
     }
-    
+
     // Save the session in the store with expiration
     await redisSessionStore.setUserSession(redisClient, getUserId(backboneSession?.token), alias, sessionData);
   }
-  
+
   logger.info(`${LOGGER_TAG_ID} Backbone session created for alias: ${alias}`);
   return sessionData;
 };
@@ -152,19 +152,19 @@ const sessionToken = async (req) => {
 const renewToken = async (userId) => {
   const lockKey = `lock:renew_token:${userId}`;
   let lockToken = null;
-  
+
   try {
     logger.debug(`${LOGGER_TAG_ID} Renewing Backbone session for user: ${userId}`);
-    
+
     // Try to acquire lock to prevent concurrent renewals
     if (redisClient && redisClient.isOpen) {
       lockToken = await acquireLock(redisClient, lockKey, 5000);
-      
+
       if (!lockToken) {
         // Another process is renewing, wait and return the updated session
         logger.debug(`${LOGGER_TAG_ID} Waiting for token renewal by another process...`);
         await new Promise(resolve => setTimeout(resolve, 200));
-        
+
         const updatedSession = await redisSessionStore.getUserSession(redisClient, userId);
         if (updatedSession && updatedSession.backboneSession) {
           logger.debug(`${LOGGER_TAG_ID} Token renewed by another process`);
@@ -172,34 +172,34 @@ const renewToken = async (userId) => {
         }
       }
     }
-    
+
     // Get current session
     let sessionData = await redisSessionStore.getUserSession(redisClient, userId);
-    
+
     if (!sessionData) {
       throw new Error('Session not found for user');
     }
-    
+
     // Renew the token
     const response = await getBackboneClient(constants.BACKBONE_TOKEN_RENEW_RELATIVE_PATH)
       .getNewToken(sessionData.backboneBearerToken, sessionData.backboneSession);
-    
+
     if (response) {
       logger.debug(`${LOGGER_TAG_ID} Successfully renewed Backbone session for user: ${userId}`);
       sessionData.backboneSession = response.token;
-      
+
       // Update expiration based on response if available
       if (response.expires_in) {
         sessionData.backboneSessionExpiresAt = Date.now() + (response.expires_in * 1000);
       }
-      
+
       await redisSessionStore.setUserSession(redisClient, userId, null, sessionData);
       return response.token;
     }
   } catch (error) {
     if (error.response != null) {
-      logger.error(`${LOGGER_TAG_ID} Error renewing Backbone session: ${error.response.data}`);
-      throw new Error(error.response.data);
+      logger.error(`${LOGGER_TAG_ID} Error renewing Backbone session: ${JSON.stringify(error.response.data)}`);
+      throw new Error(JSON.stringify(error.response.data));
     }
     logger.error(`${LOGGER_TAG_ID} Error renewing Backbone session: ${error.message}`);
     throw error;
@@ -255,7 +255,7 @@ const proxyApi = async (req, res) => {
       }
     } catch (error) {
       if (error.response != null) {
-        logger.error(`${LOGGER_TAG_ID} Error proxying request: ${error.response.data}`);
+        logger.error(`${LOGGER_TAG_ID} Error proxying request: ${JSON.stringify(error.response.data)}`);
         response = error.response.data;
         res.status(error.response.status);
       } else if (error.errors != null) {
