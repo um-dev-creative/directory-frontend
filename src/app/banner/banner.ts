@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -17,6 +17,7 @@ import {environment} from '@env/environment';
 export class Banner implements OnInit, OnDestroy {
   @Input() bannerType?: 'top' | 'mid';
 
+  readonly imageError = signal(false);
   protected readonly bannerData$ = new BehaviorSubject<BannerData | null>(null);
   protected readonly loading$ = new BehaviorSubject<boolean>(false);
   protected readonly error$ = new BehaviorSubject<string | null>(null);
@@ -58,11 +59,8 @@ export class Banner implements OnInit, OnDestroy {
     return this.bannerType === 'top' ? ['/seasonal-offers'] : ['/auth'];
   }
 
-  onImageError(event: Event): void {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'https://placehold.co/1200x400/f3f4f6/6b7280/webp?text=Banner+Not+Available';
-    }
+  onImageError(): void {
+    this.imageError.set(true);
   }
 
   private loadBannerData(): void {

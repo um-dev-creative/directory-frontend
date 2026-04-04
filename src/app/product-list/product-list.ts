@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -23,6 +23,7 @@ interface Product {
 })
 export class ProductList implements OnInit, OnDestroy {
   products: Product[] = [];
+  readonly imageErrors = signal<Set<string>>(new Set());
   readonly loading$ = inject(LandingStoreService).isLoading$;
 
   private readonly landingStore = inject(LandingStoreService);
@@ -39,6 +40,10 @@ export class ProductList implements OnInit, OnDestroy {
         alt: p.altText
       }));
     });
+  }
+
+  onImageError(productId: string): void {
+    this.imageErrors.update(s => new Set(s).add(productId));
   }
 
   ngOnDestroy(): void {

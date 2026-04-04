@@ -50,27 +50,42 @@
       <section class="flex justify-center rounded-[15px]" role="banner" aria-label="Promotional banner">
         <a
           [routerLink]="getRouteForBanner()"
-          class="clickable-pointer block focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+          class="clickable-pointer block w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
           [attr.aria-label]="'Navigate to ' + currentBanner.alt"
           role="link"
         >
-          <picture>
-            <source
-              media="(min-width: 1024px)"
-              [srcset]="imageBucketUrl+currentBanner.desktop"
+          @if (!imageError()) {
+            <picture>
+              <source
+                media="(min-width: 1024px)"
+                [srcset]="imageBucketUrl+currentBanner.desktop"
+              >
+              <source
+                media="(min-width: 768px)"
+                [srcset]="imageBucketUrl+currentBanner.tablet"
+              >
+              <img
+                [src]="imageBucketUrl+currentBanner.mobile"
+                [alt]="currentBanner.alt"
+                class="rounded-lg shadow-md w-full h-auto"
+                loading="lazy"
+                (error)="onImageError()"
+              >
+            </picture>
+          } @else {
+            <div
+              class="flex items-center justify-center w-full h-[150px] md:h-[90px] lg:h-[100px] bg-gray-100 rounded-lg"
+              role="img"
+              [attr.aria-label]="currentBanner.alt"
             >
-            <source
-              media="(min-width: 768px)"
-              [srcset]="imageBucketUrl+currentBanner.tablet"
-            >
-            <img
-              [src]="imageBucketUrl+currentBanner.mobile"
-              [alt]="currentBanner.alt"
-              class="rounded-lg shadow-md w-full h-auto"
-              loading="lazy"
-              (error)="onImageError($event)"
-            >
-          </picture>
+              <img
+                src="assets/images/placeholder-logo.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-10 opacity-40"
+              >
+            </div>
+          }
         </a>
       </section>
     }
@@ -86,23 +101,38 @@
           [attr.aria-label]="'Navigate to ' + currentBanner.alt"
           role="link"
         >
-          <picture>
-            <source
-              media="(min-width: 1024px)"
-              [srcset]="imageBucketUrl+currentBanner.desktop"
+          @if (!imageError()) {
+            <picture>
+              <source
+                media="(min-width: 1024px)"
+                [srcset]="imageBucketUrl+currentBanner.desktop"
+              >
+              <source
+                media="(min-width: 768px)"
+                [srcset]="imageBucketUrl+currentBanner.tablet"
+              >
+              <img
+                [src]="imageBucketUrl+currentBanner.mobile"
+                [alt]="currentBanner.alt"
+                class="w-full rounded-lg shadow-md h-auto"
+                loading="lazy"
+                (error)="onImageError()"
+              >
+            </picture>
+          } @else {
+            <div
+              class="flex items-center justify-center w-full h-full min-h-[80px] bg-gray-100 rounded-lg"
+              role="img"
+              [attr.aria-label]="currentBanner.alt"
             >
-            <source
-              media="(min-width: 768px)"
-              [srcset]="imageBucketUrl+currentBanner.tablet"
-            >
-            <img
-              [src]="imageBucketUrl+currentBanner.mobile"
-              [alt]="currentBanner.alt"
-              class="w-full rounded-lg shadow-md h-auto"
-              loading="lazy"
-              (error)="onImageError($event)"
-            >
-          </picture>
+              <img
+                src="assets/images/placeholder-logo.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-8 opacity-40"
+              >
+            </div>
+          }
         </a>
       </section>
     }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -29,6 +29,8 @@ export class TrendCarousel implements OnInit, OnDestroy {
 
   trends: Trend[] = [];
   readonly loading$ = inject(LandingStoreService).isLoading$;
+  readonly imageErrors = signal<Set<string>>(new Set());
+  readonly brandLogoErrors = signal<Set<string>>(new Set());
 
   private scrollInterval: any;
   private readonly scrollSpeed = 200;
@@ -81,13 +83,11 @@ export class TrendCarousel implements OnInit, OnDestroy {
     }
   }
 
-  readonly fallbackImage = 'assets/images/placeholder.svg';
-
-  onImageError(trend: Trend): void {
-    trend.image = this.fallbackImage;
+  onImageError(imageUrl: string): void {
+    this.imageErrors.update(s => new Set(s).add(imageUrl));
   }
 
-  onBrandLogoError(event: Event): void {
-    (event.target as HTMLImageElement).src = 'assets/images/placeholder-logo.svg';
+  onBrandLogoError(logoUrl: string): void {
+    this.brandLogoErrors.update(s => new Set(s).add(logoUrl));
   }
 }

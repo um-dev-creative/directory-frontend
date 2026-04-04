@@ -1,9 +1,29 @@
 <div class="relative w-full max-w-[1200px] mx-auto mt-2 pb-12">
   <!-- Sección de Promociones -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-    @for (promoItem of promo?.promotions; track promoItem) {
-      <a [href]="promoItem.url" target="_blank" class="block rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full mx-auto">
-        <img [src]="imageBucketUrl+promoItem.image" [alt]="promoItem.title" class="w-full max-w-[589px] rounded-lg shadow-md transition hover:scale-105">
+    @for (promoItem of promo?.promotions; track promoItem.image) {
+      <a [href]="promoItem.url" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full mx-auto">
+        @if (!imageErrors().has(promoItem.image)) {
+          <img
+            [src]="imageBucketUrl+promoItem.image"
+            [alt]="promoItem.title"
+            class="w-full max-w-[589px] rounded-lg shadow-md transition hover:scale-105"
+            (error)="onImageError(promoItem.image)"
+          >
+        } @else {
+          <div
+            class="flex items-center justify-center w-full max-w-[589px] h-[200px] bg-gray-100 rounded-lg"
+            role="img"
+            [attr.aria-label]="promoItem.title"
+          >
+            <img
+              src="assets/images/placeholder-logo.svg"
+              alt=""
+              aria-hidden="true"
+              class="h-10 opacity-40"
+            >
+          </div>
+        }
       </a>
     }
   </div>

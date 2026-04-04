@@ -60,14 +60,29 @@
             (keydown.enter)="onCardClick(card, i)"
             (keydown.space)="onCardClick(card, i); $event.preventDefault()">
             <div class="relative h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48 overflow-hidden group">
-              <img
-                [src]="imageBucketUrl + card.src"
-                [alt]="card.alt || 'Campaign image'"
-                class="w-full h-full object-cover object-center transition duration-300"
-                loading="lazy"
-                [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
-                (error)="onImageError($event, card, i)"
-              >
+              @if (!imageErrors().has(card.src)) {
+                <img
+                  [src]="imageBucketUrl + card.src"
+                  [alt]="card.alt || 'Campaign image'"
+                  class="w-full h-full object-cover object-center transition duration-300"
+                  loading="lazy"
+                  [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
+                  (error)="onImageError($event, card, i)"
+                >
+              } @else {
+                <div
+                  class="flex items-center justify-center w-full h-full bg-gray-100"
+                  role="img"
+                  [attr.aria-label]="card.alt || 'Campaign image'"
+                >
+                  <img
+                    src="assets/images/placeholder-logo.svg"
+                    alt=""
+                    aria-hidden="true"
+                    class="h-12 opacity-40"
+                  >
+                </div>
+              }
 
               <!-- Overlay -->
               <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300">

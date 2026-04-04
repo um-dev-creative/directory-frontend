@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class Cards implements OnInit, OnDestroy {
   @Output() imageError = new EventEmitter<{card: CardImage, index: number}>();
 
   cardsData$ = new BehaviorSubject<CardImage[]>([]);
+  readonly imageErrors = signal<Set<string>>(new Set());
   loading$ = this.cardsService.isLoading$;
   error$ = new BehaviorSubject<string | null>(null);
 
@@ -120,10 +121,7 @@ export class Cards implements OnInit, OnDestroy {
 
   onImageError(event: Event, card: CardImage, index: number): void {
     this.imageError.emit({ card, index });
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-card.svg';
-    }
+    this.imageErrors.update(s => new Set(s).add(card.src));
   }
 
   trackByCardSrc(_index: number, card: CardImage): string {
