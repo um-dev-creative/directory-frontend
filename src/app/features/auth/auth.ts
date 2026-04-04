@@ -641,7 +641,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private saveSession(data: { userDetail: any, userDetailResponse: any }): UserAuth {
-    const avatar = data?.userDetail?.data?.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.userDetail.data.profileImageRef}` : '';
+    const avatar = data?.userDetail?.data?.profileImageRef ? data.userDetail.data.profileImageRef : '';
     const decodedTokenBackbone = this.backboneJwtPipe.transform(data.userDetailResponse.sessionTokenBkd);
     const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(data.userDetailResponse.body.token);
     if (!decodedTokenBackbone || !decodedTokenBackbone?.uid || !decodedTokenDirectory) {
