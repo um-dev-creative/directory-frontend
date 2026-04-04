@@ -18,7 +18,7 @@ export class LandingService {
     : '/api/landing';
 
   private readonly landing$ = this.http.get<LandingResponse>(this.endpoint).pipe(
-    environment.useMocks ? delay(9000) : delay(0),
+    environment.useMocks ? delay(5000) : delay(0),
     shareReplay(1),
     catchError((error) => {
       this.logger.error('Error al cargar los datos de la landing page', error);
