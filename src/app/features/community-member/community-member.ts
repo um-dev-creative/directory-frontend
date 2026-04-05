@@ -468,7 +468,7 @@ export class CommunityMember implements OnInit, OnDestroy {
    */
   setProfileData(data: any): void {
     // Default avatar if not provided
-    const avatar = data.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.profileImageRef}` : this.profileData.avatar;
+    const avatar = data.profileImageRef ? data.profileImageRef : this.profileData.avatar;
     this.profileData.firstName = data.firstName;
     this.profileData.lastName = data.lastName;
     this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;

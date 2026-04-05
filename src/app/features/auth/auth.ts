@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Spinner} from '@app/shared/components/spinner/spinner';
-import {Store} from '@ngrx/store';
+//import {Store} from '@ngrx/store';
 import {concatMap, Observable, of, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {parsePhoneNumberFromString} from 'libphonenumber-js';
@@ -12,7 +12,6 @@ import {LoadingService} from '@app/core/services/loading.service';
 import {NotificationService} from '@app/core/services/notification.service';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 // App Store
-import {loadSession} from '@app/core/store/session/session.action';
 import {SessionData, UserAuth} from '@app/core/store/session/session.state';
 import {SessionStoreService} from '@app/core/store/session/session-store.service';
 // App Components & Services
@@ -83,7 +82,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Partner services for session data management
    * @type {Store<{ session: SessionData }>}
    */
-  private readonly store: Store<{ session: SessionData }> = inject(Store);
+  // private readonly store: Store<{ session: SessionData }> = inject(Store);
 
   /**
    * Header services for changing the header type
@@ -131,10 +130,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   protected sessionData: SessionData | undefined;
 
   /**
-   * Flag to indicate if an error was found
-   * @type {boolean}
+   * Tipo de error en el login: null = sin error, 'credentials' = credenciales inválidas,
+   * 'server' = error del servidor (no culpa del usuario).
    */
-  protected isErrorFound: boolean = false;
+  protected loginErrorType: 'credentials' | 'server' | null = null;
 
   /**
    * Flag to indicate if the user is registering
@@ -275,7 +274,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    * Lifecycle hook that is called after the component's view has been fully initialized.
    */
   ngAfterViewInit(): void {
-    this.store.dispatch(loadSession());
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
     this.changeDetectorRefs.detectChanges();
   }
 
@@ -532,8 +531,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
    */
   private authenticateUser(email: string, password: string): void {
     this.loader.show('auth'); // Usando una key específica para auth
+    let tokenObtained = false;
     this.authClient.getToken(email, password).pipe(takeUntil(this.subject$), concatMap((response: any) => {
         this.logger.debug('Authentication response:', response);
+        tokenObtained = true; // getToken exitoso — cualquier error a partir de aquí es del servidor
 
         const decodedTokenBackbone = this.backboneJwtPipe.transform(response.sessionTokenBkd);
         let resull: any;
@@ -558,13 +559,10 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
           this.loader.hide('auth');
       },
       error: (error: any) => {
-        this.isErrorFound = true;
-        if (error.status === DFC.HttpStatus.HTTP_STATUS_UNAUTHORIZED.code ||
-          error.status === DFC.HttpStatus.HTTP_STATUS_CONFLICT.code) {
-          this.notificationService.error('Invalid credentials. Please check your email and password.');
-        } else {
-          this.notificationService.error('Login failed. Please try again later.');
-        }
+        this.sessionStoreService.clearSessionData();
+        // Si getToken no completó, el error es de credenciales (sin importar el status code).
+        // Si getToken ya completó, el error viene de findUserById — culpa del servidor.
+        this.loginErrorType = tokenObtained ? 'server' : 'credentials';
         this.logger.error('Error authenticating user:', error);
         this.loader.hide('auth');
       }
@@ -643,7 +641,7 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private saveSession(data: { userDetail: any, userDetailResponse: any }): UserAuth {
-    const avatar = data?.userDetail?.data?.profileImageRef ? `https://prx-qa.tst/latinhub/media/${data.userDetail.data.profileImageRef}` : '';
+    const avatar = data?.userDetail?.data?.profileImageRef ? data.userDetail.data.profileImageRef : '';
     const decodedTokenBackbone = this.backboneJwtPipe.transform(data.userDetailResponse.sessionTokenBkd);
     const decodedTokenDirectory = this.directoryBackendJwtPipe.transform(data.userDetailResponse.body.token);
     if (!decodedTokenBackbone || !decodedTokenBackbone?.uid || !decodedTokenDirectory) {

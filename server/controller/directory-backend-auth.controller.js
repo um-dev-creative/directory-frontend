@@ -49,6 +49,11 @@ const proxyApi = async (req, res) => {
   const apiURL = getApiEndpoint(req.url, directoryAuthProxyConfig, oauthCommonFunction.API_SERVICE_DIRECTORY_MAP);
   logger.debug(`${LOGGER_TAG_ID} API URL: ${apiURL}`);
   const validationSchema = schemesList.includes(new URL(apiURL).protocol) && domainsList.includes(new URL(apiURL).hostname);
+
+
+  // TODO - Incluir validacion de negocio
+
+
   let sessionData = {
     directorySession: null,
     directoryBearerToken: null,

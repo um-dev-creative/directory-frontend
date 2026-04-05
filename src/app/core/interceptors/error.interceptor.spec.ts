@@ -50,7 +50,9 @@ describe('ErrorInterceptor', () => {
     });
   });
 
-  it('should handle 401 error and redirect for non-auth requests', (done) => {
+  it('should log the error but NOT redirect on 401 (AuthInterceptor owns that)', (done) => {
+    // ErrorInterceptor delegates 401 navigation to AuthInterceptor to avoid
+    // double-redirects and inconsistent state.
     const errorResponse = new HttpErrorResponse({
       status: 401,
       statusText: 'Unauthorized',
@@ -60,8 +62,8 @@ describe('ErrorInterceptor', () => {
 
     const req = new HttpRequest('GET', '/api/profile');
     interceptor.intercept(req, mockHandler).subscribe({
-      error: (err) => {
-        expect(mockRouter.navigate).toHaveBeenCalled();
+      error: () => {
+        expect(mockRouter.navigate).not.toHaveBeenCalled();
         expect(mockLogger.error).toHaveBeenCalled();
         done();
       }

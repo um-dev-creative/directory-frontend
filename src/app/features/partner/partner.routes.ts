@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, authGuardChild } from '@app/core/guards/auth.guard';
+import { businessOwnerGuard } from '@app/core/guards/business-owner.guard';
 
 export const partnerRoutes: Routes = [
   {
@@ -41,6 +42,12 @@ export const partnerRoutes: Routes = [
     path: 'settings/products',
     loadComponent: () => import('./components/settings/products').then(m => m.PartnerProductsSettingsComponent),
     canActivate: [authGuard],
+    data: { hideFooter: true }
+  },
+  {
+    path: 'edit/:id',
+    loadComponent: () => import('./components/settings/general').then(m => m.PartnerGeneralSettings),
+    canActivate: [authGuard, businessOwnerGuard],
     data: { hideFooter: true }
   },
   {

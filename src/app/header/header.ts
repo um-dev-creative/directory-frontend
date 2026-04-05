@@ -15,7 +15,6 @@ import {Router, RouterModule} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
-import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import {DFC} from '@app/shared/constants/app.const';
@@ -44,10 +43,9 @@ import { HeaderMenu } from '@app/header/menu/header-menu';
     Avatar,
     HeaderMenu
   ],
-  templateUrl: './header.html',
-  styleUrls: ['./header.css'], // Ensure the correct plural naming
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [BackboneJwtPipe]
+   templateUrl: './header.html',
+   styleUrls: ['./header.css'], // Ensure the correct plural naming
+   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Header implements OnInit, OnDestroy, AfterViewInit {
   headerType$: Observable<HeaderType>;
@@ -66,17 +64,14 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   private scrollListener!: () => void;
   private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
-  private readonly store: Store<{ session: SessionState }> = inject(Store);
-  private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
-  protected sessionData: SessionData | undefined;
+   private readonly store: Store<{ session: SessionState }> = inject(Store);
+   protected sessionData: SessionData | undefined;
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
   private readonly authClient: AuthClient = inject(AuthClient);
-  private readonly logger = inject(LoggerService);
+   private readonly logger = inject(LoggerService);
 
-  private businessAssigned: any = []; // Indica si el usuario tiene un negocio asignado
-
-  isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
+   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
   userLogger = {
     alias: '@',
     fullName: '',
@@ -97,7 +92,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.sessionStoreService.loadSessionData();
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
 
     if (isPlatformBrowser(this.platformId)) {
       this.scrollListener = this.renderer.listen('window', 'scroll', () => {
@@ -110,7 +105,7 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       });
     }
     // Configura el evento scroll
-    this.store.select('session').subscribe(sessionState => {
+    this.store.select('session').pipe(takeUntil(this.destroy$)).subscribe(sessionState => {
       this.sessionData = sessionState.sessionData;
       if (this.sessionData?.userAuth) {
         this.userLogger.alias = this.sessionData.userAuth.alias;
@@ -118,8 +113,9 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
         this.userLogger.avatarUrl = this.sessionData.userAuth?.avatarUrl || '';
         this.userLogger.initials = this.sessionData.userAuth?.initials || '';
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-        this.businessAssigned = this.backboneJwtPipe.transform(this.sessionData?.userAuth.sessionTokenBkd ?? "")?.roles||[];
         this.logger.debug('Getting sessionData on the header', this.sessionData);
+        // Trigger change detection when sessionData is updated (e.g., after business creation)
+        this.changeDetectorRefs.markForCheck();
       }
     });
     this.setupBreakpointObserver();
@@ -199,46 +195,13 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Checks if the user has business role assigned.
-   * Handles multiple role format shapes:
-   * - Array<string> containing business role ID
-   * - JSON string representation of array
-   * - Comma-separated string
-   * - Single string
-   * @returns {boolean} true if user has business role
+   * Checks if the user has one or more businesses assigned.
+   * @returns {boolean} true if userAuth.businesses array has at least one element
    */
   get hasBusiness(): boolean {
-    const BUSINESS_ROLE_ID = '9a232260-a2e3-4990-b062-b6966efb25f8';
-    const roles = this.businessAssigned;
-
-    // Handle null/undefined
-    if (!roles) {
-      return false;
-    }
-
-    // Handle array
-    if (Array.isArray(roles)) {
-      return roles.includes(BUSINESS_ROLE_ID);
-    }
-
-    // Handle string
-    if (typeof roles === 'string') {
-      // Try to parse as JSON array
-      try {
-        const parsed = JSON.parse(roles);
-        if (Array.isArray(parsed)) {
-          return parsed.includes(BUSINESS_ROLE_ID);
-        }
-      } catch {
-        // Not valid JSON, continue with string parsing
-      }
-
-      // Handle comma-separated or single string
-      const normalized = roles.replaceAll(/\s/g, '');
-      const items = normalized.includes(',') ? normalized.split(',') : [normalized];
-      return items.includes(BUSINESS_ROLE_ID);
-    }
-
-    return false;
+    return this.sessionData?.userAuth?.businesses != undefined
+      && this.sessionData?.userAuth?.businesses
+      && Array.isArray(this.sessionData.userAuth.businesses)
+      && this.sessionData.userAuth.businesses.length > 0;
   }
 }

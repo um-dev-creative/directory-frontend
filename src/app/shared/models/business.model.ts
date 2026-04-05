@@ -29,3 +29,13 @@ export interface BusinessDetailResponse {
   createdDate: string,
   updatedDate: string
 }
+
+export interface BusinessUpdateRequest {
+  name?: string;
+  description?: string;
+  categoryId?: string;
+  email?: string | null;
+  customerServiceEmail?: string | null;
+  orderManagementEmail?: string | null;
+  website?: string;
+}

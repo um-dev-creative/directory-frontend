@@ -5,5 +5,5 @@ export const environment = {
   appName: 'Directory Frontend',
   version: '0.0.1',
   appImgBaseHref: 'https://cdn.latinhub.info/',
-  useMocks: false
+  useMocks: true
 };

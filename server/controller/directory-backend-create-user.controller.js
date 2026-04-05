@@ -63,7 +63,7 @@ const proxyApi = async (req, res) => {
       }
     } catch (error) {
       if (error.response != null) {
-        logger.error(`${LOGGER_TAG_ID} Error response from backend: ${error.response.status} - ${error.response.data}`);
+        logger.error(`${LOGGER_TAG_ID} Error response from backend: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
         response = error.response.data;
         res.status(error.response.status);
       } else if (error.errors != null) {
@@ -93,10 +93,14 @@ const getRequestHeader = function (req, authBearerToken, defaultAccept, defaultC
   let headers = commonFunction.getStandardHeader(req, authBearerToken, defaultAccept);
   const contentType = req.header(constants.CONTENT_TYPE);
   logger.info(`${LOGGER_TAG_ID} Content-Type: ${contentType}`);
-  if (req.url === constants.INNER_ACCESS_TOKEN_PATH ||
-    req.url === constants.INNER_CREATE_USER_PATH &&
-    req.method === constants.POST_METHOD) {
-    req.body[constants.PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
+  if ((req.url === constants.INNER_CREATE_USER_PATH && req.method === constants.POST_METHOD) ||
+    req.url === constants.INNER_ACCESS_TOKEN_PATH) {
+    if (req.body && req.body[constants.PASSWORD_ATTRIBUTE]) {
+      logger.debug(`${LOGGER_TAG_ID} Encrypting password for ${req.url}`);
+      req.body[constants.PASSWORD_ATTRIBUTE] = CryptoJS.AES.encrypt(req.body.password, cKey, {iv: iv}).toString();
+    } else {
+      logger.warn(`${LOGGER_TAG_ID} Password not found in request body for ${req.url}`);
+    }
   }
   if (contentType !== null && contentType === constants.CONTENT_TYPE_APPLICATION_JSON) {
     logger.debug(`${LOGGER_TAG_ID} Setting Content-Type to application/json`);

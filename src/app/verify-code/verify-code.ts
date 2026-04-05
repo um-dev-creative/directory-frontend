@@ -5,7 +5,6 @@ import {Store} from '@ngrx/store';
 import {LoadingService} from '@app/core/services/loading.service';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {NotificationService} from '@app/core/services/notification.service';
-import {loadSession} from '@app/core/store/session/session.action';
 import {HeaderType} from '@shared/constants/header-type';
 import {HeaderService} from '@app/header/header.service';
 import {VerifyCodeClient} from '@app/verify-code/verify-code-client.service';
@@ -117,7 +116,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.store.dispatch(loadSession());
+    // Removed: APP_INITIALIZER is the single source of truth for session loading
     this.changeDetectorRefs.detectChanges();
   }
 
@@ -127,7 +126,7 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
   }
 
   confirmVerificationCode(): void {
-    
+
     let sessionTokenBkd = null;
     let uuid = null;
 

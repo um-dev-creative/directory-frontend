@@ -10,6 +10,15 @@ import {HeaderService} from '@app/header/header.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {DFC} from '@shared/constants/app.const';
 
+/**
+ * AuthInterceptor — responsabilidad: adjuntar tokens de autenticación a las
+ * peticiones HTTP salientes y manejar la respuesta 401 (limpiar sesión,
+ * resetear header y redirigir a /auth).
+ *
+ * Es el único interceptor que navega a /auth y limpia la sesión; el
+ * ErrorInterceptor delega esa responsabilidad aquí para evitar doble
+ * navegación y estados inconsistentes.
+ */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
@@ -60,9 +69,30 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(outReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.sessionStoreService.clearSessionData();
-          this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
-          this.router.navigate([DFC.RelativePath.AUTH_PATH]);
+          const tokenPreview = this.sessionData?.userAuth?.sessionToken
+            ? `...${this.sessionData.userAuth.sessionToken.slice(-8)}`
+            : 'none';
+          console.warn(
+            `[AuthInterceptor] 401 caught | ts=${new Date().toISOString()} | url=${req.url} | tokenPreview=${tokenPreview}`
+          );
+
+          // No limpiar sesión ni redirigir si el 401 viene de un endpoint
+          // de autenticación (login, token, verify-code). Un 401 en estos
+          // endpoints significa credenciales inválidas, no sesión expirada.
+          const isAuthEndpoint =
+            req.url.includes('/auth/') ||
+            req.url.includes('/login');
+
+          // Solo limpiar sesión y redirigir si:
+          //  1. NO es un endpoint de auth (el componente de login maneja su propio error)
+          //  2. El usuario tenía una sesión activa (evita limpiar estado vacío)
+          const wasAuthenticated = !!this.sessionData?.userAuth?.sessionToken;
+
+          if (!isAuthEndpoint && wasAuthenticated) {
+            this.sessionStoreService.clearSessionData();
+            this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
+            this.router.navigate([DFC.RelativePath.AUTH_PATH]);
+          }
         }
         return throwError(() => error);
       })

@@ -269,8 +269,8 @@ export class PartnerRegistrationStepper implements OnDestroy {
           this.partnerService.setCurrentPartner(partner);
           this.isLoading = false;
 
-          // Redirect to partner profile using slug
-          this.router.navigate(['/partner', partner.slug]);
+          // Redirect to partner profile using ID (DB has no slug column)
+          this.router.navigate(['/partner', String(partner.id)]);
         },
         error: (error: any) => {
           this.logger.error('Error completing registration:', error);
