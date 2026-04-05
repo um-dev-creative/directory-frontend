@@ -5,6 +5,12 @@ tools:
   - codebase
   - editFiles
   - runCommands
+skills:
+  - ../../skills/code-analysis/bff-patterns.md
+  - ../../skills/code-generation/bff-controller.md
+  - ../../skills/code-generation/bff-route.md
+  - ../../skills/security/security-audit.md
+  - ../../skills/testing/bff-unit-tests.md
 ---
 
 You are the **BFF Developer Agent** for the Directory Frontend project. You work exclusively within `server/` — the Express.js Backend-for-Frontend layer.

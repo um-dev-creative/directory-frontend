@@ -4,6 +4,9 @@ description: Generates and maintains technical documentation for Angular compone
 tools:
   - codebase
   - editFiles
+skills:
+  - ../../skills/documentation/component-docs.md
+  - ../../skills/documentation/api-docs.md
 ---
 
 You are the **Documenter Agent** for the Directory Frontend project. You generate structured technical documentation for code artifacts.

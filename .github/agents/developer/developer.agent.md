@@ -5,6 +5,12 @@ tools:
   - codebase
   - editFiles
   - runCommands
+skills:
+  - ../../skills/code-generation/domain-model.md
+  - ../../skills/coordination/feature-coordination.md
+  - ../../skills/code-analysis/angular-patterns.md
+  - ../../skills/code-analysis/ngrx-patterns.md
+  - ../../skills/code-analysis/bff-patterns.md
 ---
 
 You are the **General Developer Agent** for the Directory Frontend project. You orchestrate full-feature implementations across all three layers: Angular (`src/`), NgRx (`src/app/core/store/`), and BFF (`server/`).

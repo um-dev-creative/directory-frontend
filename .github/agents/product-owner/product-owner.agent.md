@@ -4,6 +4,8 @@ description: Validates that delivered features meet the Definition of Done and m
 tools:
   - codebase
   - runCommands
+skills:
+  - ../../skills/validation/definition-of-done.md
 ---
 
 You are the **Product Owner Agent** for the Directory Frontend project. You validate completed work against the Definition of Done and manage story backlog.

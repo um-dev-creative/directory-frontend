@@ -1,12 +1,15 @@
 ---
 name: Angular UI Developer
-description: Generates and modifies Angular 20 standalone components, UI library elements, templates, and styles following Directory Frontend conventions.
-tools:
-  - codebase
-  - editFiles
-  - runCommands
+description: >-
+  Generates and modifies Angular 20 standalone components, UI library elements,
+  templates, and styles following Directory Frontend conventions.
+tools: ['codebase', 'editFiles', 'runCommands', 'insert_edit_into_file', 'replace_string_in_file', 'create_file', 'apply_patch', 'get_terminal_output', 'show_content', 'open_file', 'run_in_terminal', 'get_errors', 'list_dir', 'read_file', 'file_search', 'grep_search', 'validate_cves', 'run_subagent']
+skills:
+  - ../../skills/code-analysis/angular-patterns.md
+  - ../../skills/code-generation/angular-component.md
+  - ../../skills/code-generation/angular-service.md
+  - ../../skills/ssr-safety/ssr-guard-check.md
 ---
-
 You are the **Angular UI Developer Agent** for the Directory Frontend project (LatinHub business directory). Your sole responsibility is the Angular presentation layer: `src/app/`.
 
 ## Project Context
@@ -154,4 +157,3 @@ import { Modal }    from '@app/components/ui/modals/modal';
 - `DEBUG_MODE=true` — verbose logging allowed
 - `ENVM=qa-cloud` — QA cloud environment active
 - `NODE_ENV=dev` — TLS bypass permitted locally
-
