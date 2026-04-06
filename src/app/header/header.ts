@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -12,7 +11,7 @@ import {
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {isPlatformBrowser, NgClass} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {TranslateModule} from '@ngx-translate/core';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
@@ -26,7 +25,8 @@ import { Button } from '@app/components/ui/buttons/button';
 import { Avatar } from '@app/components/ui/avatars/avatar';
 import {AuthClient} from '@app/features/auth/auth.client';
 import {LoggerService} from '@app/core/services/logger.service';
-import { HeaderMenu } from '@app/header/menu/header-menu';
+import {HeaderMenu, UserLogger} from '@app/header/menu/header-menu';
+import {getInitials} from '@shared/utils/get-initials.helper';
 
 
 /**
@@ -34,6 +34,7 @@ import { HeaderMenu } from '@app/header/menu/header-menu';
  */
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [
     NgClass,
     RouterModule,
@@ -43,14 +44,13 @@ import { HeaderMenu } from '@app/header/menu/header-menu';
     Avatar,
     HeaderMenu
   ],
-   templateUrl: './header.html',
-   styleUrls: ['./header.css'], // Ensure the correct plural naming
+    templateUrl: './header.html',
+    styleUrls: ['./header.css'],
    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Header implements OnInit, OnDestroy, AfterViewInit {
-  headerType$: Observable<HeaderType>;
+  export class Header implements OnInit, OnDestroy {
   headerType: HeaderType | undefined;
-  isOpaque = false; // Controla si el header es opaco
+    isOpaque = false;
   offset = 50;
   isMobile = false;
 
@@ -58,41 +58,39 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
    * Change detector reference
    * @private
    */
-  protected changeDetectorRefs = inject(ChangeDetectorRef);
+  protected readonly changeDetectorRefs = inject(ChangeDetectorRef);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly router: Router = inject(Router);
   private readonly destroy$ = new Subject<void>();
   private scrollListener!: () => void;
-  private readonly sessionStoreService: SessionStoreService = inject(SessionStoreService);
-   private readonly store: Store<{ session: SessionState }> = inject(Store);
-   protected sessionData: SessionData | undefined;
+  private readonly sessionStoreService = inject(SessionStoreService);
+  private readonly store = inject(Store<{ session: SessionState }>);
+  protected sessionData: SessionData | undefined;
   protected readonly DFC = DFC;
   protected readonly HeaderType = HeaderType;
-  private readonly authClient: AuthClient = inject(AuthClient);
-   private readonly logger = inject(LoggerService);
+  private readonly authClient = inject(AuthClient);
+  private readonly logger = inject(LoggerService);
+  private readonly headerService = inject(HeaderService);
+  private readonly renderer = inject(Renderer2);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
-   isMenuOpen = false;  // Estado para controlar la apertura/cierre del menú móvil
-  userLogger = {
+  isMenuOpen = false;
+  protected userLogger: UserLogger = {
     alias: '@',
     fullName: '',
+    displayName: '',
     avatarUrl: '',
-    initials: ''
-  }
+    initials: '',
+    firstName: '',
+    lastName: '',
+    avatarVersion: ''
+  };
 
-  constructor(
-    private readonly headerService: HeaderService,
-    private readonly renderer: Renderer2,
-    private readonly breakpointObserver: BreakpointObserver
-  ) {
-    this.headerType$ = this.headerService.headerType$;
-    this.headerType$.subscribe(headerType => {
+  ngOnInit(): void {
+    this.headerService.headerType$.pipe(takeUntil(this.destroy$)).subscribe(headerType => {
       this.headerType = headerType;
       this.changeDetectorRefs.markForCheck();
     });
-  }
-
-  ngOnInit(): void {
-    // Removed: APP_INITIALIZER is the single source of truth for session loading
 
     if (isPlatformBrowser(this.platformId)) {
       this.scrollListener = this.renderer.listen('window', 'scroll', () => {
@@ -105,16 +103,12 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       });
     }
     // Configura el evento scroll
-    this.store.select('session').pipe(takeUntil(this.destroy$)).subscribe(sessionState => {
+    this.store.select(state => state.session).pipe(takeUntil(this.destroy$)).subscribe(sessionState => {
       this.sessionData = sessionState.sessionData;
       if (this.sessionData?.userAuth) {
-        this.userLogger.alias = this.sessionData.userAuth.alias;
-        this.userLogger.fullName = this.sessionData.userAuth.fullName;
-        this.userLogger.avatarUrl = this.sessionData.userAuth?.avatarUrl || '';
-        this.userLogger.initials = this.sessionData.userAuth?.initials || '';
+        this.userLogger = this.buildUserLogger(this.sessionData);
         this.sessionData.userAuth.sessionToken ? this.headerService.setHeaderType(HeaderType.USER_AUTH_HEADER) : this.headerService.setHeaderType(HeaderType.GENERAL_HEADER);
         this.logger.debug('Getting sessionData on the header', this.sessionData);
-        // Trigger change detection when sessionData is updated (e.g., after business creation)
         this.changeDetectorRefs.markForCheck();
       }
     });
@@ -150,9 +144,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /**
-   * Alternar visibilidad del menú móvil
-   */
   openMenu() {
     this.logger.debug('User clicked the menu');
     this.isMenuOpen = !this.isMenuOpen;
@@ -184,11 +175,6 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       : 'justify-between gap-2 sm:gap-4 md:gap-8 px-4 py-3';
   }
 
-  ngAfterViewInit(): void {
-    this.logger.debug('Header component initialized', {token: this.sessionData?.token});
-    this.changeDetectorRefs.detectChanges();
-  }
-
   validateHeader(headerType: HeaderType): boolean {
     this.logger.debug('Validating header type', {current: this.headerType, expected: headerType});
     return (this.headerType as HeaderType) === headerType;
@@ -203,5 +189,60 @@ export class Header implements OnInit, OnDestroy, AfterViewInit {
       && this.sessionData?.userAuth?.businesses
       && Array.isArray(this.sessionData.userAuth.businesses)
       && this.sessionData.userAuth.businesses.length > 0;
+  }
+
+  private buildUserLogger(sessionData: SessionData): UserLogger {
+    const userAuth = sessionData.userAuth;
+    const fullName = this.resolveFullName(userAuth);
+    const displayName = this.resolveDisplayName(userAuth, fullName);
+    const avatarUrl = this.resolveAvatarUrl(userAuth.avatarUrl ?? '');
+    const initials = userAuth.initials || getInitials(userAuth.firstName ?? '', userAuth.lastName ?? '') || this.resolveInitialsFromName(displayName);
+
+    return {
+      alias: userAuth.alias || '@',
+      fullName,
+      displayName,
+      avatarUrl,
+      initials,
+      firstName: userAuth.firstName ?? '',
+      lastName: userAuth.lastName ?? '',
+      avatarVersion: userAuth.avatarVersion ?? ''
+    };
+  }
+
+  private resolveFullName(userAuth: SessionData['userAuth']): string {
+    if (userAuth.fullName?.trim()) {
+      return userAuth.fullName.trim();
+    }
+
+    const composedName = `${userAuth.firstName ?? ''} ${userAuth.lastName ?? ''}`.trim();
+    return composedName || userAuth.displayName?.trim() || '';
+  }
+
+  private resolveDisplayName(userAuth: SessionData['userAuth'], fallbackName: string): string {
+    return userAuth.displayName?.trim() || fallbackName;
+  }
+
+  private resolveAvatarUrl(avatarUrl: string): string {
+    if (!avatarUrl) {
+      return '';
+    }
+
+    if (avatarUrl.includes('v=')) {
+      return avatarUrl;
+    }
+
+    const version = this.sessionData?.userAuth?.avatarVersion;
+    if (!version) {
+      return avatarUrl;
+    }
+
+    const separator = avatarUrl.includes('?') ? '&' : '?';
+    return `${avatarUrl}${separator}v=${encodeURIComponent(version)}`;
+  }
+
+  private resolveInitialsFromName(displayName: string): string {
+    const [first = '', second = ''] = displayName.trim().split(/\s+/);
+    return getInitials(first, second);
   }
 }

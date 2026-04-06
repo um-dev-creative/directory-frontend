@@ -1,68 +1,142 @@
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {Header} from './header';
+import {By} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {App} from '@app/app';
-import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {Store} from '@ngrx/store';
-import {HttpClient} from '@angular/common/http';
-import {SessionStoreService} from '@app/core/store/session/session-store.service';
+import {Renderer2} from '@angular/core';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {provideLocationMocks} from '@angular/common/testing';
+import {BehaviorSubject, of} from 'rxjs';
+import {provideMockStore, MockStore} from '@ngrx/store/testing';
+import {Header} from './header';
+import {HeaderType} from '@shared/constants/header-type';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
+import {SessionStoreService} from '@app/core/store/session/session-store.service';
+import {HeaderService} from '@app/header/header.service';
+import {AuthClient} from '@app/features/auth/auth.client';
+import {LoggerService} from '@app/core/services/logger.service';
+
+interface TestUserAuth {
+  alias: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  fullName: string;
+  sessionToken: string;
+  sessionTokenBkd: string;
+  authorization: string;
+  features: string[];
+  businesses: string[];
+  verifiedComplete: boolean;
+  avatarUrl: string;
+  avatarVersion: string;
+  initials: string;
+}
+
+const createSessionState = (userAuthOverrides: Partial<TestUserAuth> = {}, isInitialized = true): SessionState => {
+  const userAuth: TestUserAuth = {
+    alias: 'testAlias',
+    email: 'test@example.com',
+    firstName: 'Pepe',
+    lastName: 'Perez',
+    displayName: 'Pepe Perez',
+    fullName: 'Pepe Perez',
+    sessionToken: 'session-token',
+    sessionTokenBkd: 'bkd-token',
+    authorization: 'bearer token',
+    features: [],
+    businesses: [],
+    verifiedComplete: true,
+    avatarUrl: 'https://cdn.example.com/avatar.png',
+    avatarVersion: '1',
+    initials: 'PP',
+    ...userAuthOverrides
+  };
+
+  const sessionData: SessionData = {
+    token: 'user-token',
+    userAuth
+  };
+
+  return {
+    sessionData,
+    isInitialized
+  };
+};
 
 describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
-  let mockRouter: Router;
-  let mockStore: any;
-  let mockActivatedRoute: any;
+  let store: MockStore<{ session: SessionState }>;
+  let headerType$: BehaviorSubject<HeaderType>;
 
   beforeEach(async () => {
-    mockStore = {
-      select: jasmine.createSpy().and.returnValue(of({
-        logged: false,
-        sessionData: {
-          userAuth: {alias: 'testAlias', fullName: 'Pepe Perez', avatarUrl: '', initials: 'PP'}
-        }
-      })),
-      dispatch: jasmine.createSpy()
-    };
-    mockRouter = {
-      navigate: jasmine.createSpy('navigate'),
-      events: of({}), // Mock the events property
-      createUrlTree: jasmine.createSpy('createUrlTree').and.returnValue({}),
-      serializeUrl: jasmine.createSpy('serializeUrl').and.returnValue('')
-    } as any;
-    mockActivatedRoute = {
-      snapshot: { params: {}, queryParams: {} },
-      params: of({}),
-      queryParams: of({})
-    };
+    headerType$ = new BehaviorSubject<HeaderType>(HeaderType.GENERAL_HEADER);
+
     await TestBed.configureTestingModule({
       imports: [
         Header,
-        BrowserAnimationsModule,
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: TranslateFakeLoader
-          }
-        })],
+          loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}
+        })
+      ],
       providers: [
-        App,
-        SessionStoreService,
-        provideHttpClientTesting(),
-        {provide: Store, useValue: mockStore},
-        {provide: Router, useValue: mockRouter},
-        {provide: ActivatedRoute, useValue: mockActivatedRoute},
-        {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])},
-        provideLocationMocks()
+        provideMockStore({initialState: {session: createSessionState()}}),
+        {
+          provide: HeaderService,
+          useValue: {
+            headerType$: headerType$.asObservable(),
+            setHeaderType: jasmine.createSpy('setHeaderType').and.callFake((headerType: HeaderType) => headerType$.next(headerType))
+          }
+        },
+        {
+          provide: Router,
+          useValue: {
+            events: of({}),
+            navigate: jasmine.createSpy('navigate'),
+            createUrlTree: jasmine.createSpy('createUrlTree').and.returnValue({}),
+            serializeUrl: jasmine.createSpy('serializeUrl').and.returnValue('')
+          }
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {params: {}, queryParams: {}},
+            params: of({}),
+            queryParams: of({})
+          }
+        },
+        {
+          provide: SessionStoreService,
+          useValue: {clearSessionData: jasmine.createSpy('clearSessionData')}
+        },
+        {
+          provide: AuthClient,
+          useValue: {closeSession: jasmine.createSpy('closeSession').and.returnValue(of({}))}
+        },
+        {
+          provide: LoggerService,
+          useValue: {
+            debug: jasmine.createSpy('debug'),
+            info: jasmine.createSpy('info'),
+            error: jasmine.createSpy('error')
+          }
+        },
+        {
+          provide: BreakpointObserver,
+          useValue: {
+            observe: jasmine.createSpy('observe').and.returnValue(of({matches: false}))
+          }
+        },
+        {
+          provide: Renderer2,
+          useValue: {
+            listen: jasmine.createSpy('listen').and.returnValue(() => undefined)
+          }
+        }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
 
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -72,148 +146,57 @@ describe('Header', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should populate userLogger initials from session data', () => {
-    expect((component as any).userLogger.initials).toBe('PP');
-    expect((component as any).userLogger.avatarUrl).toBe('');
+  it('should render the current display name and cache-busted avatar in the user button', () => {
+    component.isMenuOpen = true;
+    fixture.detectChanges();
+
+    const avatarImg = fixture.debugElement.query(By.css('header button app-avatar img'));
+    const menuDisplayName = fixture.debugElement.query(By.css('app-header-menu p.font-bold'));
+
+    expect(avatarImg.nativeElement.getAttribute('src')).toContain('avatar.png?v=1');
+    expect(menuDisplayName.nativeElement.textContent.trim()).toBe('Pepe Perez');
   });
 
-  describe('hasBusiness getter - business role detection', () => {
-    const BUSINESS_ROLE_ID = '9a232260-a2e3-4990-b062-b6966efb25f8';
-    const OTHER_ROLE_ID = '12345678-1234-1234-1234-123456789012';
+  it('should refresh the user button and menu when the session store changes', () => {
+    component.isMenuOpen = true;
+    fixture.detectChanges();
 
-    it('should return true when businessAssigned is an Array<string> containing business role ID', () => {
-      (component as any).businessAssigned = [BUSINESS_ROLE_ID];
-      expect(component.hasBusiness).toBe(true);
+    store.setState({
+      session: createSessionState({
+        firstName: 'Ana',
+        lastName: 'García',
+        displayName: 'Ana G.',
+        fullName: 'Ana García',
+        avatarUrl: 'https://cdn.example.com/avatar.png',
+        avatarVersion: '2',
+        initials: 'AG'
+      })
     });
+    store.refreshState();
+    fixture.detectChanges();
 
-    it('should return true when businessAssigned is an Array<string> with multiple roles including business role', () => {
-      (component as any).businessAssigned = [OTHER_ROLE_ID, BUSINESS_ROLE_ID, 'some-other-role'];
-      expect(component.hasBusiness).toBe(true);
-    });
+    const avatarImg = fixture.debugElement.query(By.css('header button app-avatar img'));
+    const menuDisplayName = fixture.debugElement.query(By.css('app-header-menu p.font-bold'));
 
-    it('should return false when businessAssigned is an Array<string> NOT containing business role ID', () => {
-      (component as any).businessAssigned = [OTHER_ROLE_ID, 'another-role'];
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return false when businessAssigned is an empty array', () => {
-      (component as any).businessAssigned = [];
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return true when businessAssigned is a JSON string of array containing business role ID', () => {
-      (component as any).businessAssigned = `["${BUSINESS_ROLE_ID}"]`;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return true when businessAssigned is a JSON string with multiple roles including business role', () => {
-      (component as any).businessAssigned = `["${OTHER_ROLE_ID}","${BUSINESS_ROLE_ID}","other-role"]`;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return false when businessAssigned is a JSON string of array NOT containing business role ID', () => {
-      (component as any).businessAssigned = `["${OTHER_ROLE_ID}","another-role"]`;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return false when businessAssigned is a JSON string of empty array', () => {
-      (component as any).businessAssigned = '[]';
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return true when businessAssigned is a comma-separated string containing business role ID', () => {
-      (component as any).businessAssigned = `${OTHER_ROLE_ID},${BUSINESS_ROLE_ID},another-role`;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return false when businessAssigned is a comma-separated string NOT containing business role ID', () => {
-      (component as any).businessAssigned = `${OTHER_ROLE_ID},another-role`;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return true when businessAssigned contains whitespace in comma-separated format', () => {
-      (component as any).businessAssigned = `${OTHER_ROLE_ID}, ${BUSINESS_ROLE_ID} , another-role`;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return true when businessAssigned is a single string matching business role ID', () => {
-      (component as any).businessAssigned = BUSINESS_ROLE_ID;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return false when businessAssigned is a single string NOT matching business role ID', () => {
-      (component as any).businessAssigned = OTHER_ROLE_ID;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return false when businessAssigned is null', () => {
-      (component as any).businessAssigned = null;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return false when businessAssigned is undefined', () => {
-      (component as any).businessAssigned = undefined;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should return false when businessAssigned is an empty string', () => {
-      (component as any).businessAssigned = '';
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should handle JSON string with spaces correctly', () => {
-      (component as any).businessAssigned = `[ "${OTHER_ROLE_ID}", "${BUSINESS_ROLE_ID}", "other-role" ]`;
-      expect(component.hasBusiness).toBe(true);
-    });
-
-    it('should return false when businessAssigned is invalid JSON string', () => {
-      (component as any).businessAssigned = `{invalid json}`;
-      expect(component.hasBusiness).toBe(false);
-    });
+    expect(component['userLogger'].displayName).toBe('Ana G.');
+    expect(component['userLogger'].fullName).toBe('Ana García');
+    expect(avatarImg.nativeElement.getAttribute('src')).toContain('avatar.png?v=2');
+    expect(menuDisplayName.nativeElement.textContent.trim()).toBe('Ana G.');
   });
 
-  describe('hasBusiness template integration', () => {
-    const BUSINESS_ROLE_ID = '9a232260-a2e3-4990-b062-b6966efb25f8';
-    const OTHER_ROLE_ID = '12345678-1234-1234-1234-123456789012';
+  it('should report business access from the session store', () => {
+    store.setState({session: createSessionState({businesses: ['business-1']})});
+    store.refreshState();
+    fixture.detectChanges();
 
-    it('should correctly compute hasBusiness getter for template usage with business role', () => {
-      (component as any).businessAssigned = [BUSINESS_ROLE_ID];
-      expect(component.hasBusiness).toBe(true);
-    });
+    expect(component.hasBusiness).toBeTrue();
+  });
 
-    it('should correctly compute hasBusiness getter for template usage without business role', () => {
-      (component as any).businessAssigned = [OTHER_ROLE_ID];
-      expect(component.hasBusiness).toBe(false);
-    });
+  it('should return false when the session has no businesses', () => {
+    store.setState({session: createSessionState({businesses: []})});
+    store.refreshState();
+    fixture.detectChanges();
 
-    it('should react to changes in businessAssigned for template binding', () => {
-      // Initially no business role
-      (component as any).businessAssigned = [OTHER_ROLE_ID];
-      expect(component.hasBusiness).toBe(false);
-
-      // Add business role
-      (component as any).businessAssigned = [BUSINESS_ROLE_ID];
-      expect(component.hasBusiness).toBe(true);
-
-      // Remove business role
-      (component as any).businessAssigned = [];
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should work with businessAssigned as comma-separated string for template binding', () => {
-      (component as any).businessAssigned = `${OTHER_ROLE_ID},${BUSINESS_ROLE_ID}`;
-      expect(component.hasBusiness).toBe(true);
-
-      (component as any).businessAssigned = OTHER_ROLE_ID;
-      expect(component.hasBusiness).toBe(false);
-    });
-
-    it('should work with businessAssigned as JSON string for template binding', () => {
-      (component as any).businessAssigned = `["${BUSINESS_ROLE_ID}","${OTHER_ROLE_ID}"]`;
-      expect(component.hasBusiness).toBe(true);
-
-      (component as any).businessAssigned = `["${OTHER_ROLE_ID}"]`;
-      expect(component.hasBusiness).toBe(false);
-    });
+    expect(component.hasBusiness).toBeFalse();
   });
 });

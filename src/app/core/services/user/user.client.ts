@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpRequest} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ClientTemplate} from '@core/services/client-template';
 import {DFC} from '@app/shared/constants/app.const';
@@ -85,11 +84,9 @@ export class UserClient extends ClientTemplate {
   uploadProfileImage(formData: FormData): Observable<any> {
 
     this.logInfo(`UserClient.uploadProfileImage:: ${this.PROFILE_IMAGE_PATH}`);
-    const req = new HttpRequest('POST', this.PROFILE_IMAGE_PATH, formData, {
+    return this.httpClient.post<any>(this.PROFILE_IMAGE_PATH, formData, {
       reportProgress: true,
-      responseType: 'json',
-    });
-
-    return this.httpClient.request(req).pipe(catchError(this.handleError));
+      observe: 'response' as 'body'
+    }).pipe(catchError(this.handleError));
   }
 }

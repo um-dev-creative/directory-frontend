@@ -5,7 +5,11 @@
 @if (isOpen) {
   <div
     class="fixed inset-0 bg-black/50 z-40"
+    role="button"
+    tabindex="0"
+    aria-label="Cerrar menú"
     (click)="closeMenu.emit()"
+    onKeyDown="closeMenu.emit()"
   ></div>
 }
 
@@ -51,7 +55,7 @@
     @if (isOpen) {
       <!-- Menú Principal -->
       @if (isPartnerMenuOpen()) {
-        <nav class="p-3">
+        <nav class="p-3" aria-label="Menú de perfil del negocio">
           <ul class="font-semibold text-emerald-700">
             <!---partner back-->
             <li><a
@@ -74,12 +78,7 @@
                 {{ 'menu_header.user_icon.menu.partner.submenu.back.title' | translate }} (UM DEV Creative)
               </div>
             </a></li>
-            <!---separator-->
-            <div
-              role="separator"
-              aria-orientation="horizontal"
-              class="mx-[10px] my-2 h-px bg-linear-to-r from-transparent via-emerald-green-200 to-transparent"
-            ></div>
+            <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-green-200 to-transparent" />
             <!---partner settings-->
             <li><a
               routerLink="/partner/settings"
@@ -150,7 +149,7 @@
         </nav>
       } @else {
         @if (headerType === HeaderType.USER_AUTH_HEADER) {
-          <!-- Menú de usuario autenticado - Main Header Menu TODO: Mejorar margin y padding-->
+          <!-- Menú de usuario autenticado - Main Header Menu -->
           <div class="mx-[10px] mt-[10px] mb-[2px]">
             <div
               class="flex items-center px-4 py-2 text-sm"
@@ -165,24 +164,16 @@
                 [initials]="userLogger.initials"
                 alt="Profile">
               </app-avatar>
-              <div class="flex flex-col gap-1 text-emerald-green-600" role="none">
-                <p role="none">{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
-                <p
-                  class="font-bold overflow-hidden text-ellipsis whitespace-nowrap max-w-[150px] text-emerald-green-800"
-                  role="none"
-                >
-                  {{ userLogger.fullName }}
+              <div class="flex flex-col gap-1 text-emerald-green-600">
+                <p>{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
+                <p class="font-bold overflow-hidden text-ellipsis whitespace-nowrap max-w-[150px] text-emerald-green-800">
+                  {{ userLogger.displayName || userLogger.fullName }}
                 </p>
               </div>
             </div>
           </div>
-          <!---separator-->
-          <div
-            role="separator"
-            aria-orientation="horizontal"
-            class="mx-[10px] my-2 h-px bg-linear-to-r from-transparent via-emerald-200 to-transparent"
-          ></div>
-          <nav class="p-[10px]">
+          <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-200 to-transparent" />
+          <nav class="p-[10px]" aria-label="Menú de acciones de usuario autenticado">
             <ul class="font-semibold text-emerald-green-700">
               <!---member profile settings-->
               <li><a
@@ -207,7 +198,7 @@
               </a></li>
               <!-- if role is just member-->
               @if (hasBusiness) {
-                <!-- partner submenu - TODO: if role business owner-->
+                <!-- partner submenu -->
                 <li><a
                   href="#"
                   (click)="onSubMenuClick($event, 'partner')"
@@ -283,12 +274,7 @@
                   </span>
                 </div>
               </a></li>
-              <!---separator-->
-              <div
-                role="separator"
-                aria-orientation="horizontal"
-                class="mx-[10px] my-2 h-px bg-linear-to-r from-transparent via-emerald-200 to-transparent"
-              ></div>
+              <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-200 to-transparent" />
               <!-- blog -->
               <li><a
                 href="https://latinhubinfo.wordpress.com/"
@@ -374,12 +360,7 @@
                   {{ 'menu_header.user_icon.menu.support.submenu.contact.title' | translate }}
                 </div>
               </a></li>
-              <!---separator-->
-              <div
-                role="separator"
-                aria-orientation="horizontal"
-                class="mx-[10px] my-2 h-px bg-linear-to-r from-transparent via-emerald-200 to-transparent"
-              ></div>
+              <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-200 to-transparent" />
               <!---logout - salir -->
               <li><a
                 (click)="logoutRequested.emit(); closeMenu.emit()"
@@ -402,17 +383,12 @@
                   {{ 'menu_header.user_icon.menu.logout.title' | translate }}
                 </div>
               </a></li>
-              <!---separator-->
-              <div
-                role="separator"
-                aria-orientation="horizontal"
-                class="mx-[10px] my-2 h-px bg-linear-to-r from-transparent via-emerald-green-200 to-transparent"
-              ></div>
+              <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-green-200 to-transparent" />
             </ul>
           </nav>
         } @else {
           <!-- Menú de usuario no autenticado - Login/Register Menu - CTA-->
-          <div class="border-b border-emerald-green-200 p-4 flex flex-col items-center gap-4" role="none">
+            <div class="border-b border-emerald-green-200 p-4 flex flex-col items-center gap-4">
             <app-button
               variant="outline"
               [fullWidth]="true"
@@ -432,7 +408,7 @@
               {{ 'menu_header.join_now_button.title' | translate }}
             </button>
           </div>
-          <nav class="p-[10px]">
+          <nav class="p-[10px]" aria-label="Menú de navegación general">
             <ul class="font-semibold text-emerald-green-700">
               <!-- about -->
               <li><a
