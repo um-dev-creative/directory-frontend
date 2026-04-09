@@ -1,58 +1,79 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Router} from '@angular/router';
-import {SessionState} from '@app/core/store/session/session.state';
+import {TestBed} from '@angular/core/testing';
+import {provideMockStore, MockStore} from '@ngrx/store/testing';
 import {SessionStoreService} from './session-store.service';
-import {Component} from '@angular/core';
-import {Store} from '@ngrx/store';
-
-@Component({
-  selector: 'app-test-store',
-  standalone: false,
-  template: ''
-})
-class SessionStoreServiceTest extends SessionStoreService {
-  constructor(store: Store<{ session: SessionState }>) {
-    super(store);
-  }
-}
+import {SessionData, SessionState, initialState} from './session.state';
+import {clearSession, loadSession, saveSession, setInitialized} from './session.action';
 
 describe('SessionStoreService', () => {
-  let component: SessionStoreServiceTest;
-  let fixture: ComponentFixture<SessionStoreServiceTest>;
-  let mockStore: any;
-  let mockRouter: any;
+  let service: SessionStoreService;
+  let store: MockStore<{ session: SessionState }>;
 
-  beforeEach(async () => {
-    mockStore = {
-      select: jasmine.createSpy(),
-      dispatch: jasmine.createSpy()
-    };
-
-    mockRouter = {
-      navigate: jasmine.createSpy()
-    };
-
-    await TestBed.configureTestingModule({
-      declarations: [SessionStoreServiceTest],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       providers: [
-        { provide: Store, useValue: mockStore },
-        { provide: Router, useValue: mockRouter }
+        provideMockStore({initialState: {session: initialState}}),
+        SessionStoreService
       ]
-    })
-    .compileComponents();
+    });
 
-    fixture = TestBed.createComponent(SessionStoreServiceTest);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    store = TestBed.inject(MockStore);
+    service = TestBed.inject(SessionStoreService);
   });
-
-  mockStore = {
-    select: jasmine.createSpy(),
-    dispatch: jasmine.createSpy() // Add this line to mock the dispatch method
-  };
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
+  it('should dispatch saveSession with the provided session data and initialized flag', () => {
+    const sessionData: SessionData = {
+      token: 'token',
+      userAuth: {
+        alias: 'alias',
+        email: 'test@example.com',
+        firstName: 'Pepe',
+        lastName: 'Perez',
+        displayName: 'Pepe Perez',
+        fullName: 'Pepe Perez',
+        sessionToken: 'session-token',
+        sessionTokenBkd: 'bkd-token',
+        authorization: 'bearer',
+        features: [],
+        businesses: [],
+        verifiedComplete: true,
+        avatarUrl: 'https://cdn.example.com/avatar.png',
+        avatarVersion: '1',
+        initials: 'PP'
+      }
+    };
+
+    spyOn(store, 'dispatch');
+
+    service.saveSessionData(sessionData);
+
+    expect(store.dispatch).toHaveBeenCalledWith(saveSession({sessionData, isInitialized: true}));
+  });
+
+  it('should dispatch clearSession', () => {
+    spyOn(store, 'dispatch');
+
+    service.clearSessionData();
+
+    expect(store.dispatch).toHaveBeenCalledWith(clearSession());
+  });
+
+  it('should dispatch loadSession', () => {
+    spyOn(store, 'dispatch');
+
+    service.loadSessionData();
+
+    expect(store.dispatch).toHaveBeenCalledWith(loadSession());
+  });
+
+  it('should dispatch setInitialized', () => {
+    spyOn(store, 'dispatch');
+
+    service.setInitialized();
+
+    expect(store.dispatch).toHaveBeenCalledWith(setInitialized());
+  });
 });

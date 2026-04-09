@@ -42,6 +42,7 @@ testem.log
 .DS_Store
 Thumbs.db
 package-lock.json
-pnpm-lock.yaml
 /vscode
 /vscode/*
+/default.env
+/pnpm-lock.yaml
