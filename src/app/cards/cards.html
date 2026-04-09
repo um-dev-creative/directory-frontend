@@ -37,12 +37,13 @@
 
   <!-- Cards Grid -->
   @if (cardsData$ | async; as cards) {
+    <!-- Empty State -->
     @if (cards.length === 0) {
       <div class="text-center py-8">
-        <p>No campaigns available</p>
+        <p>No hay campañas disponibles en este momento.</p>
       </div>
-    }
-    <div
+    } @else {
+          <div
       class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6 smooth-scroll"
       role="group"
       aria-label="Campaign cards">
@@ -97,6 +98,7 @@
         }
       </div>
     </div>
+    }
   }
 
   } <!-- end @else -->

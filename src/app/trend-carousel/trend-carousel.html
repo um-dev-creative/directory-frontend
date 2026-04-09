@@ -17,99 +17,103 @@
     </div>
   </app-skeleton>
 } @else {
-
-<div class="mt-4 mb-6">
-  <div>
-      <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">Tendencia</h1>
-  </div>
-  <div class="relative w-full max-w-[1200px] mx-auto cursor-pointer">
-    <!-- Botón Izquierdo -->
-    <button
-      (mouseenter)="startScroll('left')"
-      (mouseleave)="stopScroll()"
-      class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white border border-gray-200 hover:border-emerald-500 w-12 h-12 items-center justify-center rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-emerald-50 group"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-      </svg>
-    </button>
-
-    <!-- Contenedor del Carrusel -->
-    <div #carousel class="overflow-container overflow-x-auto hide-scrollbar scroll-smooth w-full py-5 px-0 md:px-16">
-      <ul class="flex h-[410px] w-max">
-        @for (trend of trends; track trend.image; let isLast = $last) {
-          <li [class]="'w-[320px] h-[404px] shrink-0 rounded-2xl bg-white shadow-md hover:shadow-lg transition-all flex flex-col items-center justify-between p-[10px] ml-1 ' + (isLast ? 'mr-1' : 'mr-2 md:mr-6')" (click)="onCardClick(trend)">
-            <!-- Imagen principal -->
-            <div class="hover:scale-105 relative inline-block w-[300px] h-[246px] overflow-hidden rounded-[8.5px] mx-auto">
-              @if (!imageErrors().has(trend.image)) {
-                <img
-                  [src]="trend.image"
-                  [alt]="trend.altText"
-                  class="w-full h-full object-cover"
-                  (error)="onImageError(trend.image)"
-                >
-              } @else {
-                <div
-                  class="flex items-center justify-center w-full h-full bg-gray-100 rounded-[8.5px]"
-                  role="img"
-                  [attr.aria-label]="trend.altText"
-                >
-                  <img src="assets/images/placeholder-logo.svg" alt="" aria-hidden="true" class="h-12 opacity-40">
-                </div>
-              }
-              <!-- Etiqueta (pill) superior izquierda -->
-              <div class="absolute top-3 left-3 bg-sky-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
-                Online
-              </div>
-            </div>
-            <!-- Contenido debajo de la imagen -->
-            <div class="flex items-center gap-4 w-full px-4 py-2">
-              <!-- Logo de la Marca -->
-              <div class="flex items-center justify-center w-20 h-20 border border-gray-300 rounded-full">
-                @if (!brandLogoErrors().has(trend.brandLogo)) {
-                  <img
-                    [src]="trend.brandLogo"
-                    [alt]="trend.brandLogoAlt"
-                    class="w-[54px] h-[54px] object-contain"
-                    (error)="onBrandLogoError(trend.brandLogo)"
-                  >
-                } @else {
-                  <img src="assets/images/placeholder-logo.svg" [alt]="trend.brandLogoAlt" class="w-[54px] h-[54px] object-contain opacity-40">
-                }
-              </div>
-
-              <!-- Contenedor de Texto -->
-              <div class="flex flex-col flex-1">
-                <h3 class="text-lg font-bold text-black">{{ trend.title }}</h3>
-                <p class="text-sm text-gray-600">{{ trend.description }}</p>
-              </div>
-            </div>
-
-          </li>
-        }
-      </ul>
+  @if (trends.length === 0) {
+    <div class="text-center py-10 text-gray-500">
+      No hay tendencias disponibles en este momento.
     </div>
+  } @else {
+    <div class="mt-4 mb-6">
+      <div>
+          <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">Tendencia</h1>
+      </div>
+      <div class="relative w-full max-w-[1200px] mx-auto cursor-pointer">
+        <!-- Botón Izquierdo -->
+        <button
+          (mouseenter)="startScroll('left')"
+          (mouseleave)="stopScroll()"
+          class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white border border-gray-200 hover:border-emerald-500 w-12 h-12 items-center justify-center rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-emerald-50 group"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
 
-    <!-- Botón Derecho -->
-    <button
-      (mouseenter)="startScroll('right')"
-      (mouseleave)="stopScroll()"
-      class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white border border-gray-200 hover:border-emerald-500 w-12 h-12 items-center justify-center rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-emerald-50 group"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </button>
-  </div>
-  <div class="flex justify-center my-7">
-    <app-button
-      variant="outline"
-      size="xxl"
-      (buttonClick)="navigateToDeals()"
-    >DESCUBRIR MÁS</app-button>
-  </div>
-</div>
+        <!-- Contenedor del Carrusel -->
+        <div #carousel class="overflow-container overflow-x-auto hide-scrollbar scroll-smooth w-full py-5 px-0 md:px-16">
+          <ul class="flex h-[410px] w-max">
+            @for (trend of trends; track trend.image; let isLast = $last) {
+              <li [class]="'w-[320px] h-[404px] shrink-0 rounded-2xl bg-white shadow-md hover:shadow-lg transition-all flex flex-col items-center justify-between p-[10px] ml-1 ' + (isLast ? 'mr-1' : 'mr-2 md:mr-6')" (click)="onCardClick(trend)">
+                <!-- Imagen principal -->
+                <div class="hover:scale-105 relative inline-block w-[300px] h-[246px] overflow-hidden rounded-[8.5px] mx-auto">
+                  @if (!imageErrors().has(trend.image)) {
+                    <img
+                      [src]="trend.image"
+                      [alt]="trend.altText"
+                      class="w-full h-full object-cover"
+                      (error)="onImageError(trend.image)"
+                    >
+                  } @else {
+                    <div
+                      class="flex items-center justify-center w-full h-full bg-gray-100 rounded-[8.5px]"
+                      role="img"
+                      [attr.aria-label]="trend.altText"
+                    >
+                      <img src="assets/images/placeholder-logo.svg" alt="" aria-hidden="true" class="h-12 opacity-40">
+                    </div>
+                  }
+                  <!-- Etiqueta (pill) superior izquierda -->
+                  <div class="absolute top-3 left-3 bg-sky-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    Online
+                  </div>
+                </div>
+                <!-- Contenido debajo de la imagen -->
+                <div class="flex items-center gap-4 w-full px-4 py-2">
+                  <!-- Logo de la Marca -->
+                  <div class="flex items-center justify-center w-20 h-20 border border-gray-300 rounded-full">
+                    @if (!brandLogoErrors().has(trend.brandLogo)) {
+                      <img
+                        [src]="trend.brandLogo"
+                        [alt]="trend.brandLogoAlt"
+                        class="w-[54px] h-[54px] object-contain"
+                        (error)="onBrandLogoError(trend.brandLogo)"
+                      >
+                    } @else {
+                      <img src="assets/images/placeholder-logo.svg" [alt]="trend.brandLogoAlt" class="w-[54px] h-[54px] object-contain opacity-40">
+                    }
+                  </div>
 
+                  <!-- Contenedor de Texto -->
+                  <div class="flex flex-col flex-1">
+                    <h3 class="text-lg font-bold text-black">{{ trend.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ trend.description }}</p>
+                  </div>
+                </div>
+
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Botón Derecho -->
+        <button
+          (mouseenter)="startScroll('right')"
+          (mouseleave)="stopScroll()"
+          class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white border border-gray-200 hover:border-emerald-500 w-12 h-12 items-center justify-center rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-emerald-50 group"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+      <div class="flex justify-center my-7">
+        <app-button
+          variant="outline"
+          size="xxl"
+          (buttonClick)="navigateToDeals()"
+        >DESCUBRIR MÁS</app-button>
+      </div>
+    </div>
+  }
 } <!-- end @else -->
 
 
