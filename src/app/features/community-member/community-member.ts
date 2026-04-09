@@ -269,7 +269,7 @@ export class CommunityMember implements OnInit, OnDestroy {
             throw new Error('Failed to upload avatar');
           }
           // Update profile data with new avatar URL
-          this.profileData.avatar = response.ref;
+          this.profileData.avatar = response.body.ref;
           // this.profileData.avatar = this.buildCacheBustedAvatarUrl(response.ref);
           this.syncSessionProfileData({profileImageRef: this.profileData.avatar});
           this.uploadingAvatar = false;
