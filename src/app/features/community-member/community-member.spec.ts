@@ -270,8 +270,8 @@ describe('CommunityMember', () => {
     expect(userClient.uploadProfileImage).toHaveBeenCalled();
     const arg = userClient.uploadProfileImage.calls.mostRecent().args[0];
     expect(arg instanceof FormData).toBeTrue();
-    // Component prefixes the returned image with the media URL
-    expect(component.profileData.avatar).toBe('https://prx-qa.tst/latinhub/media/avatar-url');
+    // Component prefixes the returned image with the media URL and a cache-busting version.
+    expect(component.profileData.avatar).toContain('https://prx-qa.tst/latinhub/media/avatar-url?v=');
     expect(component.uploadingAvatar).toBe(false);
   }));
 

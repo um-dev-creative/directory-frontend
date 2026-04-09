@@ -20,6 +20,9 @@ export class BusinessData {
 export class UserAuth {
   alias!: string;
   email!: string;
+  firstName?: string;
+  lastName?: string;
+  displayName?: string;
   fullName!: string;
   sessionToken!: string;
   sessionTokenBkd!: string;
@@ -29,6 +32,7 @@ export class UserAuth {
   // Optional field for user avatar URL
   verifiedComplete?: boolean;
   avatarUrl?: string;
+  avatarVersion?: string;
   initials?: string;
 }
 
@@ -37,6 +41,9 @@ export const initialState: SessionState = {
     userAuth: {
       alias: '',
       email: '',
+      firstName: '',
+      lastName: '',
+      displayName: '',
       fullName: '',
       sessionToken: '',
       sessionTokenBkd: '',
@@ -45,6 +52,7 @@ export const initialState: SessionState = {
       businesses: [],
       verifiedComplete: false,
       avatarUrl: '',
+      avatarVersion: '',
       initials: ''
     },
     token: ''

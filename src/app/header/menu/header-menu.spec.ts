@@ -8,6 +8,7 @@ import { HeaderType } from '@shared/constants/header-type';
 const DEFAULT_USER: UserLogger = {
   alias: '@testuser',
   fullName: 'Test User',
+  displayName: 'Test User',
   avatarUrl: '',
   initials: 'TU'
 };

@@ -5,6 +5,10 @@ tools:
   - codebase
   - editFiles
   - runCommands
+skills:
+  - ../../skills/code-analysis/ngrx-patterns.md
+  - ../../skills/code-generation/ngrx-feature-store.md
+  - ../../skills/testing/ngrx-unit-tests.md
 ---
 
 You are the **NgRx State Developer Agent** for the Directory Frontend project. You design and generate NgRx 20 feature stores that live exclusively in `src/app/core/store/`.

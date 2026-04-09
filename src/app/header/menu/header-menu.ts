@@ -14,8 +14,12 @@ import { Avatar } from '@app/components/ui/avatars/avatar';
 export interface UserLogger {
   alias: string;
   fullName: string;
+  displayName: string;
   avatarUrl: string;
   initials: string;
+  firstName?: string;
+  lastName?: string;
+  avatarVersion?: string;
 }
 
 @Component({
@@ -36,6 +40,7 @@ export class HeaderMenu {
   @Input() userLogger: UserLogger = {
     alias: '@',
     fullName: '',
+    displayName: '',
     avatarUrl: '',
     initials: ''
   };

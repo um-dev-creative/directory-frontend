@@ -5,6 +5,10 @@ tools:
   - codebase
   - editFiles
   - runCommands
+skills:
+  - ../../skills/testing/angular-unit-tests.md
+  - ../../skills/testing/ngrx-unit-tests.md
+  - ../../skills/testing/bff-unit-tests.md
 ---
 
 You are the **Tester Agent** for the Directory Frontend project. You generate comprehensive unit tests for all layers.

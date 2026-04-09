@@ -165,7 +165,11 @@ export class CommunityMember implements OnInit, OnDestroy {
         this.userFullName = this.sessionData.userAuth.fullName;
         // Usar datos reales si están disponibles
         this.profileData.displayName = this.sessionData.userAuth.fullName;
+        this.profileData.firstName = this.sessionData.userAuth.firstName ?? this.profileData.firstName;
+        this.profileData.lastName = this.sessionData.userAuth.lastName ?? this.profileData.lastName;
+        this.profileData.displayName = this.sessionData.userAuth.displayName ?? this.sessionData.userAuth.fullName;
         this.profileData.email = this.sessionData.userAuth.email || this.profileData.email;
+        this.profileData.avatar = this.sessionData.userAuth.avatarUrl ?? this.profileData.avatar;
         // Actualizar el formulario con los nuevos datos
         this.updateFormWithSessionData();
       } else {
@@ -265,7 +269,9 @@ export class CommunityMember implements OnInit, OnDestroy {
             throw new Error('Failed to upload avatar');
           }
           // Update profile data with new avatar URL
-          this.profileData.avatar = 'https://prx-qa.tst/latinhub/media/' + response.data.imageUrl;
+          this.profileData.avatar = response.body.ref;
+          // this.profileData.avatar = this.buildCacheBustedAvatarUrl(response.ref);
+          this.syncSessionProfileData({profileImageRef: this.profileData.avatar});
           this.uploadingAvatar = false;
         },
         error: (err) => {
@@ -469,21 +475,60 @@ export class CommunityMember implements OnInit, OnDestroy {
   setProfileData(data: any): void {
     // Default avatar if not provided
     const avatar = data.profileImageRef ? data.profileImageRef : this.profileData.avatar;
+    const fullName = data.displayName ?? `${data.firstName} ${data.lastName}`.trim();
+    const avatarUrl = avatar ? this.buildCacheBustedAvatarUrl(avatar, data.updatedAt ?? data.avatarVersion) : '';
     this.profileData.firstName = data.firstName;
     this.profileData.lastName = data.lastName;
     this.profileData.displayName = data.displayName ?? `${data.firstName} ${data.lastName}`;
+    this.profileData.displayName = fullName;
     this.profileData.phoneId = data.phoneId;
     this.profileData.phone = data.phoneNumber ?? '';
     this.profileData.birthDate = this.parseDateOfBirth(data.dateOfBirth) ?? {month: '', day: '', year: ''};
     this.profileData.email = data.email;
     this.profileData.avatar = avatar;
+    this.profileData.avatar = avatarUrl || avatar;
     this.profileData.emailConfirmed = this.directoryJwtPipe.transform(this.sessionData?.userAuth?.sessionToken ?? "")?.vcCompleted == 'true' || false;
     this.profileData.notifications = {
       email: data.notificationEmail ?? false,
       sms: data.notificationSms ?? false
     };
     this.profileData.privacyOptOut = data.privacyDataOutActive ?? false;
+    this.syncSessionProfileData({
+      firstName: this.profileData.firstName,
+      lastName: this.profileData.lastName,
+      displayName: this.profileData.displayName,
+      fullName,
+      avatarUrl: this.profileData.avatar
+    });
     this.updateFormWithSessionData();
+  }
+
+  private syncSessionProfileData(profileData: { firstName?: string; lastName?: string; displayName?: string; fullName?: string; avatarUrl?: string; profileImageRef?: string }): void {
+    if (!this.sessionData?.userAuth) {
+      return;
+    }
+
+    const nextAvatarUrl = profileData.avatarUrl ?? profileData.profileImageRef ?? this.sessionData.userAuth.avatarUrl ?? '';
+    this.sessionData = {
+      ...this.sessionData,
+      userAuth: {
+        ...this.sessionData.userAuth,
+        firstName: profileData.firstName ?? this.sessionData.userAuth.firstName ?? '',
+        lastName: profileData.lastName ?? this.sessionData.userAuth.lastName ?? '',
+        displayName: profileData.displayName ?? profileData.fullName ?? this.sessionData.userAuth.displayName ?? this.sessionData.userAuth.fullName ?? '',
+        fullName: profileData.fullName ?? profileData.displayName ?? this.sessionData.userAuth.fullName ?? '',
+        avatarUrl: nextAvatarUrl,
+        avatarVersion: profileData.avatarUrl || profileData.profileImageRef ? String(Date.now()) : this.sessionData.userAuth.avatarVersion ?? ''
+      }
+    };
+    this.sessionStoreService.saveSessionData(this.sessionData);
+  }
+
+  private buildCacheBustedAvatarUrl(avatarUrl: string, version?: string | number): string {
+    if (!avatarUrl) return '';
+    const cacheKey = version ? String(version) : String(Date.now());
+    const separator = avatarUrl.includes('?') ? '&' : '?';
+    return `${avatarUrl}${separator}v=${encodeURIComponent(cacheKey)}`;
   }
 
   /**

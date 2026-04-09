@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 const mockRoute = {} as ActivatedRouteSnapshot;
-const mockState = { url: '' } as RouterStateSnapshot;
 
 describe('noAuthGuard', () => {
   let mockRouter: jasmine.SpyObj<Router>;
@@ -30,7 +29,7 @@ describe('noAuthGuard', () => {
     configureWithSession({ isInitialized: true, sessionData: {} });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard(mockRoute);
+      const result = noAuthGuard(mockRoute, { url: '' } as RouterStateSnapshot);
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeTrue();
         expect(mockRouter.navigate).not.toHaveBeenCalled();
@@ -49,7 +48,7 @@ describe('noAuthGuard', () => {
     });
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard(mockRoute);
+      const result = noAuthGuard(mockRoute, { url: '' } as RouterStateSnapshot);
       (result as Observable<boolean>).subscribe(allowed => {
         expect(allowed).toBeFalse();
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/deals']);
@@ -64,7 +63,7 @@ describe('noAuthGuard', () => {
     let emitted = false;
 
     TestBed.runInInjectionContext(() => {
-      const result = noAuthGuard(mockRoute);
+      const result = noAuthGuard(mockRoute, { url: '' } as RouterStateSnapshot);
       (result as Observable<boolean>).subscribe(() => { emitted = true; });
     });
 

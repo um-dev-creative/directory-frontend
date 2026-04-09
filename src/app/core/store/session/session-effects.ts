@@ -1,85 +1,106 @@
-import { Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { SessionData, SessionState } from '@app/core/store/session/session.state';
-import { clearSession, loadSession, saveSession, setInitialized } from '@app/core/store/session/session.action';
-import { tap, withLatestFrom } from 'rxjs';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {isPlatformBrowser} from '@angular/common';
+import {Injectable, PLATFORM_ID, inject} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {Store} from '@ngrx/store';
+import {tap, withLatestFrom} from 'rxjs';
+import {clearSession, loadSession, saveSession, setInitialized} from '@app/core/store/session/session.action';
+import {SessionData, SessionState} from '@app/core/store/session/session.state';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SessionEffects {
-  private readonly SESSION_KEY = 'currentSession';
+  private readonly sessionKey = 'currentSession';
   // SSR: browser-only — localStorage does not exist in Node; guard every access
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store<{ session: SessionState }>);
 
-  constructor(private readonly action$: Actions, private readonly store: Store<{ session: SessionState }>) {}
-
-  saveSession$ = createEffect(() => this.action$.pipe(
+  saveSession$ = createEffect(
+    () => this.actions$.pipe(
       ofType(saveSession),
-      tap(action => {
-        if (this.isBrowser) {
-          localStorage.setItem(this.SESSION_KEY, JSON.stringify(action.sessionData));
-        }
-      })
+      tap(({sessionData}) => this.persistSession(sessionData))
     ),
-    { dispatch: false }
+    {dispatch: false}
   );
 
-  clearSession$ = createEffect(() => this.action$.pipe(
+  clearSession$ = createEffect(
+    () => this.actions$.pipe(
       ofType(clearSession),
-      tap(() => {
-        if (this.isBrowser) {
-          localStorage.removeItem(this.SESSION_KEY);
+      tap(() => this.removeSession())
+    ),
+    {dispatch: false}
+  );
+
+  loadSession$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(loadSession),
+      withLatestFrom(this.store.select(state => state.session.isInitialized)),
+      tap(([_action, isInitialized]) => {
+        if (isInitialized) {
+          return;
         }
+
+        this.restoreSession();
       })
     ),
-    { dispatch: false }
+    {dispatch: false}
   );
 
-  loadSession$ = createEffect(() =>
-      this.action$.pipe(
-        ofType(loadSession),
-        withLatestFrom(this.store.select(state => state.session.isInitialized)),
-        tap(([_action, isInitialized]) => {
-          const caller = new Error().stack?.split('\n')[2]?.trim() ?? 'unknown';
-          console.debug(
-            `[SessionEffect] loadSession$ fired | ts=${new Date().toISOString()} | isInitialized=${isInitialized} | caller: ${caller}`
-          );
+  private persistSession(sessionData: SessionData): void {
+    if (!this.isBrowser) {
+      return;
+    }
 
-          if (isInitialized) {
-            console.debug('[SessionEffect] Already initialized, skipping');
-            return;
-          }
+    try {
+      localStorage.setItem(this.sessionKey, JSON.stringify(sessionData));
+    } catch (error) {
+      console.error('[SessionEffect] Failed to persist session', error);
+    }
+  }
 
-          if (this.isBrowser && this.isLocalStorageAvailable()) {
-            const storedSession = localStorage.getItem(this.SESSION_KEY);
-            if (storedSession) {
-              const sessionData: SessionData = JSON.parse(storedSession);
-              console.debug('[SessionEffect] Found stored session, dispatching saveSession');
-              this.store.dispatch(saveSession({ sessionData, isInitialized: true }));
-            } else {
-              console.debug('[SessionEffect] No stored session found, dispatching setInitialized');
-              this.store.dispatch(setInitialized());
-            }
-          } else {
-            console.debug('[SessionEffect] Not browser or localStorage unavailable, dispatching setInitialized');
-            this.store.dispatch(setInitialized());
-          }
-        })
-      ),
-    { dispatch: false }
-  );
+  private removeSession(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      localStorage.removeItem(this.sessionKey);
+    } catch (error) {
+      console.error('[SessionEffect] Failed to clear session', error);
+    }
+  }
+
+  private restoreSession(): void {
+    if (!this.isBrowser || !this.isLocalStorageAvailable()) {
+      this.store.dispatch(setInitialized());
+      return;
+    }
+
+    try {
+      const storedSession = localStorage.getItem(this.sessionKey);
+      if (!storedSession) {
+        this.store.dispatch(setInitialized());
+        return;
+      }
+
+      const sessionData: SessionData = JSON.parse(storedSession);
+      this.store.dispatch(saveSession({sessionData, isInitialized: true}));
+    } catch (error) {
+      console.error('[SessionEffect] Failed to restore session', error);
+      this.store.dispatch(setInitialized());
+    }
+  }
 
   private isLocalStorageAvailable(): boolean {
-    if (!this.isBrowser) return false;
+    if (!this.isBrowser) {
+      return false;
+    }
+
     try {
-      const testKey = '__test__';
+      const testKey = '__session_test__';
       localStorage.setItem(testKey, testKey);
       localStorage.removeItem(testKey);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
