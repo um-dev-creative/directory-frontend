@@ -191,6 +191,7 @@ npm run test:browser
 | `/gen-component` | Genera un componente Angular standalone completo |
 | `/gen-ngrx-feature` | Genera un feature completo de NgRx |
 | `/gen-service` | Genera un servicio Angular |
+| `/gen-bff-endpoint` | Genera un endpoint BFF completo (ruta + controlador + servicio Angular) |
 | `/review-pr` | Revisa un PR siguiendo las convenciones del proyecto |
 
 ---

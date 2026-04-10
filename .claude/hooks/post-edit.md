@@ -1,91 +1,100 @@
-# Hook: Post-Edit — Verificaciones después de editar un archivo
+# Hook: Post-Edit — Checks After Editing a File
 
-Este hook define las comprobaciones que Claude debe realizar **después de modificar cualquier archivo** en este proyecto.
+This hook defines the checks Claude must perform **after modifying any file** in this project.
 
 ---
 
-## Verificaciones obligatorias tras cada edición
+## Mandatory checks after each edit
 
-### 1. Validación de sintaxis y coherencia
+### 1. Syntax and consistency validation
 
-#### Componentes Angular (`*.component.ts`)
+#### Angular components (`*.component.ts`)
 
-Confirma que el archivo editado:
-- [ ] Tiene `standalone: true`
-- [ ] El array `imports: []` incluye todo lo usado en el template (TranslateModule, CommonModule, etc.)
-- [ ] No hay imports de NgModule propios del proyecto
-- [ ] Las dependencias inyectadas usan `inject()` en el cuerpo de la clase
+Confirm the edited file:
+- [ ] Has `standalone: true`
+- [ ] The `imports: []` array includes everything used in the template (TranslateModule, etc.)
+- [ ] No `CommonModule` unless `NgClass`, `AsyncPipe`, or another directive from that module is used
+- [ ] No NgModule imports from the project
+- [ ] Injected dependencies use `inject()` in the class body
+- [ ] No secrets, OAuth tokens, or AES keys in the component code
 
 #### Templates (`*.component.html`)
 
-Confirma:
-- [ ] Ninguna directiva `*ngIf`, `*ngFor`, `*ngSwitch` presente
-- [ ] Si la clave i18n ya existe → usa `{{ 'clave.traduccion' | translate }}`
-- [ ] Si el texto es nuevo o de prototipado → string en duro es aceptable, añade `<!-- TODO: i18n -->`
+Confirm:
+- [ ] No `*ngIf`, `*ngFor`, `*ngSwitch` directives present
+- [ ] If the i18n key already exists → use `{{ 'translation.key' | translate }}`
+- [ ] If the text is new or prototypal → hardcoded string is acceptable, add `<!-- TODO: i18n -->`
+- [ ] No hardcoded URLs in `href`, `src`, or router bindings
 
 #### NgRx
 
-- [ ] Acciones siguen formato `[Feature] Verbo sustantivo`
-- [ ] Reducer es función pura (sin llamadas a servicios, sin efectos secundarios)
-- [ ] Selectors derivan de `createFeatureSelector` o de otros selectors
-- [ ] Effects manejan el error con `catchError` → acción `*Fallido`
+- [ ] Actions follow format `[Feature] Verb noun`
+- [ ] Reducer is a pure function (no service calls, no side effects)
+- [ ] Selectors derive from `createFeatureSelector` or other selectors
+- [ ] Effects handle errors with `catchError` → `*Failure` action
+- [ ] Effects use `HttpService` — never `HttpClient` directly
+- [ ] Facade exposes `toSignal()` for Angular 20 template consumption
 
 #### BFF (`server/**/*.js`)
 
-- [ ] Sin credenciales o tokens en duro en el código
-- [ ] Respuestas de error no exponen stack traces al cliente
-- [ ] Variables de entorno accedidas con `process.env.*`
+- [ ] `'use strict';` present at the top of the file
+- [ ] SSRF validation present in each method that builds proxy URLs
+- [ ] No hardcoded credentials, tokens, or secrets
+- [ ] Error responses do not expose stack traces or internal data to the client
+- [ ] Environment variables accessed with `process.env.*`
+- [ ] Session managed with `getUserSession()` — not `req.session?.token`
+- [ ] No `console.log` with tokens, passwords, ENCRYPT_KEY, or VAULT_TOKEN
 
 ---
 
-### 2. Verificar imports y exports
+### 2. Verify imports and exports
 
-Si se creó un archivo nuevo:
-- ¿Debe exportarse desde el `index.ts` de la carpeta? Si la carpeta tiene un barrel file, agrégalo.
-- ¿Debe registrarse en `app.config.ts`? (reducers, effects, providers)
+If a new file was created:
+- Should it be exported from the folder's `index.ts`? If the folder has a barrel file, add it.
+- Should it be registered in `app.config.ts`? (reducers, effects, providers)
+- If it is a new BFF route, is it registered in `server.js`?
+- If it is a new BFF rewrite, is it added in `server/config/config.json`?
 
-Si se eliminó o renombró un archivo:
-- Verifica que no hay imports rotos en el resto del código.
-- Busca referencias con `grep` antes de confirmar.
+If a file was deleted or renamed:
+- Verify there are no broken imports in the rest of the code.
+- Use Grep to search for references before confirming.
 
 ---
 
-### 3. Recordatorio de pruebas
+### 3. Test reminder
 
-Después de cada edición significativa, indica:
+After each significant edit, indicate:
 
 ```
-📋 Ejecuta las pruebas para verificar que todo funciona correctamente:
-
 ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox
 ```
 
-Si el cambio afectó:
-- **Lógica de negocio** → los tests unitarios del archivo deben actualizarse.
-- **Interfaz pública de un componente** (nuevos @Input/@Output) → el spec del componente necesita casos nuevos.
-- **Acciones o reducers NgRx** → los specs del reducer y los selectors deben revisarse.
-- **Rutas del BFF** → si existen tests de integración, ejecutarlos.
+If the change affected:
+- **Business logic** → unit tests for the file must be updated.
+- **Public interface of a component** (new inputs/outputs) → the spec needs new cases.
+- **NgRx actions or reducers** → reducer and selector specs must be reviewed.
+- **BFF routes** → if integration tests exist, run them.
 
 ---
 
-### 4. Claves de traducción
+### 4. Translation keys
 
-Si el template editado introduce texto nuevo o modifica etiquetas existentes:
+If the edited template introduces new text or modifies existing labels:
 
-Recuerda añadir las claves de traducción en:
+Remember to add translation keys in:
 ```
-src/assets/i18n/es.json    ← Español (principal)
-src/assets/i18n/en.json    ← Inglés (si aplica)
+src/assets/i18n/es.json    ← Spanish (primary)
+src/assets/i18n/en.json    ← English (if applicable)
 ```
 
-Formato de clave recomendado: `feature.componente.elemento`
+Recommended key format: `feature.component.element`
 
 ```json
 {
   "partner": {
-    "ofertas": {
-      "titulo": "Mis ofertas",
-      "sin-resultados": "No hay ofertas disponibles"
+    "offers": {
+      "title": "My offers",
+      "no-results": "No offers available"
     }
   }
 }
@@ -93,54 +102,58 @@ Formato de clave recomendado: `feature.componente.elemento`
 
 ---
 
-### 5. Compatibilidad SSR — revisión final
+### 5. SSR compatibility — final review
 
-Si el archivo editado introduce código que accede a APIs del navegador, confirma:
+If the edited file introduces code that accesses browser APIs, confirm:
 
 ```typescript
-// ✅ Correcto
+// ✅ Correct
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, inject } from '@angular/core';
 
 private readonly platformId = inject(PLATFORM_ID);
 
 if (isPlatformBrowser(this.platformId)) {
-  // Código browser-only aquí
+  // Browser-only code here
 }
 
-// ✅ Alternativa para storage
+// ✅ Alternative for storage
 private readonly storage = inject(StorageMockService);
 ```
 
-Si encontraste acceso inseguro a APIs browser, **indícalo** aunque hayas completado la edición.
+If you found unsafe access to browser APIs, **report it** even after completing the edit.
 
 ---
 
-### 6. Registro de cambios relevantes
+### 6. Relevant change log
 
-Si el cambio es arquitectónico (nuevo store, nuevo interceptor, nueva ruta lazy, nueva dependencia npm), menciona brevemente:
-- Qué se añadió y por qué
-- Qué partes del sistema afecta
-- Si requiere cambios en `app.config.ts`, `app.routes.ts` u otros archivos de configuración
+If the change is architectural (new store, new interceptor, new lazy route, new npm dependency, new BFF route), briefly mention:
+- What was added and why
+- Which parts of the system it affects
+- Whether it requires changes in `app.config.ts`, `app.routes.ts`, `server.js`, or other configuration files
 
 ---
 
-## Resumen del flujo post-edit
+## Post-edit flow summary
 
 ```
-1. Confirmar que el archivo editado cumple las convenciones del tipo
+1. Confirm the edited file meets the conventions for its type
+   → Angular: standalone, inject(), no *ngIf/*ngFor
+   → NgRx: actions, pure reducers, effects with catchError, facades with toSignal()
+   → BFF: 'use strict', SSRF validation, no secrets
 
-2. Verificar imports/exports
-   → ¿Necesita barrel update?
-   → ¿Necesita registro en app.config.ts?
+2. Verify imports/exports
+   → Needs barrel update?
+   → Needs registration in app.config.ts?
+   → Needs registration in server.js or config.json?
 
-3. ¿Se agregó texto visible?
-   → Recordar añadir claves en i18n/
+3. Was visible text added?
+   → Remember to add keys in i18n/
 
-4. ¿Se usaron APIs browser-only?
-   → Verificar protección SSR
+4. Were browser-only APIs used?
+   → Verify SSR protection
 
-5. Indicar comando de test a ejecutar
+5. Indicate the test command to run
 
-6. Informar al usuario del resultado y próximos pasos
+6. Inform the user of the result and next steps
 ```

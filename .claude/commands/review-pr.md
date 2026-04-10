@@ -1,122 +1,163 @@
-# /review-pr — Revisar Pull Request
+# /review-pr — Review Pull Request
 
-Revisa un PR siguiendo las convenciones y reglas del proyecto Directory Frontend.
+Reviews a PR following the conventions and rules of the Directory Frontend project.
 
-## Uso
+## Usage
 
 ```
-/review-pr <número-pr>
-/review-pr <número-pr> --focus <area>
+/review-pr <pr-number>
+/review-pr <pr-number> --focus <area>
 ```
 
-**Ejemplos:**
+**Examples:**
 - `/review-pr 72`
 - `/review-pr 72 --focus ngrx`
-- `/review-pr 72 --focus seguridad`
+- `/review-pr 72 --focus security`
+- `/review-pr 72 --focus bff`
 
 ---
 
-## Proceso de revisión
+## Review process
 
-Ejecuta los siguientes pasos en orden:
+Execute the following steps in order:
 
-### 1. Obtener los cambios del PR
+### 1. Fetch the PR changes
 
 ```bash
-gh pr view <número> --json title,body,files,additions,deletions
-gh pr diff <número>
+gh pr view <number> --json title,body,files,additions,deletions,baseRefName,headRefName
+gh pr diff <number>
 ```
 
-### 2. Checklist de revisión obligatoria
-
-Para cada archivo modificado, verifica:
-
-#### Angular — Componentes
-- [ ] `standalone: true` en todos los componentes nuevos o modificados
-- [ ] Sin `NgModule` — no importar ni declarar en módulos
-- [ ] Inyección con `inject()`, no con constructor (salvo herencia necesaria)
-- [ ] Templates usan `@if` / `@for` / `@let` — no `*ngIf` / `*ngFor` / `*ngSwitch`
-- [ ] Todos los textos visibles usan `{{ 'clave' | translate }}` — sin strings en duro
-- [ ] Claves de traducción nuevas añadidas al archivo i18n correspondiente
-
-#### Estado (NgRx / Signals)
-- [ ] Estado global gestionado con NgRx (store/actions/reducer/effects/selectors)
-- [ ] Signals usados **solo** para estado local del componente
-- [ ] Acciones con formato `[Feature] Verbo sustantivo`
-- [ ] Reducers son funciones puras (sin efectos secundarios)
-- [ ] Effects manejan errores y despachan acción `*Fallido`
-
-#### HTTP y BFF
-- [ ] Sin llamadas HTTP directas al backend Java — todo pasa por `server/`
-- [ ] Se usa `HttpService` (no `HttpClient` directamente)
-- [ ] URLs construidas con constantes `DFC` o `environment`, nunca hardcodeadas
-- [ ] El BFF en `server/` no expone datos sensibles ni credenciales
-
-#### SSR — Server-Side Rendering
-- [ ] Sin acceso directo a `window`, `document`, `localStorage` o `sessionStorage`
-- [ ] Uso de `isPlatformBrowser()` o `StorageMockService` donde aplique
-- [ ] Sin timers o intervals sin cleanup (pueden causar memory leaks en SSR)
-
-#### Seguridad
-- [ ] Sin credenciales, tokens ni secrets en el código fuente
-- [ ] Sin `console.log` con datos sensibles de usuario
-- [ ] Inputs del usuario sanitizados antes de renderizar como HTML
-- [ ] Sin bypass de guards de autenticación
-
-#### Calidad de código
-- [ ] TypeScript strict — sin `any` salvo justificación explícita
-- [ ] Sin código comentado o muerto
-- [ ] Imports organizados: Angular > terceros > propios (usando aliases `@app`, `@core`, `@shared`)
-- [ ] Archivos de test actualizados para cubrir los cambios
-
-#### Archivos prohibidos
-- [ ] No se tocaron: `ssl/`, `dist/`, `Dockerfile`, `docker-entrypoint.sh`, `server/config/app.config.js`
+Verify that the PR targets the `development` branch (not `main`).
 
 ---
 
-### 3. Formato del reporte de revisión
+### 2. Mandatory review checklist
 
-Entrega el resultado con esta estructura en español:
+For each modified file, verify:
+
+#### Angular — Components (`src/**/*.component.ts`)
+- [ ] `standalone: true` on all new or modified components
+- [ ] No `NgModule` — do not import or declare in modules
+- [ ] Injection with `inject()`, not constructor (except ControlValueAccessor or required inheritance)
+- [ ] Templates use `@if` / `@for` / `@let` — not `*ngIf` / `*ngFor` / `*ngSwitch`
+- [ ] No `CommonModule` unless `NgClass`, `AsyncPipe`, or another specific directive from it is used
+- [ ] Visible text with `{{ 'key' | translate }}` — new keys added to i18n
+
+#### State — NgRx / Signals (`src/**/*.actions.ts`, `*.reducer.ts`, `*.effects.ts`, `*.selectors.ts`)
+- [ ] Global state managed with NgRx (store/actions/reducer/effects/selectors)
+- [ ] Signals used **only** for local component state
+- [ ] Actions in format `[Feature] Verb noun`
+- [ ] Reducers are pure functions (no side effects, no service calls)
+- [ ] Effects handle errors and dispatch `*Failure` action with `catchError`
+- [ ] Effects use `switchMap`/`concatMap`/`mergeMap` according to the operation's semantics
+- [ ] Components consume the store via **facade** (`StoreService`) — never `Store` directly
+- [ ] Facades expose Signals with `toSignal()` for consumption in modern templates
+
+#### HTTP and BFF
+- [ ] No direct HTTP calls to the Java backend — everything goes through `/drb/api/v1/*` or `/bkd/api/v1/*`
+- [ ] Uses `HttpService` (not `HttpClient` directly)
+- [ ] URLs built with `DFC` constants or `environment`, never hardcoded
+
+#### BFF — Express.js (`server/**/*.js`)
+- [ ] `'use strict';` at the top of every new file
+- [ ] SSRF validation present in every controller that builds proxy URLs
+- [ ] Domain allowlist applied: `directory-backend`, `backbone-rest`, `localhost`, `prx-qa.*`
+- [ ] No hardcoded credentials, secrets, or URLs — everything from `process.env.*`
+- [ ] Session read with `getUserSession()` from `redis-session-store.js` — **not** `req.session?.token`
+- [ ] Passwords encrypted with `CryptoJS.AES.encrypt` before forwarding to backend
+- [ ] Error responses do not expose stack traces or internal data to the client
+- [ ] No logging of `VAULT_TOKEN`, `ENCRYPT_KEY`, `ENCRYPT_IV`, full tokens, or passwords
+
+#### SSR — Server-Side Rendering (`src/**/*.ts`)
+- [ ] No direct access to `window`, `document`, `localStorage`, or `sessionStorage`
+- [ ] Use of `isPlatformBrowser()` or `StorageMockService` where applicable
+- [ ] No timers or intervals without cleanup (SSR memory leaks)
+
+#### Security — Cross-cutting review
+- [ ] No credentials, OAuth tokens, or AES keys (`ENCRYPT_KEY`, `ENCRYPT_IV`) in Angular code
+- [ ] No `console.log` with sensitive user data (tokens, passwords)
+- [ ] User inputs sanitized before rendering as HTML
+- [ ] No bypassing of authentication guards (`authGuard`, `roleGuard`)
+- [ ] `npm audit` reports no new `critical` or `high` vulnerabilities
+- [ ] `request` package not introduced as a direct dependency
+
+#### Code quality
+- [ ] TypeScript strict — no `any` unless explicitly justified in a comment
+- [ ] No dead or commented-out code (unused imports, unreferenced variables)
+- [ ] Imports organized: Angular > third-party > own (using aliases `@app`, `@core`, `@shared`)
+- [ ] Test files updated to cover the changes
+- [ ] No unused private functions or methods (fails with `noUnusedLocals`)
+
+#### Protected files
+- [ ] Not touched: `ssl/`, `dist/`, `Dockerfile`, `docker-entrypoint.sh`, `server/config/app.config.js`
+
+---
+
+### 3. Additional checks by area
+
+#### If the PR touches the BFF (`server/`)
+- Verify controllers do not unnecessarily expose Java backend data.
+- Confirm new routes are registered in `server.js`.
+- Confirm new rewrites are in `server/config/config.json`.
+- Verify session tokens are correctly validated before proxying.
+
+#### If the PR adds dependencies (`package.json`)
+- Run `npm audit --audit-level=high` and report the result.
+- Verify the package has recent releases (< 12 months).
+- The `request` package is **PROHIBITED** — use native `fetch` or `axios`.
+
+#### If the PR modifies the NgRx store (`session` or others)
+- Confirm `app.config.ts` is updated (reducer + effects).
+- Confirm the facade exposes the necessary selectors.
+- Confirm reducer and selector specs exist and pass.
+
+#### If the PR adds navigation routes (`app.routes.ts`)
+- Confirm protected routes have the appropriate guard (`authGuard`, `roleGuard`).
+- Confirm auth routes have `noAuthGuard`.
+
+---
+
+### 4. Review report format
+
+Deliver the result with this structure:
 
 ```markdown
-## Revisión PR #<número>: <título>
+## PR Review #<number>: <title>
 
-### Resumen
-<Breve descripción de qué hace el PR y su impacto>
+**Base:** `<source-branch>` → `<target-branch>`
+**Modified files:** <N> | **+<additions>** / **-<deletions>**
 
-### ✅ Puntos positivos
-- <Buenas prácticas detectadas>
+### Summary
+<Brief description of what the PR does and its impact on the system>
 
-### ⚠️ Observaciones (no bloqueantes)
-- **<archivo>:<línea>** — <descripción del problema y sugerencia>
+### ✅ Positive points
+- <Good practices detected>
 
-### 🚫 Problemas bloqueantes
-- **<archivo>:<línea>** — <descripción del problema>
+### ⚠️ Observations (non-blocking)
+- **<file>:<line>** — <description of the issue and suggestion>
+
+### 🚫 Blocking issues
+- **<file>:<line>** — <description of the issue>
   ```
-  // Código problemático
+  // Problematic code
   ```
-  **Solución sugerida:**
+  **Suggested fix:**
   ```
-  // Código corregido
+  // Corrected code
   ```
 
-### 📋 Checklist final
-- [ ] Componentes standalone
-- [ ] Sin *ngIf/*ngFor
-- [ ] Traducciones completas
-- [ ] Sin URLs hardcodeadas
+### 📋 Final checklist
+- [ ] Standalone components
+- [ ] No *ngIf/*ngFor
+- [ ] Complete translations
+- [ ] No hardcoded URLs
 - [ ] SSR compatible
-- [ ] Tests actualizados
-- [ ] Archivos prohibidos intactos
+- [ ] BFF: 'use strict' + SSRF validation
+- [ ] Tests updated
+- [ ] Protected files intact
+- [ ] Target branch: development
 
-### Veredicto
-🟢 APROBADO / 🟡 APROBADO CON OBSERVACIONES / 🔴 CAMBIOS REQUERIDOS
+### Verdict
+🟢 APPROVED / 🟡 APPROVED WITH OBSERVATIONS / 🔴 CHANGES REQUIRED
 ```
-
----
-
-## Notas adicionales
-
-- Si el PR toca el BFF (`server/`), verifica que los controladores no expongan datos del backend Java innecesariamente.
-- Si el PR agrega dependencias nuevas, verifica que sean necesarias y que no introduzcan vulnerabilidades conocidas.
-- Los PRs deben apuntar a la rama `development`, no a `main`.

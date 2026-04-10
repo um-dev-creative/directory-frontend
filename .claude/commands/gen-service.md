@@ -1,25 +1,25 @@
-# /gen-service — Generar servicio Angular
+# /gen-service — Generate Angular Service
 
-Genera un servicio Angular 20 siguiendo las convenciones del proyecto.
+Generates an Angular 20 service following project conventions.
 
-## Uso
+## Usage
 
 ```
-/gen-service <nombre> [--tipo core|feature|bff-client]
+/gen-service <name> [--type core|feature|bff-client]
 ```
 
-**Ejemplos:**
-- `/gen-service notificacion-push --tipo core`
-- `/gen-service campana --tipo feature`
-- `/gen-service reporte-client --tipo bff-client`
+**Examples:**
+- `/gen-service push-notification --type core`
+- `/gen-service campaign --type feature`
+- `/gen-service report-client --type bff-client`
 
 ---
 
-## Tipos de servicio
+## Service types
 
-### `core` — Servicio core de la aplicación
+### `core` — Core application service
 
-Se ubica en `src/app/core/services/<nombre>/`.
+Located in `src/app/core/services/<name>/`.
 
 ```typescript
 import { Injectable, inject } from '@angular/core';
@@ -29,31 +29,31 @@ import { LoggerService } from '@core/services/logger.service';
 import { NotificationService } from '@core/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
-export class <Nombre>Service {
+export class <Name>Service {
   private readonly http = inject(HttpService);
   private readonly logger = inject(LoggerService);
   private readonly notification = inject(NotificationService);
 
-  // Prefijo de ruta — usa siempre constantes, nunca strings en duro
-  private readonly BASE_PATH = '/api/<recurso>';
+  // Route prefix — always use constants, never hardcoded strings
+  private readonly BASE_PATH = '/api/<resource>';
 
-  obtenerTodos(): Observable<<Modelo>[]> {
-    return this.http.get<<Modelo>[]>(this.BASE_PATH);
+  getAll(): Observable<<Model>[]> {
+    return this.http.get<<Model>[]>(this.BASE_PATH);
   }
 
-  obtenerPorId(id: string): Observable<<Modelo>> {
-    return this.http.get<<Modelo>>(`${this.BASE_PATH}/${id}`);
+  getById(id: string): Observable<<Model>> {
+    return this.http.get<<Model>>(`${this.BASE_PATH}/${id}`);
   }
 
-  crear(datos: Crear<Modelo>Dto): Observable<<Modelo>> {
-    return this.http.post<<Modelo>>(this.BASE_PATH, datos);
+  create(data: Create<Model>Dto): Observable<<Model>> {
+    return this.http.post<<Model>>(this.BASE_PATH, data);
   }
 
-  actualizar(id: string, datos: Actualizar<Modelo>Dto): Observable<<Modelo>> {
-    return this.http.put<<Modelo>>(`${this.BASE_PATH}/${id}`, datos);
+  update(id: string, data: Update<Model>Dto): Observable<<Model>> {
+    return this.http.put<<Model>>(`${this.BASE_PATH}/${id}`, data);
   }
 
-  eliminar(id: string): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.BASE_PATH}/${id}`);
   }
 }
@@ -61,17 +61,17 @@ export class <Nombre>Service {
 
 ---
 
-### `feature` — Servicio de feature específico
+### `feature` — Feature-specific service
 
-Se ubica en `src/app/features/<feature>/services/`.
+Located in `src/app/features/<feature>/services/`.
 
-Misma estructura que `core`, pero con el alcance limitado al feature. Registrar con `providedIn: 'root'` salvo que tenga datos de sesión específicos del feature.
+Same structure as `core`, but scoped to the feature. Register with `providedIn: 'root'` unless it holds feature-specific session data.
 
 ---
 
-### `bff-client` — Cliente HTTP hacia el BFF
+### `bff-client` — HTTP client toward the BFF
 
-Se ubica en `src/app/core/services/<recurso>/`. Extiende `ClientTemplate`:
+Located in `src/app/core/services/<resource>/`. Extends `ClientTemplate`:
 
 ```typescript
 import { Injectable, inject } from '@angular/core';
@@ -81,58 +81,58 @@ import { ClientTemplate } from '@core/services/client-template';
 import { DFC } from '@shared/constants';
 
 @Injectable({ providedIn: 'root' })
-export class <Recurso>Client extends ClientTemplate {
+export class <Resource>Client extends ClientTemplate {
   private readonly http = inject(HttpService);
 
-  // IMPORTANTE: Usar constantes DFC para construir la URL — nunca hardcodear
+  // IMPORTANT: Use DFC constants to build the URL — never hardcode
   private readonly BASE_PATH =
-    DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL + DFC.RelativePath.<RECURSO>_PATH;
+    DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL + DFC.RelativePath.<RESOURCE>_PATH;
 
-  obtener(id: string): Observable<<Modelo>> {
-    return this.http.get<<Modelo>>(`${this.BASE_PATH}/${id}`);
+  get(id: string): Observable<<Model>> {
+    return this.http.get<<Model>>(`${this.BASE_PATH}/${id}`);
   }
 }
 ```
 
-> **Regla crítica:** Todo HTTP hacia el backend Java debe pasar por el BFF Express en `server/`. Nunca llames directamente a la URL del backend Java desde Angular.
+> **Critical rule:** All HTTP calls to the Java backend must go through the Express BFF in `server/`. Never call the Java backend URL directly from Angular.
 
 ---
 
-## Archivo de test — `<nombre>.service.spec.ts`
+## Test file — `<name>.service.spec.ts`
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { <Nombre>Service } from './<nombre>.service';
+import { <Name>Service } from './<name>.service';
 
-describe('<Nombre>Service', () => {
-  let service: <Nombre>Service;
+describe('<Name>Service', () => {
+  let service: <Name>Service;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [<Nombre>Service]
+      providers: [<Name>Service]
     });
-    service = TestBed.inject(<Nombre>Service);
+    service = TestBed.inject(<Name>Service);
   });
 
-  it('debería crearse correctamente', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // Agrega tests para cada método público
-  // Mockea HttpService y LoggerService con spies
+  // Add tests for each public method
+  // Mock HttpService and LoggerService with spies
 });
 ```
 
 ---
 
-## Lista de verificación
+## Checklist
 
-- [ ] `@Injectable({ providedIn: 'root' })` presente
-- [ ] Inyección de dependencias con `inject()`, no con constructor
-- [ ] Las URLs se construyen usando constantes `DFC` o `environment`
-- [ ] Toda llamada HTTP usa `HttpService`, nunca `HttpClient` directamente
-- [ ] Sin acceso a `localStorage`/`sessionStorage` — usar `StorageMockService`
-- [ ] Archivo `.spec.ts` creado junto al servicio
-- [ ] Exportado desde el `index.ts` de la carpeta si corresponde
+- [ ] `@Injectable({ providedIn: 'root' })` present
+- [ ] Dependency injection with `inject()`, not constructor
+- [ ] URLs built using `DFC` constants or `environment`
+- [ ] All HTTP calls use `HttpService`, never `HttpClient` directly
+- [ ] No direct `localStorage`/`sessionStorage` access — use `StorageMockService`
+- [ ] `.spec.ts` file created alongside the service
+- [ ] Exported from the folder's `index.ts` if applicable
