@@ -1,14 +1,14 @@
-# Hook: Pre-Edit — Verificaciones antes de editar un archivo
+# Hook: Pre-Edit — Checks Before Editing a File
 
-Este hook define las comprobaciones que Claude debe realizar **antes de modificar cualquier archivo** en este proyecto.
+This hook defines the checks Claude must perform **before modifying any file** in this project.
 
 ---
 
-## Verificaciones obligatorias
+## Mandatory checks
 
-### 1. Archivo protegido — detención inmediata
+### 1. Protected file — immediate stop
 
-Si el archivo objetivo pertenece a alguna de estas rutas, **detén la edición y notifica al usuario**:
+If the target file belongs to any of these paths, **stop the edit and notify the user**:
 
 ```
 ssl/
@@ -18,112 +18,119 @@ docker-entrypoint.sh
 server/config/app.config.js
 ```
 
-Mensaje de parada:
-> "⛔ No puedo modificar `<archivo>` — está en la lista de archivos protegidos del proyecto. Si necesitas cambios en esta área, realízalos manualmente."
+Stop message:
+> "⛔ Cannot modify `<file>` — it is on the project's protected files list. If you need changes in this area, make them manually."
 
 ---
 
-### 2. Leer el archivo antes de editar
+### 2. Read the file before editing
 
-**Siempre** usa la herramienta `Read` para leer el contenido completo del archivo antes de proponer cualquier cambio. Nunca edites a ciegas.
-
----
-
-### 3. Sin código muerto — imports, variables y funciones sin uso
-
-**Antes de escribir cualquier código**, verifica que no introduces:
-- Imports sin usar (`import { Foo } from '...'` si `Foo` no aparece en el archivo)
-- Variables declaradas pero nunca leídas (`const x = ...` que no se usa)
-- Parámetros de función que no se referencian en el cuerpo
-- Funciones o métodos privados que no se llaman desde ningún sitio
-
-Si detectas código muerto en el archivo **existente**, no lo propagues ni lo copies en tu edición. Menciónalo al usuario.
-
-> Motivo: `tsconfig.json` tiene activo `noUnusedLocals` — el compilador rechazará el build si hay imports o variables locales sin uso.
+**Always** use the `Read` tool to read the full content of the file before proposing any change. Never edit blindly.
 
 ---
 
-### 4. Verificar convenciones según tipo de archivo
+### 3. No dead code — unused imports, variables, and functions
 
-#### Si es un componente Angular (`*.component.ts`)
+**Before writing any code**, verify that you are not introducing:
+- Unused imports (`import { Foo } from '...'` if `Foo` does not appear in the file)
+- Variables declared but never read (`const x = ...` that is never used)
+- Function parameters not referenced in the body
+- Private functions or methods that are never called
 
-Comprueba que el archivo **ya tenga** o que los cambios **mantengan**:
-- `standalone: true` en el decorador `@Component`
-- Ausencia de referencias a NgModule
-- Uso de `inject()` para dependencias (no `constructor` con DI, salvo herencia)
+If you detect dead code in the **existing** file, do not propagate or copy it in your edit. Mention it to the user.
 
-Si detectas una violación existente, **no la propagues** en tu edición y menciona el hallazgo.
-
-#### Si es un template Angular (`*.component.html`)
-
-Verifica que el template objetivo usa (o seguirá usando tras el cambio):
-- `@if` / `@for` / `@let` — **no** `*ngIf` / `*ngFor` / `*ngSwitch`
-- Si la clave i18n ya existe → usa `{{ 'clave' | translate }}`
-- Si el texto es nuevo o de prototipado → string en duro es aceptable, añade `<!-- TODO: i18n -->`
-- Sin URLs hardcodeadas en `href`, `src` o `[routerLink]` absolutas externas
-
-#### Si es un effect NgRx (`*.effects.ts`)
-
-Verifica:
-- Existe un `catchError` que despacha la acción `*Fallido`
-- No hay llamadas HTTP directas al backend Java (sin pasar por el BFF)
-
-#### Si es un archivo del BFF (`server/**/*.js`)
-
-Verifica:
-- No se introducen credenciales o secrets en duro
-- Las URLs de backend se leen de `process.env.*` o de la config central
-- No se expone información sensible en las respuestas
-
-#### Si es un archivo de entorno (`src/environments/*.ts`)
-
-- Confirmar que solo contiene `environment.*` — sin credenciales reales
-- Verificar que no se añaden URLs de backend Java directas (van en el BFF)
+> Reason: `tsconfig.json` has `noUnusedLocals` enabled — the compiler will reject the build if there are unused imports or local variables.
 
 ---
 
-### 5. Comprobación SSR
+### 4. Verify conventions by file type
 
-Si el archivo modificado usa cualquiera de estas APIs:
+#### Angular component (`*.component.ts`)
+
+Check that the file **already has** or that the changes **maintain**:
+- `standalone: true` in the `@Component` decorator
+- No references to NgModule
+- Use of `inject()` for dependencies (not constructor DI, except for inheritance or ControlValueAccessor)
+
+If you detect an existing violation, **do not propagate it** in your edit and mention the finding.
+
+#### Angular template (`*.component.html`)
+
+Verify the target template uses (or will continue to use after the change):
+- `@if` / `@for` / `@let` — **not** `*ngIf` / `*ngFor` / `*ngSwitch`
+- If the i18n key already exists → use `{{ 'key' | translate }}`
+- If the text is new or prototypal → hardcoded string is acceptable, add `<!-- TODO: i18n -->`
+- No hardcoded URLs in `href`, `src`, or absolute external `[routerLink]`
+
+#### NgRx effect (`*.effects.ts`)
+
+Verify:
+- There is a `catchError` that dispatches the `*Failure` action
+- No direct HTTP calls to the Java backend (bypassing the BFF)
+- HTTP only via `HttpService` — never `HttpClient` directly
+
+#### BFF file (`server/**/*.js`)
+
+Verify:
+- The file has `'use strict';` at the top
+- No credentials, secrets, or hardcoded URLs are introduced
+- Backend URLs are read from `process.env.*` or the central config
+- Any controller that builds proxy URLs includes SSRF validation (domain allowlist)
+- No sensitive information is exposed in error responses
+- Session managed with `getUserSession()` from `redis-session-store.js` — not `req.session?.token`
+
+#### Environment file (`src/environments/*.ts`)
+
+- Confirm it only contains `environment.*` — no real credentials
+- Verify no direct Java backend URLs are added (those go in the BFF)
+
+---
+
+### 5. SSR check
+
+If the modified file uses any of these APIs:
 - `window`, `document`, `navigator`, `location`
 - `localStorage`, `sessionStorage`, `indexedDB`
-- `setTimeout`, `setInterval` (sin cleanup)
+- `setTimeout`, `setInterval` (without cleanup in `ngOnDestroy`)
 
-Verifica que estén envueltas con `isPlatformBrowser()` o que usen `StorageMockService`. Si no lo están, avisa antes de proceder.
-
----
-
-### 5. Impacto en tests
-
-Si el archivo modificado tiene un `*.spec.ts` correspondiente:
-- Menciona que los tests pueden necesitar actualización.
-- Si el cambio afecta la interfaz pública (inputs, outputs, métodos públicos, acciones NgRx), indica qué specs deben revisarse.
+Verify they are wrapped with `isPlatformBrowser()` or use `StorageMockService`. If they are not, warn before proceeding.
 
 ---
 
-## Resumen del flujo pre-edit
+### 6. Test impact
+
+If the modified file has a corresponding `*.spec.ts`:
+- Mention that tests may need updating.
+- If the change affects the public interface (inputs, outputs, public methods, NgRx actions), indicate which specs should be reviewed.
+
+---
+
+## Pre-edit flow summary
 
 ```
-1. ¿Es un archivo protegido?
-   → SÍ: Detener y notificar
-   → NO: Continuar
+1. Is it a protected file?
+   → YES: Stop and notify
+   → NO: Continue
 
-2. Leer el archivo completo
+2. Read the full file
 
-3. ¿El código que voy a escribir tiene imports, variables o funciones sin uso?
-   → Eliminarlos antes de editar
+3. Does the code I am about to write have unused imports, variables, or functions?
+   → Remove them before editing
 
-4. ¿Es un componente Angular?
-   → Verificar standalone, inject(), sin NgModule
+4. Is it an Angular component?
+   → Verify standalone, inject(), no NgModule
 
-5. ¿Es un template?
-   → Verificar @if/@for/@let, | translate, sin strings en duro
+5. Is it a template?
+   → Verify @if/@for/@let, | translate, no hardcoded strings
 
-6. ¿Usa APIs browser-only?
-   → Verificar protección SSR
+6. Is it a BFF file?
+   → Verify 'use strict', SSRF validation, no hardcoded secrets
 
-7. ¿Tiene spec correspondiente?
-   → Avisar sobre posible actualización de tests
+7. Does it use browser-only APIs?
+   → Verify SSR protection
 
-8. Proceder con la edición
+8. Does it have a corresponding spec?
+   → Warn about possible test updates
+
+9. Proceed with the edit
 ```

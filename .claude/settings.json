@@ -9,17 +9,27 @@
       "Write(server/)",
       "Edit(.claude/)",
       "Write(.claude/)",
+      "Edit(docs/)",
+      "Write(docs/)",
       "Bash(ng:*)",
       "Bash(npm run:*)",
       "Bash(npm test:*)",
       "Bash(npm install:*)",
+      "Bash(npm ci:*)",
+      "Bash(npm audit:*)",
       "Bash(git status:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
       "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
-      "Bash(jq:*)"
+      "Bash(jq:*)",
+      "Bash(node --check:*)",
+      "Bash(node -e:*)"
     ],
     "deny": [
       "Edit(ssl/)",
@@ -52,7 +62,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd=$(jq -r '.tool_input.command'); echo \"$cmd\" | grep -qE '(^|[ /])(ssl|dist)/|(\\bDockerfile\\b|\\bdocker-entrypoint\\.sh\\b)' && echo '{\"continue\":false,\"stopReason\":\"Bloqueado: el comando afecta archivos protegidos del proyecto (ssl/, dist/, Dockerfile, docker-entrypoint.sh).\"}' || true",
+            "command": "cmd=$(jq -r '.tool_input.command // empty' 2>/dev/null); [ -z \"$cmd\" ] && exit 0; echo \"$cmd\" | grep -qE '(^|[ /])(ssl|dist)/|(\\bDockerfile\\b|\\bdocker-entrypoint\\.sh\\b)' && echo '{\"continue\":false,\"stopReason\":\"Bloqueado: el comando afecta archivos protegidos del proyecto (ssl/, dist/, Dockerfile, docker-entrypoint.sh).\"}' || true",
             "timeout": 5,
             "statusMessage": "Verificando comando Bash..."
           }

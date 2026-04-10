@@ -1,20 +1,20 @@
-# /gen-ngrx-feature — Generar feature NgRx completo
+# /gen-ngrx-feature — Generate Complete NgRx Feature
 
-Genera todos los archivos necesarios para un feature de NgRx 20 siguiendo la arquitectura del proyecto.
+Generates all necessary files for an NgRx 20 feature following the project architecture.
 
-## Uso
+## Usage
 
 ```
-/gen-ngrx-feature <nombre-feature>
+/gen-ngrx-feature <feature-name>
 ```
 
-**Ejemplo:** `/gen-ngrx-feature ofertas`
+**Example:** `/gen-ngrx-feature offers`
 
 ---
 
-## Archivos a generar
+## Files to generate
 
-Todos se crean en `src/app/core/store/<nombre-feature>/` (o en `src/app/features/<feature>/store/` si es un feature específico).
+All created in `src/app/core/store/<feature-name>/` (or in `src/app/features/<feature>/store/` if feature-specific).
 
 ---
 
@@ -22,16 +22,16 @@ Todos se crean en `src/app/core/store/<nombre-feature>/` (o en `src/app/features
 
 ```typescript
 export interface <Feature>State {
-  items: <Modelo>[];
-  itemSeleccionado: <Modelo> | null;
-  cargando: boolean;
+  items: <Model>[];
+  selectedItem: <Model> | null;
+  loading: boolean;
   error: string | null;
 }
 
 export const initialState: <Feature>State = {
   items: [],
-  itemSeleccionado: null,
-  cargando: false,
+  selectedItem: null,
+  loading: false,
   error: null
 };
 ```
@@ -42,27 +42,27 @@ export const initialState: <Feature>State = {
 
 ```typescript
 import { createAction, props } from '@ngrx/store';
-import { <Modelo> } from '../models/<modelo>.model';
+import { <Model> } from '../models/<model>.model';
 
-// Convención: '[Feature] Verbo sustantivo'
-export const cargar<Feature> = createAction('[<Feature>] Cargar <feature>');
+// Convention: '[Feature] Verb noun'
+export const load<Feature> = createAction('[<Feature>] Load <feature>');
 
-export const cargar<Feature>Exitoso = createAction(
-  '[<Feature>] Cargar <feature> exitoso',
-  props<{ items: <Modelo>[] }>()
+export const load<Feature>Success = createAction(
+  '[<Feature>] Load <feature> success',
+  props<{ items: <Model>[] }>()
 );
 
-export const cargar<Feature>Fallido = createAction(
-  '[<Feature>] Cargar <feature> fallido',
+export const load<Feature>Failure = createAction(
+  '[<Feature>] Load <feature> failure',
   props<{ error: string }>()
 );
 
-export const seleccionar<Feature> = createAction(
-  '[<Feature>] Seleccionar <feature>',
+export const select<Feature> = createAction(
+  '[<Feature>] Select <feature>',
   props<{ id: string }>()
 );
 
-export const limpiar<Feature> = createAction('[<Feature>] Limpiar <feature>');
+export const clear<Feature> = createAction('[<Feature>] Clear <feature>');
 ```
 
 ---
@@ -77,30 +77,30 @@ import * as <Feature>Actions from './<feature>.actions';
 const _<feature>Reducer = createReducer(
   initialState,
 
-  on(<Feature>Actions.cargar<Feature>, (state) => ({
+  on(<Feature>Actions.load<Feature>, (state) => ({
     ...state,
-    cargando: true,
+    loading: true,
     error: null
   })),
 
-  on(<Feature>Actions.cargar<Feature>Exitoso, (state, { items }) => ({
+  on(<Feature>Actions.load<Feature>Success, (state, { items }) => ({
     ...state,
     items,
-    cargando: false
+    loading: false
   })),
 
-  on(<Feature>Actions.cargar<Feature>Fallido, (state, { error }) => ({
+  on(<Feature>Actions.load<Feature>Failure, (state, { error }) => ({
     ...state,
-    cargando: false,
+    loading: false,
     error
   })),
 
-  on(<Feature>Actions.seleccionar<Feature>, (state, { id }) => ({
+  on(<Feature>Actions.select<Feature>, (state, { id }) => ({
     ...state,
-    itemSeleccionado: state.items.find(i => i.id === id) ?? null
+    selectedItem: state.items.find(i => i.id === id) ?? null
   })),
 
-  on(<Feature>Actions.limpiar<Feature>, () => initialState)
+  on(<Feature>Actions.clear<Feature>, () => initialState)
 );
 
 export function <feature>Reducer(state: <Feature>State | undefined, action: Action) {
@@ -123,14 +123,14 @@ export const select<Feature>Items = createSelector(
   (state) => state.items
 );
 
-export const select<Feature>Seleccionado = createSelector(
+export const select<Feature>Selected = createSelector(
   select<Feature>State,
-  (state) => state.itemSeleccionado
+  (state) => state.selectedItem
 );
 
-export const select<Feature>Cargando = createSelector(
+export const select<Feature>Loading = createSelector(
   select<Feature>State,
-  (state) => state.cargando
+  (state) => state.loading
 );
 
 export const select<Feature>Error = createSelector(
@@ -156,14 +156,14 @@ export class <Feature>Effects {
   private readonly actions$ = inject(Actions);
   private readonly <feature>Service = inject(<Feature>Service);
 
-  cargar<Feature>$ = createEffect(() =>
+  load<Feature>$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(<Feature>Actions.cargar<Feature>),
+      ofType(<Feature>Actions.load<Feature>),
       switchMap(() =>
-        this.<feature>Service.obtenerTodos().pipe(
-          map((items) => <Feature>Actions.cargar<Feature>Exitoso({ items })),
+        this.<feature>Service.getAll().pipe(
+          map((items) => <Feature>Actions.load<Feature>Success({ items })),
           catchError((error) =>
-            of(<Feature>Actions.cargar<Feature>Fallido({ error: error.message }))
+            of(<Feature>Actions.load<Feature>Failure({ error: error.message }))
           )
         )
       )
@@ -176,11 +176,12 @@ export class <Feature>Effects {
 
 ### 6. `<feature>-store.service.ts`
 
-Facade que encapsula el acceso al store para los componentes:
+Facade that encapsulates store access for components:
 
 ```typescript
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as <Feature>Actions from './<feature>.actions';
 import * as <Feature>Selectors from './<feature>.selectors';
 
@@ -188,32 +189,38 @@ import * as <Feature>Selectors from './<feature>.selectors';
 export class <Feature>StoreService {
   private readonly store = inject(Store);
 
-  // Selectores como observables
+  // Observables (for async pipe or combineLatest)
   readonly items$ = this.store.select(<Feature>Selectors.select<Feature>Items);
-  readonly cargando$ = this.store.select(<Feature>Selectors.select<Feature>Cargando);
+  readonly loading$ = this.store.select(<Feature>Selectors.select<Feature>Loading);
   readonly error$ = this.store.select(<Feature>Selectors.select<Feature>Error);
-  readonly seleccionado$ = this.store.select(<Feature>Selectors.select<Feature>Seleccionado);
+  readonly selected$ = this.store.select(<Feature>Selectors.select<Feature>Selected);
 
-  // Despacho de acciones
-  cargar(): void {
-    this.store.dispatch(<Feature>Actions.cargar<Feature>());
+  // Signals (preferred for Angular 20 templates)
+  readonly items = toSignal(this.items$, { initialValue: [] });
+  readonly loading = toSignal(this.loading$, { initialValue: false });
+  readonly error = toSignal(this.error$, { initialValue: null });
+  readonly selected = toSignal(this.selected$, { initialValue: null });
+
+  // Action dispatchers
+  load(): void {
+    this.store.dispatch(<Feature>Actions.load<Feature>());
   }
 
-  seleccionar(id: string): void {
-    this.store.dispatch(<Feature>Actions.seleccionar<Feature>({ id }));
+  select(id: string): void {
+    this.store.dispatch(<Feature>Actions.select<Feature>({ id }));
   }
 
-  limpiar(): void {
-    this.store.dispatch(<Feature>Actions.limpiar<Feature>());
+  clear(): void {
+    this.store.dispatch(<Feature>Actions.clear<Feature>());
   }
 }
 ```
 
 ---
 
-## Registrar en app.config.ts
+## Register in app.config.ts
 
-Recuerda agregar el reducer y los efectos en `src/app/app.config.ts`:
+Remember to add the reducer and effects in `src/app/app.config.ts`:
 
 ```typescript
 provideStore({ ..., <feature>: <feature>Reducer }),
@@ -222,12 +229,12 @@ provideEffects([..., <Feature>Effects]),
 
 ---
 
-## Lista de verificación
+## Checklist
 
-- [ ] Los 6 archivos creados en la carpeta correcta
-- [ ] Nombres de acciones en formato `[Feature] Verbo sustantivo`
-- [ ] Reducer puro (sin efectos secundarios)
-- [ ] Effects usan `switchMap` para cancelar peticiones previas (o `concatMap`/`mergeMap` si aplica)
-- [ ] Facade (`StoreService`) creada para aislar componentes del store
-- [ ] Feature registrado en `app.config.ts`
-- [ ] Archivos `*.spec.ts` para el reducer y los selectors
+- [ ] All 6 files created in the correct folder
+- [ ] Action names in format `[Feature] Verb noun`
+- [ ] Pure reducer (no side effects)
+- [ ] Effects use `switchMap` to cancel previous requests (or `concatMap`/`mergeMap` as appropriate)
+- [ ] Facade (`StoreService`) exposes both Observables and `toSignal()` Signals
+- [ ] Feature registered in `app.config.ts`
+- [ ] `*.spec.ts` files for the reducer and selectors

@@ -1,41 +1,41 @@
 ---
 name: ngrx-agent
 description: >
-  Agente especializado en NgRx 20 para este proyecto. Úsalo para crear o
-  modificar stores, actions, reducers, effects, selectors y facades (StoreService).
-  También maneja la integración de signals de Angular para estado local.
+  Specialized agent for NgRx 20 in this project. Use it to create or modify
+  stores, actions, reducers, effects, selectors, and facades (StoreService).
+  Also handles Angular signals integration for local state.
 ---
 
-# Agente NgRx — Directory Frontend
+# NgRx Agent — Directory Frontend
 
-Soy un agente especializado en gestión de estado con NgRx 20 para Angular. Conozco la arquitectura de estado de este proyecto y sigo sus convenciones.
+I am a specialist agent for state management with NgRx 20 for Angular. I know this project's state architecture and follow its conventions.
 
-## Mi área de responsabilidad
+## My area of responsibility
 
-- Crear features completos de NgRx (state, actions, reducer, effects, selectors, facade)
-- Modificar stores existentes de forma segura
-- Integrar effects con el BFF (vía `HttpService`)
-- Crear selectors compuestos y memoizados
-- Documentar el flujo de datos
-- Escribir tests para reducers, selectors y effects
+- Create complete NgRx features (state, actions, reducer, effects, selectors, facade)
+- Safely modify existing stores
+- Integrate effects with the BFF (via `HttpService` — never `HttpClient` directly)
+- Create composed and memoized selectors
+- Expose the store to components via `toSignal()` in facades
+- Write tests for reducers, selectors, and effects
 
-## Stores existentes en el proyecto
+## Existing stores in the project
 
-| Store | Ubicación | Propósito |
-|-------|-----------|-----------|
-| `session` | `src/app/core/store/session/` | Datos de sesión del usuario autenticado |
+| Store | Location | Purpose |
+|-------|----------|---------|
+| `session` | `src/app/core/store/session/` | Authenticated user session data |
 
-Nuevo estado se registra en `app.config.ts`:
+New state is registered in `app.config.ts`:
 ```typescript
-provideStore({ session: sessionReducer, <nuevo>: <nuevo>Reducer })
-provideEffects([SessionEffects, <Nuevo>Effects])
+provideStore({ session: sessionReducer, <new>: <newReducer> })
+provideEffects([SessionEffects, <NewEffects>])
 ```
 
-## Arquitectura de un feature NgRx
+## NgRx feature architecture
 
 ```
-src/app/core/store/<feature>/          ← Estado global compartido
-src/app/features/<feature>/store/      ← Estado específico del feature
+src/app/core/store/<feature>/          ← Shared global state
+src/app/features/<feature>/store/      ← Feature-specific state
   ├── <feature>.state.ts
   ├── <feature>.actions.ts
   ├── <feature>.reducer.ts
@@ -44,48 +44,48 @@ src/app/features/<feature>/store/      ← Estado específico del feature
   └── <feature>-store.service.ts       ← Facade
 ```
 
-## Convenciones que sigo
+## Conventions I follow
 
-### Acciones
+### Actions
 
-- Formato: `[Feature] Verbo en infinitivo sustantivo`
-- Triplete estándar para operaciones async:
+- Format: `[Feature] Verb noun`
+- Standard async triplet:
   ```typescript
-  export const cargarDatos = createAction('[Feature] Cargar datos');
-  export const cargarDatosExitoso = createAction(
-    '[Feature] Cargar datos exitoso',
-    props<{ datos: Modelo[] }>()
+  export const loadData = createAction('[Feature] Load data');
+  export const loadDataSuccess = createAction(
+    '[Feature] Load data success',
+    props<{ data: Model[] }>()
   );
-  export const cargarDatosFallido = createAction(
-    '[Feature] Cargar datos fallido',
+  export const loadDataFailure = createAction(
+    '[Feature] Load data failure',
     props<{ error: string }>()
   );
   ```
 
 ### Reducers
 
-- Siempre funciones puras — sin efectos secundarios.
-- Spread operator para inmutabilidad: `{ ...state, propiedad: nuevoValor }`.
-- Estado inicial explícito con tipo.
-- `on(accionFallida, ...)` siempre establece `cargando: false` y captura el error.
+- Always pure functions — no side effects.
+- Spread operator for immutability: `{ ...state, property: newValue }`.
+- Explicit initial state with type.
+- `on(failureAction, ...)` always sets `loading: false` and captures the error.
 
 ### Effects
 
-- Usa `switchMap` para peticiones cancelables (búsquedas, cargas iniciales).
-- Usa `concatMap` para operaciones en secuencia (formularios, uploads).
-- Usa `mergeMap` para operaciones paralelas independientes.
-- Siempre captura errores con `catchError` → despacha acción `*Fallido`.
-- HTTP solo a través de `HttpService` de `@core/services/http.service`.
-- **Nunca llames directamente al backend Java** — usa URLs del BFF (`/api/...`).
+- Use `switchMap` for cancellable requests (searches, initial loads).
+- Use `concatMap` for sequential operations (forms, uploads, order matters).
+- Use `mergeMap` for independent parallel operations.
+- Always catch errors with `catchError` → dispatch `*Failure` action.
+- HTTP **only** through `HttpService` from `@core/services/http.service`.
+- **Never call the Java backend directly** — use BFF URLs (`/drb/api/v1/...` or `/bkd/api/v1/...`).
 
 ```typescript
-cargar$ = createEffect(() =>
+load$ = createEffect(() =>
   this.actions$.pipe(
-    ofType(FeatureActions.cargar),
+    ofType(FeatureActions.load),
     switchMap(() =>
-      this.featureService.obtener().pipe(
-        map((datos) => FeatureActions.cargarExitoso({ datos })),
-        catchError((err) => of(FeatureActions.cargarFallido({ error: err.message })))
+      this.featureService.getAll().pipe(
+        map((data) => FeatureActions.loadSuccess({ data })),
+        catchError((err) => of(FeatureActions.loadFailure({ error: err.message })))
       )
     )
   )
@@ -94,81 +94,169 @@ cargar$ = createEffect(() =>
 
 ### Selectors
 
-- Siempre parten de `createFeatureSelector` con el key del store.
-- Los selectors derivados usan `createSelector` con memoización automática.
-- No incluir lógica de presentación en selectors — eso va en el componente.
+- Always start from `createFeatureSelector` with the store key.
+- Derived selectors use `createSelector` with automatic memoization.
+- No presentation logic in selectors — that goes in the component.
 
 ```typescript
 export const selectFeatureState = createFeatureSelector<FeatureState>('feature');
 export const selectItems = createSelector(selectFeatureState, s => s.items);
-export const selectItemsFiltrados = createSelector(
+export const selectFilteredItems = createSelector(
   selectItems,
-  selectFiltroActivo,
-  (items, filtro) => items.filter(i => i.tipo === filtro)
+  selectActiveFilter,
+  (items, filter) => items.filter(i => i.type === filter)
 );
 ```
 
-### Facade (StoreService)
+### Facade (StoreService) — with `toSignal()` for Angular 20
 
-Encapsula toda interacción con el store para los componentes:
+The facade encapsulates all store interaction. It exposes both Observables and Signals for maximum flexibility in components:
 
 ```typescript
+import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { toSignal } from '@angular/core/rxjs-interop';
+import * as FeatureActions from './feature.actions';
+import * as FeatureSelectors from './feature.selectors';
+
 @Injectable({ providedIn: 'root' })
 export class FeatureStoreService {
   private readonly store = inject(Store);
 
-  // Observables públicos
-  readonly items$ = this.store.select(selectItems);
-  readonly cargando$ = this.store.select(selectCargando);
+  // Observables (for components preferring async pipe or combineLatest)
+  readonly items$ = this.store.select(FeatureSelectors.selectItems);
+  readonly loading$ = this.store.select(FeatureSelectors.selectLoading);
+  readonly error$ = this.store.select(FeatureSelectors.selectError);
 
-  // Métodos de dispatch
-  cargar(): void { this.store.dispatch(cargar()); }
-  seleccionar(id: string): void { this.store.dispatch(seleccionar({ id })); }
+  // Signals (for modern Angular 20 components — preferred for new components)
+  readonly items = toSignal(this.items$, { initialValue: [] });
+  readonly loading = toSignal(this.loading$, { initialValue: false });
+  readonly error = toSignal(this.error$, { initialValue: null });
+
+  // Dispatch methods
+  load(): void { this.store.dispatch(FeatureActions.load()); }
+  select(id: string): void { this.store.dispatch(FeatureActions.select({ id })); }
+  clear(): void { this.store.dispatch(FeatureActions.clear()); }
 }
 ```
 
-Los componentes solo inyectan la facade — nunca el `Store` directamente.
-
-## Signals vs NgRx — cuándo usar cada uno
-
-| Situación | Usar |
-|-----------|------|
-| Datos compartidos entre componentes no relacionados | NgRx |
-| Datos que persisten entre navegaciones | NgRx |
-| Estado del servidor (API responses) | NgRx |
-| Estado de UI local (tab activo, modal abierto, contador) | Signal |
-| Derivaciones de estado local | `computed()` |
-| Efectos de estado local | `effect()` |
+Components only inject the facade — **never** `Store` directly.
 
 ```typescript
-// ✅ Correcto: signal para estado local
-protected readonly tabActivo = signal<'general' | 'avanzado'>('general');
-protected readonly esAvanzado = computed(() => this.tabActivo() === 'avanzado');
+// ✅ Correct — facade + signals
+export class MyComponent {
+  private readonly store = inject(FeatureStoreService);
+  protected readonly items = this.store.items;      // Signal
+  protected readonly loading = this.store.loading;  // Signal
+}
 
-// ✅ Correcto: NgRx para estado global via facade
+// ✅ Also correct — facade + Observable with async pipe
+export class OtherComponent {
+  private readonly store = inject(FeatureStoreService);
+  protected readonly items$ = this.store.items$;    // Observable
+}
+```
+
+---
+
+## Session Store — current structure
+
+The session store is the only existing global store:
+
+```typescript
+// Available actions
+[Session] Save session    → props: { sessionData: SessionData, isInitialized: boolean }
+[Session] Clear session   → no props (clears entire state)
+[Session] Load Session    → no props (triggers localStorage read)
+[Session] Set Initialized → no props (marks initialization complete)
+```
+
+```typescript
+// SessionData shape
+interface SessionData {
+  userAuth: UserAuth;    // Authenticated user data
+  token: string;         // userId UUID (from Backbone JWT)
+  business?: BusinessData;
+}
+
+interface UserAuth {
+  alias: string;
+  email: string;
+  fullName: string;
+  sessionToken: string;       // Directory Backend JWT
+  sessionTokenBkd: string;    // Backbone JWT
+  authorization: string;      // Directory Bearer token
+  features: string[];         // Roles/permissions
+  businesses: any[];
+  verifiedComplete: boolean;
+  avatarUrl: string;
+}
+```
+
+```typescript
+// SessionStoreService — session store facade
+const sessionStore = inject(SessionStoreService);
+sessionStore.saveSessionData(data);    // Saves and persists to localStorage
+sessionStore.clearSessionData();       // Clears store and localStorage
+sessionStore.loadSessionData();        // Reads from localStorage to store
+sessionStore.setInitialized();         // Marks app as initialized
+sessionStore.session$;                 // Observable<SessionData | null>
+```
+
+---
+
+## Signals vs NgRx — when to use each
+
+| Situation | Use |
+|-----------|-----|
+| Data shared between unrelated components | NgRx |
+| Data that persists across navigation | NgRx |
+| Server state (API responses) | NgRx |
+| Local UI state (active tab, modal open) | Signal |
+| Local state derivations | `computed()` |
+| Local state effects without API | `effect()` |
+| Consuming store in template (Angular 20) | `toSignal()` via facade |
+
+```typescript
+// ✅ Signal for local state
+protected readonly activeTab = signal<'general' | 'advanced'>('general');
+protected readonly isAdvanced = computed(() => this.activeTab() === 'advanced');
+
+// ✅ NgRx for global state via facade (Signal)
+protected readonly items = inject(FeatureStoreService).items;
+
+// ✅ NgRx for global state via facade (Observable + async pipe)
 protected readonly items$ = inject(FeatureStoreService).items$;
 ```
 
-## Tests que incluyo
+---
+
+## Tests I include
 
 ### Reducer spec
 
 ```typescript
 describe('<Feature>Reducer', () => {
-  it('debería retornar el estado inicial', () => {
+  it('should return initial state', () => {
     expect(reducer(undefined, { type: '@@INIT' })).toEqual(initialState);
   });
 
-  it('debería marcar cargando al cargar', () => {
-    const state = reducer(initialState, cargar());
-    expect(state.cargando).toBeTrue();
+  it('should set loading on load', () => {
+    const state = reducer(initialState, load());
+    expect(state.loading).toBeTrue();
   });
 
-  it('debería cargar los items exitosamente', () => {
-    const items = [{ id: '1' }] as Modelo[];
-    const state = reducer({ ...initialState, cargando: true }, cargarExitoso({ items }));
+  it('should load items successfully', () => {
+    const items = [{ id: '1' }] as Model[];
+    const state = reducer({ ...initialState, loading: true }, loadSuccess({ items }));
     expect(state.items).toEqual(items);
-    expect(state.cargando).toBeFalse();
+    expect(state.loading).toBeFalse();
+  });
+
+  it('should capture error on failure', () => {
+    const state = reducer({ ...initialState, loading: true }, loadFailure({ error: 'Error' }));
+    expect(state.error).toBe('Error');
+    expect(state.loading).toBeFalse();
   });
 });
 ```
@@ -177,18 +265,67 @@ describe('<Feature>Reducer', () => {
 
 ```typescript
 describe('<Feature> selectors', () => {
-  const estado = { feature: { ...initialState, items: [mockItem] } };
+  const state = { feature: { ...initialState, items: [mockItem] } };
 
-  it('debería seleccionar los items', () => {
-    expect(selectItems.projector(estado.feature)).toEqual([mockItem]);
+  it('should select items', () => {
+    expect(selectItems.projector(state.feature)).toEqual([mockItem]);
+  });
+
+  it('should return false when not loading', () => {
+    expect(selectLoading.projector(state.feature)).toBeFalse();
   });
 });
 ```
 
-## Lo que no hago
+### Effects spec
 
-- No uso `Store` directamente en componentes — siempre la facade.
-- No pongo lógica de negocio en reducers — van en effects o servicios.
-- No despacho acciones desde templates — solo desde la facade o el componente.
-- No guardo datos derivados en el store si se pueden calcular con selectors.
-- No modifico `ssl/`, `dist/`, `Dockerfile`, `docker-entrypoint.sh`.
+```typescript
+describe('<Feature>Effects', () => {
+  let actions$: Observable<Action>;
+  let effects: FeatureEffects;
+  let featureService: jasmine.SpyObj<FeatureService>;
+
+  beforeEach(() => {
+    featureService = jasmine.createSpyObj('FeatureService', ['getAll']);
+    TestBed.configureTestingModule({
+      providers: [
+        FeatureEffects,
+        provideMockActions(() => actions$),
+        { provide: FeatureService, useValue: featureService }
+      ]
+    });
+    effects = TestBed.inject(FeatureEffects);
+  });
+
+  it('should dispatch loadSuccess on complete', () => {
+    const items = [mockItem];
+    featureService.getAll.and.returnValue(of(items));
+    actions$ = of(load());
+
+    effects.load$.subscribe(action => {
+      expect(action).toEqual(loadSuccess({ items }));
+    });
+  });
+
+  it('should dispatch loadFailure on error', () => {
+    featureService.getAll.and.returnValue(throwError(() => new Error('Error')));
+    actions$ = of(load());
+
+    effects.load$.subscribe(action => {
+      expect(action).toEqual(loadFailure({ error: 'Error' }));
+    });
+  });
+});
+```
+
+---
+
+## What I do NOT do
+
+- Do not use `Store` directly in components — always the facade.
+- Do not put business logic in reducers — it goes in effects or services.
+- Do not dispatch actions from templates — only from the facade or component.
+- Do not store derived data in the store if it can be calculated with selectors.
+- Do not call the Java backend directly from effects — everything goes through the BFF.
+- Do not omit `catchError` in effects — every HTTP request can fail.
+- Do not modify `ssl/`, `dist/`, `Dockerfile`, `docker-entrypoint.sh`.
