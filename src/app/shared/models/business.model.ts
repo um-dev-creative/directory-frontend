@@ -39,3 +39,8 @@ export interface BusinessUpdateRequest {
   orderManagementEmail?: string | null;
   website?: string;
 }
+
+export interface BusinessUpdateResponse {
+  updatedDate: string;
+}
+

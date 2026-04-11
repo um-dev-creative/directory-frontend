@@ -1,5 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Avatar, Button, CardComponent, InputComponent} from '@app/components/ui';
@@ -7,7 +7,7 @@ import {TextareaComponent} from '@app/components/ui/inputs/textarea';
 import {SelectComponent} from '@app/components/ui/inputs/select';
 import {IconComponent} from '@app/components/ui/icons/icon';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
-import {PartnerCategoryService, TimezoneService} from '@app/core/services';
+import {NotificationService, PartnerCategoryService, TimezoneService} from '@app/core/services';
 import {CategoryClient} from '@core/services/category/category.client';
 import {BusinessClient} from '@app/core/services/business/business.client';
 import {takeUntil} from 'rxjs/operators';
@@ -25,6 +25,7 @@ interface PartnerGeneralData {
   website: string;
   partnerDescription: string;
   partnerImage: string;
+  email: string;
   customerServiceEmail: string;
   orderManagementEmail: string;
   category: string;
@@ -38,7 +39,7 @@ interface PartnerGeneralData {
   templateUrl: './partner-general-settings.html',
   styleUrls: ['./partner-general-settings.css']
 })
-export class PartnerGeneralSettings implements OnInit {
+export class PartnerGeneralSettings implements OnInit, OnDestroy {
   generalForm: FormGroup;
   isSubmitting = false;
   uploadingImage = false;
@@ -59,7 +60,7 @@ export class PartnerGeneralSettings implements OnInit {
     googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd8_swniU29cO1Q8igw6F1H0-DrhJj6ah5nfdfE_zUkWWepMA/viewform?usp=pp_url&entry.915825717=BusinessGeneralSettings',
     contextData: {
       timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
+      userAgent: '',
       currentPath: '/partner/settings/general',
       component: 'PartnerGeneralSettings'
     }
@@ -72,6 +73,7 @@ export class PartnerGeneralSettings implements OnInit {
     website: 'https://www.ejemplo.com',
     partnerDescription: 'Tienda de Conveniencia',
     partnerImage: '',
+    email: '',
     customerServiceEmail: 'servicio@ejemplo.com',
     orderManagementEmail: 'manager@ejemplo.com',
     category: 'restaurant',
@@ -88,12 +90,22 @@ export class PartnerGeneralSettings implements OnInit {
   private readonly partnerCategoryService: PartnerCategoryService = inject(PartnerCategoryService);
   private readonly timezoneService: TimezoneService = inject(TimezoneService);
   private readonly businessClient: BusinessClient = inject(BusinessClient);
+  private readonly platformId: object = inject(PLATFORM_ID);
   private readonly router: Router = inject(Router);
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly logger = inject(LoggerService);
+  /** Service for displaying notifications */
+  private readonly notificationService: NotificationService = inject(NotificationService);
 
 
   constructor() {
+    if (isPlatformBrowser(this.platformId)) { // SSR: browser-only
+      this.reportProblemOptions.contextData = {
+        ...this.reportProblemOptions.contextData,
+        userAgent: navigator.userAgent
+      };
+    }
+
     this.generalForm = this.fb.group({
       partnerName: [this.partnerData.partnerName, [Validators.required, Validators.maxLength(25)]],
       partnerDescription: [this.partnerData.partnerDescription, [Validators.required, Validators.minLength(20), Validators.maxLength(500)]],
@@ -106,19 +118,26 @@ export class PartnerGeneralSettings implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.select('session').subscribe(sessionState => {
-      if (sessionState && sessionState.sessionData) {
+    this.store.select('session').pipe(takeUntil(this.destroy$)).subscribe(sessionState => {
+      if (sessionState?.sessionData) {
         this.sessionData = sessionState.sessionData;
+        this.partnerData.email = sessionState.sessionData.userAuth.email || '';
         // Aquí podrías cargar más datos del negocio si es necesario
       }
     });
     this.logger.debug('PartnerGeneralSettings ngOnInit - sessionData:', this.sessionData);
     this.loadCategories();
     this.loadTimezones();
-    if (this.sessionData) {
-      this.loadBusinessDetails(this.sessionData.userAuth.businesses[0]);
+    const businessId = this.getCurrentBusinessId();
+    if (businessId) {
+      this.loadBusinessDetails(businessId);
     }
     this.logger.debug('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
@@ -164,7 +183,7 @@ export class PartnerGeneralSettings implements OnInit {
 
     this.businessClient.getBusinessById(businessId).subscribe({
       next: (businessDetailResponse) => {
-        if (businessDetailResponse && businessDetailResponse.headers.status === 200) {
+        if (businessDetailResponse?.headers.status === 200) {
           this.partnerData.partnerName = businessDetailResponse.data.name;
           this.partnerData.partnerDescription = businessDetailResponse.data.description;
           this.partnerData.customerServiceEmail = businessDetailResponse.data.customerServiceEmail || '';
@@ -215,20 +234,41 @@ export class PartnerGeneralSettings implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.generalForm.valid) {
-      this.isSubmitting = true;
-
-      const formData = {
-        ...this.generalForm.value
-      };
-
-      // Simulate API call
-      setTimeout(() => {
-        this.logger.info('Saving partner general settings:', formData);
-        this.isSubmitting = false;
-        // Show success message
-      }, 2000);
+    if (!this.generalForm.valid || this.isSubmitting) {
+      return;
     }
+
+    const businessId = this.getCurrentBusinessId();
+    if (!businessId) {
+      this.logger.error('Unable to update business: businessId not found in session');
+      return;
+    }
+
+    this.isSubmitting = true;
+    const formValue = this.generalForm.getRawValue();
+
+    const payload = {
+      name: formValue.partnerName,
+      description: formValue.partnerDescription,
+      categoryId: formValue.category,
+      email: this.partnerData.email || this.sessionData?.userAuth.email || null,
+      customerServiceEmail: formValue.customerServiceEmail,
+      orderManagementEmail: formValue.orderManagementEmail,
+      website: this.partnerData.website
+    };
+
+    this.businessClient.updateBusiness(businessId, payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        this.logger.info('Partner general settings updated successfully:', response?.updatedDate);
+        this.generalForm.markAsPristine();
+        this.notificationService.success('User updated successfully');
+        this.isSubmitting = false;
+      },
+      error: (error) => {
+        this.logger.error('Error updating partner general settings:', error);
+        this.isSubmitting = false;
+      }
+    });
   }
 
   getFieldVariant(fieldName: string): 'default' | 'error' {
@@ -238,7 +278,7 @@ export class PartnerGeneralSettings implements OnInit {
 
   getFieldError(fieldName: string): string {
     const field = this.generalForm.get(fieldName);
-    if (field && field.errors && (field.dirty || field.touched)) {
+    if (field?.errors && (field.dirty || field.touched)) {
       if (field.errors['required']) return 'Este campo es requerido';
       if (field.errors['email']) return 'Ingresa un email válido';
       if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
@@ -264,7 +304,7 @@ export class PartnerGeneralSettings implements OnInit {
     const errors: any = {};
     Object.keys(this.generalForm.controls).forEach(key => {
       const control = this.generalForm.get(key);
-      if (control && control.errors) {
+      if (control?.errors) {
         errors[key] = control.errors;
       }
     });
@@ -334,5 +374,9 @@ export class PartnerGeneralSettings implements OnInit {
         this.loadingTimezones = false;
       }
     });
+  }
+
+  private getCurrentBusinessId(): string | null {
+    return this.sessionData?.userAuth?.businesses?.[0] ?? null;
   }
 }
