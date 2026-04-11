@@ -37,13 +37,15 @@ describe('BusinessClient', () => {
         website: 'https://nuevo.com'
       };
 
-      service.updateBusiness(id, payload).subscribe();
+      service.updateBusiness(id, payload).subscribe((response) => {
+        expect(response).toEqual({ updatedDate: '2026-04-10T18:05:19' });
+      });
 
       const req = httpMock.expectOne(`${BUSINESS_URL}/${id}`);
       expect(req.request.method).toBe('PATCH');
       expect(req.request.body).toEqual(payload);
 
-      req.flush({ id, name: 'Nuevo nombre' });
+      req.flush({ updatedDate: '2026-04-10T18:05:19' });
     });
   });
 });

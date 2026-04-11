@@ -33,7 +33,10 @@ class MockUserClient {
     }
   }));
   deleteUser = jasmine.createSpy().and.returnValue(of({ status: 204 }));
-  uploadProfileImage = jasmine.createSpy().and.returnValue(of({ status: 200, data: { imageUrl: 'avatar-url' } }));
+  uploadProfileImage = jasmine.createSpy().and.returnValue(of({
+    status: 200,
+    body: { ref: 'avatar-url' }
+  }));
 }
 const mockStore = {
   select: jasmine.createSpy().and.returnValue(of({
@@ -270,8 +273,7 @@ describe('CommunityMember', () => {
     expect(userClient.uploadProfileImage).toHaveBeenCalled();
     const arg = userClient.uploadProfileImage.calls.mostRecent().args[0];
     expect(arg instanceof FormData).toBeTrue();
-    // Component prefixes the returned image with the media URL and a cache-busting version.
-    expect(component.profileData.avatar).toContain('https://prx-qa.tst/latinhub/media/avatar-url?v=');
+    expect(component.profileData.avatar).toBe('avatar-url');
     expect(component.uploadingAvatar).toBe(false);
   }));
 

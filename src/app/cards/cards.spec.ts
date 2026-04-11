@@ -113,7 +113,7 @@ describe('CardsComponent', () => {
     fixture.detectChanges();
 
     const emptyStateElement = fixture.debugElement.query(By.css('.text-center'));
-    expect(emptyStateElement.nativeElement.textContent).toContain('No campaigns available');
+    expect(emptyStateElement.nativeElement.textContent).toContain('No hay campañas disponibles en este momento.');
   });
 
   it('should retry loading on retry button click', () => {
