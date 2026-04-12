@@ -16,6 +16,8 @@ import {SessionData, SessionState} from '@core/store/session/session.state';
 import {Store} from '@ngrx/store';
 import {LoggerService} from '@app/core/services/logger.service';
 import {TimezoneClient} from '@core/services/timezone/timezone.client';
+import {environment} from '@env/environment';
+import {StorageMockService} from '@core/services/storage-mock.service';
 
 
 interface PartnerGeneralData {
@@ -82,6 +84,7 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
 
   loadingBusinessDetails = false;
   errorLoadingBusinessDetails = false;
+  private hasLoadedBusinessDetails = false;
 
   /** Store for session state */
   private readonly store: Store<{ session: SessionState }> = inject(Store);
@@ -94,6 +97,7 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
   private readonly router: Router = inject(Router);
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly logger = inject(LoggerService);
+  private readonly storage = inject(StorageMockService);
   /** Service for displaying notifications */
   private readonly notificationService: NotificationService = inject(NotificationService);
 
@@ -122,16 +126,18 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
       if (sessionState?.sessionData) {
         this.sessionData = sessionState.sessionData;
         this.partnerData.email = sessionState.sessionData.userAuth.email || '';
-        // Aquí podrías cargar más datos del negocio si es necesario
+        const businessId = this.getCurrentBusinessId();
+        if (businessId && !this.hasLoadedBusinessDetails) {
+          this.hasLoadedBusinessDetails = true;
+          this.hydratePartnerImageFromStorage(businessId);
+          this.loadBusinessDetails(businessId);
+        }
       }
     });
     this.logger.debug('PartnerGeneralSettings ngOnInit - sessionData:', this.sessionData);
+
     this.loadCategories();
     this.loadTimezones();
-    const businessId = this.getCurrentBusinessId();
-    if (businessId) {
-      this.loadBusinessDetails(businessId);
-    }
     this.logger.debug('PartnerGeneralSettings ngOnInit - business details loaded for:', this.sessionData?.userAuth.businesses[0]);
   }
 
@@ -192,6 +198,11 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
           this.partnerData.category = businessDetailResponse.data.categoryId || '';
           this.partnerData.timezone = businessDetailResponse.data.timezoneId || 'UTC'; // Default to UTC if not set
           this.partnerData.partnerVerification = businessDetailResponse.data.verified || false;
+          const resolvedImage = this.resolveBusinessImageUrl(businessDetailResponse.data);
+          if (resolvedImage) {
+            this.partnerData.partnerImage = resolvedImage;
+            this.persistPartnerImage(businessId, resolvedImage);
+          }
           this.generalForm.patchValue({
             partnerName: this.partnerData.partnerName,
             partnerDescription: this.partnerData.partnerDescription,
@@ -218,19 +229,49 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
     this.router.navigate(['/partner/settings']);
   }
 
-  onImageSelect(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.uploadingImage = true;
+  onImageSelect(event: Event): void {
+    if (!isPlatformBrowser(this.platformId)) return; // SSR: browser-only
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
 
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagePreview = e.target?.result as string;
-        this.uploadingImage = false;
-      };
-      reader.readAsDataURL(file);
+    // Show preview immediately (browser-only)
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagePreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+
+    const businessId = this.getCurrentBusinessId();
+    if (!businessId) {
+      this.logger.error('PartnerGeneralSettings: no businessId available for image upload');
+      this.notificationService.error('No se pudo identificar el negocio para actualizar la imagen');
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('image', file, file.name);
+    this.uploadingImage = true;
+
+    this.businessClient.updateBusinessImage(businessId, formData).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res) => {
+        const imageUrl = this.resolveBusinessImageUrl(res);
+        if (imageUrl) {
+          // Add a cache-buster to avoid stale CDN/browser copies after upload.
+          const freshImageUrl = this.appendCacheBuster(imageUrl);
+          this.partnerData.partnerImage = freshImageUrl;
+          this.persistPartnerImage(businessId, freshImageUrl);
+        }
+        // imagePreview kept intentionally — shows the local preview immediately
+        // while the CDN URL propagates. Cleared only on error or new upload.
+        this.uploadingImage = false;
+      },
+      error: () => {
+        this.notificationService.error('Error al actualizar la imagen del negocio');
+        this.imagePreview = null;
+        this.uploadingImage = false;
+      }
+    });
   }
 
   onSubmit(): void {
@@ -378,5 +419,46 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
 
   private getCurrentBusinessId(): string | null {
     return this.sessionData?.userAuth?.businesses?.[0] ?? null;
+  }
+
+  private resolveBusinessImageUrl(payload: any): string {
+    const rawImageUrl = payload?.profileImageRef
+      || payload?.logo
+      || payload?.logoUrl
+      || payload?.partnerImage
+      || payload?.image
+      || payload?.media?.imageUrl
+      || payload?.media?.url
+      || '';
+
+    if (!rawImageUrl || typeof rawImageUrl !== 'string') {
+      return '';
+    }
+
+    if (rawImageUrl.startsWith('http://') || rawImageUrl.startsWith('https://') || rawImageUrl.startsWith('data:')) {
+      return rawImageUrl;
+    }
+
+    return `${environment.appImgBaseHref || ''}${rawImageUrl}`;
+  }
+
+  private appendCacheBuster(url: string): string {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}v=${Date.now()}`;
+  }
+
+  private hydratePartnerImageFromStorage(businessId: string): void {
+    const cachedImage = this.storage.getLocal<string>(this.getBusinessImageStorageKey(businessId));
+    if (cachedImage) {
+      this.partnerData.partnerImage = cachedImage;
+    }
+  }
+
+  private persistPartnerImage(businessId: string, imageUrl: string): void {
+    this.storage.setLocal(this.getBusinessImageStorageKey(businessId), imageUrl);
+  }
+
+  private getBusinessImageStorageKey(businessId: string): string {
+    return `partner-business-image-${businessId}`;
   }
 }

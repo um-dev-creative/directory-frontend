@@ -49,6 +49,7 @@ const INNER_BACKBONE_PATH = '/bkd/api/v1';
 const INNER_AUTH_PATH = `${INNER_API_V1_PATH}/auth`;
 const INNER_GENERAL_PATH = `${INNER_API_V1_PATH}/general`;
 const INNER_D_IMAGE_PATH = `${INNER_API_V1_PATH}/d-image`;
+const INNER_D_IMAGE_BUSINESS_PATH = `${INNER_D_IMAGE_PATH}/businesses`;
 const INNER_VERIFY_CODE_PATH = `${INNER_API_V1_PATH}/verify-code`;
 const INNER_CREATE_USER_PATH = `${INNER_AUTH_PATH}/create-user`;
 const INNER_ACCESS_TOKEN_PATH = `${INNER_AUTH_PATH}/access-token`;
@@ -59,6 +60,7 @@ const BACKBONE_TOKEN_RENEW_RELATIVE_PATH = '/backbone/api/v1/session/renew';
 const DS_CREATE_USER_PATH = '/api/v1/users';
 const DS_AUTH_RELATIVE_PATH = '/api/v1/auth';
 const DS_CREATE_BUSINESS = '/api/v1/businesses';
+const DS_BUSINESS_IMAGE_PATH = '/api/v1/businesses/images';
 const DS_TOKEN_RELATIVE_PATH = '/api/v1/session/token';
 const DS_VERIFY_CODE_RELATIVE_PATH = '/api/v1/user-register';
 
@@ -119,6 +121,7 @@ module.exports = {
   TRANSFER_ENCODING,
   INNER_AUTH_PATH,
   INNER_D_IMAGE_PATH,
+  INNER_D_IMAGE_BUSINESS_PATH,
   INNER_GENERAL_PATH,
   INNER_BACKBONE_PATH,
   INNER_VERIFY_CODE_PATH,
@@ -127,6 +130,7 @@ module.exports = {
 
   // Directory services paths
   DS_CREATE_BUSINESS,
+  DS_BUSINESS_IMAGE_PATH,
   DS_CREATE_USER_PATH,
   DS_AUTH_RELATIVE_PATH,
   DS_TOKEN_RELATIVE_PATH,

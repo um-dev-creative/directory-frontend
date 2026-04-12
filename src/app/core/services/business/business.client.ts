@@ -4,6 +4,7 @@ import {DFC} from '@shared/constants/app.const';
 import {catchError, Observable, throwError} from 'rxjs';
 import {
   BusinessCreateRequest,
+  BusinessImageUpdateResponse,
   BusinessUpdateRequest,
   BusinessUpdateResponse
 } from '@shared/models/business.model';
@@ -17,6 +18,8 @@ export class BusinessClient extends ClientTemplate {
     DFC.RelativePath.AUTH_PATH;
   private readonly BUSINESS_CONTENT_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
     DFC.RelativePath.GENERAL_PATH + DFC.RelativePath.BUSINESS_PATH;
+  private readonly BUSINESS_IMAGE_PATH: string = DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL +
+    DFC.RelativePath.D_IMAGE_PATH + DFC.RelativePath.BUSINESS_PATH;
 
   constructor() {
     super();
@@ -50,6 +53,18 @@ export class BusinessClient extends ClientTemplate {
       catchError((err) => {
         const normalized = sanitizeError(err);
         this.logError('BusinessClient.updateBusiness error', normalized);
+        return throwError(() => normalized);
+      })
+    );
+  }
+
+  updateBusinessImage(businessId: string, formData: FormData): Observable<BusinessImageUpdateResponse> {
+    const url = `${this.BUSINESS_IMAGE_PATH}/${businessId}`;
+    this.logInfo(`BusinessClient.updateBusinessImage:: ${url}`);
+    return this.httpClient.post<BusinessImageUpdateResponse>(url, formData).pipe(
+      catchError((err) => {
+        const normalized = sanitizeError(err);
+        this.logError('BusinessClient.updateBusinessImage error', normalized);
         return throwError(() => normalized);
       })
     );

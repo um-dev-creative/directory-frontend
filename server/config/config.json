@@ -35,6 +35,18 @@
       }
     }
   ],
+  "directoryBackendBusinessImageProxyConfig": [
+    {
+      "applicationName": "directory-backend",
+      "matchOn": {
+        "startWith": "/drb/api/v1/d-image/businesses"
+      },
+      "urlRewrite": {
+        "from": "/drb/api/v1/d-image/businesses",
+        "to": "/directory-backend/api/v1/businesses/images"
+      }
+    }
+  ],
   "directoryBackendCreateUserProxyConfig": [
     {
       "applicationName": "directory-backend",

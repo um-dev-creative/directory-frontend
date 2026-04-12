@@ -11,7 +11,10 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit increased to 10MB
 });
 
-// Route for uploading profile images
+// Route for uploading business profile images — must be before the wildcard
+router.post(`${constant.INNER_D_IMAGE_BUSINESS_PATH}/:businessId`, upload.single('image'), multimediaController.uploadBusinessImage);
+
+// Route for uploading user profile images (wildcard — keep last)
 router.post(`${constant.INNER_D_IMAGE_PATH}*`, upload.single('imageData'), multimediaController.uploadProfileImage);
 
 module.exports = router;
