@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icons/icon';
 
@@ -34,7 +34,7 @@ export type AvatarVariant = 'circular' | 'rounded' | 'square';
   `,
   styles: []
 })
-export class Avatar {
+export class Avatar implements OnChanges {
   @Input() src: string = '';
   @Input() alt: string = 'Avatar';
   @Input() initials: string = '';
@@ -44,6 +44,12 @@ export class Avatar {
   @Input() iconName: string = 'user'; // Default fallback icon
 
   imageError = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['src']) {
+      this.imageError = false;
+    }
+  }
 
   get displayInitials(): string {
     if (!this.initials) return '';

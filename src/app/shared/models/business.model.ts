@@ -44,3 +44,8 @@ export interface BusinessUpdateResponse {
   updatedDate: string;
 }
 
+export interface BusinessImageUpdateResponse {
+  imageUrl: string;
+  updatedDate: string;
+}
+

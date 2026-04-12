@@ -4,7 +4,9 @@ const appConfig = require("../config/app.config");
 const constants = require("../config/constants.util");
 const {getApiEndpoint, getSimpleResponse} = require('../shared/common-function');
 const directoryUserProfileImageProxyConfig = appConfig.getDirectoryUserProfileImageProxyConfig();
+const directoryBusinessImageProxyConfig = require('../config/config.json').directoryBackendBusinessImageProxyConfig;
 const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_DIRECTORY_BACKEND_MULTIMEDIA}] :::`;
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const logger = appConfig.getLoggerApp();
 const {
@@ -79,6 +81,60 @@ const uploadProfileImage = async (req, res) => {
   }
 };
 
+/**
+ * Handles uploading of a business profile image to the downstream API.
+ *
+ * Validates the businessId as a UUID to prevent path injection, then proxies
+ * the multipart file to /directory-backend/api/v1/businesses/images/{businessId}
+ * using directory OAuth credentials. The URL is resolved via the proxy config
+ * allowlist (SSRF-safe).
+ *
+ * @param {Object} req - Request with params.businessId, headers, and file.
+ * @param {Object} res - Response object.
+ */
+const uploadBusinessImage = async (req, res) => {
+  if (!req.file) {
+    logger.error(`${LOGGER_TAG_ID} No file provided in the request`);
+    return res.status(400).json({ error: 'No file provided' });
+  }
+
+  const { businessId } = req.params;
+  if (!businessId || !UUID_REGEX.test(businessId)) {
+    logger.error(`${LOGGER_TAG_ID} Invalid businessId format`);
+    return res.status(400).json({ error: 'Invalid businessId' });
+  }
+
+  const userId = decode(req.headers[constants.SESSION_TOKEN_DIR])?.uid;
+
+  try {
+    const directorySessionData = await oauthCommonFunction.getDirectorySessionToken(userId, directoryOauthClientConfig);
+
+    const apiURL = getApiEndpoint(req.url, directoryBusinessImageProxyConfig, API_SERVICE_DIRECTORY_MAP);
+    logger.debug(`${LOGGER_TAG_ID} Business image API URL: ${apiURL}`);
+
+    const formData = new FormData();
+    formData.append(req.file.fieldname, req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype,
+    });
+
+    const headers = {
+      [constants.SESSION_TOKEN_DIR]: req.headers[constants.SESSION_TOKEN_DIR],
+      [constants.AUTHORIZATION]: constants.BEARER.concat(directorySessionData.directoryBearerToken),
+      ...formData.getHeaders(),
+    };
+
+    const axiosResponse = await axios.post(apiURL, formData, { headers });
+    logger.info(`${LOGGER_TAG_ID} Business image uploaded successfully: ${axiosResponse.status}`);
+    const response = getSimpleResponse(axiosResponse, null);
+    res.status(axiosResponse.status).json(response.data);
+  } catch (error) {
+    logger.error(`${LOGGER_TAG_ID} Error during business image upload: ${error.message}`);
+    res.status(error.response?.status || 500).json({ error: 'Business image upload failed' });
+  }
+};
+
 module.exports = {
-  uploadProfileImage
+  uploadProfileImage,
+  uploadBusinessImage
 };

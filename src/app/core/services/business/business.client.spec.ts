@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { BusinessClient } from './business.client';
-import { BusinessUpdateRequest } from '@shared/models/business.model';
+import { BusinessImageUpdateResponse, BusinessUpdateRequest } from '@shared/models/business.model';
 import { DFC } from '@shared/constants/app.const';
 
 describe('BusinessClient', () => {
@@ -26,6 +26,41 @@ describe('BusinessClient', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('updateBusinessImage()', () => {
+    it('should send a POST request with the correct URL and FormData', () => {
+      const businessId = '11111111-1111-4111-8111-111111111111';
+      const expectedUrl = `${DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL}${DFC.RelativePath.D_IMAGE_PATH}${DFC.RelativePath.BUSINESS_PATH}/${businessId}`;
+      const mockResponse: BusinessImageUpdateResponse = {
+        imageUrl: 'https://cdn.example.com/biz-logo.png',
+        updatedDate: '2026-04-12T10:00:00'
+      };
+      const formData = new FormData();
+      formData.append('imageData', new Blob(['img']), 'logo.png');
+
+      service.updateBusinessImage(businessId, formData).subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+      });
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+    });
+
+    it('should propagate errors for store/effect consumption', () => {
+      const businessId = '11111111-1111-4111-8111-111111111111';
+      const expectedUrl = `${DFC.RelativePath.DIRECTORY_BACKEND_BASE_URL}${DFC.RelativePath.D_IMAGE_PATH}${DFC.RelativePath.BUSINESS_PATH}/${businessId}`;
+      let errorThrown = false;
+
+      service.updateBusinessImage(businessId, new FormData()).subscribe({
+        error: () => { errorThrown = true; }
+      });
+
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({ error: 'Internal Server Error' }, { status: 500, statusText: 'Server Error' });
+      expect(errorThrown).toBeTrue();
+    });
   });
 
   describe('updateBusiness()', () => {
