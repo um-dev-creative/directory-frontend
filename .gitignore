@@ -46,3 +46,4 @@ package-lock.json
 /vscode/*
 /default.env
 /pnpm-lock.yaml
+.pr-description.md
