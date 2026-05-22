@@ -175,7 +175,7 @@ src/environments/        # Variables de entorno por ambiente
 ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox
 
 # Con navegador interactivo (solo desarrollo local)
-npm run test:browser
+pnpm run test:browser
 ```
 
 - Crea archivos `*.spec.ts` en la misma carpeta que el archivo que testeas.
@@ -210,10 +210,10 @@ npm run test:browser
 
 ### Reglas
 
-- Ejecuta `npm audit` antes de todo PR que toque dependencias
+- Ejecuta `pnpm audit` antes de todo PR que toque dependencias
 - Tolerancia cero para vulnerabilidades `critical` o `high` en merge
-- Usa `npm ci` en CI/CD, nunca `npm install`
-- Nunca ejecutes `npm audit fix --force` sin rama separada y suite de tests pasando
+- Usa `pnpm install --frozen-lockfile` en CI/CD, nunca `pnpm install` sin flag
+- Nunca ejecutes `pnpm audit --fix` sin rama separada y suite de tests pasando
 - Al actualizar Angular, actualiza **todos** los paquetes `@angular/*` a la vez — comparten peer deps y deben estar en la misma versión de patch
 
 ### Al añadir dependencias
@@ -231,5 +231,5 @@ npm run test:browser
 
 ```yaml
 - name: Security audit
-  run: npm audit --audit-level=high
+  run: pnpm audit --audit-level high
 ```

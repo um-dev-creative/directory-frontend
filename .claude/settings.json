@@ -12,11 +12,10 @@
       "Edit(docs/)",
       "Write(docs/)",
       "Bash(ng:*)",
-      "Bash(npm run:*)",
-      "Bash(npm test:*)",
-      "Bash(npm install:*)",
-      "Bash(npm ci:*)",
-      "Bash(npm audit:*)",
+      "Bash(pnpm run:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm audit:*)",
       "Bash(git status:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
@@ -27,6 +26,11 @@
       "Bash(git pull:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
+      "Bash(grep:*)",
+      "Bash(find .:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(npx:*)",
       "Bash(jq:*)",
       "Bash(node --check:*)",
       "Bash(node -e:*)"
@@ -47,17 +51,6 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -Rs '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":.}}' .claude/hooks/pre-edit.md 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Verificando convenciones pre-edición..."
-          }
-        ]
-      },
-      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -65,19 +58,6 @@
             "command": "cmd=$(jq -r '.tool_input.command // empty' 2>/dev/null); [ -z \"$cmd\" ] && exit 0; echo \"$cmd\" | grep -qE '(^|[ /])(ssl|dist)/|(\\bDockerfile\\b|\\bdocker-entrypoint\\.sh\\b)' && echo '{\"continue\":false,\"stopReason\":\"Bloqueado: el comando afecta archivos protegidos del proyecto (ssl/, dist/, Dockerfile, docker-entrypoint.sh).\"}' || true",
             "timeout": 5,
             "statusMessage": "Verificando comando Bash..."
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -Rs '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":.}}' .claude/hooks/post-edit.md 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Aplicando verificaciones post-edición..."
           }
         ]
       }
