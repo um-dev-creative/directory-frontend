@@ -37,5 +37,51 @@
       "title": "User",
       "tooltip": "User"
     }
+  },
+  "business_search": {
+    "title": "Find businesses",
+    "city": "City",
+    "all_cities": "All cities",
+    "category": "Category",
+    "all_categories": "All categories",
+    "text": "Name or description",
+    "results_count": "{{count}} businesses found",
+    "empty": "We found no businesses with those filters.",
+    "error": "The search could not be completed. Please try again.",
+    "verified": "Verified",
+    "pagination": "Results pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{total}}"
+  },
+  "locations": {
+    "back": "Back",
+    "title": "My locations",
+    "subtitle": "Locations management",
+    "description": "Manage the branches of your business. One of them is the main one.",
+    "no_business": "You have no registered business yet.",
+    "add": "Add location",
+    "edit": "Edit",
+    "delete": "Delete",
+    "delete_confirm": "Delete this location?",
+    "delete_yes": "Yes, delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading locations…",
+    "empty": "You have no locations yet.",
+    "main": "Main",
+    "make_main": "Make main",
+    "set_main": "This is the main location",
+    "city": "City",
+    "select_city": "Select a city",
+    "address": "Address",
+    "name": "Branch name",
+    "postal_code": "Postal code",
+    "phone": "Phone",
+    "error": "The operation could not be completed. Check the data and try again.",
+    "errors": {
+      "city_required": "Select a city.",
+      "address_required": "Enter the address."
+    }
   }
 }

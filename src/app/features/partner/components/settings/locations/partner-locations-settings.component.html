@@ -1,0 +1,131 @@
+<div class="settings-page">
+  <div class="settings-header">
+    <button type="button" class="back-button" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+      {{ 'locations.back' | translate }}
+    </button>
+    <h1 class="page-title">{{ 'locations.title' | translate }}</h1>
+  </div>
+
+  <div class="settings-content">
+    <div class="settings-section">
+      <h2>{{ 'locations.subtitle' | translate }}</h2>
+      <p>{{ 'locations.description' | translate }}</p>
+
+      @if (error()) {
+        <p class="locations-error" role="alert">{{ 'locations.error' | translate }}</p>
+      }
+
+      @if (!businessId()) {
+        <p class="locations-empty">{{ 'locations.no_business' | translate }}</p>
+      } @else {
+        @if (!showForm()) {
+          <button type="button" class="locations-primary" (click)="openAdd()">{{ 'locations.add' | translate }}</button>
+        }
+
+        @if (showForm()) {
+          <form class="locations-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <h3>{{ (editingId() ? 'locations.edit' : 'locations.add') | translate }}</h3>
+
+            <label>
+              <span>{{ 'locations.city' | translate }} *</span>
+              <select formControlName="cityId">
+                <option value="">{{ 'locations.select_city' | translate }}</option>
+                @for (city of cities(); track city.id) {
+                  <option [value]="city.id">{{ city.name }}, {{ city.province }}</option>
+                }
+              </select>
+              @if (form.controls.cityId.touched && form.controls.cityId.hasError('required')) {
+                <small class="field-error">{{ 'locations.errors.city_required' | translate }}</small>
+              }
+            </label>
+
+            <label>
+              <span>{{ 'locations.address' | translate }} *</span>
+              <input type="text" formControlName="addressLine" maxlength="200" autocomplete="street-address"/>
+              @if (form.controls.addressLine.touched && (form.controls.addressLine.hasError('required') || form.controls.addressLine.hasError('blank'))) {
+                <small class="field-error">{{ 'locations.errors.address_required' | translate }}</small>
+              }
+            </label>
+
+            <label>
+              <span>{{ 'locations.name' | translate }}</span>
+              <input type="text" formControlName="name" maxlength="120"/>
+            </label>
+
+            <label>
+              <span>{{ 'locations.postal_code' | translate }}</span>
+              <input type="text" formControlName="postalCode" maxlength="10" autocomplete="postal-code"/>
+            </label>
+
+            <label>
+              <span>{{ 'locations.phone' | translate }}</span>
+              <input type="tel" formControlName="phone" maxlength="30" autocomplete="tel"/>
+            </label>
+
+            <label class="locations-check">
+              <input type="checkbox" formControlName="main"/>
+              <span>{{ 'locations.set_main' | translate }}</span>
+            </label>
+
+            <div class="locations-actions">
+              <button type="submit" class="locations-primary" [disabled]="isSaving()">{{ 'locations.save' | translate }}</button>
+              <button type="button" class="locations-secondary" [disabled]="isSaving()" (click)="closeForm()">
+                {{ 'locations.cancel' | translate }}
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (isLoading() && locations().length === 0) {
+          <p class="locations-empty">{{ 'locations.loading' | translate }}</p>
+        } @else if (locations().length === 0 && !showForm()) {
+          <p class="locations-empty">{{ 'locations.empty' | translate }}</p>
+        }
+
+        <ul class="locations-list">
+          @for (location of locations(); track location.id) {
+            <li class="locations-card" [class.locations-card-main]="location.main">
+              <div>
+                <strong>{{ location.name || location.addressLine }}</strong>
+                @if (location.main) {
+                  <span class="locations-badge">{{ 'locations.main' | translate }}</span>
+                }
+                <p>{{ location.addressLine }}, {{ location.city.name }}, {{ location.city.province }}
+                  @if (location.postalCode) { {{ location.postalCode }} }
+                </p>
+                @if (location.phone) {
+                  <p>{{ location.phone }}</p>
+                }
+              </div>
+
+              <div class="locations-actions">
+                @if (pendingDeleteId() === location.id) {
+                  <span>{{ 'locations.delete_confirm' | translate }}</span>
+                  <button type="button" class="locations-danger" [disabled]="isSaving()" (click)="confirmDelete(location)">
+                    {{ 'locations.delete_yes' | translate }}
+                  </button>
+                  <button type="button" class="locations-secondary" (click)="cancelDelete()">{{ 'locations.cancel' | translate }}</button>
+                } @else {
+                  @if (!location.main) {
+                    <button type="button" class="locations-secondary" [disabled]="isSaving()" (click)="makeMain(location)">
+                      {{ 'locations.make_main' | translate }}
+                    </button>
+                  }
+                  <button type="button" class="locations-secondary" [disabled]="isSaving()" (click)="openEdit(location)">
+                    {{ 'locations.edit' | translate }}
+                  </button>
+                  <button type="button" class="locations-danger" [disabled]="isSaving()" (click)="askDelete(location)">
+                    {{ 'locations.delete' | translate }}
+                  </button>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</div>

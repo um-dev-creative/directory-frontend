@@ -63,7 +63,10 @@ export class DirectoryFrontendConst {
     STAGE_UI_PATH: 'stage',
     ASSETS_i18_PATH: '/assets/i18n/',
     CATEGORY_PATH: '/categories',
-    TIMEZONE_PATH: '/timezones'
+    TIMEZONE_PATH: '/timezones',
+    CITIES_PATH: '/cities',
+    LOCATIONS_PATH: '/locations',
+    SEARCH_PATH: '/search'
   };
 
   /**

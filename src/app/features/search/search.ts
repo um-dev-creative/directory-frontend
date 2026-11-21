@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, inject, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { LoggerService } from '@app/core/services/logger.service';
   templateUrl: './search.html',
   styleUrls: ['./search.css'],
 })
-export class Search {
+export class Search implements OnChanges {
   private readonly logger = inject(LoggerService);
 
   @Input() placeholder: string = 'menu_header.search.placeholder';
@@ -23,6 +23,8 @@ export class Search {
   @Input() loading: boolean = false;
   @Input() maxLength: number = 255;
   @Input() minLength: number = 1;
+  /** Text the field shows when the parent owns the query (e.g. it comes from the URL); changes of it replace the typed text. */
+  @Input() initialValue: string = '';
 
   @Output() searchChange = new EventEmitter<string>();
   @Output() searchSubmit = new EventEmitter<string>();
@@ -31,6 +33,12 @@ export class Search {
   @ViewChild('searchInput', { static: false }) searchInput!: ElementRef<HTMLInputElement>;
 
   searchText: string = '';
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialValue']) {
+      this.searchText = this.initialValue ?? '';
+    }
+  }
 
   onInput() {
     this.searchChange.emit(this.searchText);

@@ -1,0 +1,119 @@
+:host {
+  display: block;
+}
+
+.search-page {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.search-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+}
+
+.search-filters {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.search-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.search-filter select {
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d6d3d1;
+  padding: 0 0.75rem;
+  background: white;
+}
+
+.search-count {
+  min-height: 1.5rem;
+  color: #57534e;
+}
+
+.search-message {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #f5f5f4;
+}
+
+.search-error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.search-card {
+  border: 1px solid #e7e5e4;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: white;
+}
+
+.search-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.search-card-category,
+.search-card-verified,
+.search-card-main {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  background: #ecfdf5;
+  color: #047857;
+  margin-right: 0.35rem;
+}
+
+.search-card-description {
+  margin: 0.5rem 0;
+  color: #44403c;
+}
+
+.search-card-locations {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  color: #57534e;
+  font-size: 0.9rem;
+}
+
+.search-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.search-pagination button {
+  border: 1px solid #d6d3d1;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: white;
+}
+
+.search-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

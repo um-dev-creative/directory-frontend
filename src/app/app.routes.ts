@@ -24,6 +24,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/deals').then(m => m.Deals)
   },
 
+  {
+    path: 'search',
+    loadComponent: () => import('./features/business-search').then(m => m.BusinessSearchPage)
+  },
+
   // Partner routes as loadChildren
   {
     path: 'partner',
