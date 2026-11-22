@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added (BFF M2M client)
+- `server/proxy/m2m-client.js`: the BFF now gets its service token from Directory's Backbone managed client (`POST /api/v1/managed-clients/token`, client credentials), the same way `directory-backend` does, instead of the Keycloak password grant. Token cached in Redis (memory fallback) until one minute before it expires, with a distributed lock and shared in-flight requests; secret and token are never logged.
+- `getOAuthClient` returns the M2M client when `M2M_CLIENT_ID`, `M2M_CLIENT_SECRET` and `M2M_TOKEN_URL` are set (`M2M_SCOPES` optional); otherwise the legacy Keycloak client is used, so the change is opt-in and reversible by configuration. Controllers are unchanged.
+- Tests: `test/m2m-client.test.js` (17 tests, `pnpm test:bff`). Guides: `docs/guides/bff-m2m-client-user-guide.md` and `bff-m2m-client-technical-guide.md`.
+
 ### Changed (Angular 22 upgrade)
 - Upgraded to **Angular 22** (`^22.2.3`, the same version as `zerobound-frontend`), **NgRx 22**, `zone.js ~0.16.3` and **TypeScript ~6.0.3**, one major at a time with `ng update` (20 -> 21 -> 22) and its automatic migrations. Tailwind CSS is unchanged: `zerobound-frontend` does not use it, so there is no version to align with.
 - `tsconfig.json`: removed `baseUrl` (deprecated in TypeScript 6) and prefixed every `paths` target with `./`.
