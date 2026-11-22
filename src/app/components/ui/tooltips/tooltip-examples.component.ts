@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { TooltipComponent } from './tooltip';
 
 @Component({
   selector: 'app-tooltip-examples',
   standalone: true,
-  imports: [CommonModule, TooltipComponent],
+  imports: [TooltipComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="space-y-8">
       <!-- Basic Tooltips -->

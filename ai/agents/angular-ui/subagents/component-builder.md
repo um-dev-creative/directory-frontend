@@ -37,7 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./{name}.component.css']
 })
 export class {Name}Component {
-  // ---- Inputs (signal-based, Angular 20) ----
+  // ---- Inputs (signal-based, Angular 22) ----
   readonly items = input<ItemModel[]>([]);
   readonly loading = input<boolean>(false);
 

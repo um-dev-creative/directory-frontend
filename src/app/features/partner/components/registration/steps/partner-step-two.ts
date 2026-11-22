@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Output, EventEmitter, Input, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
 
 import { StepTwoData } from '@app/features/partner';
@@ -11,7 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-partner-step-two',
   standalone: true,
-  imports: [TranslateModule, CommonModule, Button, CardComponent, Avatar, IconComponent],
+  imports: [TranslateModule, Button, CardComponent, Avatar, IconComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="space-y-6">
       <!-- Step Header -->

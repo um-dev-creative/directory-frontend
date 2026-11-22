@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, forwardRef, HostListener, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, forwardRef, HostListener, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface SelectOption {
@@ -14,7 +14,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -130,6 +130,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class SelectComponent implements ControlValueAccessor {

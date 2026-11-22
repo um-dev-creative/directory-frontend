@@ -1,7 +1,7 @@
 <div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
   <div class="absolute inset-x-0 -top-[10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-[20rem]" aria-hidden="true">
     <div class="relative left-1/2 -z-10 aspect-1155/678 w-[36.125rem] max-w-none -translate-x-1/2 rotate-30 bg-linear-to-tr from-sky-500 to-emerald-500 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
-         style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+      style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
     </div>
   </div>
   <div class="mx-auto max-w-2xl text-center">
@@ -22,7 +22,7 @@
             class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
             [(ngModel)]="contactData.firstName"
             (ngModelChange)="validateContactForm()"
-          >
+            >
         </div>
       </div>
       <div>
@@ -36,7 +36,7 @@
             class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
             [(ngModel)]="contactData.lastName"
             (ngModelChange)="validateContactForm() "
-          >
+            >
         </div>
       </div>
       <!-- Correo electrónico -->
@@ -54,12 +54,14 @@
             (blur)="onBlur('email')"
             [(ngModel)]="contactData.email"
             (ngModelChange)="validateEmail(); validateContactForm() "
-          />
+            />
         </div>
         <!-- Error Message -->
-        <div *ngIf="!isEmailValid" class="text-red-500 text-sm mt-1">
-          {{ 'contact.email_invalid' | translate }}
-        </div>
+        @if (!isEmailValid) {
+          <div class="text-red-500 text-sm mt-1">
+            {{ 'contact.email_invalid' | translate }}
+          </div>
+        }
       </div>
       <!-- Teléfono -->
       <div>
@@ -79,82 +81,86 @@
           focus-within:ring-indigo-600
           focus-within:hover:border-indigo-600"
             >
-              <div class="relative">
-                <button
-                  type="button"
-                  class="h-full rounded-l-md border-0 bg-transparent pl-3 pr-8 text-gray-900 focus:ring-0 focus:outline-none"
-                  aria-haspopup="listbox"
-                  [attr.aria-expanded]="dropdownState.country"
-                  aria-labelledby="country-label"
-                  (click)="toggleDropdown('country')"
+            <div class="relative">
+              <button
+                type="button"
+                class="h-full rounded-l-md border-0 bg-transparent pl-3 pr-8 text-gray-900 focus:ring-0 focus:outline-none"
+                aria-haspopup="listbox"
+                [attr.aria-expanded]="dropdownState.country"
+                aria-labelledby="country-label"
+                (click)="toggleDropdown('country')"
                 >
                 <span class="flex items-center gap-3 pr truncate text-gray-400">
                   <img
                     [src]="selectedCountry.flag"
                     [alt]="selectedCountry.name"
                     class="inline h-5 w-5"
-                  />
-                </span>
-                  <svg
-                    class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    data-slot="icon"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
-                      clip-rule="evenodd"
                     />
-                  </svg>
-                </button>
+                </span>
+                <svg
+                  class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  data-slot="icon"
+                  >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
+                    clip-rule="evenodd"
+                    />
+                </svg>
+              </button>
 
-                <!-- Dropdown menu -->
+              <!-- Dropdown menu -->
+              @if (dropdownState.country) {
                 <ul
-                  *ngIf="dropdownState.country"
                   class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
                   tabindex="-1"
                   role="listbox"
                   aria-labelledby="listbox-label"
-                >
-                  <li
-                    *ngFor="let country of countries; let i = index"
-                    [id]="'listbox-option-' + i"
-                    class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-indigo-600 hover:text-white"
-                    role="option"
-                    (click)="selectCountry(country)"
                   >
-                    <div class="flex items-center">
-                      <img
-                        [src]="country.flag"
-                        [alt]="country.name"
-                        class="inline h-5 w-5 mr"
-                      />
-                      <span class="ml-3 block truncate">{{ country.name }}</span>
-                    </div>
-                  </li>
+                  @for (country of countries; track country; let i = $index) {
+                    <li
+                      [id]="'listbox-option-' + i"
+                      class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-indigo-600 hover:text-white"
+                      role="option"
+                      (click)="selectCountry(country)"
+                      >
+                      <div class="flex items-center">
+                        <img
+                          [src]="country.flag"
+                          [alt]="country.name"
+                          class="inline h-5 w-5 mr"
+                          />
+                        <span class="ml-3 block truncate">{{ country.name }}</span>
+                      </div>
+                    </li>
+                  }
                 </ul>
-              </div>
-              <!-- Divider -->
-              <div class="w-px h-full bg-gray-300"></div>
-              <!-- Phone Input -->
-              <input
-                type="tel"
-                id="mobile-number"
-                name="mobile-number"
-                class="block flex-1 border-0  rounded-r-md bg-transparent px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-hidden"
-                [placeholder]="placeholders['phone']"
-                (focus)="onFocus('phone')"
-                (blur)="onBlur('phone')"
-                [(ngModel)]="contactData.phoneNumber"
-                (ngModelChange)="validatePhoneNumber(); validateContactForm()"
-              />
+              }
             </div>
-            <!-- Error Message -->
-            <div *ngIf="!isValidPhoneNumber" class="text-red-500 text-sm mt-1">
+            <!-- Divider -->
+            <div class="w-px h-full bg-gray-300"></div>
+            <!-- Phone Input -->
+            <input
+              type="tel"
+              id="mobile-number"
+              name="mobile-number"
+              class="block flex-1 border-0  rounded-r-md bg-transparent px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-hidden"
+              [placeholder]="placeholders['phone']"
+              (focus)="onFocus('phone')"
+              (blur)="onBlur('phone')"
+              [(ngModel)]="contactData.phoneNumber"
+              (ngModelChange)="validatePhoneNumber(); validateContactForm()"
+              />
+          </div>
+          <!-- Error Message -->
+          @if (!isValidPhoneNumber) {
+            <div class="text-red-500 text-sm mt-1">
               {{ 'auth.phone_invalid' | translate: {country: selectedCountry.name} }}
             </div>
+          }
         </div>
       </div>
       <!-- Asunto -->
@@ -168,7 +174,7 @@
             class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
             [(ngModel)]="contactData.subject"
             (ngModelChange)="validateContactForm()"
-          >
+            >
         </div>
       </div>
       <!-- Mensaje -->
@@ -198,7 +204,7 @@
               'bg-gray-400 hover:bg-gray-400': !isContactFormValid
             }"
         class="h-[42px] flex items-center justify-center w-full rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
+        >
         <svg
           class="w-5 h-5 mr-2"
           fill="none"
@@ -206,14 +212,14 @@
           stroke-width="1.5"
           stroke="currentColor"
           aria-hidden="true"
-        >
+          >
           <path
             d="M9.59877 13.3843L1.39209 9.03979C7.35503 5.76386 13.8335 3.53007 20.5483 2.43471C19.4531 9.14923 17.2196 15.6275 13.9439 21.5902L9.59877 13.3843ZM9.59877 13.3843L14.9021 8.08096"
             stroke="white"
             stroke-width="1.5"
             stroke-linecap="round"
             stroke-linejoin="round"
-          />
+            />
         </svg>
         {{ 'contact.send' | translate }}
       </button>

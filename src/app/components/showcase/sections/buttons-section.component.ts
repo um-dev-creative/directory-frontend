@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Button } from '@app/components/ui';
@@ -8,6 +8,7 @@ import { SocialLoginButton, SocialProvider } from '@app/components/ui/buttons/so
   selector: 'app-buttons-section',
   standalone: true,
   imports: [CommonModule, Button, SocialLoginButton],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Botones</h2>

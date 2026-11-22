@@ -8,7 +8,7 @@
 | **Version** | 0.0.1 |
 | **Environment** | `qa-cloud` |
 | **Node env** | `dev` |
-| **Language** | TypeScript 5.7.3 strict |
+| **Language** | TypeScript 6.0 strict |
 | **Package manager** | pnpm 9.x |
 
 ## Agent Registry

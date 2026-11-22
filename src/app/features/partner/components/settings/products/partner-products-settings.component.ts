@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-products-settings',
   standalone: true,
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   template: `
     <div class="settings-page">
       <div class="settings-header">
@@ -28,6 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .settings-page {
       max-width: 1200px;

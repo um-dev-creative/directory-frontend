@@ -1,5 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { LoggerService } from '@app/core/services/logger.service';
 
 export interface ReportProblemOptions {
@@ -11,9 +11,10 @@ export interface ReportProblemOptions {
 
 @Component({
   selector: 'app-report-problem',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './report-problem.html',
   styleUrl: './report-problem.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class ReportProblem {

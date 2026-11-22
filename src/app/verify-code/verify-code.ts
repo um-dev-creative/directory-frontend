@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
@@ -22,6 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule
   ],
   templateUrl: './verify-code.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './verify-code.css'
 })
 export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {

@@ -1,12 +1,13 @@
-import {Component} from '@angular/core'
-import {CommonModule} from "@angular/common";
+import {Component, ChangeDetectionStrategy} from '@angular/core'
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-footer',
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   templateUrl: 'footer.html',
   styleUrl: 'footer.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class Footer {

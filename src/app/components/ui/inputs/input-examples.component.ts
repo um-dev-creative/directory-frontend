@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputComponent } from './input';
 import { Button } from '../buttons/button';
@@ -7,7 +7,7 @@ import { Button } from '../buttons/button';
 @Component({
   selector: 'app-input-examples',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputComponent, Button],
+  imports: [FormsModule, ReactiveFormsModule, InputComponent, Button],
   template: `
     <div class="container mx-auto p-8 max-w-4xl">
       <h1 class="text-3xl font-bold text-emerald-green-700 mb-8">
@@ -271,6 +271,7 @@ import { Button } from '../buttons/button';
       </section>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class InputExamplesComponent {

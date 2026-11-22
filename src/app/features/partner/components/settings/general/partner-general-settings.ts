@@ -1,5 +1,5 @@
-import {Component, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {Component, inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Avatar, Button, CardComponent, InputComponent} from '@app/components/ui';
@@ -38,8 +38,9 @@ interface PartnerGeneralData {
 @Component({
   selector: 'app-partner-general-settings',
   standalone: true,
-  imports: [TranslateModule, CommonModule, ReactiveFormsModule, Button, CardComponent, Avatar, InputComponent, TextareaComponent, SelectComponent, IconComponent, ReportProblem],
+  imports: [TranslateModule, ReactiveFormsModule, Button, CardComponent, Avatar, InputComponent, TextareaComponent, SelectComponent, IconComponent, ReportProblem],
   templateUrl: './partner-general-settings.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./partner-general-settings.css']
 })
 export class PartnerGeneralSettings implements OnInit, OnDestroy {

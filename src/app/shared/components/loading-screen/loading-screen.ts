@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 
 @Component({
   selector: 'app-loading-screen',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="loading-container fixed inset-0 flex items-center justify-center bg-beige-50/90 z-[9999]">
       <div class="loading-content text-center">
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .loading-container {
       opacity: 0;

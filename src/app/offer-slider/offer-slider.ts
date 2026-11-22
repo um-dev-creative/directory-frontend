@@ -1,6 +1,7 @@
 import {
   Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, Input, Inject, PLATFORM_ID,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -19,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IconComponent
   ],
   templateUrl: './offer-slider.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./offer-slider.css']
 })
 export class OfferSlider implements OnInit, AfterViewInit, OnDestroy {

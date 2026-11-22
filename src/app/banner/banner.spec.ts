@@ -4,7 +4,7 @@ import {Banner} from './banner';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Router} from '@angular/router';
-import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HttpClient, provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {of} from 'rxjs';
 import {provideMockStore} from '@ngrx/store/testing';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -27,7 +27,7 @@ describe('BannerComponent', () => {
       providers: [
         provideHttpClientTesting(),
         {provide: Router, useValue: mockRouter},
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         {provide: HttpClient, useValue: jasmine.createSpyObj('httpClient', ['get', 'post'])},
         provideMockStore()
       ]

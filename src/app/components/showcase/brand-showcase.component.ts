@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { Observable } from 'rxjs';
 import { NotificationService, LoadingService } from '@app/core/services';
 import { map } from 'rxjs/operators';
@@ -31,7 +31,6 @@ export interface ShowcaseSection {
   selector: 'app-brand-showcase',
   standalone: true,
   imports: [
-    CommonModule,
     ColorsSectionComponent,
     ButtonsSectionComponent,
     BadgesSectionComponent,
@@ -45,7 +44,8 @@ export interface ShowcaseSection {
     AlertsSectionComponent,
     TooltipsSectionComponent,
     AvatarsSectionComponent
-  ],
+],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="p-8 bg-gradient-hero min-h-screen">
       <div class="max-w-6xl mx-auto">

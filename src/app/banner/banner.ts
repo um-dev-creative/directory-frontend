@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslateModule, CommonModule, RouterModule, SkeletonComponent],
   templateUrl: './banner.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./banner.css']
 })
 export class Banner implements OnInit, OnDestroy {

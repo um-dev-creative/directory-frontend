@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 export type TooltipTrigger = 'hover' | 'click' | 'focus';
@@ -9,7 +9,7 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'success' | 'warning
 @Component({
   selector: 'app-tooltip',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div
       class="relative inline-block"
@@ -43,6 +43,7 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'success' | 'warning
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     :host {
       display: inline-block;

@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+
 import { IconComponent } from '../icons/icon';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -8,7 +8,7 @@ export type AvatarVariant = 'circular' | 'rounded' | 'square';
 @Component({
   selector: 'app-avatar',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [IconComponent],
   template: `
     <div [class]="avatarClasses">
       @if (src && !imageError) {
@@ -32,6 +32,7 @@ export type AvatarVariant = 'circular' | 'rounded' | 'square';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class Avatar implements OnChanges {

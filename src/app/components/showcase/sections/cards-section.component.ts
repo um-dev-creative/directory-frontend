@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Button, BadgeComponent, CardComponent, InputComponent } from '@app/comp
   selector: 'app-cards-section',
   standalone: true,
   imports: [CommonModule, FormsModule, Button, BadgeComponent, CardComponent, InputComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Cards</h2>

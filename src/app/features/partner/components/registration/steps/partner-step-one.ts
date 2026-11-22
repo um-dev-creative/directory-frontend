@@ -1,5 +1,5 @@
-import {Component, Output, EventEmitter, Input, inject, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, Output, EventEmitter, Input, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
+
 import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {StepOneData} from '../partner-registration-stepper';
@@ -18,7 +18,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-partner-step-one',
   standalone: true,
-  imports: [TranslateModule, CommonModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form [formGroup]="reactiveForm" (ngSubmit)="onContinue()" class="space-y-6">
       <!-- Step Header -->

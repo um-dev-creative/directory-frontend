@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
@@ -8,7 +8,7 @@ export type AlertSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-alert',
   standalone: true,
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   template: `
     @if (!dismissed) {
       <div
@@ -118,6 +118,7 @@ export type AlertSize = 'sm' | 'md' | 'lg';
       </div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class AlertComponent {

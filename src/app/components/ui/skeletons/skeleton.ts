@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 export type SkeletonVariant = 'default' | 'card' | 'list' | 'profile' | 'table' | 'custom';
@@ -9,6 +9,7 @@ export type SkeletonShape = 'rectangle' | 'circle' | 'rounded';
   selector: 'app-skeleton',
   standalone: true,
   imports: [NgClass],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div
       class="skeleton-container"

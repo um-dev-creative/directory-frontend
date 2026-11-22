@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NotificationConfig } from '../../../core/services/notification.service';
@@ -49,7 +49,7 @@ import { TranslateModule } from '@ngx-translate/core';
             @if (config?.externalLink) {
               <div class="mt-2">
                 <a
-                  [href]="config?.externalLink?.url"
+                  [href]="$safeNavigationMigration(config?.externalLink?.url)"
                   [target]="config?.externalLink?.openInNewTab ? '_blank' : '_self'"
                   [rel]="config?.externalLink?.openInNewTab ? 'noopener noreferrer' : ''"
                   class="text-xs font-medium underline hover:no-underline focus:outline-none flex items-center gap-1"
@@ -101,6 +101,7 @@ import { TranslateModule } from '@ngx-translate/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('slideAnimation', [
       state('enter', style({

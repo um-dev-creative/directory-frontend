@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,6 +19,7 @@ interface MarqueeImage {
   standalone: true,
   imports: [TranslateModule, CommonModule, RouterModule, SkeletonComponent],
   templateUrl: './marquee.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './marquee.css',
 })
 export class Marquee implements OnInit, OnDestroy {

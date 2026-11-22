@@ -3,7 +3,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  signal
+  signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ export interface UserLogger {
     Avatar
   ],
   templateUrl: './header-menu.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./header-menu.css']
 })
 export class HeaderMenu {

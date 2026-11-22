@@ -1,11 +1,12 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { TooltipExamplesComponent } from '../../ui/tooltips/tooltip-examples.component';
 
 @Component({
   selector: 'app-tooltips-section',
   standalone: true,
-  imports: [CommonModule, TooltipExamplesComponent],
+  imports: [TooltipExamplesComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-6">
       <div class="mb-6">

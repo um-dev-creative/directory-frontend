@@ -1,5 +1,5 @@
-import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, ChangeDetectionStrategy} from '@angular/core';
+
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Offer, OfferStatus} from '../../services/partner-offers.service';
 import {CampaignClient} from '@app/core/services/campaign/campaign.client';
@@ -20,15 +20,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-offer-edit-modal',
   standalone: true,
-  imports: [TranslateModule, 
-    CommonModule,
-    ReactiveFormsModule,
-    Button,
-    InputComponent,
-    TextareaComponent,
-    SelectComponent
-  ],
+  imports: [TranslateModule, ReactiveFormsModule, Button, InputComponent, TextareaComponent, SelectComponent],
   templateUrl: 'offer-edit-modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./offer-edit-modal.css']
 })
 export class OfferEditModal implements OnInit, OnChanges {

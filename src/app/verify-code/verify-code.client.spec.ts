@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {VerifyCodeClient} from './verify-code-client.service';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {of} from 'rxjs';
 import {provideLocationMocks} from '@angular/common/testing';
@@ -24,7 +24,7 @@ describe('VerifyCodeClient', () => {
         {provide: Store, useValue: mockStore},
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()
+        provideHttpClient(withXhr())
       ]
     });
     service = TestBed.inject(VerifyCodeClient);

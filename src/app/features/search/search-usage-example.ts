@@ -1,12 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { Search } from './search';
 import { LoggerService } from '@app/core/services/logger.service';
 
 @Component({
   selector: 'app-search-usage-example',
   standalone: true,
-  imports: [CommonModule, Search],
+  imports: [Search],
   template: `
     <div class="max-w-4xl mx-auto">
       <h1 class="text-3xl font-bold text-emerald-700 mb-8">
@@ -133,6 +133,7 @@ import { LoggerService } from '@app/core/services/logger.service';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class SearchUsageExampleComponent {

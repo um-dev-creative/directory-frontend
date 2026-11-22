@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 import { Button } from '@app/components/ui';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-not-found',
-  imports: [TranslateModule, CommonModule, RouterModule, Button],
+  imports: [TranslateModule, RouterModule, Button],
   templateUrl: './not-found.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './not-found.css'
 })
 export class NotFound {

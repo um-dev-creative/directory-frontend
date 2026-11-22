@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SkeletonComponent } from '../../ui';
 
@@ -371,6 +371,7 @@ import { SkeletonComponent } from '../../ui';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     @reference "../../../../styles.css";
 

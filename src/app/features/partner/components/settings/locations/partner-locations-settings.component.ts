@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit, PLATFORM_ID, signal} from '@angular/core';
+import {Component, effect, inject, OnInit, PLATFORM_ID, signal, ChangeDetectionStrategy} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -24,6 +24,7 @@ function notBlank(control: AbstractControl): ValidationErrors | null {
   standalone: true,
   imports: [ReactiveFormsModule, TranslateModule],
   templateUrl: './partner-locations-settings.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './partner-locations-settings.component.css'
 })
 export class PartnerLocationsSettingsComponent implements OnInit {

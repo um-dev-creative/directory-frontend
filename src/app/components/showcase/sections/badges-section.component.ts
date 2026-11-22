@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { BadgeComponent } from '@app/components/ui';
 
 @Component({
   selector: 'app-badges-section',
   standalone: true,
-  imports: [CommonModule, BadgeComponent],
+  imports: [BadgeComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Badges</h2>

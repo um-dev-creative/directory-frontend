@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, AfterViewInit, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -8,7 +8,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   template: `
     <!-- Modal Backdrop -->
     @if (open) {
@@ -75,6 +75,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
       </div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class ModalComponent implements AfterViewInit, OnChanges {

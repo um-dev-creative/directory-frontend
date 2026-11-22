@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit, PLATFORM_ID, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, PLATFORM_ID, signal, ChangeDetectionStrategy} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {ActivatedRoute, ParamMap, Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
@@ -33,6 +33,7 @@ export function paramsFromQuery(query: ParamMap): BusinessSearchParams {
   standalone: true,
   imports: [TranslateModule, RouterLink, Search],
   templateUrl: './business-search-page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './business-search-page.css'
 })
 export class BusinessSearchPage implements OnInit {

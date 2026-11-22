@@ -1,5 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, signal, ChangeDetectionStrategy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { OfferSlider } from '@app/offer-slider/offer-slider';
@@ -16,8 +16,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-partner',
   standalone: true,
-  imports: [TranslateModule, CommonModule, OfferSlider, PartnerRegistrationStepper],
+  imports: [TranslateModule, OfferSlider, PartnerRegistrationStepper],
   templateUrl: './partner.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './partner.css'
 })
 export class Partner implements OnInit, OnDestroy {

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Analyze Angular 20 code in the Directory Frontend project for convention compliance, SSR safety, and architectural correctness.
+Analyze Angular 22 code in the Directory Frontend project for convention compliance, SSR safety, and architectural correctness.
 
 ## Analysis Dimensions
 

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Footer} from '@app/layout/footer/footer';
 import {Header} from '@app/header/header';
@@ -32,6 +32,7 @@ export const routeTransitionAnimations = trigger('routeAnimations', [
   templateUrl: './app.html',
   styleUrl: './app.css',
   animations: [routeTransitionAnimations],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BackboneJwtPipe]
 })
 export class App implements AfterViewInit, OnInit {

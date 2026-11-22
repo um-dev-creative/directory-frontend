@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { PartnerProfileService } from './services/partner-profile.service';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
 import { LoggerService } from '@app/core/services/logger.service';
@@ -79,7 +79,7 @@ describe('Partner', () => {
         },
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()
+        provideHttpClient(withXhr())
       ]
     }).compileComponents();
 

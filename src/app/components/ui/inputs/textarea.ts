@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type TextareaVariant = 'default' | 'success' | 'error' | 'info';
@@ -8,7 +8,7 @@ export type TextareaSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-textarea',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -70,6 +70,7 @@ export type TextareaSize = 'sm' | 'md' | 'lg';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class TextareaComponent implements ControlValueAccessor {

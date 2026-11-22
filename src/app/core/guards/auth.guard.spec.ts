@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, PartialMatchRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { authGuard, authGuardChild, authMatchGuard } from './auth.guard';
@@ -181,7 +181,7 @@ describe('authGuard', () => {
       const segments = [{ path: 'dashboard' }, { path: 'user' }] as any[];
 
       TestBed.runInInjectionContext(() => {
-        const result = authMatchGuard(route, segments);
+        const result = authMatchGuard(route, segments, {} as PartialMatchRouteSnapshot);
         if (result instanceof Object && 'subscribe' in result) {
           (result as any).subscribe((allowed: boolean) => {
             expect(allowed).toBeTrue();
