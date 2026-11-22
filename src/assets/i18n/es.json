@@ -86,5 +86,51 @@
       "title": "User",
       "tooltip": "User"
     }
+  },
+  "business_search": {
+    "title": "Buscar negocios",
+    "city": "Ciudad",
+    "all_cities": "Todas las ciudades",
+    "category": "Categoría",
+    "all_categories": "Todas las categorías",
+    "text": "Nombre o descripción",
+    "results_count": "{{count}} negocios encontrados",
+    "empty": "No encontramos negocios con esos filtros.",
+    "error": "No pudimos realizar la búsqueda. Inténtalo de nuevo.",
+    "verified": "Verificado",
+    "pagination": "Paginación de resultados",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page_of": "Página {{page}} de {{total}}"
+  },
+  "locations": {
+    "back": "Volver",
+    "title": "Mis ubicaciones",
+    "subtitle": "Gestión de ubicaciones",
+    "description": "Administra las sedes de tu negocio. Una de ellas es la principal.",
+    "no_business": "Aún no tienes un negocio registrado.",
+    "add": "Agregar ubicación",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "delete_confirm": "¿Eliminar esta ubicación?",
+    "delete_yes": "Sí, eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "loading": "Cargando ubicaciones…",
+    "empty": "Todavía no tienes ubicaciones.",
+    "main": "Principal",
+    "make_main": "Hacer principal",
+    "set_main": "Es la ubicación principal",
+    "city": "Ciudad",
+    "select_city": "Selecciona una ciudad",
+    "address": "Dirección",
+    "name": "Nombre de la sede",
+    "postal_code": "Código postal",
+    "phone": "Teléfono",
+    "error": "No se pudo completar la operación. Revisa los datos e inténtalo de nuevo.",
+    "errors": {
+      "city_required": "Selecciona una ciudad.",
+      "address_required": "Escribe la dirección."
+    }
   }
 }

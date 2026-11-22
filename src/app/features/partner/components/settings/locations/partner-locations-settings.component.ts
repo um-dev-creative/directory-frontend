@@ -1,93 +1,167 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import {Component, effect, inject, OnInit, PLATFORM_ID, signal} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
+import {AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {TranslateModule} from '@ngx-translate/core';
+import {SessionState} from '@app/core/store/session/session.state';
+import {LocationsStoreService} from '@core/store/locations/locations-store.service';
+import {BusinessSearchStoreService} from '@core/store/business-search/business-search-store.service';
+import {Location, LocationCreateRequest} from '@shared/models/location.model';
 
+/** The address must have text, not only spaces. */
+function notBlank(control: AbstractControl): ValidationErrors | null {
+  return typeof control.value === 'string' && control.value.trim().length === 0 ? {blank: true} : null;
+}
+
+/**
+ * Locations (sedes) of the business of the signed-in owner: list, add, edit, make main and delete.
+ * The backend decides who is the owner (403 otherwise) and keeps exactly one main location.
+ */
 @Component({
   selector: 'app-partner-locations-settings',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="settings-page">
-      <div class="settings-header">
-        <button class="back-button" (click)="goBack()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15,18 9,12 15,6"></polyline>
-          </svg>
-          Volver
-        </button>
-        <h1 class="page-title">Mis Ubicaciones</h1>
-      </div>
-
-      <div class="settings-content">
-        <div class="settings-section">
-          <h2>Gestión de Ubicaciones</h2>
-          <p>Administra las ubicaciones de tus establecimientos físicos.</p>
-          <!-- Contenido específico de ubicaciones -->
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .settings-page {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .settings-header {
-      margin-bottom: 2rem;
-    }
-
-    .back-button {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: none;
-      border: none;
-      color: var(--blue-600);
-      cursor: pointer;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .back-button:hover {
-      background: var(--blue-50);
-      color: var(--blue-700);
-    }
-
-    .page-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--blue-800);
-      margin: 0;
-    }
-
-    .settings-content {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid var(--blue-500);
-    }
-
-    .settings-section h2 {
-      color: var(--blue-700);
-      margin-bottom: 1rem;
-    }
-
-    .settings-section p {
-      color: var(--blue-600);
-      line-height: 1.6;
-    }
-  `]
+  imports: [ReactiveFormsModule, TranslateModule],
+  templateUrl: './partner-locations-settings.component.html',
+  styleUrl: './partner-locations-settings.component.css'
 })
-export class PartnerLocationsSettingsComponent {
-  constructor(private router: Router) {}
+export class PartnerLocationsSettingsComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly store: Store<{ session: SessionState }> = inject(Store);
+  private readonly fb = inject(FormBuilder);
+  private readonly locationsStore = inject(LocationsStoreService);
+  private readonly searchStore = inject(BusinessSearchStoreService);
+  private readonly platformId = inject(PLATFORM_ID);
+
+  /** The business the owner manages: the first one of the session. */
+  protected readonly businessId = toSignal(
+    this.store.select((state) => state.session?.sessionData?.userAuth?.businesses?.[0] ?? null), {initialValue: null});
+  protected readonly locations = toSignal(this.locationsStore.locations$, {initialValue: []});
+  protected readonly isLoading = toSignal(this.locationsStore.isLoading$, {initialValue: false});
+  protected readonly isSaving = toSignal(this.locationsStore.isSaving$, {initialValue: false});
+  protected readonly error = toSignal(this.locationsStore.error$, {initialValue: null});
+  protected readonly cities = toSignal(this.searchStore.cities$, {initialValue: []});
+
+  protected readonly showForm = signal(false);
+  protected readonly editingId = signal<string | null>(null);
+  protected readonly pendingDeleteId = signal<string | null>(null);
+  private readonly submitted = signal(false);
+  private readonly sawSaving = signal(false);
+
+  protected readonly form = this.fb.nonNullable.group({
+    cityId: ['', Validators.required],
+    name: ['', Validators.maxLength(120)],
+    addressLine: ['', [Validators.required, notBlank, Validators.maxLength(200)]],
+    postalCode: ['', Validators.maxLength(10)],
+    phone: ['', Validators.maxLength(30)],
+    main: [false]
+  });
+
+  constructor() {
+    // SSR: browser-only. The locations are read through the BFF with the browser's session.
+    effect(() => {
+      const businessId = this.businessId();
+      if (businessId && isPlatformBrowser(this.platformId)) {
+        this.locationsStore.load(businessId);
+      }
+    });
+    // The form closes when the save that was started from it finishes without an error; with an error it stays open.
+    effect(() => {
+      const saving = this.isSaving();
+      if (saving) {
+        this.sawSaving.set(true);
+      } else if (this.sawSaving() && this.submitted()) {
+        this.sawSaving.set(false);
+        this.submitted.set(false);
+        if (!this.error()) {
+          this.closeForm();
+        }
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId) && this.cities().length === 0) {
+      this.searchStore.loadCities();
+    }
+  }
 
   goBack(): void {
-    this.router.navigate(['/partner/settings']);
+    void this.router.navigate(['/partner/settings']);
+  }
+
+  protected openAdd(): void {
+    this.editingId.set(null);
+    this.form.reset({cityId: '', name: '', addressLine: '', postalCode: '', phone: '', main: false});
+    this.showForm.set(true);
+  }
+
+  protected openEdit(location: Location): void {
+    this.editingId.set(location.id);
+    this.form.reset({
+      cityId: location.city.id,
+      name: location.name ?? '',
+      addressLine: location.addressLine,
+      postalCode: location.postalCode ?? '',
+      phone: location.phone ?? '',
+      main: location.main
+    });
+    this.showForm.set(true);
+  }
+
+  protected closeForm(): void {
+    this.showForm.set(false);
+    this.editingId.set(null);
+  }
+
+  protected submit(): void {
+    const businessId = this.businessId();
+    if (!businessId) {
+      return;
+    }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const value = this.form.getRawValue();
+    const request: LocationCreateRequest = {
+      cityId: value.cityId,
+      name: value.name,
+      addressLine: value.addressLine,
+      postalCode: value.postalCode,
+      phone: value.phone,
+      main: value.main
+    };
+    const editingId = this.editingId();
+    this.submitted.set(true);
+    if (editingId) {
+      this.locationsStore.update(businessId, editingId, request);
+    } else {
+      this.locationsStore.create(businessId, request);
+    }
+  }
+
+  protected makeMain(location: Location): void {
+    const businessId = this.businessId();
+    if (businessId && !location.main) {
+      this.locationsStore.update(businessId, location.id, {main: true});
+    }
+  }
+
+  protected askDelete(location: Location): void {
+    this.pendingDeleteId.set(location.id);
+  }
+
+  protected cancelDelete(): void {
+    this.pendingDeleteId.set(null);
+  }
+
+  protected confirmDelete(location: Location): void {
+    const businessId = this.businessId();
+    if (businessId) {
+      this.locationsStore.remove(businessId, location.id);
+    }
+    this.pendingDeleteId.set(null);
   }
 }

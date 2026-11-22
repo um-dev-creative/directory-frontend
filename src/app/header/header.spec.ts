@@ -199,4 +199,22 @@ describe('Header', () => {
 
     expect(component.hasBusiness).toBeFalse();
   });
+
+  it('should open the search page with the text of the header search', () => {
+    const router = TestBed.inject(Router);
+
+    component.onSearchSubmit('panadería');
+
+    expect(router.navigate).toHaveBeenCalledWith(['/search'], {queryParams: {q: 'panadería'}});
+  });
+
+  it('should open the search page when the search component submits', () => {
+    fixture.detectChanges();
+    const router = TestBed.inject(Router);
+    const search = fixture.debugElement.query(By.css('app-search'));
+
+    search?.triggerEventHandler('searchSubmit', 'pan');
+
+    expect(router.navigate).toHaveBeenCalledWith(['/search'], {queryParams: {q: 'pan'}});
+  });
 });

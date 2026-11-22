@@ -1,0 +1,88 @@
+<section class="search-page" aria-labelledby="search-title">
+  <h1 id="search-title" class="search-title">{{ 'business_search.title' | translate }}</h1>
+
+  <div class="search-filters">
+    <label class="search-filter">
+      <span>{{ 'business_search.city' | translate }}</span>
+      <select [value]="filters().cityId ?? ''" (change)="onCityChange($event)">
+        <option value="">{{ 'business_search.all_cities' | translate }}</option>
+        @for (city of cities(); track city.id) {
+          <option [value]="city.id" [selected]="city.id === filters().cityId">{{ city.name }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="search-filter">
+      <span>{{ 'business_search.category' | translate }}</span>
+      <select [value]="filters().category ?? ''" (change)="onCategoryChange($event)">
+        <option value="">{{ 'business_search.all_categories' | translate }}</option>
+        @for (category of categories(); track category.id) {
+          <option [value]="category.id" [selected]="category.id === filters().category">{{ category.name }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="search-filter search-filter-text">
+      <span>{{ 'business_search.text' | translate }}</span>
+      <app-search
+        [initialValue]="filters().q ?? ''"
+        [loading]="isSearching()"
+        (searchSubmit)="onTextSubmit($event)"
+        (searchClear)="onTextClear()"
+      ></app-search>
+    </div>
+  </div>
+
+  <p class="search-count" aria-live="polite">
+    @if (!isSearching() && !error()) {
+      {{ 'business_search.results_count' | translate: { count: totalCount() } }}
+    }
+  </p>
+
+  @if (error()) {
+    <p class="search-message search-error" role="alert">{{ 'business_search.error' | translate }}</p>
+  }
+
+  @if (isEmpty()) {
+    <p class="search-message">{{ 'business_search.empty' | translate }}</p>
+  }
+
+  <ul class="search-results">
+    @for (business of results(); track business.id) {
+      <li class="search-card">
+        <a class="search-card-title" [routerLink]="['/partner', business.id]">{{ business.name }}</a>
+        <span class="search-card-category">{{ business.categoryName }}</span>
+        @if (business.verified) {
+          <span class="search-card-verified">{{ 'business_search.verified' | translate }}</span>
+        }
+        @if (business.description) {
+          <p class="search-card-description">{{ business.description }}</p>
+        }
+        @if (business.locations.length > 0) {
+          <ul class="search-card-locations">
+            @for (location of business.locations; track location.id) {
+              <li>
+                {{ location.city.name }} · {{ location.addressLine }}
+                @if (location.main) {
+                  <span class="search-card-main">{{ 'locations.main' | translate }}</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+
+  @if (totalPages() > 1) {
+    <nav class="search-pagination" [attr.aria-label]="'business_search.pagination' | translate">
+      <button type="button" [disabled]="!hasPreviousPage() || isSearching()" (click)="goToPage(page() - 1)">
+        {{ 'business_search.previous' | translate }}
+      </button>
+      <span>{{ 'business_search.page_of' | translate: { page: page(), total: totalPages() } }}</span>
+      <button type="button" [disabled]="!hasNextPage() || isSearching()" (click)="goToPage(page() + 1)">
+        {{ 'business_search.next' | translate }}
+      </button>
+    </nav>
+  }
+</section>

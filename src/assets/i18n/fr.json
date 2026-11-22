@@ -1,0 +1,48 @@
+{
+  "business_search": {
+    "title": "Trouver des commerces",
+    "city": "Ville",
+    "all_cities": "Toutes les villes",
+    "category": "Catégorie",
+    "all_categories": "Toutes les catégories",
+    "text": "Nom ou description",
+    "results_count": "{{count}} commerces trouvés",
+    "empty": "Nous n'avons trouvé aucun commerce avec ces filtres.",
+    "error": "La recherche n'a pas pu aboutir. Veuillez réessayer.",
+    "verified": "Vérifié",
+    "pagination": "Pagination des résultats",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{total}}"
+  },
+  "locations": {
+    "back": "Retour",
+    "title": "Mes adresses",
+    "subtitle": "Gestion des adresses",
+    "description": "Gérez les succursales de votre commerce. L'une d'elles est la principale.",
+    "no_business": "Vous n'avez pas encore de commerce enregistré.",
+    "add": "Ajouter une adresse",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "delete_confirm": "Supprimer cette adresse ?",
+    "delete_yes": "Oui, supprimer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "loading": "Chargement des adresses…",
+    "empty": "Vous n'avez pas encore d'adresse.",
+    "main": "Principale",
+    "make_main": "Définir comme principale",
+    "set_main": "C'est l'adresse principale",
+    "city": "Ville",
+    "select_city": "Sélectionnez une ville",
+    "address": "Adresse",
+    "name": "Nom de la succursale",
+    "postal_code": "Code postal",
+    "phone": "Téléphone",
+    "error": "L'opération n'a pas pu être effectuée. Vérifiez les données et réessayez.",
+    "errors": {
+      "city_required": "Sélectionnez une ville.",
+      "address_required": "Saisissez l'adresse."
+    }
+  }
+}

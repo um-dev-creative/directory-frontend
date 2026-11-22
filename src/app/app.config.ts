@@ -9,9 +9,13 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {provideStore} from '@ngrx/store';
 import {sessionReducer} from '@app/core/store/session/session.reducer';
 import {landingReducer} from '@app/core/store/landing/landing.reducer';
+import {businessSearchReducer} from '@app/core/store/business-search/business-search.reducer';
+import {locationsReducer} from '@app/core/store/locations/locations.reducer';
 import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
 import {LandingEffects} from '@app/core/store/landing/landing.effects';
+import {BusinessSearchEffects} from '@app/core/store/business-search/business-search.effects';
+import {LocationsEffects} from '@app/core/store/locations/locations.effects';
 import {provideCore} from '@core/core.module';
 import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
 
@@ -61,8 +65,13 @@ export const appConfig: ApplicationConfig = {
     ),
 
     // NgRx Store
-    provideStore({ session: sessionReducer, landing: landingReducer }),
-    provideEffects([SessionEffects, LandingEffects]),
+    provideStore({
+      session: sessionReducer,
+      landing: landingReducer,
+      businessSearch: businessSearchReducer,
+      locations: locationsReducer
+    }),
+    provideEffects([SessionEffects, LandingEffects, BusinessSearchEffects, LocationsEffects]),
 
     // Session initialization
     SESSION_INITIALIZER_PROVIDER,

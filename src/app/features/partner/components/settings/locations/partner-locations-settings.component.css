@@ -1,0 +1,164 @@
+.settings-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.settings-header {
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--blue-600);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: var(--blue-50);
+  color: var(--blue-700);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin: 0;
+}
+
+.settings-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--blue-500);
+}
+
+.settings-section h2 {
+  color: var(--blue-700);
+  margin-bottom: 1rem;
+}
+
+.settings-section p {
+  color: var(--blue-600);
+  line-height: 1.6;
+}
+
+.locations-form {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.75rem;
+}
+
+.locations-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+.locations-form input[type='text'],
+.locations-form input[type='tel'],
+.locations-form select {
+  height: 2.5rem;
+  border: 1px solid #d6d3d1;
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  background: white;
+}
+
+.locations-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+}
+
+.field-error,
+.locations-error {
+  color: #b91c1c;
+  font-weight: 500;
+}
+
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.locations-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.75rem;
+}
+
+.locations-card-main {
+  border-color: var(--blue-500);
+}
+
+.locations-card p {
+  margin: 0.25rem 0 0;
+}
+
+.locations-badge {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 0.8rem;
+}
+
+.locations-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.locations-primary,
+.locations-secondary,
+.locations-danger {
+  border-radius: 0.5rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.locations-primary {
+  background: var(--blue-600);
+  color: white;
+}
+
+.locations-secondary {
+  background: white;
+  border-color: #d6d3d1;
+}
+
+.locations-danger {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

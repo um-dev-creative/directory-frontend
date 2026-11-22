@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Locations (sedes) and search by city, category and text
+- Added the **locations screen** of the partner settings (`/partner/settings/locations`), replacing the empty placeholder: list the locations of the business, add, edit, make one the main location and delete (with a two-step confirmation). City is chosen from the cities catalogue; address is required; name, postal code and phone are optional. Errors of the backend (e.g. 403 when the user is not the owner) are shown without closing the form.
+- Added the **business search page** (`/search`): filters by city, category and text, paginated, with the filters kept in the URL (`city_id`, `category_id`, `q`, `page`) so a search can be shared, reloaded and reached with the back button. The header search now opens `/search?q=`; `app-search` gained an `initialValue` input.
+- Added `CityClient`, `LocationClient` and `BusinessSearchClient` (they unwrap the BFF envelope `{headers, data}`), the NgRx stores `businessSearch` and `locations` (state, actions, reducer, effects, selectors, store service) and the models in `location.model.ts` / `bff-response.model.ts`. New `DFC.RelativePath` entries: `CITIES_PATH`, `LOCATIONS_PATH`, `SEARCH_PATH`.
+- The BFF needed **no change**: the generic proxy already maps `/drb/api/v1/general/*` to `/directory-backend/api/v1/*` for every method.
+- SSR: the search and the loading of locations run in the browser only (`// SSR: browser-only`); the server renders the page without results.
+- i18n: new keys `business_search.*` and `locations.*` in `es`, `en` and `fr`. `fr.json` was empty (invalid JSON); it now holds these keys only. The English and French texts still need human review.
+- Tests: specs for the three clients, both stores, the search page, the locations screen, the header and `Search`. Full suite: 487 tests.
+- Depends on directory-backend `feature/locations-and-city-search` (cities, locations and `/businesses/search` endpoints): merge that PR first.
+
 - Added initial files for the web project
 - Included SSL certificate for the web project
 - Created router and proxy for the web project

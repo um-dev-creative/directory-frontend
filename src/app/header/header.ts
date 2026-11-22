@@ -115,6 +115,11 @@ import {getInitials} from '@shared/utils/get-initials.helper';
     this.setupBreakpointObserver();
   }
 
+  /** The header search opens the search page with the text; the page owns the rest of the filters (city, category, page). */
+  onSearchSubmit(text: string): void {
+    void this.router.navigate(['/search'], {queryParams: {q: text}});
+  }
+
   ngOnDestroy(): void {
     if (this.scrollListener) {
       this.scrollListener();

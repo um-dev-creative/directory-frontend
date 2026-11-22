@@ -30,7 +30,7 @@
     sm:w-[70%]
     lg:w-[35%]"
     >
-      <app-search></app-search>
+      <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
     </div>
     <div class="flex items-center gap-4">
       @if (validateHeader(HeaderType.USER_AUTH_HEADER)) {
