@@ -9,6 +9,7 @@ import {App} from '@app/app';
 import {Store} from "@ngrx/store";
 import {AuthClient} from '@app/features/auth/auth.client';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('AuthComponent', () => {
   let component: Auth;
@@ -29,7 +30,7 @@ describe('AuthComponent', () => {
       events: of({}) // Mock the events property
     } as any;
     await TestBed.configureTestingModule({
-      imports: [
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), 
         Auth,
         BrowserAnimationsModule
       ],

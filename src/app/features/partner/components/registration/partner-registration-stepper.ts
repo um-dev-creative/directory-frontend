@@ -9,6 +9,7 @@ import { PartnerStepOne, PartnerStepTwo, PartnerStepThree, StepThreeData} from '
 import { CardComponent } from '@app/components/ui';
 import { ReportProblem, ReportProblemOptions } from '@app/layout/report-problem/report-problem';
 import { LoggerService } from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface StepOneData {
   name: string;
@@ -23,7 +24,7 @@ export interface StepTwoData {
 @Component({
   selector: 'app-partner-registration-stepper',
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     CardComponent,
     PartnerStepOne,
@@ -37,10 +38,10 @@ export interface StepTwoData {
         <!-- Header -->
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-emerald-green-700 mb-2">
-            Registra tu Negocio
+            {{ 'registration.title' | translate }}
           </h1>
           <p class="text-gray-600">
-            Completa los siguientes pasos para crear tu perfil de partner
+            {{ 'registration.subtitle' | translate }}
           </p>
         </div>
 
@@ -129,7 +130,7 @@ export interface StepTwoData {
 
         <!-- Support Section -->
         <div class="text-center pt-6 border-t border-gray-200 mt-8">
-          <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con el registro de tu negocio?</p>
+          <p class="text-sm text-gray-600 mb-4">{{ 'registration.need_help' | translate }}</p>
           <app-report-problem
             [options]="reportProblemOptions"
             variant="link"

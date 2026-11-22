@@ -9,7 +9,7 @@
     <main class="relative mx-auto min-h-screen flex items-center justify-center bg-beige-50">
       <div class="flex flex-col items-center space-y-4">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
-        <p class="text-gray-600">Cargando perfil del partner...</p>
+        <p class="text-gray-600">{{ 'partner_page.loading' | translate }}</p>
       </div>
     </main>
   } @else if (partnerProfile()) {
@@ -28,13 +28,13 @@
                   <svg class="w-6 h-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
                   </svg>
-                  Atrás
+                  {{ 'partner_page.back' | translate }}
                 </button>
               </div>
 
               <div class="absolute top-4 right-4 flex space-x-3">
                 @if (isOwner()) {
-                  <button (click)="editPartner()" class="transition-transform hover:scale-110" title="Editar perfil">
+                  <button (click)="editPartner()" class="transition-transform hover:scale-110" [title]="'partner_page.edit_profile' | translate">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                     </svg>
@@ -85,7 +85,7 @@
                   <span class="text-white font-bold">
                     {{ showTermsAndConditions() ? '−' : '+' }}
                   </span>
-                  <span>TÉRMINOS Y CONDICIONES</span>
+                  <span>{{ 'partner_page.terms' | translate }}</span>
                 </button>
 
                 <!-- Expanded Terms and Conditions -->
@@ -101,12 +101,12 @@
                 @if (partnerProfile()!.availableChannels.includes('online')) {
                   <button (click)="redeemOnline()"
                           class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg">
-                    Redimir en línea
+                    {{ 'partner_page.redeem_online' | translate }}
                   </button>
                 }
                 @if (partnerProfile()!.availableChannels.includes('in-store')) {
                   <button class="bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-beige-100 transition-colors shadow-lg">
-                    Ver ubicaciones
+                    {{ 'partner_page.view_locations' | translate }}
                   </button>
                 }
               </div>
@@ -119,12 +119,12 @@
           <div class="max-w-4xl mx-auto">
             <div class="p-8">
               <div class="flex flex-col items-center text-center">
-                <h2 class="text-3xl font-bold text-emerald-800 mb-6">Acerca de {{ partnerProfile()!.name }}</h2>
+                <h2 class="text-3xl font-bold text-emerald-800 mb-6">{{ 'partner_page.about_name' | translate: {name: partnerProfile()!.name} }}</h2>
                 <p class="text-lg text-gray-700 max-w-3xl leading-relaxed mb-4">
                   {{ partnerProfile()!.description }}
                   @if (partnerProfile()!.description.length > 300) {
                     <button (click)="openModal()" class="ml-2 font-semibold text-emerald-600 cursor-pointer hover:text-emerald-700 underline">
-                      Ver más
+                      {{ 'partner_page.see_more' | translate }}
                     </button>
                   }
                 </p>
@@ -160,7 +160,7 @@
             <div class="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
               <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                  <h3 class="text-2xl font-bold text-gray-900">Acerca de {{ partnerProfile()!.name }}</h3>
+                  <h3 class="text-2xl font-bold text-gray-900">{{ 'partner_page.about_name' | translate: {name: partnerProfile()!.name} }}</h3>
                   <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -172,14 +172,14 @@
 
                   @if (partnerProfile()!.location) {
                     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                      <h4 class="font-semibold text-gray-900 mb-2">Ubicación</h4>
+                      <h4 class="font-semibold text-gray-900 mb-2">{{ 'partner_page.location' | translate }}</h4>
                       <p class="text-gray-700">{{ partnerProfile()!.location!.address }}, {{ partnerProfile()!.location!.city }}, {{ partnerProfile()!.location!.country }}</p>
                     </div>
                   }
 
                   @if (partnerProfile()!.socialMedia) {
                     <div class="mt-6">
-                      <h4 class="font-semibold text-gray-900 mb-3">Síguenos</h4>
+                      <h4 class="font-semibold text-gray-900 mb-3">{{ 'partner_page.follow_us' | translate }}</h4>
                       <div class="flex space-x-4">
                         @if (partnerProfile()!.socialMedia!.instagram) {
                           <a href="#" class="text-pink-600 hover:text-pink-700">{{ partnerProfile()!.socialMedia!.instagram }}</a>
@@ -197,7 +197,7 @@
                 <div class="mt-8 flex justify-end">
                   <button (click)="closeModal()"
                           class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
-                    Cerrar
+                    {{ 'common.close' | translate }}
                   </button>
                 </div>
               </div>
@@ -215,11 +215,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
           </svg>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Partner no encontrado</h2>
-        <p class="text-gray-600 mb-6">Lo sentimos, no pudimos encontrar la información de este partner.</p>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ 'partner_page.not_found' | translate }}</h2>
+        <p class="text-gray-600 mb-6">{{ 'partner_page.not_found_text' | translate }}</p>
         <button (click)="goBack()"
                 class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-          Volver
+          {{ 'common.back' | translate }}
         </button>
       </div>
     </main>

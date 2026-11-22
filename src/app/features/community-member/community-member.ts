@@ -58,16 +58,19 @@ import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
 import {getInitials} from '@shared/utils/get-initials.helper';
 import { environment } from '@env/environment';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-community-member',
   standalone: true,
-  imports: [ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent, SkeletonComponent],
+  imports: [TranslateModule, ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent, SkeletonComponent],
   templateUrl: './community-member.html',
   animations: [],
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class CommunityMember implements OnInit, OnDestroy {
+  private readonly translate = inject(TranslateService);
   protected readonly isProd = environment.production;
   /** Pipe to decode Backbone JWT */
   private readonly backboneJwtPipe: BackboneJwtPipe = inject(BackboneJwtPipe);
@@ -300,13 +303,13 @@ export class CommunityMember implements OnInit, OnDestroy {
     const field = this.profileForm.get(fieldName);
     if (field?.errors && (field.dirty || field.touched)) {
       if (field.errors['required']) {
-        return 'Este campo es requerido';
+        return this.translate.instant('validation.required');
       }
       if (field.errors['email']) {
-        return 'Formato de email inválido';
+        return this.translate.instant('validation.email_invalid');
       }
       if (field.errors['minlength']) {
-        return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
+        return this.translate.instant('validation.min_length', {count: field.errors['minlength'].requiredLength});
       }
     }
     return '';
@@ -346,7 +349,7 @@ export class CommunityMember implements OnInit, OnDestroy {
             this.setProfileData(data);
             this.updateFormWithSessionData();
             this.isSubmitting = false;
-            this.notificationService.success('User updated successfully');
+            this.notificationService.success({key: 'notifications.user_updated'});
           },
           error: (err) => {
             this.logger.error('Failed to update or reload user', err);
@@ -377,18 +380,18 @@ export class CommunityMember implements OnInit, OnDestroy {
     this.userClient.deleteUser(this.userId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response: any) => {
           if (response?.status === 204) {
-            this.notificationService.success('Account deleted successfully');
+            this.notificationService.success({key: 'notifications.account_deleted'});
             // Clear session data and redirect to the home page
             this.logout();
           } else {
-            this.notificationService.error('Failed to delete account');
+            this.notificationService.error({key: 'notifications.account_delete_failed'});
           }
           this.deleteAccountModalOpen = false;
         },
         error: (error: any) => {
           this.logger.error('Error deleting account:', error);
           this.deleteAccountModalOpen = false;
-          this.notificationService.error('Error deleting account');
+          this.notificationService.error({key: 'notifications.account_delete_error'});
         }
       }
     )

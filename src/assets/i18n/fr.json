@@ -1,63 +1,517 @@
 {
+  "about": {
+    "connect": "Connectez-vous avec votre communauté",
+    "for_business": "Pour les commerces",
+    "founded": "Fondé en {{year}}",
+    "join_community": "Rejoignez la communauté",
+    "ready": "Prêt à rejoindre notre communauté ?",
+    "ready_text": "Que vous cherchiez des offres ou souhaitiez promouvoir votre commerce, nous avons quelque chose pour vous."
+  },
+  "alert": {
+    "dismiss": "Ignorer l'alerte"
+  },
+  "auth": {
+    "create_account_button": "Créer un compte",
+    "create_account_link": "Créer un compte",
+    "date_invalid": "Date invalide",
+    "day": "Jour",
+    "email": "Adresse courriel",
+    "email_consent": "Enregistrer votre adresse courriel chez nous nous permet de vous envoyer des offres spéciales de LatinHub, ainsi que des nouvelles sur nos produits et services. Vous pouvez modifier vos préférences de contact et vous désabonner des offres à tout moment depuis la section « Profil » ou à l'aide du lien de désabonnement qui figure au bas de nos courriels.",
+    "email_invalid": "Adresse courriel invalide.",
+    "email_placeholder": "Saisissez votre courriel",
+    "forgot_password": "Mot de passe oublié ?",
+    "have_account": "Vous avez déjà un compte ?",
+    "login_terms_after": "de Latinhub.",
+    "login_terms_and": "et la",
+    "login_terms_before": "En vous connectant, vous acceptez les",
+    "mobile_phone": "Numéro de téléphone mobile",
+    "need_help": "Besoin d'aide avec votre compte ?",
+    "password_min": "Le mot de passe doit contenir au moins 8 caractères.",
+    "password_placeholder": "Saisissez votre mot de passe",
+    "phone_invalid": "Numéro de téléphone invalide pour {{country}}.",
+    "register_terms_before": "En cliquant sur le bouton ci-dessous, vous acceptez et confirmez avoir lu nos",
+    "register_terms_between": ". Pour en savoir plus sur la façon dont nous utilisons les renseignements que nous recueillons à votre sujet, veuillez lire notre",
+    "temporary_problem": "Problème temporaire",
+    "year": "Année"
+  },
+  "banner": {
+    "promotional": "Bannière promotionnelle",
+    "secondary": "Bannière promotionnelle secondaire"
+  },
   "business_search": {
-    "title": "Trouver des commerces",
-    "city": "Ville",
+    "all_categories": "Toutes les catégories",
     "all_cities": "Toutes les villes",
     "category": "Catégorie",
-    "all_categories": "Toutes les catégories",
-    "text": "Nom ou description",
-    "results_count": "{{count}} commerces trouvés",
+    "city": "Ville",
     "empty": "Nous n'avons trouvé aucun commerce avec ces filtres.",
     "error": "La recherche n'a pas pu aboutir. Veuillez réessayer.",
-    "verified": "Vérifié",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{total}}",
     "pagination": "Pagination des résultats",
     "previous": "Précédent",
-    "next": "Suivant",
-    "page_of": "Page {{page}} sur {{total}}"
+    "results_count": "{{count}} commerces trouvés",
+    "text": "Nom ou description",
+    "title": "Trouver des commerces",
+    "verified": "Vérifié"
+  },
+  "cards": {
+    "campaigns": "Cartes de campagnes",
+    "empty": "Aucune campagne n'est disponible pour le moment.",
+    "loading": "Chargement des cartes de campagnes"
+  },
+  "carousel": {
+    "next": "Diapositive suivante",
+    "previous": "Diapositive précédente"
+  },
+  "common": {
+    "about": "À propos",
+    "back": "Retour",
+    "business_settings": "Paramètres du commerce",
+    "cancel": "Annuler",
+    "category": "Catégorie",
+    "close": "Fermer",
+    "contact": "Contact",
+    "continue": "Continuer",
+    "delete_account": "Supprimer le compte",
+    "dismiss": "Ignorer",
+    "email": "Courriel",
+    "first_name": "Prénom",
+    "image_alt": "Image",
+    "in_store": "En magasin",
+    "last_name": "Nom de famille",
+    "loading": "Chargement...",
+    "logo_alt": "Logo de Latin Hub",
+    "online": "En ligne",
+    "password": "Mot de passe",
+    "pending": "En attente",
+    "privacy_policy": "Politique de confidentialité",
+    "profile_alt": "Profil",
+    "retry": "Réessayer",
+    "save_changes": "Enregistrer les modifications",
+    "select_category": "Sélectionnez une catégorie",
+    "sign_in": "Se connecter",
+    "status": "Statut",
+    "support": "Assistance",
+    "terms_and_conditions": "Conditions générales",
+    "verified": "Vérifié"
+  },
+  "community": {
+    "account_settings": "Paramètres du compte",
+    "account_updates": "Mises à jour du compte",
+    "account_updates_hint": "Mises à jour importantes concernant votre compte",
+    "basic_info": "Informations de base",
+    "birthdate_placeholder": "JJ/MM/AAAA",
+    "contact_info": "Coordonnées",
+    "delete_confirm": "Voulez-vous vraiment continuer ?",
+    "delete_irreversible": "Cette action est irréversible.",
+    "delete_title": "Supprimer le compte ?",
+    "delete_warning": "Cette action supprimera définitivement votre compte et toutes les données associées.",
+    "display_name_placeholder": "Comment vous souhaitez être connu",
+    "do_not_sell": "Ne pas vendre mes renseignements personnels",
+    "do_not_sell_hint": "La loi vous permet de vous y opposer, mais nous ne vendons, n'échangeons ni ne louons les renseignements personnels des utilisateurs à des tiers.",
+    "first_name_placeholder": "Votre prénom",
+    "last_name_placeholder": "Votre nom de famille",
+    "need_help": "Besoin d'aide avec votre profil ?",
+    "not_verified": "Non vérifié",
+    "notification_preferences": "Préférences de notification",
+    "offers_and_discounts": "Offres et rabais",
+    "offers_hint": "Recevez des notifications sur les nouvelles offres et les rabais spéciaux",
+    "privacy_legal": "Confidentialité et mentions légales",
+    "profile": "Profil",
+    "sms": "SMS",
+    "update_photo": "Mettre à jour la photo",
+    "uploading": "Téléversement..."
+  },
+  "contact": {
+    "email": "Courriel",
+    "email_invalid": "Courriel invalide.",
+    "message": "Message",
+    "message_hint": "Veuillez saisir les détails de votre demande. Un membre de notre équipe d'assistance vous répondra dès que possible.",
+    "message_placeholder": "Écrivez votre message ici",
+    "phone_optional": "Téléphone (facultatif)",
+    "send": "Envoyer le message",
+    "subject": "Objet",
+    "subtitle": "Parlons de votre commerce !",
+    "title": "Contactez-nous"
+  },
+  "deals": {
+    "greeting": "👋 Bonjour, {{name}} !",
+    "greeting_anonymous": "👋 Bonjour ! Bienvenue 😊"
+  },
+  "favorites": {
+    "details": "Voir les détails",
+    "empty_text": "Commencez à explorer et enregistrez vos offres, produits et commerces favoris",
+    "empty_title": "Vous n'avez pas encore de favoris",
+    "explore": "Explorer les offres",
+    "remove": "Retirer des favoris",
+    "search": "Rechercher dans mes favoris...",
+    "subtitle": "Votre collection personnelle des offres, produits et commerces que vous préférez",
+    "title": "Mes favoris"
+  },
+  "footer": {
+    "cookies": "Témoins (cookies)",
+    "copyright": "© {{year}} {{company}}. Tous droits réservés.",
+    "legal": "Liens juridiques",
+    "navigation": "Navigation du pied de page",
+    "partnerships": "Partenariats",
+    "privacy": "Confidentialité",
+    "tagline": "Nous stimulons la croissance et la collaboration dans un monde connecté 🧡",
+    "terms": "Conditions"
   },
   "locations": {
-    "back": "Retour",
-    "title": "Mes adresses",
-    "subtitle": "Gestion des adresses",
-    "description": "Gérez les succursales de votre commerce. L'une d'elles est la principale.",
-    "no_business": "Vous n'avez pas encore de commerce enregistré.",
     "add": "Ajouter une adresse",
-    "edit": "Modifier",
+    "address": "Adresse",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "city": "Ville",
     "delete": "Supprimer",
     "delete_confirm": "Supprimer cette adresse ?",
     "delete_yes": "Oui, supprimer",
-    "cancel": "Annuler",
-    "save": "Enregistrer",
-    "loading": "Chargement des adresses…",
+    "description": "Gérez les succursales de votre commerce. L'une d'elles est la principale.",
+    "edit": "Modifier",
     "empty": "Vous n'avez pas encore d'adresse.",
-    "main": "Principale",
-    "make_main": "Définir comme principale",
-    "set_main": "C'est l'adresse principale",
-    "city": "Ville",
-    "select_city": "Sélectionnez une ville",
-    "address": "Adresse",
-    "name": "Nom de la succursale",
-    "postal_code": "Code postal",
-    "phone": "Téléphone",
     "error": "L'opération n'a pas pu être effectuée. Vérifiez les données et réessayez.",
     "errors": {
-      "city_required": "Sélectionnez une ville.",
-      "address_required": "Saisissez l'adresse."
-    }
+      "address_required": "Saisissez l'adresse.",
+      "city_required": "Sélectionnez une ville."
+    },
+    "loading": "Chargement des adresses…",
+    "main": "Principale",
+    "make_main": "Définir comme principale",
+    "name": "Nom de la succursale",
+    "no_business": "Vous n'avez pas encore de commerce enregistré.",
+    "phone": "Téléphone",
+    "postal_code": "Code postal",
+    "save": "Enregistrer",
+    "select_city": "Sélectionnez une ville",
+    "set_main": "C'est l'adresse principale",
+    "subtitle": "Gestion des adresses",
+    "title": "Mes adresses"
+  },
+  "marquee": {
+    "empty": "Aucune image n'est disponible pour le moment."
+  },
+  "menu_header": {
+    "avatar_alt": "Avatar de l'utilisateur",
+    "brand_suffix": "(UM DEV Creative)",
+    "business_menu_label": "Menu du profil du commerce",
+    "close_menu": "Fermer le menu",
+    "coming_soon": "(Bientôt disponible)",
+    "general_menu_label": "Menu de navigation général",
+    "join_now_button": {
+      "title": "Joignez-vous maintenant !",
+      "tooltip": "Joignez-vous maintenant !"
+    },
+    "login_button": {
+      "title": "Se connecter",
+      "tooltip": "Se connecter"
+    },
+    "my_business": "Mon commerce",
+    "new": "✨ Nouveau",
+    "privacy": "Confidentialité",
+    "search": {
+      "aria_label": "Rechercher",
+      "clear": "Effacer la recherche",
+      "placeholder": "Rechercher",
+      "submit": "Rechercher",
+      "title": "Rechercher"
+    },
+    "terms": "Conditions",
+    "title": "Menu",
+    "title1": "Directory",
+    "title2": "Site",
+    "user_icon": {
+      "menu": {
+        "favorites": {
+          "title": "Favoris",
+          "tooltip": "Mes favoris"
+        },
+        "logout": {
+          "title": "Quitter",
+          "tooltip": "Fermer la session"
+        },
+        "partner": {
+          "submenu": {
+            "back": {
+              "title": "Mon commerce",
+              "tooltip": "Retour au menu principal"
+            },
+            "offers": {
+              "title": "Promotions",
+              "tooltip": "Mes promotions"
+            },
+            "products": {
+              "title": "Produits",
+              "tooltip": "Mes produits"
+            },
+            "settings": {
+              "title": "Paramètres",
+              "tooltip": "Paramètres de mon commerce"
+            }
+          },
+          "title": "Joignez-vous comme commerce",
+          "tooltip": "Mes commerces gérés"
+        },
+        "profile": {
+          "title": "Profil",
+          "tooltip": "Paramètres du profil utilisateur"
+        },
+        "signed": {
+          "title": "Connecté en tant que",
+          "tooltip": "Sites enregistrés"
+        },
+        "support": {
+          "submenu": {
+            "about": {
+              "title": "À propos",
+              "tooltip": "En savoir plus sur nous"
+            },
+            "back": {
+              "title": "Retour",
+              "tooltip": "Retour au menu principal"
+            },
+            "blog": {
+              "title": "Blogue",
+              "tooltip": "Lisez notre blogue"
+            },
+            "contact": {
+              "title": "Contactez-nous",
+              "tooltip": "Communiquez avec nous"
+            },
+            "help": {
+              "title": "Aide",
+              "tooltip": "Obtenir de l'aide"
+            }
+          },
+          "title": "Assistance",
+          "tooltip": "Assistance et contacts"
+        }
+      },
+      "title": "Utilisateur",
+      "tooltip": "Utilisateur"
+    },
+    "user_menu_label": "Menu des actions de l'utilisateur connecté"
+  },
+  "modal": {
+    "close": "Fermer la fenêtre"
+  },
+  "not_found": {
+    "go_back": "Revenir en arrière",
+    "go_home": "Aller à l'accueil",
+    "home_page": "Page d'accueil",
+    "need_help": "Besoin d'aide ?",
+    "text": "Désolé, la page que vous cherchez n'existe pas ou a été déplacée. Ne vous inquiétez pas, nous vous aidons à trouver ce dont vous avez besoin.",
+    "title": "Page introuvable !"
+  },
+  "notification": {
+    "report_error": "Signaler l'erreur",
+    "report_this_error": "Signaler cette erreur"
+  },
+  "notifications": {
+    "access_insufficient_permissions": "Accès refusé : autorisations insuffisantes",
+    "access_user_not_found": "Accès refusé : informations de l'utilisateur introuvables",
+    "account_delete_error": "Erreur lors de la suppression du compte",
+    "account_delete_failed": "Impossible de supprimer le compte",
+    "account_deleted": "Compte supprimé avec succès",
+    "business_already_created": "Vous avez déjà un commerce. Veuillez le modifier si vous souhaitez apporter des changements.",
+    "business_created": "Commerce créé avec succès",
+    "business_image_failed": "Erreur lors de la mise à jour de l'image du commerce",
+    "business_name_taken": "Un commerce portant ce nom existe déjà. Veuillez saisir un autre nom.",
+    "business_not_identified": "Impossible d'identifier le commerce pour mettre à jour l'image",
+    "code_invalid": "Code invalide.",
+    "forgot_password_soon": "La récupération du mot de passe n'est pas encore disponible.",
+    "login_failed": "Échec de la connexion. Vérifiez vos identifiants.",
+    "offer_created": "Offre créée avec succès (campagne enregistrée)",
+    "offer_no_campaign": "Aucun identifiant de campagne à mettre à jour.",
+    "offer_no_user": "Aucun utilisateur connecté. Connectez-vous pour créer une offre.",
+    "offer_save_failed": "Impossible d'enregistrer l'offre pour le moment. Veuillez réessayer.",
+    "offer_update_failed": "Impossible de mettre à jour l'offre pour le moment. Veuillez réessayer.",
+    "offer_updated": "Offre mise à jour avec succès (campagne mise à jour)",
+    "offer_validation": "Des erreurs de validation sont survenues. Vérifiez le formulaire.",
+    "profile_update_failed": "La mise à jour du profil a échoué. Veuillez réessayer.",
+    "profile_updated": "Profil mis à jour avec succès !",
+    "registration_failed": "L'inscription a échoué. Veuillez réessayer.",
+    "registration_invalid": "Données d'inscription invalides. Vérifiez les renseignements saisis.",
+    "social_login_soon": "La connexion avec {{provider}} sera bientôt disponible !",
+    "user_creation_failed": "Erreur lors de la création de l'utilisateur. Veuillez réessayer.",
+    "user_updated": "Utilisateur mis à jour avec succès",
+    "verification_success": "Code vérifié avec succès",
+    "welcome": "Bienvenue, {{name}} !",
+    "welcome_back": "Bon retour, {{name}} !"
+  },
+  "offer_modal": {
+    "create_offer": "Créer l'offre",
+    "date_placeholder": "AAAA-MM-JJ",
+    "description_placeholder": "Décrivez les détails de l'offre...",
+    "id": "ID : #{{id}}",
+    "terms_placeholder": "Précisez les conditions de l'offre...",
+    "title_placeholder": "Ex. : Rabais d'été",
+    "update_offer": "Mettre à jour l'offre"
+  },
+  "offer_slider": {
+    "bookmark_alt": "Signet",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "offers_table": {
+    "actions": "Actions",
+    "create_first": "Créer ma première offre",
+    "delete": "Supprimer l'offre",
+    "discount": "Rabais",
+    "edit": "Modifier l'offre",
+    "empty_text": "Commencez par créer votre première offre",
+    "empty_title": "Aucune offre",
+    "id": "ID",
+    "page_of": "Page {{page}} sur {{total}}",
+    "showing": "Affichage de {{start}} à {{end}} sur {{total}} offres",
+    "title": "Liste des offres",
+    "title_column": "Titre",
+    "valid_until": "Valide jusqu'au",
+    "view": "Voir les détails"
+  },
+  "partner_general": {
+    "business_details": "Détails du commerce",
+    "category_hint": "Définissez la catégorie de votre commerce pour faciliter la recherche et la découverte.",
+    "category_timezone": "Catégorie et fuseau horaire",
+    "change_before_save": "Effectuez une modification avant d'enregistrer.",
+    "description_placeholder": "Décrivez brièvement votre commerce, vos produits ou vos services...",
+    "emails": "Adresses courriel",
+    "emails_hint": "Gérez les adresses courriel que nous utilisons pour communiquer avec vous",
+    "manager_email_placeholder": "manager@exemple.com",
+    "name_placeholder": "Nom de votre commerce",
+    "need_help": "Besoin d'aide pour mettre à jour votre commerce ?",
+    "select_timezone": "Sélectionnez un fuseau horaire",
+    "service_email_placeholder": "service@exemple.com",
+    "title": "Général",
+    "update_logo": "Mettre à jour le logo",
+    "view_page": "Voir ma page"
+  },
+  "partner_offers": {
+    "active": "Offres actives",
+    "active_count": "{{count}} offres actives",
+    "breadcrumb": "Offres",
+    "expired": "Offres expirées",
+    "hide_stats": "Masquer les statistiques",
+    "inactive": "Offres inactives",
+    "loading": "Chargement des offres...",
+    "more_tips": "Voir plus de conseils",
+    "need_help": "Besoin d'aide pour gérer les offres ?",
+    "new": "Nouvelle offre",
+    "show_stats": "Afficher les statistiques",
+    "tip_dates": "Dates claires :",
+    "tip_dates_text": "L'urgence augmente les ventes",
+    "tip_discounts": "Rabais efficaces :",
+    "tip_discounts_text": "15 à 25 % convertissent mieux",
+    "tip_terms": "Conditions précises :",
+    "tip_terms_text": "Évite les confusions",
+    "tips_title": "Conseils pour des offres efficaces",
+    "title": "Paramètres des offres",
+    "total": "Total des offres"
+  },
+  "partner_page": {
+    "about_name": "À propos de {{name}}",
+    "back": "Retour",
+    "edit_profile": "Modifier le profil",
+    "follow_us": "Suivez-nous",
+    "loading": "Chargement du profil du partenaire...",
+    "location": "Adresse",
+    "not_found": "Partenaire introuvable",
+    "not_found_text": "Désolé, nous n'avons pas trouvé les informations de ce partenaire.",
+    "redeem_online": "Utiliser en ligne",
+    "see_more": "Voir plus",
+    "terms": "CONDITIONS GÉNÉRALES",
+    "view_locations": "Voir les adresses"
+  },
+  "partner_products": {
+    "description": "Gérez votre catalogue de produits et de services.",
+    "subtitle": "Gestion des produits",
+    "title": "Mes produits"
+  },
+  "partner_settings": {
+    "subtitle": "Gérez votre page et vos promotions ici",
+    "title": "Paramètres du commerce"
+  },
+  "product_list": {
+    "disclaimer": "À titre indicatif seulement. Les produits, partenaires et offres peuvent changer sans préavis.",
+    "empty": "Aucun produit n'est disponible pour le moment.",
+    "join_now": "Joignez-vous maintenant !",
+    "label": "Liste de produits avec images et bouton pour se joindre"
+  },
+  "registration": {
+    "need_help": "Besoin d'aide pour inscrire votre commerce ?",
+    "step_one": {
+      "example_text": "« Restaurant familial spécialisé dans la cuisine mexicaine traditionnelle. Nous servons déjeuners, dîners et soupers préparés avec des ingrédients frais et locaux. Ambiance chaleureuse idéale pour les familles et les événements spéciaux. »",
+      "example_title": "Exemple de bonne description :",
+      "name_placeholder": "Ex. : Restaurant El Buen Sabor",
+      "subtitle": "Parlez-nous de votre commerce pour que nous puissions créer votre profil",
+      "title": "Informations de base sur votre commerce"
+    },
+    "step_three": {
+      "finish": "Terminer",
+      "select_country": "Sélectionnez un pays",
+      "selected": "Pays sélectionné pour votre commerce",
+      "subtitle": "Sélectionnez le pays où votre commerce principal exerce ses activités",
+      "title": "Emplacement du commerce",
+      "why_text": "L'emplacement nous aide à vous mettre en relation avec des clients locaux et à afficher votre commerce dans les recherches pertinentes de votre région.",
+      "why_title": "Pourquoi avons-nous besoin de ces renseignements ?"
+    },
+    "step_two": {
+      "avatar": "Avatar :",
+      "avatar_text": "Image carrée, d'au moins 200 x 200 px, idéale pour représenter votre commerce",
+      "formats": "Formats acceptés :",
+      "formats_text": "JPG, PNG",
+      "logo": "Logo :",
+      "logo_alt": "Logo du commerce",
+      "logo_text": "Format horizontal de préférence",
+      "max_size": "Taille maximale :",
+      "max_size_text": "5 Mo par image",
+      "save_continue": "Enregistrer et continuer",
+      "subtitle": "Ajoutez un avatar pour personnaliser le profil de votre commerce",
+      "tips_title": "Recommandations pour les images :",
+      "title": "Image de votre commerce"
+    },
+    "subtitle": "Suivez les étapes ci-dessous pour créer votre profil de partenaire",
+    "title": "Inscrivez votre commerce"
   },
   "stats": {
     "back": "Retour",
-    "title": "Statistiques",
-    "privacy": "Nous comptons seulement les visites : nous ne conservons aucune information sur les visiteurs de votre page. Vos propres visites ne sont pas comptées.",
-    "no_business": "Vous n'avez pas encore de commerce enregistré.",
-    "window": "Période",
-    "last_days": "{{days}} derniers jours",
-    "total": "Visites sur {{days}} jours",
-    "today": "Aujourd'hui",
-    "last_7_days": "7 derniers jours",
-    "empty": "Il n'y a pas encore de visites sur cette période.",
     "chart": "Visites par jour",
+    "empty": "Il n'y a pas encore de visites sur cette période.",
+    "error": "Les statistiques n'ont pas pu être chargées. Veuillez réessayer.",
+    "last_7_days": "7 derniers jours",
+    "last_days": "{{days}} derniers jours",
     "loading": "Chargement des statistiques…",
-    "error": "Les statistiques n'ont pas pu être chargées. Veuillez réessayer."
+    "no_business": "Vous n'avez pas encore de commerce enregistré.",
+    "privacy": "Nous comptons seulement les visites : nous ne conservons aucune information sur les visiteurs de votre page. Vos propres visites ne sont pas comptées.",
+    "range": "{{from}} — {{to}} (UTC)",
+    "title": "Statistiques",
+    "today": "Aujourd'hui",
+    "total": "Visites sur {{days}} jours",
+    "window": "Période"
+  },
+  "trend_carousel": {
+    "discover": "EN SAVOIR PLUS",
+    "empty": "Aucune tendance n'est disponible pour le moment.",
+    "trend": "Tendance"
+  },
+  "validation": {
+    "business_description_required": "La description du commerce est obligatoire",
+    "business_name_required": "Le nom du commerce est obligatoire",
+    "country_required": "Veuillez sélectionner un pays",
+    "description_max_length": "La description ne peut pas dépasser 500 caractères",
+    "description_min_length": "La description doit contenir au moins 20 caractères",
+    "email_invalid": "Saisissez un courriel valide",
+    "future_date": "La date doit être dans le futur",
+    "max_length": "Maximum {{count}} caractères",
+    "max_value": "La valeur maximale est {{max}}",
+    "min_length": "Minimum {{count}} caractères",
+    "min_value": "La valeur minimale est {{min}}",
+    "name_max_length": "Le nom ne peut pas dépasser 25 caractères",
+    "required": "Ce champ est obligatoire"
+  },
+  "verify_code": {
+    "enter": "Saisissez le code de vérification",
+    "validate": "Valider",
+    "verify": "Vérifier"
   }
 }

@@ -15,11 +15,13 @@ import {SessionData, SessionState} from '@core/store/session/session.state';
 import {formatDate} from '@shared/handler/date.handler';
 import {CampaignMapper} from '@core/services';
 import {LoggerService} from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-offer-edit-modal',
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     ReactiveFormsModule,
     Button,
@@ -31,6 +33,7 @@ import {LoggerService} from '@app/core/services/logger.service';
   styleUrls: ['./offer-edit-modal.css']
 })
 export class OfferEditModal implements OnInit, OnChanges {
+  private readonly translate = inject(TranslateService);
   @Input() isOpen: boolean = false;
   @Input() offer: Offer | null = null;
   @Input() isEditMode: boolean = false;
@@ -180,19 +183,19 @@ export class OfferEditModal implements OnInit, OnChanges {
     const field = this.offerForm.get(fieldName);
     if (field?.errors && (field.dirty || field.touched)) {
       if (field.errors['required']) {
-        return 'Este campo es requerido';
+        return this.translate.instant('validation.required');
       }
       if (field.errors['minlength']) {
-        return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
+        return this.translate.instant('validation.min_length', {count: field.errors['minlength'].requiredLength});
       }
       if (field.errors['min']) {
-        return `El valor mínimo es ${field.errors['min'].min}`;
+        return this.translate.instant('validation.min_value', {min: field.errors['min'].min});
       }
       if (field.errors['max']) {
-        return `El valor máximo es ${field.errors['max'].max}`;
+        return this.translate.instant('validation.max_value', {max: field.errors['max'].max});
       }
       if (field.errors['futureDate']) {
-        return 'La fecha debe ser en el futuro';
+        return this.translate.instant('validation.future_date');
       }
     }
     return '';
@@ -256,7 +259,7 @@ export class OfferEditModal implements OnInit, OnChanges {
           // res is { status, body }
           this.submittingSignal.set(false);
           this.logger.debug('Campaign create response:', res);
-          this.notification.success('Offer created successfully (campaign recorded)');
+          this.notification.success({key: 'notifications.offer_created'});
           // Optionally attach returned campaign id to emitted data
           const emitted = {...offerData} as Partial<Offer>;
           const createdId = (res && res.body && (res.body as any).id) || (res && (res as any).id);
@@ -302,7 +305,7 @@ export class OfferEditModal implements OnInit, OnChanges {
                 control.markAsTouched();
               }
             }
-            const msg = err?.message || 'Validation errors occurred. Please check the form.';
+            const msg = err?.message || {key: 'notifications.offer_validation'};
             this.notification.error(msg);
             return;
           }
@@ -314,11 +317,11 @@ export class OfferEditModal implements OnInit, OnChanges {
           }
 
           // Generic fallback
-          this.notification.error('Unable to save offer right now. Please try again.');
+          this.notification.error({key: 'notifications.offer_save_failed'});
         }
       });
     } else {
-      this.notification.error('No user logged in. Please log in to create an offer.');
+      this.notification.error({key: 'notifications.offer_no_user'});
       this.submittingSignal.set(false);
     }
   }
@@ -329,7 +332,7 @@ export class OfferEditModal implements OnInit, OnChanges {
     const campaignId = (offerData as any).id || (offerData as any).campaignId || this.offer?.id || (this.offer as any)?.campaignId;
     if (!campaignId) {
       this.submittingSignal.set(false);
-      this.notification.error('No campaign id available to update.');
+      this.notification.error({key: 'notifications.offer_no_campaign'});
       return;
     }
 
@@ -348,7 +351,7 @@ export class OfferEditModal implements OnInit, OnChanges {
     this.campaignClient.patchCampaign(String(campaignId), payload).subscribe({
       next: (res) => {
         this.submittingSignal.set(false);
-        this.notification.success('Offer updated successfully (campaign updated)');
+        this.notification.success({key: 'notifications.offer_updated'});
         const emitted = {...offerData} as Partial<Offer>;
         // Optionally attach returned lastUpdate/id
         if (res && res.body) {
@@ -392,7 +395,7 @@ export class OfferEditModal implements OnInit, OnChanges {
               control.markAsTouched();
             }
           }
-          const msg = err?.message || 'Validation errors occurred. Please check the form.';
+          const msg = err?.message || {key: 'notifications.offer_validation'};
           this.notification.error(msg);
           return;
         }
@@ -402,7 +405,7 @@ export class OfferEditModal implements OnInit, OnChanges {
           return;
         }
 
-        this.notification.error('Unable to update offer right now. Please try again.');
+        this.notification.error({key: 'notifications.offer_update_failed'});
       }
     });
   }

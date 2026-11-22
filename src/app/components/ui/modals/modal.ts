@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
@@ -7,7 +8,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslateModule, CommonModule],
   template: `
     <!-- Modal Backdrop -->
     @if (open) {
@@ -36,7 +37,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
                 <button
                   class="ml-4 p-1 text-beige-500 hover:text-coral-500 focus:outline-none focus:ring-2 focus:ring-emerald-green-500 focus:ring-offset-2 rounded-md transition-colors"
                   (click)="close()"
-                  aria-label="Cerrar modal"
+                  [attr.aria-label]="'modal.close' | translate"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -66,7 +67,7 @@ export type ModalVariant = 'centered' | 'wide' | 'fullscreen' | 'drawer';
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span class="text-sm text-gray-600">Cargando...</span>
+                <span class="text-sm text-gray-600">{{ 'common.loading' | translate }}</span>
               </div>
             </div>
           }

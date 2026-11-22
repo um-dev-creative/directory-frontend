@@ -7,6 +7,7 @@ import {provideLocationMocks} from '@angular/common/testing';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideHttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('Deals', () => {
   let component: Deals;
@@ -22,7 +23,7 @@ describe('Deals', () => {
       dispatch: jasmine.createSpy()
     };
     await TestBed.configureTestingModule({
-      imports: [Deals],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Deals],
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
         {provide: Store, useValue: mockStore},

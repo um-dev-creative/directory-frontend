@@ -13,6 +13,7 @@ import {provideNoopAnimations, NoopAnimationsModule} from '@angular/platform-bro
 import {AuthClient} from '@app/features/auth/auth.client';
 import { SessionStoreService } from '@core/store/session/session-store.service';
 import { Router } from '@angular/router';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 // Mocks
 class MockUserClient {
@@ -88,7 +89,7 @@ describe('CommunityMember', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, CommunityMember, NoopAnimationsModule],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), ReactiveFormsModule, CommunityMember, NoopAnimationsModule],
       providers: [provideHttpClientTesting(),
         provideNoopAnimations(),
         { provide: UserClient, useClass: MockUserClient },
@@ -288,7 +289,7 @@ describe('CommunityMember', () => {
     const field = component['profileForm'].get('firstName');
     field?.setErrors({ required: true });
     field?.markAsTouched();
-    expect(component.getFieldError('firstName')).toContain('requerido');
+    expect(component.getFieldError('firstName')).toBe('validation.required');
   });
 
   it('should open and close delete account modal', () => {

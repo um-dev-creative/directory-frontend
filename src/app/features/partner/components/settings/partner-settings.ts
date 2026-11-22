@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface SettingsOption {
   title: string;
@@ -14,7 +15,7 @@ interface SettingsOption {
 @Component({
   selector: 'app-partner-settings',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslateModule, CommonModule],
   templateUrl: './partner-settings.html',
   styleUrls: ['./partner-settings.css']
 })

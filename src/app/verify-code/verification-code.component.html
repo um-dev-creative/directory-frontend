@@ -1,6 +1,6 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 <div class="bg-white p-8 rounded-lg shadow-lg w-80">
-  <h2 class="text-2xl font-semibold mb-6 text-center">Enter Verification Code</h2>
+  <h2 class="text-2xl font-semibold mb-6 text-center">{{ 'verify_code.enter' | translate }}</h2>
   <form id="verification-form" class="flex justify-center">
     <input type="text" maxlength="1" class="input" required>
     <input type="text" maxlength="1" class="input" required>
@@ -11,7 +11,7 @@
     <input type="text" maxlength="1" class="input" required>
   </form>
   <button type="submit" form="verification-form"
-          class="mt-6 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Verify
+          class="mt-6 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">{{ 'verify_code.verify' | translate }}
   </button>
 </div>
 </body>

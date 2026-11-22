@@ -5,6 +5,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { provideLocationMocks } from '@angular/common/testing';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 import { LandingPartnerLogo } from '@shared/models/landing.model';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 class MockLandingStoreService {
   partnerLogos$ = new BehaviorSubject<LandingPartnerLogo[]>([]);
@@ -31,7 +32,7 @@ describe('Marquee', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Marquee],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Marquee],
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
         provideLocationMocks(),

@@ -6,7 +6,7 @@
 } @else {
   @if (images.length === 0) {
     <div class="text-center py-10 text-gray-500">
-      No hay imágenes disponibles en este momento.
+      {{ 'marquee.empty' | translate }}
     </div>
   } @else {
     <div class="marquee-container">

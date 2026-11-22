@@ -6,11 +6,12 @@ import { takeUntil } from 'rxjs/operators';
 import { BannerService, BannerData, BannerImage, Category } from './services/banner.service';
 import { SkeletonComponent } from '@app/components/ui';
 import {environment} from '@env/environment';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-banner',
   standalone: true,
-  imports: [CommonModule, RouterModule, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, SkeletonComponent],
   templateUrl: './banner.html',
   styleUrls: ['./banner.css']
 })

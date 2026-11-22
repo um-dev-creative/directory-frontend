@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 import { SkeletonComponent } from '@app/components/ui';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface MarqueeImage {
   id: string;
@@ -16,7 +17,7 @@ interface MarqueeImage {
 @Component({
   selector: 'app-marquee',
   standalone: true,
-  imports: [CommonModule, RouterModule, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, SkeletonComponent],
   templateUrl: './marquee.html',
   styleUrl: './marquee.css',
 })

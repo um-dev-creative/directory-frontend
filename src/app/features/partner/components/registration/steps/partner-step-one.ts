@@ -13,20 +13,22 @@ import {Subject, switchMap, takeUntil} from 'rxjs';
 import {SessionStoreService} from '@core/store/session/session-store.service';
 import {NotificationService} from '@core/services/notification.service';
 import {LoggerService} from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-step-one',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
+  imports: [TranslateModule, CommonModule, ReactiveFormsModule, InputComponent, Button, CardComponent, TextareaComponent, IconComponent],
   template: `
     <form [formGroup]="reactiveForm" (ngSubmit)="onContinue()" class="space-y-6">
       <!-- Step Header -->
       <div class="text-center pb-4 border-b border-beige-200">
         <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
-          Información Básica de tu Negocio
+          {{ 'registration.step_one.title' | translate }}
         </h2>
         <p class="text-beige-600">
-          Cuéntanos sobre tu negocio para que podamos crear tu perfil
+          {{ 'registration.step_one.subtitle' | translate }}
         </p>
       </div>
 
@@ -35,7 +37,7 @@ import {LoggerService} from '@app/core/services/logger.service';
         <!-- Business Name -->
         <app-input
           label="Nombre del Negocio"
-          placeholder="Ej: Restaurante El Buen Sabor"
+          [placeholder]="'registration.step_one.name_placeholder' | translate"
           [required]="true"
           [variant]="getFieldVariant('name')"
           [errorMessage]="getFieldError('name')"
@@ -47,7 +49,7 @@ import {LoggerService} from '@app/core/services/logger.service';
         <!-- Business Description -->
         <app-textarea
           label="Descripción del Negocio"
-          placeholder="Describe brevemente tu negocio, productos o servicios que ofreces..."
+          [placeholder]="'partner_general.description_placeholder' | translate"
           [required]="true"
           [variant]="getFieldVariant('description')"
           [errorMessage]="getFieldError('description')"
@@ -64,13 +66,11 @@ import {LoggerService} from '@app/core/services/logger.service';
         <div class="flex items-center mb-2">
           <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-1"></app-icon>
           <h4 class="text-md font-semibold text-sky-blue-700">
-            Ejemplo de buena descripción:
+            {{ 'registration.step_one.example_title' | translate }}
           </h4>
         </div>
         <p class="text-sm text-sky-blue-700">
-          "Restaurante familiar especializado en cocina tradicional mexicana.
-          Ofrecemos desayunos, comidas y cenas preparadas con ingredientes frescos y locales.
-          Ambiente acogedor ideal para familias y eventos especiales."
+          {{ 'registration.step_one.example_text' | translate }}
         </p>
       </app-card>
 
@@ -83,13 +83,14 @@ import {LoggerService} from '@app/core/services/logger.service';
           [disabled]="isLoading || reactiveForm.invalid"
           [loading]="isLoading"
         >
-          Continuar
+          {{ 'common.continue' | translate }}
         </app-button>
       </div>
     </form>
   `
 })
 export class PartnerStepOne implements OnInit {
+  private readonly translate = inject(TranslateService);
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepOneData>();
 
@@ -162,7 +163,7 @@ export class PartnerStepOne implements OnInit {
               },
               token: this.sessionData?.token ?? '',
             };
-            this.notificationService.success('Business created successfully');
+            this.notificationService.success({key: 'notifications.business_created'});
 
             this.sessionStoreService.saveSessionData(sessionDataNew);
             this.logger.info('Business created successfully:', response);
@@ -175,7 +176,7 @@ export class PartnerStepOne implements OnInit {
 
           if (response.status === 409) {
             this.logger.warn('Business already exists for this user');
-            this.notificationService.error('Ya tienes un negocio creado. Por favor, edítalo si deseas realizar cambios.');
+            this.notificationService.error({key: 'notifications.business_already_created'});
             throw new Error('Business already exists for this user');
           } else {
             this.logger.error('Unexpected response status:', response.status);
@@ -192,7 +193,7 @@ export class PartnerStepOne implements OnInit {
         },
         error: (error) => {
           if (error.status === 409) {
-            this.notificationService.error('Ya existe un negocio con el nombre ingresado. Por favor, Ingresar otro nombre.');
+            this.notificationService.error({key: 'notifications.business_name_taken'});
           } else {
             this.logger.error('Error creating business:', error);
           }
@@ -211,17 +212,17 @@ export class PartnerStepOne implements OnInit {
     if (field && field.invalid && field.touched) {
       if (field.errors?.['required']) {
         return fieldName === 'name'
-          ? 'El nombre del negocio es requerido'
-          : 'La descripción del negocio es requerida';
+          ? this.translate.instant('validation.business_name_required')
+          : this.translate.instant('validation.business_description_required');
       }
       if (field.errors?.['minlength']) {
-        return 'La descripción debe tener al menos 20 caracteres';
+        return this.translate.instant('validation.description_min_length');
       }
       if (field.errors?.['maxlength']) {
         if (fieldName === 'name') {
-          return 'El nombre no puede exceder 25 caracteres';
+          return this.translate.instant('validation.name_max_length');
         }
-        return 'La descripción no puede exceder 500 caracteres';
+        return this.translate.instant('validation.description_max_length');
       }
     }
     return '';

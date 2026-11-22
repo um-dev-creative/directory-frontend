@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { Button } from '@app/components/ui/buttons/button';
 import { CardComponent } from '@app/components/ui/cards/card';
 import { IconComponent } from '@app/components/ui';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
-  imports: [CommonModule, RouterModule, Button, CardComponent, IconComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, Button, CardComponent, IconComponent],
   templateUrl: './about.html',
   styleUrl: './about.css',
   standalone: true

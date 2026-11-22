@@ -4,6 +4,7 @@ import {NotFound} from './not-found';
 import {provideLocationMocks} from '@angular/common/testing';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('NotFound', () => {
   let component: NotFound;
@@ -11,7 +12,7 @@ describe('NotFound', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotFound],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), NotFound],
       providers: [
         {provide: ActivatedRoute,
           useValue: {

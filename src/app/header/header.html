@@ -4,7 +4,7 @@
   <div class="w-[108rem] flex-none flex justify-end">
     <!--picture>
       <source srcset="/assets/images/media.avif" type="image/avif">
-      <img alt="im" src="/assets/images/media.png" class="w-[71.75rem] flex-none max-w-none" decoding="async">
+      <img [alt]="'common.image_alt' | translate" src="/assets/images/media.png" class="w-[71.75rem] flex-none max-w-none" decoding="async">
     </picture-->
   </div>
 </div>
@@ -17,7 +17,7 @@
     <a routerLink="/">
       <img
         src="/assets/images/latinhub.svg"
-        alt="Latin Hub Logo"
+        [alt]="'common.logo_alt' | translate"
         class="w-auto"
         [class]="validateHeader(HeaderType.CENTER_HEADER) ? 'h-6 sm:h-5' : 'h-8 sm:h-6'"
       >
@@ -46,7 +46,7 @@
                   size="sm"
                   [src]="userLogger.avatarUrl"
                   [initials]="userLogger.initials"
-                  alt="Profile">
+                  [alt]="'common.profile_alt' | translate">
                 </app-avatar>
               } @else {
                 <div class="w-8 h-8 rounded-full bg-sky-blue-200 animate-pulse"></div>
@@ -54,7 +54,7 @@
             </div>
             <!--img
               [src]="userProfileImage"
-              alt="Profile"
+              [alt]="'common.profile_alt' | translate"
               class="w-8 h-8 rounded-full"
             -->
           </button>

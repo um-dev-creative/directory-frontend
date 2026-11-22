@@ -14,10 +14,11 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {DFC} from '@shared/constants/app.const';
 import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-verify-code',
-  imports: [
+  imports: [TranslateModule, 
     ReactiveFormsModule
   ],
   templateUrl: './verify-code.html',
@@ -144,13 +145,13 @@ export class VerifyCode implements OnDestroy, OnInit, AfterViewInit {
     this.userRegisterClient.confirmCode(userRegisterRequest).pipe(takeUntil(this.subject$))
       .subscribe({
         next: (_response) => {
-          this.notificationService.success('Success');
+          this.notificationService.success({key: 'notifications.verification_success'});
           this.router.navigate([DFC.RelativePath.STAGE_PATH]);
           // }
           this.loader.hide();
         },
         error: (_error) => {
-          this.notificationService.warning('Invalid code.');
+          this.notificationService.warning({key: 'notifications.code_invalid'});
           this.loader.hide();
         }
       });

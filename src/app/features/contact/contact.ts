@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import {parsePhoneNumberFromString, getExampleNumber, PhoneNumber, Examples} from 'libphonenumber-js';
 import examples from 'libphonenumber-js/examples.mobile.json';
 import { LoggerService } from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contact',
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     FormsModule
   ],

@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Button, SkeletonComponent } from '@app/components/ui';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 import {environment} from '@env/environment';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Product {
   id: string;
@@ -17,7 +18,7 @@ interface Product {
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, Button, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, Button, SkeletonComponent],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })

@@ -47,7 +47,7 @@
 @if (currentBanner && !(loading$ | async) && !(error$ | async)) {
   @switch (bannerType) {
     @case ('top') {
-      <section class="flex justify-center rounded-[15px]" role="banner" aria-label="Promotional banner">
+      <section class="flex justify-center rounded-[15px]" role="banner" [attr.aria-label]="'banner.promotional' | translate">
         <a
           [routerLink]="getRouteForBanner()"
           class="clickable-pointer block w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
@@ -93,7 +93,7 @@
       <section
         class="flex justify-center items-center rounded-[5px] overflow-visible w-full h-full"
         role="banner"
-        aria-label="Secondary promotional banner"
+        [attr.aria-label]="'banner.secondary' | translate"
       >
         <a
           [routerLink]="getRouteForBanner()"

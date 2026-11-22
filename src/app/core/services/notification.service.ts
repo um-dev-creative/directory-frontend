@@ -1,6 +1,18 @@
-import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector, PLATFORM_ID, Inject, inject } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Notification } from '@shared/components/notification/notification';
+import { TranslateService } from '@ngx-translate/core';
+
+/**
+ * A message to translate: the key of the translation files and its `{{parameters}}`. Plain strings are shown as they are (for example
+ * the message a backend answers with).
+ */
+export interface NotificationText {
+  key: string;
+  params?: Record<string, unknown>;
+}
+
+export type NotificationMessage = string | NotificationText;
 
 export interface NotificationConfig {
   duration?: number;
@@ -28,6 +40,7 @@ export class NotificationService {
   };
 
   private notifications: ComponentRef<Notification>[] = [];
+  private readonly translate = inject(TranslateService);
 
   constructor(
     private appRef: ApplicationRef,
@@ -36,14 +49,14 @@ export class NotificationService {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  success(message: string, config?: NotificationConfig): void {
+  success(message: NotificationMessage, config?: NotificationConfig): void {
     this.show(message, {
       ...config,
       type: 'success'
     });
   }
 
-  error(message: string, config?: NotificationConfig): void {
+  error(message: NotificationMessage, config?: NotificationConfig): void {
     this.show(message, {
       ...config,
       type: 'error',
@@ -51,7 +64,7 @@ export class NotificationService {
     });
   }
 
-  errorWithReport(message: string, errorContext?: string, onReport?: () => void): void {
+  errorWithReport(message: NotificationMessage, errorContext?: string, onReport?: () => void): void {
     this.show(message, {
       type: 'error',
       duration: 10000, // Más tiempo para que el usuario pueda ver y usar el link
@@ -60,7 +73,7 @@ export class NotificationService {
     });
   }
 
-  errorWithExternalLink(message: string, linkUrl: string, linkText: string, openInNewTab: boolean = true): void {
+  errorWithExternalLink(message: NotificationMessage, linkUrl: string, linkText: string, openInNewTab: boolean = true): void {
     this.show(message, {
       type: 'error',
       duration: 12000, // Más tiempo para que el usuario pueda leer y usar el enlace
@@ -72,21 +85,21 @@ export class NotificationService {
     });
   }
 
-  warning(message: string, config?: NotificationConfig): void {
+  warning(message: NotificationMessage, config?: NotificationConfig): void {
     this.show(message, {
       ...config,
       type: 'warning'
     });
   }
 
-  info(message: string, config?: NotificationConfig): void {
+  info(message: NotificationMessage, config?: NotificationConfig): void {
     this.show(message, {
       ...config,
       type: 'info'
     });
   }
 
-  show(message: string, config?: NotificationConfig): void {
+  show(message: NotificationMessage, config?: NotificationConfig): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
@@ -100,7 +113,7 @@ export class NotificationService {
       environmentInjector: this.injector
     });
 
-    componentRef.instance.message = message;
+    componentRef.instance.message = this.resolve(message);
     componentRef.instance.config = finalConfig;
     componentRef.instance.onClose = () => this.removeNotification(componentRef);
 
@@ -118,7 +131,7 @@ export class NotificationService {
   }
 
   showWithAction(
-    message: string,
+    message: NotificationMessage,
     action: string,
     config?: NotificationConfig
   ): void {
@@ -126,6 +139,11 @@ export class NotificationService {
       ...config,
       action
     });
+  }
+
+  /** The text to show: a translation of the key in the current language, or the plain string. */
+  private resolve(message: NotificationMessage): string {
+    return typeof message === 'string' ? message : this.translate.instant(message.key, message.params);
   }
 
   dismiss(): void {

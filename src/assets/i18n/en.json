@@ -1,102 +1,517 @@
 {
-  "": "",
+  "about": {
+    "connect": "Connect with your community",
+    "for_business": "For businesses",
+    "founded": "Founded in {{year}}",
+    "join_community": "Join the community",
+    "ready": "Ready to join our community?",
+    "ready_text": "Whether you are looking for deals or want to promote your business, we have something for you."
+  },
+  "alert": {
+    "dismiss": "Dismiss alert"
+  },
+  "auth": {
+    "create_account_button": "Create account",
+    "create_account_link": "Create an account",
+    "date_invalid": "Invalid date",
+    "day": "Day",
+    "email": "Email address",
+    "email_consent": "Registering your email address with us lets us send you special LatinHub offers, as well as news about products and services. You can change your contact preferences and unsubscribe from offers at any time from the \"Profile\" section or by using the unsubscribe link at the bottom of our emails.",
+    "email_invalid": "Invalid email address.",
+    "email_placeholder": "Enter your email",
+    "forgot_password": "Forgot your password?",
+    "have_account": "Already have an account?",
+    "login_terms_after": "of Latinhub.",
+    "login_terms_and": "and the",
+    "login_terms_before": "By signing in, you agree to the",
+    "mobile_phone": "Mobile phone number",
+    "need_help": "Need help with your account?",
+    "password_min": "The password must have at least 8 characters.",
+    "password_placeholder": "Enter your password",
+    "phone_invalid": "Invalid phone number for {{country}}.",
+    "register_terms_before": "By clicking the button below, you agree and confirm that you have read our",
+    "register_terms_between": ". For more details on how we use the information we collect about you, please read our",
+    "temporary_problem": "Temporary problem",
+    "year": "Year"
+  },
+  "banner": {
+    "promotional": "Promotional banner",
+    "secondary": "Secondary promotional banner"
+  },
+  "business_search": {
+    "all_categories": "All categories",
+    "all_cities": "All cities",
+    "category": "Category",
+    "city": "City",
+    "empty": "We found no businesses with those filters.",
+    "error": "The search could not be completed. Please try again.",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{total}}",
+    "pagination": "Results pagination",
+    "previous": "Previous",
+    "results_count": "{{count}} businesses found",
+    "text": "Name or description",
+    "title": "Find businesses",
+    "verified": "Verified"
+  },
+  "cards": {
+    "campaigns": "Campaign cards",
+    "empty": "There are no campaigns available right now.",
+    "loading": "Loading campaign cards"
+  },
+  "carousel": {
+    "next": "Next slide",
+    "previous": "Previous slide"
+  },
+  "common": {
+    "about": "About",
+    "back": "Back",
+    "business_settings": "Business settings",
+    "cancel": "Cancel",
+    "category": "Category",
+    "close": "Close",
+    "contact": "Contact",
+    "continue": "Continue",
+    "delete_account": "Delete account",
+    "dismiss": "Dismiss",
+    "email": "Email",
+    "first_name": "First name",
+    "image_alt": "Image",
+    "in_store": "In store",
+    "last_name": "Last name",
+    "loading": "Loading...",
+    "logo_alt": "Latin Hub logo",
+    "online": "Online",
+    "password": "Password",
+    "pending": "Pending",
+    "privacy_policy": "Privacy Policy",
+    "profile_alt": "Profile",
+    "retry": "Retry",
+    "save_changes": "Save changes",
+    "select_category": "Select a category",
+    "sign_in": "Sign in",
+    "status": "Status",
+    "support": "Support",
+    "terms_and_conditions": "Terms and Conditions",
+    "verified": "Verified"
+  },
+  "community": {
+    "account_settings": "Account settings",
+    "account_updates": "Account updates",
+    "account_updates_hint": "Important updates about your account",
+    "basic_info": "Basic information",
+    "birthdate_placeholder": "DD/MM/YYYY",
+    "contact_info": "Contact information",
+    "delete_confirm": "Are you sure you want to continue?",
+    "delete_irreversible": "This action cannot be undone.",
+    "delete_title": "Delete account?",
+    "delete_warning": "This action will permanently delete your account and all associated data.",
+    "display_name_placeholder": "How you want to be known",
+    "do_not_sell": "Do not sell my personal information",
+    "do_not_sell_hint": "By law you can opt out, but we do not sell, trade or rent users' personal information to third parties.",
+    "first_name_placeholder": "Your first name",
+    "last_name_placeholder": "Your last name",
+    "need_help": "Need help with your profile?",
+    "not_verified": "Not verified",
+    "notification_preferences": "Notification preferences",
+    "offers_and_discounts": "Offers and discounts",
+    "offers_hint": "Get notified about new offers and special discounts",
+    "privacy_legal": "Privacy and legal",
+    "profile": "Profile",
+    "sms": "SMS",
+    "update_photo": "Update photo",
+    "uploading": "Uploading..."
+  },
+  "contact": {
+    "email": "Email",
+    "email_invalid": "Invalid email.",
+    "message": "Message",
+    "message_hint": "Please enter the details of your request. A member of our support team will reply as soon as possible.",
+    "message_placeholder": "Write your message here",
+    "phone_optional": "Phone (optional)",
+    "send": "Send message",
+    "subject": "Subject",
+    "subtitle": "Let's talk about your business!",
+    "title": "Contact us"
+  },
+  "deals": {
+    "greeting": "👋 Hello, {{name}}!",
+    "greeting_anonymous": "👋 Hello! Welcome 😊"
+  },
+  "favorites": {
+    "details": "View details",
+    "empty_text": "Start exploring and save your favorite offers, products and businesses",
+    "empty_title": "You have no favorites yet",
+    "explore": "Explore offers",
+    "remove": "Remove from favorites",
+    "search": "Search my favorites...",
+    "subtitle": "Your personal collection of the offers, products and businesses you like most",
+    "title": "My favorites"
+  },
+  "footer": {
+    "cookies": "Cookies",
+    "copyright": "© {{year}} {{company}}. All rights reserved.",
+    "legal": "Legal links",
+    "navigation": "Footer navigation",
+    "partnerships": "Partnerships",
+    "privacy": "Privacy",
+    "tagline": "We drive growth and collaboration in a connected world 🧡",
+    "terms": "Terms"
+  },
+  "locations": {
+    "add": "Add location",
+    "address": "Address",
+    "back": "Back",
+    "cancel": "Cancel",
+    "city": "City",
+    "delete": "Delete",
+    "delete_confirm": "Delete this location?",
+    "delete_yes": "Yes, delete",
+    "description": "Manage the branches of your business. One of them is the main one.",
+    "edit": "Edit",
+    "empty": "You have no locations yet.",
+    "error": "The operation could not be completed. Check the data and try again.",
+    "errors": {
+      "address_required": "Enter the address.",
+      "city_required": "Select a city."
+    },
+    "loading": "Loading locations…",
+    "main": "Main",
+    "make_main": "Make main",
+    "name": "Branch name",
+    "no_business": "You have no registered business yet.",
+    "phone": "Phone",
+    "postal_code": "Postal code",
+    "save": "Save",
+    "select_city": "Select a city",
+    "set_main": "This is the main location",
+    "subtitle": "Locations management",
+    "title": "My locations"
+  },
+  "marquee": {
+    "empty": "There are no images available right now."
+  },
   "menu_header": {
+    "avatar_alt": "User avatar",
+    "brand_suffix": "(UM DEV Creative)",
+    "business_menu_label": "Business profile menu",
+    "close_menu": "Close menu",
+    "coming_soon": "(Coming soon)",
+    "general_menu_label": "General navigation menu",
+    "join_now_button": {
+      "title": "Join now!",
+      "tooltip": "Join now!"
+    },
+    "login_button": {
+      "title": "Sign in",
+      "tooltip": "Sign in"
+    },
+    "my_business": "My business",
+    "new": "✨ New",
+    "privacy": "Privacy",
     "search": {
+      "aria_label": "Search",
+      "clear": "Clear search",
       "placeholder": "Search",
+      "submit": "Search",
       "title": "Search"
     },
-    "signing_button": {
-      "title": "JOIN NOW",
-      "tooltip": "JOIN NOW"
-    },
+    "terms": "Terms",
+    "title": "Menu",
     "title1": "Directory",
     "title2": "Site",
     "user_icon": {
       "menu": {
-        "business": {
-          "title": "My Business",
-          "tooltip": "Managed businesses"
+        "favorites": {
+          "title": "Favorites",
+          "tooltip": "My favorites"
         },
         "logout": {
           "title": "Logout",
           "tooltip": "Session logout"
         },
+        "partner": {
+          "submenu": {
+            "back": {
+              "title": "My business",
+              "tooltip": "Back to the main menu"
+            },
+            "offers": {
+              "title": "Promotions",
+              "tooltip": "My promotions"
+            },
+            "products": {
+              "title": "Products",
+              "tooltip": "My products"
+            },
+            "settings": {
+              "title": "Settings",
+              "tooltip": "My business settings"
+            }
+          },
+          "title": "Join as a business",
+          "tooltip": "My managed businesses"
+        },
         "profile": {
           "title": "Profile",
           "tooltip": "User profile settings"
         },
-        "saved": {
-          "title": "Saved",
+        "signed": {
+          "title": "Signed in as",
           "tooltip": "Saved sites"
         },
         "support": {
+          "submenu": {
+            "about": {
+              "title": "About",
+              "tooltip": "Learn more about us"
+            },
+            "back": {
+              "title": "Back",
+              "tooltip": "Back to the main menu"
+            },
+            "blog": {
+              "title": "Blog",
+              "tooltip": "Read our blog"
+            },
+            "contact": {
+              "title": "Contact us",
+              "tooltip": "Get in touch with us"
+            },
+            "help": {
+              "title": "Help",
+              "tooltip": "Get assistance"
+            }
+          },
           "title": "Contact Support",
           "tooltip": "Contact & Support"
         }
       },
       "title": "User",
       "tooltip": "User"
-    }
+    },
+    "user_menu_label": "Signed-in user actions menu"
   },
-  "business_search": {
-    "title": "Find businesses",
-    "city": "City",
-    "all_cities": "All cities",
-    "category": "Category",
-    "all_categories": "All categories",
-    "text": "Name or description",
-    "results_count": "{{count}} businesses found",
-    "empty": "We found no businesses with those filters.",
-    "error": "The search could not be completed. Please try again.",
-    "verified": "Verified",
-    "pagination": "Results pagination",
-    "previous": "Previous",
+  "modal": {
+    "close": "Close dialog"
+  },
+  "not_found": {
+    "go_back": "Go back",
+    "go_home": "Go to home",
+    "home_page": "Home page",
+    "need_help": "Need help?",
+    "text": "Sorry, the page you are looking for does not exist or has been moved. Don't worry, we will help you find what you need.",
+    "title": "Page not found!"
+  },
+  "notification": {
+    "report_error": "Report error",
+    "report_this_error": "Report this error"
+  },
+  "notifications": {
+    "access_insufficient_permissions": "Access denied - Insufficient permissions",
+    "access_user_not_found": "Access denied - User information not found",
+    "account_delete_error": "Error deleting account",
+    "account_delete_failed": "Failed to delete account",
+    "account_deleted": "Account deleted successfully",
+    "business_already_created": "You already have a business. Please edit it if you want to make changes.",
+    "business_created": "Business created successfully",
+    "business_image_failed": "Error updating the business image",
+    "business_name_taken": "A business with that name already exists. Please enter another name.",
+    "business_not_identified": "Could not identify the business to update the image",
+    "code_invalid": "Invalid code.",
+    "forgot_password_soon": "Forgot password functionality is not implemented yet.",
+    "login_failed": "Login failed. Please check your credentials.",
+    "offer_created": "Offer created successfully (campaign recorded)",
+    "offer_no_campaign": "No campaign id available to update.",
+    "offer_no_user": "No user logged in. Please log in to create an offer.",
+    "offer_save_failed": "Unable to save offer right now. Please try again.",
+    "offer_update_failed": "Unable to update offer right now. Please try again.",
+    "offer_updated": "Offer updated successfully (campaign updated)",
+    "offer_validation": "Validation errors occurred. Please check the form.",
+    "profile_update_failed": "Failed to update profile. Please try again.",
+    "profile_updated": "Profile updated successfully!",
+    "registration_failed": "Registration failed. Please try again.",
+    "registration_invalid": "Invalid registration data. Please check your inputs.",
+    "social_login_soon": "Social login with {{provider}} coming soon!",
+    "user_creation_failed": "Error creating user. Please try again.",
+    "user_updated": "User updated successfully",
+    "verification_success": "Code verified successfully",
+    "welcome": "Welcome, {{name}}!",
+    "welcome_back": "Welcome back, {{name}}!"
+  },
+  "offer_modal": {
+    "create_offer": "Create offer",
+    "date_placeholder": "YYYY-MM-DD",
+    "description_placeholder": "Describe the details of the offer...",
+    "id": "ID: #{{id}}",
+    "terms_placeholder": "Specify the terms and conditions of the offer...",
+    "title_placeholder": "E.g. Summer discount",
+    "update_offer": "Update offer"
+  },
+  "offer_slider": {
+    "bookmark_alt": "Bookmark",
     "next": "Next",
-    "page_of": "Page {{page}} of {{total}}"
+    "previous": "Previous"
   },
-  "locations": {
+  "offers_table": {
+    "actions": "Actions",
+    "create_first": "Create my first offer",
+    "delete": "Delete offer",
+    "discount": "Discount",
+    "edit": "Edit offer",
+    "empty_text": "Start by creating your first offer",
+    "empty_title": "There are no offers",
+    "id": "ID",
+    "page_of": "Page {{page}} of {{total}}",
+    "showing": "Showing {{start}} - {{end}} of {{total}} offers",
+    "title": "Offers list",
+    "title_column": "Title",
+    "valid_until": "Valid until",
+    "view": "View details"
+  },
+  "partner_general": {
+    "business_details": "Business details",
+    "category_hint": "Set your business category to help people search for and discover you.",
+    "category_timezone": "Category and time zone",
+    "change_before_save": "Make a change before saving.",
+    "description_placeholder": "Briefly describe your business, products or services...",
+    "emails": "Email addresses",
+    "emails_hint": "Manage the email addresses we use to communicate with you",
+    "manager_email_placeholder": "manager@example.com",
+    "name_placeholder": "Your business name",
+    "need_help": "Need help updating your business?",
+    "select_timezone": "Select a time zone",
+    "service_email_placeholder": "service@example.com",
+    "title": "General",
+    "update_logo": "Update logo",
+    "view_page": "View my page"
+  },
+  "partner_offers": {
+    "active": "Active offers",
+    "active_count": "{{count}} active offers",
+    "breadcrumb": "Offers",
+    "expired": "Expired offers",
+    "hide_stats": "Hide statistics",
+    "inactive": "Inactive offers",
+    "loading": "Loading offers...",
+    "more_tips": "See more tips",
+    "need_help": "Need help managing offers?",
+    "new": "New offer",
+    "show_stats": "Show statistics",
+    "tip_dates": "Clear dates:",
+    "tip_dates_text": "Urgency increases sales",
+    "tip_discounts": "Effective discounts:",
+    "tip_discounts_text": "15-25% convert better",
+    "tip_terms": "Specific terms:",
+    "tip_terms_text": "Avoids confusion",
+    "tips_title": "Tips for effective offers",
+    "title": "Offers settings",
+    "total": "Total offers"
+  },
+  "partner_page": {
+    "about_name": "About {{name}}",
     "back": "Back",
-    "title": "My locations",
-    "subtitle": "Locations management",
-    "description": "Manage the branches of your business. One of them is the main one.",
-    "no_business": "You have no registered business yet.",
-    "add": "Add location",
-    "edit": "Edit",
-    "delete": "Delete",
-    "delete_confirm": "Delete this location?",
-    "delete_yes": "Yes, delete",
-    "cancel": "Cancel",
-    "save": "Save",
-    "loading": "Loading locations…",
-    "empty": "You have no locations yet.",
-    "main": "Main",
-    "make_main": "Make main",
-    "set_main": "This is the main location",
-    "city": "City",
-    "select_city": "Select a city",
-    "address": "Address",
-    "name": "Branch name",
-    "postal_code": "Postal code",
-    "phone": "Phone",
-    "error": "The operation could not be completed. Check the data and try again.",
-    "errors": {
-      "city_required": "Select a city.",
-      "address_required": "Enter the address."
-    }
+    "edit_profile": "Edit profile",
+    "follow_us": "Follow us",
+    "loading": "Loading the partner profile...",
+    "location": "Location",
+    "not_found": "Partner not found",
+    "not_found_text": "Sorry, we could not find the information of this partner.",
+    "redeem_online": "Redeem online",
+    "see_more": "See more",
+    "terms": "TERMS AND CONDITIONS",
+    "view_locations": "View locations"
+  },
+  "partner_products": {
+    "description": "Manage your catalog of products and services.",
+    "subtitle": "Products management",
+    "title": "My products"
+  },
+  "partner_settings": {
+    "subtitle": "Manage your page and promotions from here",
+    "title": "Business settings"
+  },
+  "product_list": {
+    "disclaimer": "For illustration purposes only. Products, partners and offers may change without notice.",
+    "empty": "There are no products available right now.",
+    "join_now": "Join now!",
+    "label": "Product list with images and join button"
+  },
+  "registration": {
+    "need_help": "Need help registering your business?",
+    "step_one": {
+      "example_text": "\"Family restaurant specializing in traditional Mexican cuisine. We serve breakfast, lunch and dinner prepared with fresh, local ingredients. A cozy atmosphere ideal for families and special events.\"",
+      "example_title": "Example of a good description:",
+      "name_placeholder": "E.g. El Buen Sabor Restaurant",
+      "subtitle": "Tell us about your business so we can create your profile",
+      "title": "Basic information about your business"
+    },
+    "step_three": {
+      "finish": "Finish",
+      "select_country": "Select a country",
+      "selected": "Selected country for your business",
+      "subtitle": "Select the country where your main business operates",
+      "title": "Business location",
+      "why_text": "Your location helps us connect you with local customers and show your business in relevant searches in your region.",
+      "why_title": "Why do we need this information?"
+    },
+    "step_two": {
+      "avatar": "Avatar:",
+      "avatar_text": "Square image, at least 200x200px, ideal to represent your business",
+      "formats": "Accepted formats:",
+      "formats_text": "JPG, PNG",
+      "logo": "Logo:",
+      "logo_alt": "Business logo",
+      "logo_text": "Horizontal format preferred",
+      "max_size": "Maximum size:",
+      "max_size_text": "5MB per image",
+      "save_continue": "Save and continue",
+      "subtitle": "Add an avatar to personalize your business profile",
+      "tips_title": "Image recommendations:",
+      "title": "Your business image"
+    },
+    "subtitle": "Complete the following steps to create your partner profile",
+    "title": "Register your business"
   },
   "stats": {
     "back": "Back",
-    "title": "Statistics",
-    "privacy": "We only count visits: we store no information about who visits your page. Your own visits are not counted.",
-    "no_business": "You have no registered business yet.",
-    "window": "Period",
-    "last_days": "Last {{days}} days",
-    "total": "Views in {{days}} days",
-    "today": "Today",
-    "last_7_days": "Last 7 days",
-    "empty": "There are no views in this period yet.",
     "chart": "Views per day",
+    "empty": "There are no views in this period yet.",
+    "error": "The statistics could not be loaded. Please try again.",
+    "last_7_days": "Last 7 days",
+    "last_days": "Last {{days}} days",
     "loading": "Loading statistics…",
-    "error": "The statistics could not be loaded. Please try again."
+    "no_business": "You have no registered business yet.",
+    "privacy": "We only count visits: we store no information about who visits your page. Your own visits are not counted.",
+    "range": "{{from}} — {{to}} (UTC)",
+    "title": "Statistics",
+    "today": "Today",
+    "total": "Views in {{days}} days",
+    "window": "Period"
+  },
+  "trend_carousel": {
+    "discover": "DISCOVER MORE",
+    "empty": "There are no trends available right now.",
+    "trend": "Trending"
+  },
+  "validation": {
+    "business_description_required": "The business description is required",
+    "business_name_required": "The business name is required",
+    "country_required": "Please select a country",
+    "description_max_length": "The description cannot exceed 500 characters",
+    "description_min_length": "The description must have at least 20 characters",
+    "email_invalid": "Enter a valid email address",
+    "future_date": "The date must be in the future",
+    "max_length": "Maximum {{count}} characters",
+    "max_value": "The maximum value is {{max}}",
+    "min_length": "Minimum {{count}} characters",
+    "min_value": "The minimum value is {{min}}",
+    "name_max_length": "The name cannot exceed 25 characters",
+    "required": "This field is required"
+  },
+  "verify_code": {
+    "enter": "Enter verification code",
+    "validate": "Validate",
+    "verify": "Verify"
   }
 }

@@ -9,13 +9,14 @@ import { LoggerService } from '@app/core/services/logger.service';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
 import { BusinessStatsClient } from '@core/services/business/business-stats.client';
 import { isUuid } from '@shared/utils/uuid.helper';
+import { TranslateModule } from '@ngx-translate/core';
 
 // import {Modal} from '@app/modal/modal';
 
 @Component({
   selector: 'app-partner',
   standalone: true,
-  imports: [CommonModule, OfferSlider, PartnerRegistrationStepper],
+  imports: [TranslateModule, CommonModule, OfferSlider, PartnerRegistrationStepper],
   templateUrl: './partner.html',
   styleUrl: './partner.css'
 })

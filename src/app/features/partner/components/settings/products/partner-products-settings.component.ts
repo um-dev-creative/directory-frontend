@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-products-settings',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslateModule, CommonModule],
   template: `
     <div class="settings-page">
       <div class="settings-header">
@@ -13,15 +14,15 @@ import { Router } from '@angular/router';
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15,18 9,12 15,6"></polyline>
           </svg>
-          Volver
+          {{ 'common.back' | translate }}
         </button>
-        <h1 class="page-title">Mis Productos</h1>
+        <h1 class="page-title">{{ 'partner_products.title' | translate }}</h1>
       </div>
 
       <div class="settings-content">
         <div class="settings-section">
-          <h2>Gestión de Productos</h2>
-          <p>Administra tu catálogo de productos y servicios.</p>
+          <h2>{{ 'partner_products.subtitle' | translate }}</h2>
+          <p>{{ 'partner_products.description' | translate }}</p>
           <!-- Contenido específico de productos -->
         </div>
       </div>

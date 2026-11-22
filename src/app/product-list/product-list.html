@@ -1,5 +1,5 @@
 <section role="region"
-  aria-label="Product list with images and join button">
+  [attr.aria-label]="'product_list.label' | translate">
 
   <!-- Loading state -->
   @if (loading$ | async) {
@@ -22,7 +22,7 @@
   } @else {
     @if (products.length === 0) {
       <div class="text-center py-10 text-gray-500">
-        No hay productos disponibles en este momento.
+        {{ 'product_list.empty' | translate }}
       </div>
     } @else {
       <div class="w-full py-6 bg-white">
@@ -67,11 +67,11 @@
                 [routerLink]="['/auth']"
                 [queryParams]="{ ref: 'header', isRegistering: true }"
               >
-                ¡Únete ya!
+                {{ 'product_list.join_now' | translate }}
               </app-button>
 
             <p class="mt-2 text-sm text-beige-700">
-              <sup>*</sup> Solo con fines ilustrativos. Productos, aliados y ofertas pueden variar sin previo aviso.
+              <sup>*</sup> {{ 'product_list.disclaimer' | translate }}
             </p>
           </div>
         </div>

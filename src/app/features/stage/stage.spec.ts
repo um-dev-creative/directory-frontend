@@ -13,6 +13,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { LoggerService } from '@app/core/services/logger.service';
 import { HeaderType } from '@shared/constants/header-type';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 // Mocks
 class MockHeaderService {
@@ -87,7 +88,7 @@ describe('Stage', () => {
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      imports: [Stage, HttpClientTestingModule],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Stage, HttpClientTestingModule],
       providers: [
         { provide: CardsService, useClass: MockCardsService },
         { provide: BannerService, useClass: MockBannerService },

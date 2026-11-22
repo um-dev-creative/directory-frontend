@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportProblem } from './report-problem';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('ReportProblem', () => {
   let component: ReportProblem;
@@ -7,7 +8,7 @@ describe('ReportProblem', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportProblem]
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), ReportProblem]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportProblem);

@@ -10,6 +10,7 @@ import { SessionStoreService } from '@app/core/store/session/session-store.servi
 import { LoggerService } from '@app/core/services/logger.service';
 import { BusinessStatsClient } from '@core/services/business/business-stats.client';
 import { PartnerProfile } from 'assets/mocks/partner-profiles.mock';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 const MOCK_PROFILE: PartnerProfile = {
   id: 42,
@@ -48,7 +49,7 @@ describe('Partner', () => {
     statsClient.recordView.and.returnValue(of(undefined));
 
     await TestBed.configureTestingModule({
-      imports: [Partner],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Partner],
       providers: [
         {
           provide: ActivatedRoute,
@@ -109,14 +110,14 @@ describe('Partner', () => {
     it('should show the edit button when isOwner() is true', () => {
       sessionSubject.next({ userAuth: { businesses: ['42'] } });
       fixture.detectChanges();
-      const editBtn: HTMLElement = fixture.nativeElement.querySelector('[title="Editar perfil"]');
+      const editBtn: HTMLElement = fixture.nativeElement.querySelector('[title="partner_page.edit_profile"]');
       expect(editBtn).not.toBeNull();
     });
 
     it('should hide the edit button when isOwner() is false', () => {
       sessionSubject.next({ userAuth: { businesses: [] } });
       fixture.detectChanges();
-      const editBtn: HTMLElement = fixture.nativeElement.querySelector('[title="Editar perfil"]');
+      const editBtn: HTMLElement = fixture.nativeElement.querySelector('[title="partner_page.edit_profile"]');
       expect(editBtn).toBeNull();
     });
   });

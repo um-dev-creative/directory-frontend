@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NotificationConfig } from '../../../core/services/notification.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslateModule, CommonModule],
   template: `
     <div
       class="notification-toast pointer-events-auto"
@@ -69,12 +70,12 @@ import { NotificationConfig } from '../../../core/services/notification.service'
             <button
               (click)="handleReportError()"
               class="text-xs font-medium underline hover:no-underline focus:outline-none text-coral-600 hover:text-coral-700 flex items-center gap-1"
-              title="Reportar este error"
+              [title]="'notification.report_this_error' | translate"
             >
               <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
               </svg>
-              Reportar error
+              {{ 'notification.report_error' | translate }}
             </button>
           }
           @if (config?.action) {

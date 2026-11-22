@@ -4,10 +4,10 @@
     <div class="hero-content">
       <div class="hero-text">
         <div class="hero-badge">
-          <span class="badge-text">Fundado en {{ companyInfo.founded }}</span>
+          <span class="badge-text">{{ 'about.founded' | translate: {year: companyInfo.founded} }}</span>
         </div>
         <h1 class="hero-title">
-          Conecta con tu Comunidad
+          {{ 'about.connect' | translate }}
         </h1>
         <p class="hero-description">
           {{ companyInfo.mission }}.
@@ -34,7 +34,7 @@
         <div class="hero-logo-wrapper">
           <img
             src="/assets/images/latinhub.svg"
-            alt="Latin Hub Logo"
+            [alt]="'common.logo_alt' | translate"
             class="hero-logo"
           />
           <div class="logo-glow"></div>
@@ -65,8 +65,8 @@
     <div class="content-container">
       <div class="bg-gradient-sky p-6 sm:p-8 md:p-10 lg:p-12 rounded-xl border border-sky-300 shadow-lg shadow-sky-100 mx-4 sm:mx-6 md:mx-8">
         <div class="text-center max-w-4xl mx-auto">
-          <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 text-sky-blue-800 leading-tight">¿Listo para unirte a nuestra comunidad?</h3>
-          <p class="text-sm sm:text-base md:text-lg text-sky-blue-700 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">Ya sea que busques ofertas o quieras promocionar tu negocio, tenemos algo para ti.</p>
+          <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 text-sky-blue-800 leading-tight">{{ 'about.ready' | translate }}</h3>
+          <p class="text-sm sm:text-base md:text-lg text-sky-blue-700 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">{{ 'about.ready_text' | translate }}</p>
           <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6">
             <app-button
               variant="secondary"
@@ -75,7 +75,7 @@
               [queryParams]="{ ref: 'about', isRegistering: true }"
               [fullWidth]="true"
               class="w-full sm:w-auto min-w-[200px]">
-              Únete a la comunidad
+              {{ 'about.join_community' | translate }}
             </app-button>
             <app-button
               variant="alert"
@@ -83,7 +83,7 @@
               [routerLink]="['/partner']"
               [fullWidth]="true"
               class="w-full sm:w-auto min-w-[200px]">
-              Para Negocios
+              {{ 'about.for_business' | translate }}
             </app-button>
           </div>
         </div>

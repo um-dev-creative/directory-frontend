@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Button, SkeletonComponent } from '@app/components/ui';
 import { LoggerService } from '@app/core/services/logger.service';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Trend {
   title: string;
@@ -20,7 +21,7 @@ interface Trend {
 @Component({
   selector: 'app-trend-carousel',
   standalone: true,
-  imports: [CommonModule, Button, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, Button, SkeletonComponent],
   templateUrl: './trend-carousel.html',
   styleUrl: './trend-carousel.css'
 })

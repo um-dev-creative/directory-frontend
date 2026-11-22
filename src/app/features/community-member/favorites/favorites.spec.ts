@@ -8,6 +8,7 @@ import { Favorites, FavoriteType, FavoriteItem } from './favorites';
 import { FavoritesService } from './services';
 import {provideLocationMocks} from '@angular/common/testing';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('Favorites', () => {
   let component: Favorites;
@@ -18,7 +19,7 @@ describe('Favorites', () => {
     const spy = jasmine.createSpyObj('FavoritesService', ['getFavorites', 'removeFromFavorites']);
 
     await TestBed.configureTestingModule({
-      imports: [
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), 
         Favorites,
         FormsModule
       ],

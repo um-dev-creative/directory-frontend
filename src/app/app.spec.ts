@@ -6,6 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Store} from '@ngrx/store';
 import {HttpClient} from '@angular/common/http';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('App', () => {
   let component: App;
@@ -26,7 +27,7 @@ describe('App', () => {
       events: of({}) // Mock the events property
     } as any;
     await TestBed.configureTestingModule({
-      imports: [
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), 
         App,
         BrowserAnimationsModule
       ],

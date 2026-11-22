@@ -6,20 +6,21 @@ import { StepTwoData } from '@app/features/partner';
 import { PartnerRegistrationService } from '@app/features/partner/services/partner-registration.service';
 import { Button, CardComponent, Avatar, IconComponent } from '@app/components/ui';
 import { LoggerService } from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-step-two',
   standalone: true,
-  imports: [CommonModule, Button, CardComponent, Avatar, IconComponent],
+  imports: [TranslateModule, CommonModule, Button, CardComponent, Avatar, IconComponent],
   template: `
     <div class="space-y-6">
       <!-- Step Header -->
       <div class="text-center pb-4 border-b border-beige-200">
         <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
-          Imagen de tu Negocio
+          {{ 'registration.step_two.title' | translate }}
         </h2>
         <p class="text-beige-600">
-          Agrega un avatar para personalizar el perfil de tu negocio
+          {{ 'registration.step_two.subtitle' | translate }}
         </p>
       </div>
 
@@ -36,7 +37,7 @@ import { LoggerService } from '@app/core/services/logger.service';
                   size="2xl"
                   variant="rounded"
                   [src]="logoPreview || ''"
-                  alt="Logo del negocio"
+                  [alt]="'registration.step_two.logo_alt' | translate"
                   [loading]="uploadingLogo"
                   iconName="business">
                 </app-avatar>
@@ -76,24 +77,24 @@ import { LoggerService } from '@app/core/services/logger.service';
           <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-3 mt-0.5 shrink-0"></app-icon>
           <div>
             <h4 class="text-md font-semibold text-sky-blue-700 mb-2">
-              Recomendaciones para las imágenes:
+              {{ 'registration.step_two.tips_title' | translate }}
             </h4>
             <ul class="text-sm text-sky-blue-700 space-y-1.5 leading-relaxed">
               <li class="flex items-start">
                 <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
-                <span><strong>Avatar:</strong> Imagen cuadrada, mínimo 200x200px, ideal para representar tu negocio</span>
+                <span><strong>{{ 'registration.step_two.avatar' | translate }}</strong> {{ 'registration.step_two.avatar_text' | translate }}</span>
               </li>
               <li class="flex items-start">
                 <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
-                <span><strong>Logo:</strong> Formato horizontal preferido</span>
+                <span><strong>{{ 'registration.step_two.logo' | translate }}</strong> {{ 'registration.step_two.logo_text' | translate }}</span>
               </li>
               <li class="flex items-start">
                 <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
-                <span><strong>Tamaño máximo:</strong> 5MB por imagen</span>
+                <span><strong>{{ 'registration.step_two.max_size' | translate }}</strong> {{ 'registration.step_two.max_size_text' | translate }}</span>
               </li>
               <li class="flex items-start">
                 <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-2 mr-3 shrink-0"></span>
-                <span><strong>Formatos aceptados:</strong> JPG, PNG</span>
+                <span><strong>{{ 'registration.step_two.formats' | translate }}</strong> {{ 'registration.step_two.formats_text' | translate }}</span>
               </li>
             </ul>
           </div>
@@ -116,7 +117,7 @@ import { LoggerService } from '@app/core/services/logger.service';
           [disabled]="isLoading || uploadingAvatar || uploadingLogo"
           (buttonClick)="onContinue()"
         >
-          Guardar y Continuar
+          {{ 'registration.step_two.save_continue' | translate }}
         </app-button>
       </div>
     </div>

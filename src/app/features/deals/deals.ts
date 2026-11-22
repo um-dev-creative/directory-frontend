@@ -8,6 +8,7 @@ import {LoggerService} from '@app/core/services/logger.service';
 import {HeaderType} from '@shared/constants/header-type';
 import {SessionData, SessionState} from '@app/core/store/session/session.state';
 import {Store} from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Main deals component
@@ -15,7 +16,7 @@ import {Store} from '@ngrx/store';
 @Component({
   selector: 'app-deals',
   standalone: true,
-  imports: [CommonModule, Banner, OfferSlider],
+  imports: [TranslateModule, CommonModule, Banner, OfferSlider],
   templateUrl: './deals.html',
   styleUrl: './deals.css',
   animations: [],
