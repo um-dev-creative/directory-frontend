@@ -73,7 +73,7 @@ describe('PartnerStatsSettingsComponent', () => {
     const values = Array.from(element.querySelectorAll('.stats-tile-value')).map((v) => v.textContent?.trim());
     expect(values).toEqual(['9', '5', '12']);
     expect(element.querySelectorAll('.stats-bar').length).toBe(3);
-    expect(element.querySelector('.stats-range')?.textContent).toContain('2026-11-19');
+    expect(element.querySelector('.stats-range')?.textContent).toContain('stats.range');
     expect(element.textContent).not.toContain('stats.empty');
   });
 

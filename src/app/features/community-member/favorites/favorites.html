@@ -3,10 +3,10 @@
   <!-- Header Section -->
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-emerald-green-800 mb-2">
-      Mis Favoritos
+      {{ 'favorites.title' | translate }}
     </h1>
     <p class="text-emerald-green-600">
-      Tu colección personal de ofertas, productos y negocios que más te gustan
+      {{ 'favorites.subtitle' | translate }}
     </p>
   </div>
 
@@ -19,7 +19,7 @@
           type="text"
           [(ngModel)]="searchTerm"
           (input)="onSearchChange()"
-          placeholder="Buscar en mis favoritos..."
+          [placeholder]="'favorites.search' | translate"
           class="w-full px-4 py-3 pl-10 border border-emerald-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-green-500 focus:border-transparent"
         >
         <svg
@@ -59,16 +59,16 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
     </svg>
     <h3 class="text-xl font-medium text-emerald-green-800 mb-2">
-      No tienes favoritos aún
+      {{ 'favorites.empty_title' | translate }}
     </h3>
     <p class="text-emerald-green-600 mb-6">
-      Comienza a explorar y guarda tus ofertas, productos y negocios favoritos
+      {{ 'favorites.empty_text' | translate }}
     </p>
     <a
       routerLink="/"
       class="inline-flex items-center px-6 py-3 bg-emerald-green-600 text-white font-medium rounded-lg hover:bg-emerald-green-700 transition-colors duration-200"
     >
-      Explorar Ofertas
+      {{ 'favorites.explore' | translate }}
     </a>
   </div>
 
@@ -107,7 +107,7 @@
         <button
           (click)="removeFavorite(item.id)"
           class="absolute top-3 right-3 bg-white/90 rounded-full p-2 text-coral-600 hover:bg-coral-50 transition-colors duration-200"
-          title="Eliminar de favoritos"
+          [title]="'favorites.remove' | translate"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
@@ -173,7 +173,7 @@
           [routerLink]="getItemRoute(item)"
           class="block w-full text-center px-4 py-2 bg-emerald-green-600 text-white font-medium rounded-lg hover:bg-emerald-green-700 transition-colors duration-200"
         >
-          Ver Detalles
+          {{ 'favorites.details' | translate }}
         </a>
       </div>
     </div>

@@ -98,7 +98,7 @@ export class AuthService extends ClientTemplate {
         this.setAuthenticatedUser(response.user);
 
         this.logger.info('User logged in successfully', { userId: response.user.id });
-        this.notificationService.success(`Welcome back, ${response.user.name}!`);
+        this.notificationService.success({key: 'notifications.welcome_back', params: {name: response.user.name}});
 
         // Redirect to intended route or default
         const redirectUrl = this.storageService.getLocal<string>('redirect_url') || '/dashboard';
@@ -108,7 +108,7 @@ export class AuthService extends ClientTemplate {
       map(() => true),
       catchError(error => {
         this.logger.error('Login failed', error);
-        this.notificationService.error('Login failed. Please check your credentials.');
+        this.notificationService.error({key: 'notifications.login_failed'});
         this.handleError(error); // Using inherited error handler
         return of(false);
       })
@@ -148,14 +148,14 @@ export class AuthService extends ClientTemplate {
         this.setAuthenticatedUser(response.user);
 
         this.logger.info('User registered successfully', { userId: response.user.id });
-        this.notificationService.success(`Welcome, ${response.user.name}!`);
+        this.notificationService.success({key: 'notifications.welcome', params: {name: response.user.name}});
 
         this.router.navigate(['/dashboard']);
       }),
       map(() => true),
       catchError(error => {
         this.logger.error('Registration failed', error);
-        this.notificationService.error('Registration failed. Please try again.');
+        this.notificationService.error({key: 'notifications.registration_failed'});
         this.handleError(error);
         return of(false);
       })
@@ -267,12 +267,12 @@ export class AuthService extends ClientTemplate {
         this.storageService.setLocal('user_info', updatedUser);
         this.setAuthenticatedUser(updatedUser);
         this.logger.info('Profile updated successfully');
-        this.notificationService.success('Profile updated successfully!');
+        this.notificationService.success({key: 'notifications.profile_updated'});
       }),
       map(() => true),
       catchError(error => {
         this.logger.error('Profile update failed', error);
-        this.notificationService.error('Failed to update profile. Please try again.');
+        this.notificationService.error({key: 'notifications.profile_update_failed'});
         this.handleError(error);
         return of(false);
       })

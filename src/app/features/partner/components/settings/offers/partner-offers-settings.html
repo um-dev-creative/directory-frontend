@@ -1,12 +1,12 @@
 <div class="p-6 bg-gradient-hero min-h-screen">
   <div class="max-w-7xl mx-auto">
-    <h2 class="text-2xl font-semibold text-center mb-5 text-emerald-green-700">Configuración de Ofertas</h2>
+    <h2 class="text-2xl font-semibold text-center mb-5 text-emerald-green-700">{{ 'partner_offers.title' | translate }}</h2>
 
     <!-- Breadcrumb -->
     <nav class="text-sm mb-5 text-center">
-      <span class="text-sky-blue-600 cursor-pointer" (click)="goBack()">Configuración del Negocio</span>
+      <span class="text-sky-blue-600 cursor-pointer" (click)="goBack()">{{ 'common.business_settings' | translate }}</span>
       <span class="mx-2">&gt;</span>
-      <span class="text-emerald-green-700 font-medium">Ofertas</span>
+      <span class="text-emerald-green-700 font-medium">{{ 'partner_offers.breadcrumb' | translate }}</span>
     </nav>
 
     <!-- Card de información y Botón Agregar Oferta -->
@@ -26,26 +26,26 @@
           </div>
 
           <div class="flex-1">
-            <h3 class="text-base font-semibold text-emerald-green-700 mb-2">Consejos para Ofertas Efectivas</h3>
+            <h3 class="text-base font-semibold text-emerald-green-700 mb-2">{{ 'partner_offers.tips_title' | translate }}</h3>
 
             <!-- Lista de consejos -->
             <ul class="space-y-1.5 list-none pl-0">
               <li class="flex items-start space-x-2">
                 <span class="w-1.5 h-1.5 bg-emerald-green-500 rounded-full mt-1.5 shrink-0"></span>
                 <p class="text-xs text-gray-700 leading-relaxed">
-                  <span class="font-medium text-emerald-green-700">Descuentos efectivos:</span> 15-25% generan mejor conversión
+                  <span class="font-medium text-emerald-green-700">{{ 'partner_offers.tip_discounts' | translate }}</span> {{ 'partner_offers.tip_discounts_text' | translate }}
                 </p>
               </li>
               <li class="flex items-start space-x-2">
                 <span class="w-1.5 h-1.5 bg-sky-blue-500 rounded-full mt-1.5 shrink-0"></span>
                 <p class="text-xs text-gray-700 leading-relaxed">
-                  <span class="font-medium text-sky-blue-700">Fechas claras:</span> Urgencia aumenta las ventas
+                  <span class="font-medium text-sky-blue-700">{{ 'partner_offers.tip_dates' | translate }}</span> {{ 'partner_offers.tip_dates_text' | translate }}
                 </p>
               </li>
               <li class="flex items-start space-x-2">
                 <span class="w-1.5 h-1.5 bg-coral-500 rounded-full mt-1.5 shrink-0"></span>
                 <p class="text-xs text-gray-700 leading-relaxed">
-                  <span class="font-medium text-coral-700">Términos específicos:</span> Evita confusiones
+                  <span class="font-medium text-coral-700">{{ 'partner_offers.tip_terms' | translate }}</span> {{ 'partner_offers.tip_terms_text' | translate }}
                 </p>
               </li>
             </ul>
@@ -53,7 +53,7 @@
             <!-- Enlace de ayuda -->
             <div class="mt-2 pt-2 border-t border-sky-blue-200/50">
               <button class="text-xs text-sky-blue-600 hover:text-sky-blue-800 font-medium transition-colors flex items-center space-x-1">
-                <span>Ver más consejos</span>
+                <span>{{ 'partner_offers.more_tips' | translate }}</span>
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -74,13 +74,13 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
-          <span class="font-medium">Nueva Oferta</span>
+          <span class="font-medium">{{ 'partner_offers.new' | translate }}</span>
         </app-button>
 
         <!-- Indicador de estado -->
         <div class="flex items-center justify-center md:justify-end space-x-2 text-xs text-gray-500">
           <div class="w-2 h-2 bg-emerald-green-500 rounded-full animate-pulse"></div>
-          <span>{{ activeOffers() }} ofertas activas</span>
+          <span>{{ 'partner_offers.active_count' | translate: {count: activeOffers()} }}</span>
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
-        <span>{{ showStats() ? 'Ocultar' : 'Mostrar' }} estadísticas</span>
+        <span>{{ (showStats() ? 'partner_offers.hide_stats' : 'partner_offers.show_stats') | translate }}</span>
       </button>
     </div>
 
@@ -110,7 +110,7 @@
         <div class="bg-white rounded-xl shadow-soft p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-beige-600 mb-1">Total Ofertas</p>
+              <p class="text-sm text-beige-600 mb-1">{{ 'partner_offers.total' | translate }}</p>
               <p class="text-2xl font-bold text-emerald-green-700">
                 {{ totalOffers() }}
               </p>
@@ -126,7 +126,7 @@
         <div class="bg-white rounded-xl shadow-soft p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-beige-600 mb-1">Ofertas Activas</p>
+              <p class="text-sm text-beige-600 mb-1">{{ 'partner_offers.active' | translate }}</p>
               <p class="text-2xl font-bold text-success-600">
                 {{ activeOffers() }}
               </p>
@@ -142,7 +142,7 @@
         <div class="bg-white rounded-xl shadow-soft p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-beige-600 mb-1">Ofertas Inactivas</p>
+              <p class="text-sm text-beige-600 mb-1">{{ 'partner_offers.inactive' | translate }}</p>
               <p class="text-2xl font-bold text-beige-700">
                 {{ inactiveOffers() }}
               </p>
@@ -158,7 +158,7 @@
         <div class="bg-white rounded-xl shadow-soft p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-beige-600 mb-1">Ofertas Expiradas</p>
+              <p class="text-sm text-beige-600 mb-1">{{ 'partner_offers.expired' | translate }}</p>
               <p class="text-2xl font-bold text-coral-600">
                 {{ expiredOffers() }}
               </p>
@@ -178,8 +178,8 @@
       <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md flex items-center justify-between">
         <div class="text-sm text-red-700">{{ errorMessage() }}</div>
         <div class="flex items-center space-x-2">
-          <app-button variant="outline" size="sm" (click)="dismissError()">Dismiss</app-button>
-          <app-button variant="primary" size="sm" (click)="retry()">Retry</app-button>
+          <app-button variant="outline" size="sm" (click)="dismissError()">{{ 'common.dismiss' | translate }}</app-button>
+          <app-button variant="primary" size="sm" (click)="retry()">{{ 'common.retry' | translate }}</app-button>
         </div>
       </div>
     }
@@ -213,13 +213,13 @@
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span class="text-sm text-beige-700">Cargando ofertas...</span>
+        <span class="text-sm text-beige-700">{{ 'partner_offers.loading' | translate }}</span>
       </div>
     }
 
     <!-- Support Section -->
     <div class="text-center pt-6 border-t border-gray-200 mt-8">
-      <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con la gestión de ofertas?</p>
+      <p class="text-sm text-gray-600 mb-4">{{ 'partner_offers.need_help' | translate }}</p>
       <app-report-problem
         [options]="reportProblemOptions"
         variant="link"

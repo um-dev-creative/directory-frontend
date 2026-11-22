@@ -5,35 +5,35 @@
       <!-- Logo -->
       <img
         src="/assets/images/latinhub.svg"
-        alt="Latin Hub Logo"
+        [alt]="'common.logo_alt' | translate"
         class="footer-logo"
       />
 
       <!-- Description -->
       <p class="footer-description">
-        Impulsamos crecimiento y colaboración en un mundo conectado 🧡
+        {{ 'footer.tagline' | translate }}
       </p>
       <!-- Creemos en una libertad que une, no en la que aísla. Ofrecemos servicios integrales para impulsar el crecimiento y la colaboración en un mundo interconectado. -->
       <!-- Quick Links -->
-      <nav class="footer-links" role="navigation" aria-label="Footer navigation">
-        <a href="/about" class="footer-link">Acerca de</a>
+      <nav class="footer-links" role="navigation" [attr.aria-label]="'footer.navigation' | translate">
+        <a href="/about" class="footer-link">{{ 'common.about' | translate }}</a>
         <!--a href="/directory" class="footer-link">Directorio</a-->
-        <a href="/partnerships" class="footer-link">Alianzas</a>
-        <a href="/contact" class="footer-link">Contacto</a>
-        <a href="/support" class="footer-link">Soporte</a>
+        <a href="/partnerships" class="footer-link">{{ 'footer.partnerships' | translate }}</a>
+        <a href="/contact" class="footer-link">{{ 'common.contact' | translate }}</a>
+        <a href="/support" class="footer-link">{{ 'common.support' | translate }}</a>
       </nav>
     </div>
 
     <!-- Bottom Section -->
     <div class="footer-bottom">
       <p class="footer-copyright">
-        © {{ autor.year }} {{ autor.company }}. Todos los derechos reservados.
+        {{ 'footer.copyright' | translate: {year: autor.year, company: autor.company} }}
       </p>
 
-      <nav class="footer-bottom-links" role="navigation" aria-label="Legal links">
-        <a href="/privacy" class="footer-bottom-link">Privacidad</a>
-        <a href="/terms" class="footer-bottom-link">Términos</a>
-        <a href="/cookies" class="footer-bottom-link">Cookies</a>
+      <nav class="footer-bottom-links" role="navigation" [attr.aria-label]="'footer.legal' | translate">
+        <a href="/privacy" class="footer-bottom-link">{{ 'footer.privacy' | translate }}</a>
+        <a href="/terms" class="footer-bottom-link">{{ 'footer.terms' | translate }}</a>
+        <a href="/cookies" class="footer-bottom-link">{{ 'footer.cookies' | translate }}</a>
       </nav>
     </div>
   </div>

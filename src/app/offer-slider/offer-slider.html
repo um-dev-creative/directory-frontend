@@ -17,8 +17,8 @@
 
           <!-- Pill Container -->
           <div class="flex flex-col space-y-2 mt-2">
-            @if (offer.isOnline) { <app-badge variant="primary" size="sm">Online</app-badge> }
-            @if (offer.isInStore) { <app-badge variant="secondary" size="sm">En Tienda</app-badge> }
+            @if (offer.isOnline) { <app-badge variant="primary" size="sm">{{ 'common.online' | translate }}</app-badge> }
+            @if (offer.isInStore) { <app-badge variant="secondary" size="sm">{{ 'common.in_store' | translate }}</app-badge> }
           </div>
         </div>
       }
@@ -31,7 +31,7 @@
     @if (((offers ?? (offers$ | async))?.length ?? 0) > 4) {
       <button
         (click)="scrollLeft()"
-        aria-label="Anterior"
+        [attr.aria-label]="'offer_slider.previous' | translate"
         class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-soft border-2 border-gray-200 transition-all duration-200 :bg-gray-50 hover:shadow-soft-lg hover:border-gray-400 group"
       >
         <app-icon name="chevron-left" class="w-6 h-6 text-gray-600 group-hover:text-gray-800 transition-colors duration-200"></app-icon>
@@ -49,8 +49,8 @@
       <ul class="flex w-max">
         <!-- Tarjetas de ofertas -->
         @for (offer of offers ?? (offers$ | async); track offer.id) {
-          <div class="px-2 py-7">
-            <li class="w-[255px] h-[238px] bg-white border-2 border-gray-200 rounded-xl shadow-soft hover:shadow-soft-lg hover:border-gray-600 flex flex-col items-center text-center p-2 cursor-pointer transition-all duration-200 hover:scale-[1.02]" (click)="onOfferClick(offer)">
+          <li class="px-2 py-7">
+            <div class="w-[255px] h-[238px] bg-white border-2 border-gray-200 rounded-xl shadow-soft hover:shadow-soft-lg hover:border-gray-600 flex flex-col items-center text-center p-2 cursor-pointer transition-all duration-200 hover:scale-[1.02]" tabindex="0" (click)="onOfferClick(offer)" (keydown.enter)="onOfferClick(offer)">
 
               <!-- Contenedor Principal -->
               <div class="w-full relative">
@@ -63,7 +63,7 @@
                 <!-- Icono de Favorito (Bookmark) -->
                 <div class="absolute top-0 right-0 border-2 border-gray-200 rounded-lg p-1.5 bg-white hover:bg-gray-50 transition-colors duration-200 cursor-pointer">
                   <svg
-                    alt="Bookmark"
+                    [alt]="'offer_slider.bookmark_alt' | translate"
                     class="w-5 h-5 text-gray-500 hover:text-gray-600 transition-colors duration-200"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -81,8 +81,8 @@
               </div>
               <!-- Etiquetas (Online, In-Store, etc.) -->
               <div class="flex space-x-2 mt-2">
-                @if (offer.isOnline) { <app-badge variant="primary" size="sm">Online</app-badge> }
-                @if (offer.isInStore) { <app-badge variant="secondary" size="sm">En Tienda</app-badge>}
+                @if (offer.isOnline) { <app-badge variant="primary" size="sm">{{ 'common.online' | translate }}</app-badge> }
+                @if (offer.isInStore) { <app-badge variant="secondary" size="sm">{{ 'common.in_store' | translate }}</app-badge>}
               </div>
 
               <!-- Información de la Oferta -->
@@ -93,8 +93,8 @@
                 </p>
               </div>
 
-            </li>
-          </div>
+            </div>
+          </li>
         }
       </ul>
     </div>
@@ -102,7 +102,7 @@
     @if (((offers ?? (offers$ | async))?.length ?? 0) > 4) {
       <button
         (click)="scrollRight()"
-        aria-label="Siguiente"
+        [attr.aria-label]="'offer_slider.next' | translate"
         class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-soft border-2 border-gray-200 transition-all duration-200 hover:bg-gray-50 hover:shadow-soft-lg hover:border-gray-400 group"
       >
         <app-icon name="chevron-right" class="w-6 h-6 text-gray-600 group-hover:text-gray-800 transition-colors duration-200"></app-icon>

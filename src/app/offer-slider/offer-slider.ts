@@ -9,10 +9,11 @@ import { Observable } from 'rxjs';
 import { Offer } from '@app/shared/models/offer.model';
 import { BadgeComponent, IconComponent } from '@app/components/ui';
 import { LoggerService } from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-offer-slider',
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     BadgeComponent,
     IconComponent

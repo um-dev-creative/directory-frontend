@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 
 import { Cards } from './cards';
 import { CardsService, CardImage as Image } from './services/cards.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('CardsComponent', () => {
   let component: Cards;
@@ -35,7 +36,7 @@ describe('CardsComponent', () => {
     cardsServiceSpy.isLoading$ = loadingSubject;
 
     await TestBed.configureTestingModule({
-      imports: [Cards, HttpClientTestingModule],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Cards, HttpClientTestingModule],
       providers: [
         { provide: CardsService, useValue: cardsServiceSpy }
       ]
@@ -113,7 +114,7 @@ describe('CardsComponent', () => {
     fixture.detectChanges();
 
     const emptyStateElement = fixture.debugElement.query(By.css('.text-center'));
-    expect(emptyStateElement.nativeElement.textContent).toContain('No hay campañas disponibles en este momento.');
+    expect(emptyStateElement.nativeElement.textContent).toContain('cards.empty');
   });
 
   it('should retry loading on retry button click', () => {

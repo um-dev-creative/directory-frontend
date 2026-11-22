@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {of} from 'rxjs';
 import {provideMockStore} from '@ngrx/store/testing';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('BannerComponent', () => {
   let component: Banner;
@@ -19,7 +20,7 @@ describe('BannerComponent', () => {
       events: of({}) // Mock the events property
     } as any;
     await TestBed.configureTestingModule({
-      imports: [
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), 
         Banner,
         BrowserAnimationsModule
       ],

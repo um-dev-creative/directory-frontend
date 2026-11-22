@@ -9,6 +9,7 @@ import { TimezoneClient } from '@core/services/timezone/timezone.client';
 import { BusinessClient } from '@core/services/business/business.client';
 import { NotificationService, PartnerCategoryService, TimezoneService } from '@app/core/services';
 import { LoggerService } from '@app/core/services/logger.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('PartnerGeneralSettings', () => {
   let component: PartnerGeneralSettings;
@@ -75,7 +76,7 @@ describe('PartnerGeneralSettings', () => {
     const loggerMock = jasmine.createSpyObj<LoggerService>('LoggerService', ['info', 'debug', 'error']);
 
     await TestBed.configureTestingModule({
-      imports: [PartnerGeneralSettings],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), PartnerGeneralSettings],
       providers: [
         { provide: Store, useValue: storeMock },
         { provide: CategoryClient, useValue: categoryClientMock },
@@ -192,7 +193,7 @@ describe('PartnerGeneralSettings', () => {
 
       component.onImageSelect({ target: input } as unknown as Event);
 
-      expect(notificationServiceMock.error).toHaveBeenCalledWith('Error al actualizar la imagen del negocio');
+      expect(notificationServiceMock.error).toHaveBeenCalledWith({key: 'notifications.business_image_failed'});
       expect(component.imagePreview).toBeNull();
       expect(component.uploadingImage).toBeFalse();
     });

@@ -59,7 +59,7 @@
             </div>
           }
         </div>
-        <p class="stats-range">{{ summary.from }} — {{ summary.to }} (UTC)</p>
+        <p class="stats-range">{{ 'stats.range' | translate: {from: summary.from, to: summary.to} }}</p>
       }
     }
   </div>

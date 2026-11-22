@@ -50,7 +50,7 @@
         <!-- Nombre y Apellido -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label for="first-name" class="sr-only">Nombre</label>
+            <label for="first-name" class="sr-only">{{ 'common.first_name' | translate }}</label>
             <input
               type="text"
               id="first-name"
@@ -58,19 +58,19 @@
               [(ngModel)]="registerData.firstName"
               (ngModelChange)="validateRegistrationForm()"
               class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              placeholder="Nombre"
+              [placeholder]="'common.first_name' | translate"
               required
             />
           </div>
           <div>
-            <label for="last-name" class="sr-only">Apellido</label>
+            <label for="last-name" class="sr-only">{{ 'common.last_name' | translate }}</label>
             <input
               type="text"
               id="last-name"
               name="last-name"
               [(ngModel)]="registerData.lastName"
               class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              placeholder="Apellido"
+              [placeholder]="'common.last_name' | translate"
               (ngModelChange)="validateRegistrationForm()"
               required
             />
@@ -79,7 +79,7 @@
         <!-- Correo Electrónico -->
         <div>
           <div>
-            <label for="email" class="sr-only">Dirección de correo electrónico</label>
+            <label for="email" class="sr-only">{{ 'auth.email' | translate }}</label>
             <input
               type="email"
               id="email"
@@ -96,13 +96,13 @@
           <!-- Error Message -->
           @if (!isEmailValid) {
             <div class="text-red-500 text-sm mt-1">
-              Dirección de correo electrónico inválida.
+              {{ 'auth.email_invalid' | translate }}
             </div>
           }
         </div>
         <!-- Contraseña -->
         <div>
-          <label for="password" class="sr-only">Contraseña</label>
+          <label for="password" class="sr-only">{{ 'common.password' | translate }}</label>
           <div class="relative">
             <input
               #passwordRegInput
@@ -111,7 +111,7 @@
               name="password"
               [(ngModel)]="registerData.password"
               class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              placeholder="Contraseña"
+              [placeholder]="'common.password' | translate"
               (ngModelChange)="validatePassword(); validateRegistrationForm()"
               required
             />
@@ -148,13 +148,13 @@
           </div>
           @if (!isPasswordValid) {
             <div class="text-red-500 text-sm mt-1">
-              La contraseña debe tener al menos 8 caracteres.
+              {{ 'auth.password_min' | translate }}
             </div>
           }
         </div>
         <!-- Numero de Telefono -->
         <div>
-          <label for="mobile-number" class="sr-only">Número de teléfono móvil</label>
+          <label for="mobile-number" class="sr-only">{{ 'auth.mobile_phone' | translate }}</label>
           <div class="
           relative
           flex
@@ -243,7 +243,7 @@
           </div>
           <!-- Error Message -->
           <div *ngIf="!isValidPhoneNumber" class="text-red-500 text-sm mt-1">
-            Número de teléfono inválido para {{ selectedCountry.name }}.
+            {{ 'auth.phone_invalid' | translate: {country: selectedCountry.name} }}
           </div>
         </div>
         <!-- Fecha de Nacimiento -->
@@ -301,7 +301,7 @@
             </div>
             <!-- Input Día -->
             <div>
-              <label for="day" class="sr-only">Día</label>
+              <label for="day" class="sr-only">{{ 'auth.day' | translate }}</label>
               <input
                 type="text"
                 id="day"
@@ -318,7 +318,7 @@
 
             <!-- Input Año -->
             <div>
-              <label for="year" class="sr-only">Año</label>
+              <label for="year" class="sr-only">{{ 'auth.year' | translate }}</label>
               <input
                 type="text"
                 id="year"
@@ -336,30 +336,26 @@
           <!-- Error Message -->
           @if (showFullDateError) {
             <div class="text-red-500 text-sm mt-1">
-              Fecha Invalida
+              {{ 'auth.date_invalid' | translate }}
             </div>
           }
         </div>
         <!-- Términos y Condiciones -->
         <div class="mt-4 text-xs text-gray-600">
           <p>
-            Registrar tu dirección de correo electrónico con nosotros nos permite enviarte ofertas especiales de LatinHub, así
-            como noticias sobre productos y servicios. Puedes cambiar tus preferencias de contacto y darte de baja para no recibir
-            ofertas en cualquier momento desde la sección "Perfil" o utilizando el enlace para cancelar la suscripción que se
-            encuentra al final de nuestros correos electrónicos.
+            {{ 'auth.email_consent' | translate }}
           </p>
           <p class="mt-4">
-            Al hacer clic en el botón de abajo, aceptas y confirmas haber leído nuestros
+            {{ 'auth.register_terms_before' | translate }}
             <a
               routerLink="['/terms-and-conditions']"
               class="font-semibold text-emerald-green-600 hover:underline">
-              Términos y Condiciones
-            </a>. Para más detalles sobre cómo usamos la
-            información que recopilamos sobre ti, por favor lee nuestra
+              {{ 'common.terms_and_conditions' | translate }}
+            </a>{{ 'auth.register_terms_between' | translate }}
             <a
               routerLink="['/privacy-policy']"
               class="font-semibold text-emerald-green-600 hover:underline">
-              Política de Privacidad
+              {{ 'common.privacy_policy' | translate }}
             </a>.
           </p>
         </div>
@@ -371,7 +367,7 @@
             size="md"
             [fullWidth]="true"
             [disabled]="!isRegistrationFormValid">
-            Crear cuenta
+            {{ 'auth.create_account_button' | translate }}
           </app-button>
         </div>
       </form>
@@ -392,7 +388,7 @@
             <app-alert
               variant="warning"
               size="md"
-              title="Problema temporal"
+              [title]="'auth.temporary_problem' | translate"
               description="Ocurrió un error en el servicio. Tu sesión no fue guardada. Por favor intenta de nuevo en unos momentos."
               [dismissible]="true"
               (dismiss)="loginErrorType = null">
@@ -406,7 +402,7 @@
               [(ngModel)]="loginData.email"
               required
               class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              placeholder="Ingresa tu correo electrónico"
+              [placeholder]="'auth.email_placeholder' | translate"
             />
           </div>
         </div>
@@ -420,7 +416,7 @@
               [(ngModel)]="loginData.password"
               required
               class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              placeholder="Ingresa tu contraseña"
+              [placeholder]="'auth.password_placeholder' | translate"
             />
             <button
               type="button"
@@ -459,24 +455,24 @@
             type="button"
             class="text-sm text-emerald-green-600 hover:underline"
             (click)="onForgotPassword()">
-            ¿Olvidaste tu contraseña?
+            {{ 'auth.forgot_password' | translate }}
           </button>
         </div>
         <div class="mt-4 text-center text-xs text-gray-600">
           <p>
-            Al iniciar sesión, aceptas los
+            {{ 'auth.login_terms_before' | translate }}
             <a
               routerLink="['/terms-and-conditions']"
               class="font-semibold text-emerald-green-600 hover:underline">
-              Términos y Condiciones
+              {{ 'common.terms_and_conditions' | translate }}
             </a>
-            y la
+            {{ 'auth.login_terms_and' | translate }}
             <a
               routerLink="['/privacy-policy']"
               class="font-semibold text-emerald-green-600 hover:underline">
-              Política de Privacidad
+              {{ 'common.privacy_policy' | translate }}
             </a>
-            de Latinhub.
+            {{ 'auth.login_terms_after' | translate }}
           </p>
         </div>
         <div>
@@ -486,7 +482,7 @@
             size="md"
             [fullWidth]="true"
             [disabled]="!loginForm.form.valid">
-            Iniciar sesión
+            {{ 'common.sign_in' | translate }}
           </app-button>
         </div>
       </form>
@@ -497,21 +493,21 @@
     </div>
     <div class="text-center text-gray-600">
       @if (isRegistering) {
-        ¿Ya tienes una cuenta? <a (click)="toggleForm()" class="font-semibold text-emerald-green-600 hover:underline">Iniciar sesión</a>
+        {{ 'auth.have_account' | translate }} <a (click)="toggleForm()" class="font-semibold text-emerald-green-600 hover:underline">{{ 'common.sign_in' | translate }}</a>
           } @else {
         <app-button
           variant="outline"
           size="md"
           [fullWidth]="true"
           (buttonClick)="toggleForm()">
-          Crear una cuenta
+          {{ 'auth.create_account_link' | translate }}
         </app-button>
       }
     </div>
   </div>
   <!-- Support Section -->
   <div class="text-center pt-6 mt-8">
-  <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con tu cuenta?</p>
+  <p class="text-sm text-gray-600 mb-4">{{ 'auth.need_help' | translate }}</p>
     <app-report-problem
       [options]="reportProblemOptions"
       variant="link"

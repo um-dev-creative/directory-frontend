@@ -10,11 +10,12 @@ import {UiVariant} from '@app/components/ui/ui-variant';
 import {PaginatedCampaigns} from '@shared/models/campaign.model';
 import {CampaignMapper} from '@core/services';
 import {LoggerService} from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-offers-table',
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     Button,
     BadgeComponent

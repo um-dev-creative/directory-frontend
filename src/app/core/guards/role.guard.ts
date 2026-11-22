@@ -41,7 +41,7 @@ export class RoleGuard implements CanActivate {
 
     if (!userInfo) {
       this.logger.warn('No user info found for role check');
-      this.notificationService.error('Access denied - User information not found');
+      this.notificationService.error({key: 'notifications.access_user_not_found'});
       this.router.navigate(['/auth/login']);
       return false;
     }
@@ -51,7 +51,7 @@ export class RoleGuard implements CanActivate {
       const hasRole = requiredRoles.some(role => userInfo.roles.includes(role));
       if (!hasRole) {
         this.logger.warn('User does not have required role', { requiredRoles, userRoles: userInfo.roles });
-        this.notificationService.error('Access denied - Insufficient permissions');
+        this.notificationService.error({key: 'notifications.access_insufficient_permissions'});
         this.router.navigate(['/unauthorized']);
         return false;
       }
@@ -67,7 +67,7 @@ export class RoleGuard implements CanActivate {
           requiredPermissions,
           userPermissions: userInfo.permissions
         });
-        this.notificationService.error('Access denied - Insufficient permissions');
+        this.notificationService.error({key: 'notifications.access_insufficient_permissions'});
         this.router.navigate(['/unauthorized']);
         return false;
       }

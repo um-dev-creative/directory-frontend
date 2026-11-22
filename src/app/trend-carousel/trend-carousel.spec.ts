@@ -6,6 +6,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 import { LandingOffer } from '@shared/models/landing.model';
 import { LoggerService } from '@app/core/services/logger.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 class MockLandingStoreService {
   offers$ = new BehaviorSubject<LandingOffer[]>([]);
@@ -52,7 +53,7 @@ describe('TrendCarousel', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TrendCarousel],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), TrendCarousel],
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({}), snapshot: { paramMap: convertToParamMap({}) } } },
         provideLocationMocks(),

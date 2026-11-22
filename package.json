@@ -13,7 +13,10 @@
     "dev:unix": "concurrently \"pnpm run watch:ssr\" \"pnpm run start-dev:unix\"",
     "test": "ng test --code-coverage --no-watch --browsers ChromeHeadlessNoSandbox",
     "test:browser": "ng test --code-coverage",
-    "server:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs"
+    "server:ssr:directory-frontend": "node dist/directory-frontend/server/server.mjs",
+    "i18n:check": "node scripts/i18n/check.mjs",
+    "i18n:inventory": "node scripts/i18n/inventory.mjs",
+    "i18n:review": "node scripts/i18n/review.mjs"
   },
   "private": true,
   "dependencies": {

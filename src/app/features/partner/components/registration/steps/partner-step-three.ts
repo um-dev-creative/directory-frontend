@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   Button,
   CardComponent,
@@ -21,15 +22,15 @@ interface Country {
 @Component({
   selector: 'app-partner-step-three',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Button, CardComponent, SelectComponent, IconComponent],  template: `
+  imports: [TranslateModule, CommonModule, ReactiveFormsModule, Button, CardComponent, SelectComponent, IconComponent],  template: `
     <form [formGroup]="locationForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <!-- Header -->
       <div class="text-center pb-4 border-b border-beige-200">
         <h2 class="text-xl font-semibold text-emerald-green-700 mb-2">
-          Ubicación del Negocio
+          {{ 'registration.step_three.title' | translate }}
         </h2>
         <p class="text-beige-600">
-          Selecciona el país donde opera tu negocio principal
+          {{ 'registration.step_three.subtitle' | translate }}
         </p>
       </div>
 
@@ -38,7 +39,7 @@ interface Country {
         <!-- Country Select Component -->
         <app-select
           label="País de Operación"
-          placeholder="Selecciona un país"
+          [placeholder]="'registration.step_three.select_country' | translate"
           [options]="countryOptions"
           [required]="true"
           formControlName="country"
@@ -58,7 +59,7 @@ interface Country {
                 {{ selectedCountry.name }}
               </h3>
               <p class="text-sm text-emerald-green-600">
-                País seleccionado para tu negocio
+                {{ 'registration.step_three.selected' | translate }}
               </p>
             </div>
           </div>
@@ -70,11 +71,11 @@ interface Country {
         <div class="flex items-center mb-2">
           <app-icon name="information-circle" size="md" class="text-sky-blue-700 mr-1"></app-icon>
           <h4 class="text-md font-semibold text-sky-blue-700">
-            ¿Por qué necesitamos esta información?
+            {{ 'registration.step_three.why_title' | translate }}
           </h4>
         </div>
         <p class="text-sm text-sky-blue-700">
-          La ubicación nos ayuda a conectarte con clientes locales y mostrar tu negocio en búsquedas relevantes de tu región.
+          {{ 'registration.step_three.why_text' | translate }}
         </p>
       </app-card>
 
@@ -98,13 +99,14 @@ interface Country {
           [loading]="isLoading"
           (buttonClick)="onSubmit()"
         >
-          Finalizar
+          {{ 'registration.step_three.finish' | translate }}
         </app-button>
       </div>
     </form>
   `
 })
 export class PartnerStepThree {
+  private readonly translate = inject(TranslateService);
   @Input() isLoading = false;
   @Output() stepCompleted = new EventEmitter<StepThreeData>();
   @Output() previousStep = new EventEmitter<void>();
@@ -169,7 +171,7 @@ export class PartnerStepThree {
     const field = this.locationForm.get(fieldName);
     if (field && field.invalid && field.touched) {
       if (field.errors?.['required']) {
-        return 'Por favor selecciona un país';
+        return this.translate.instant('validation.country_required');
       }
     }
     return '';

@@ -5,13 +5,13 @@
     </div>
   </div>
   <div class="mx-auto max-w-2xl text-center">
-    <h2 class="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Contactanos</h2>
-    <p class="mt-2 text-lg/8 text-gray-600">¡Hablemos de tu Negocio!</p>
+    <h2 class="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">{{ 'contact.title' | translate }}</h2>
+    <p class="mt-2 text-lg/8 text-gray-600">{{ 'contact.subtitle' | translate }}</p>
   </div>
   <form (submit)="onSubmit()" #contactForm="ngForm" class="mx-auto mt-16 max-w-xl sm:mt-20">
     <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
       <div>
-        <label for="first-name" class="block text-sm/6 font-semibold text-gray-900">Nombre</label>
+        <label for="first-name" class="block text-sm/6 font-semibold text-gray-900">{{ 'common.first_name' | translate }}</label>
         <div class="mt-2.5">
           <input
             type="text"
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div>
-        <label for="last-name" class="block text-sm/6 font-semibold text-gray-900">Apellido</label>
+        <label for="last-name" class="block text-sm/6 font-semibold text-gray-900">{{ 'common.last_name' | translate }}</label>
         <div class="mt-2.5">
           <input
             type="text"
@@ -41,7 +41,7 @@
       </div>
       <!-- Correo electrónico -->
       <div>
-        <label for="email" class="block text-sm/6 font-semibold text-gray-900">Correo electrónico</label>
+        <label for="email" class="block text-sm/6 font-semibold text-gray-900">{{ 'contact.email' | translate }}</label>
         <div class="mt-2.5">
           <input
             type="email"
@@ -58,12 +58,12 @@
         </div>
         <!-- Error Message -->
         <div *ngIf="!isEmailValid" class="text-red-500 text-sm mt-1">
-          Correo Electrónico inválido.
+          {{ 'contact.email_invalid' | translate }}
         </div>
       </div>
       <!-- Teléfono -->
       <div>
-        <label for="mobile-number" class="block text-sm/6 font-semibold text-gray-900">Teléfono (opcional)</label>
+        <label for="mobile-number" class="block text-sm/6 font-semibold text-gray-900">{{ 'contact.phone_optional' | translate }}</label>
         <div class="mt-2.5">
           <div class="
           relative
@@ -153,13 +153,13 @@
             </div>
             <!-- Error Message -->
             <div *ngIf="!isValidPhoneNumber" class="text-red-500 text-sm mt-1">
-              Número de teléfono inválido para {{ selectedCountry.name }}.
+              {{ 'auth.phone_invalid' | translate: {country: selectedCountry.name} }}
             </div>
         </div>
       </div>
       <!-- Asunto -->
       <div class="sm:col-span-2">
-        <label for="subject" class="block text-sm/6 font-semibold text-gray-900">Asunto</label>
+        <label for="subject" class="block text-sm/6 font-semibold text-gray-900">{{ 'contact.subject' | translate }}</label>
         <div class="mt-2.5">
           <input
             type="text"
@@ -173,7 +173,7 @@
       </div>
       <!-- Mensaje -->
       <div class="sm:col-span-2">
-        <label for="message" class="block text-sm/6 font-semibold text-gray-900">Mensaje</label>
+        <label for="message" class="block text-sm/6 font-semibold text-gray-900">{{ 'contact.message' | translate }}</label>
         <div class="mt-2.5">
           <textarea
             id="message"
@@ -181,12 +181,12 @@
             rows="4"
             required
             class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-            placeholder="Escribe tu mensaje aquí"
+            [placeholder]="'contact.message_placeholder' | translate"
             [(ngModel)]="contactData.message"
             (ngModelChange)="validateContactForm()"
           ></textarea>
         </div>
-        <div class="text-xs">Por favor, ingresa los detalles de tu solicitud. Un miembro de nuestro equipo de soporte responderá lo antes posible.</div>
+        <div class="text-xs">{{ 'contact.message_hint' | translate }}</div>
       </div>
     </div>
     <div class="mt-10">
@@ -215,7 +215,7 @@
             stroke-linejoin="round"
           />
         </svg>
-        Enviar Mensaje
+        {{ 'contact.send' | translate }}
       </button>
     </div>
   </form>

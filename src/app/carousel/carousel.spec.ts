@@ -5,6 +5,7 @@ import { LandingSlide } from '@shared/models/landing.model';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { LoggerService } from '@app/core/services/logger.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 class MockLandingStoreService {
   slides$ = new BehaviorSubject<LandingSlide[]>([
@@ -30,7 +31,7 @@ describe('CarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Carousel],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), Carousel],
       providers: [
         { provide: LandingStoreService, useClass: MockLandingStoreService },
         { provide: ActivatedRoute, useValue: { params: new BehaviorSubject({}), snapshot: { paramMap: convertToParamMap({}) } } },

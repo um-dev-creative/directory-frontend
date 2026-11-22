@@ -6,6 +6,7 @@ import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
 import {provideLocationMocks} from '@angular/common/testing';
 import {provideHttpClient} from '@angular/common/http';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('OfferSlider', () => {
   let component: OfferSlider;
@@ -13,7 +14,7 @@ describe('OfferSlider', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OfferSlider],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), OfferSlider],
       providers: [
         {provide: ActivatedRoute, useValue: {params: of({}), snapshot: {paramMap: convertToParamMap({})}}},
         provideLocationMocks(),

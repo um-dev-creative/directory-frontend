@@ -11,7 +11,7 @@
           </h2>
           <div class="flex items-center space-x-4">
             @if (this.isEditMode && this.offer) {
-              <span class="text-sm text-beige-600">ID: #{{ this.offer.id }}</span>
+              <span class="text-sm text-beige-600">{{ 'offer_modal.id' | translate: {id: this.offer.id} }}</span>
             }
             <button
               type="button"
@@ -30,7 +30,7 @@
           <!-- Título -->
           <app-input
             label="Título de la oferta"
-            placeholder="Ej: Descuento de Verano"
+            [placeholder]="'offer_modal.title_placeholder' | translate"
             [required]="true"
             [variant]="this.getFieldVariant('title')"
             [errorMessage]="this.getFieldError('title')"
@@ -40,7 +40,7 @@
           <!-- Descripción -->
           <app-textarea
             label="Descripción"
-            placeholder="Describe los detalles de la oferta..."
+            [placeholder]="'offer_modal.description_placeholder' | translate"
             [required]="true"
             [rows]="3"
             [variant]="this.getFieldVariant('description')"
@@ -65,7 +65,7 @@
             <!-- Categoría -->
             <app-select
               label="Categoría"
-              placeholder="Selecciona una categoría"
+              [placeholder]="'common.select_category' | translate"
               [required]="true"
               [variant]="this.getFieldVariant('categoryId')"
               [errorMessage]="this.getFieldError('categoryId')"
@@ -90,7 +90,7 @@
             <app-input
               label="Válido hasta"
               type="text"
-              placeholder="YYYY-MM-DD"
+              [placeholder]="'offer_modal.date_placeholder' | translate"
               [required]="true"
               [variant]="this.getFieldVariant('validUntil')"
               [errorMessage]="this.getFieldError('validUntil')"
@@ -112,7 +112,7 @@
           <!-- Términos y Condiciones -->
           <app-textarea
             label="Términos y Condiciones"
-            placeholder="Especifica los términos y condiciones de la oferta..."
+            [placeholder]="'offer_modal.terms_placeholder' | translate"
             [required]="true"
             [rows]="4"
             [variant]="this.getFieldVariant('terms')"
@@ -127,18 +127,19 @@
               variant="outline"
               [disabled]="this.isSubmitting()"
               (buttonClick)="this.onClose()">
-              Cancelar
+              {{ 'common.cancel' | translate }}
             </app-button>
             <app-button
               type="submit"
               variant="primary"
               [disabled]="this.offerForm.invalid || this.isSubmitting()"
               [loading]="this.isSubmitting()">
-              {{ this.isEditMode ? 'Actualizar' : 'Crear' }} Oferta
+              {{ (this.isEditMode ? 'offer_modal.update_offer' : 'offer_modal.create_offer') | translate }}
             </app-button>
           </div>
         </form>
 
+        <!-- i18n-ignore:start (development-only panel, not user-facing) -->
         <!-- Form Status - Development Section (Temporal) -->
         <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <h3 class="font-semibold mb-3 text-gray-800">Estado del Formulario (Desarrollo):</h3>
@@ -167,6 +168,7 @@
             </div>
           }
         </div>
+        <!-- i18n-ignore:end -->
       </div>
     </div>
   </div>

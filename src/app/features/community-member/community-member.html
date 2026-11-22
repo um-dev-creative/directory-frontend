@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gray-50 py-8">
   <div class="max-w-2xl mx-auto px-4">
-    <h2 class="text-2xl font-semibold text-center mb-5 text-emerald-green-700">Perfil</h2>
+    <h2 class="text-2xl font-semibold text-center mb-5 text-emerald-green-700">{{ 'community.profile' | translate }}</h2>
     <!-- Breadcrumb -->
     <nav class="text-sm mb-5 text-center">
-      <span class="text-sky-blue-600">Configuración de Cuenta</span>
+      <span class="text-sky-blue-600">{{ 'community.account_settings' | translate }}</span>
       <span class="mx-2">&gt;</span>
-      <span class="text-emerald-green-700 font-medium">Perfil</span>
+      <span class="text-emerald-green-700 font-medium">{{ 'community.profile' | translate }}</span>
     </nav>
 
     <!-- Avatar Section -->
@@ -118,9 +118,9 @@
         [disabled]="uploadingAvatar"
         (buttonClick)="avatarInput.click()">
         @if (uploadingAvatar) {
-          Subiendo...
+          {{ 'community.uploading' | translate }}
         } @else {
-          Actualizar Foto
+          {{ 'community.update_photo' | translate }}
         }
       </app-button>
     </div>
@@ -129,7 +129,7 @@
       <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfileUpdate()" class="space-y-8">
         <!-- Basic Information -->
         <div class="space-y-6">
-          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700 mb-6">Información Básica</h3>
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700 mb-6">{{ 'community.basic_info' | translate }}</h3>
           <app-input
             label="Dirección de Correo Electrónico"
             type="email"
@@ -143,7 +143,7 @@
               <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
               </svg>
-              Verificado
+              {{ 'common.verified' | translate }}
             </span>
           }
           @else {
@@ -151,14 +151,14 @@
               <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
               </svg>
-                No verificado
+                {{ 'community.not_verified' | translate }}
               </span>
           }
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <app-input
               label="Nombre"
-              placeholder="Tu nombre"
+              [placeholder]="'community.first_name_placeholder' | translate"
               [required]="true"
               [variant]="getFieldVariant('firstName')"
               [errorMessage]="getFieldError('firstName')"
@@ -167,7 +167,7 @@
 
             <app-input
               label="Apellido"
-              placeholder="Tu apellido"
+              [placeholder]="'community.last_name_placeholder' | translate"
               [required]="true"
               [variant]="getFieldVariant('lastName')"
               [errorMessage]="getFieldError('lastName')"
@@ -177,7 +177,7 @@
 
           <app-input
             label="Nombre para Mostrar"
-            placeholder="Como quieres ser conocido"
+            [placeholder]="'community.display_name_placeholder' | translate"
             [required]="true"
             [variant]="getFieldVariant('displayName')"
             [helperText]="'Tu Nombre para Mostrar es como quieres ser conocido en la comunidad LatinHub.'"
@@ -189,7 +189,7 @@
 
         <!-- Contact Information -->
         <div class="space-y-6">
-          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">Información de Contacto</h3>
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">{{ 'community.contact_info' | translate }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <app-input
               label="Número de teléfono"
@@ -204,7 +204,7 @@
             <app-input
               label="Fecha de nacimiento"
               type="text"
-              placeholder="DD/MM/YYYY"
+              [placeholder]="'community.birthdate_placeholder' | translate"
               [variant]="getFieldVariant('birthDate')"
               [errorMessage]="getFieldError('birthDate')"
               formControlName="birthDate"
@@ -215,12 +215,12 @@
 
         <!-- Notification Preferences -->
         <div class="space-y-6">
-          <h3 class="text-lg font-semibold border-b  border-beige-200 pb-2 text-emerald-green-700">Preferencias de Notificaciones</h3>
+          <h3 class="text-lg font-semibold border-b  border-beige-200 pb-2 text-emerald-green-700">{{ 'community.notification_preferences' | translate }}</h3>
           <div class="space-y-4">
             <div class="flex items-center justify-between py-2 bg-beige-50 px-4 rounded-lg">
               <div>
-                <h4 class="font-medium text-emerald-green-700">Ofertas y Descuentos</h4>
-                <p class="text-sm text-beige-600">Recibe notificaciones sobre nuevas ofertas y descuentos especiales</p>
+                <h4 class="font-medium text-emerald-green-700">{{ 'community.offers_and_discounts' | translate }}</h4>
+                <p class="text-sm text-beige-600">{{ 'community.offers_hint' | translate }}</p>
               </div>
               <div class="flex gap-4">
                 <label class="flex items-center">
@@ -228,26 +228,26 @@
                     type="checkbox"
                     class="form-checkbox h-5 w-5 text-emerald-green-500 border-emerald-green-300 focus:ring-emerald-green-200"
                     formControlName="notificationsEmail" />
-                  <span class="ml-2 text-sm text-emerald-green-700">Correo</span>
+                  <span class="ml-2 text-sm text-emerald-green-700">{{ 'common.email' | translate }}</span>
                 </label>
                 <label class="flex items-center">
                   <input
                     type="checkbox"
                     class="form-checkbox h-5 w-5 text-sky-blue-300 border-sky-blue-200 focus:ring-sky-blue-100"
                     formControlName="notificationsSms" />
-                  <span class="ml-2 text-sm text-sky-blue-700">SMS</span>
+                  <span class="ml-2 text-sm text-sky-blue-700">{{ 'community.sms' | translate }}</span>
                 </label>
               </div>
             </div>
             <div class="flex items-center justify-between py-2 bg-beige-50 px-4 rounded-lg">
               <div>
-                <h4 class="font-medium text-emerald-green-700">Actualizaciones de Cuenta</h4>
-                <p class="text-sm text-beige-600">Actualizaciones importantes sobre tu cuenta</p>
+                <h4 class="font-medium text-emerald-green-700">{{ 'community.account_updates' | translate }}</h4>
+                <p class="text-sm text-beige-600">{{ 'community.account_updates_hint' | translate }}</p>
               </div>
               <div class="flex gap-4">
                 <label class="flex items-center">
                   <input type="checkbox" class="form-checkbox h-5 w-5 text-beige-400 bg-beige-200 cursor-not-allowed border-beige-300" [checked]="true" disabled />
-                  <span class="ml-2 text-sm text-beige-500">Correo</span>
+                  <span class="ml-2 text-sm text-beige-500">{{ 'common.email' | translate }}</span>
                 </label>
               </div>
             </div>
@@ -256,7 +256,7 @@
 
         <!-- Privacy & Legal -->
         <div class="space-y-6">
-          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">Privacidad y Legal</h3>
+          <h3 class="text-lg font-semibold border-b border-beige-200 pb-2 text-emerald-green-700">{{ 'community.privacy_legal' | translate }}</h3>
           <div class="bg-gradient-soft p-4 rounded-lg flex items-start gap-3 border border-emerald-green-100">
             <input
               type="checkbox"
@@ -264,8 +264,8 @@
               class="form-checkbox h-5 w-5 text-emerald-green-500 border-emerald-green-300 focus:ring-emerald-green-200 mt-1"
               formControlName="privacyOptOut" />
             <div class="flex-1">
-              <label for="privacy" class="font-semibold block text-emerald-green-700">No vender mi información personal</label>
-              <span class="text-xs text-beige-600">Por ley puedes optar por no participar, pero no vendemos, intercambiamos o alquilamos la información personal de los usuarios a terceros.</span>
+              <label for="privacy" class="font-semibold block text-emerald-green-700">{{ 'community.do_not_sell' | translate }}</label>
+              <span class="text-xs text-beige-600">{{ 'community.do_not_sell_hint' | translate }}</span>
             </div>
           </div>
         </div>
@@ -276,7 +276,7 @@
             type="button"
             variant="ghost-alert"
             (buttonClick)="deleteAccount()">
-            Eliminar Cuenta
+            {{ 'common.delete_account' | translate }}
           </app-button>
 
           <app-button
@@ -284,13 +284,14 @@
             variant="primary"
             [disabled]="profileForm.invalid || !profileForm.dirty"
             [loading]="isSubmitting">
-            Guardar Cambios
+            {{ 'common.save_changes' | translate }}
           </app-button>
         </div>
       </form>
     </app-card>
     } <!-- end @else (isLoading) -->
 
+    <!-- i18n-ignore:start (development-only panel, not user-facing) -->
     <!-- Form Status - Development Section (Temporal) -->
      @if(!isProd) {
       <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
@@ -333,10 +334,11 @@
         }
       </div>
      }
+    <!-- i18n-ignore:end -->
 
     <!-- Support Section -->
     <div class="text-center pt-6 border-t border-gray-200 mt-8">
-      <p class="text-sm text-gray-600 mb-4">¿Necesitas ayuda con tu perfil?</p>
+      <p class="text-sm text-gray-600 mb-4">{{ 'community.need_help' | translate }}</p>
       <app-report-problem
         [options]="reportProblemOptions"
         variant="link"
@@ -355,23 +357,23 @@
       [hasFooter]="true"
     >
       <div slot="header">
-        <h3 class="text-lg font-semibold text-coral-700">¿Eliminar Cuenta?</h3>
+        <h3 class="text-lg font-semibold text-coral-700">{{ 'community.delete_title' | translate }}</h3>
       </div>
       <div slot="content">
         <p class="text-gray-700">
-          Esta acción eliminará permanentemente tu cuenta y todos los datos asociados.
-          <strong>Esta acción no se puede deshacer.</strong>
+          {{ 'community.delete_warning' | translate }}
+          <strong>{{ 'community.delete_irreversible' | translate }}</strong>
         </p>
         <p class="text-sm text-gray-600 mt-2">
-          ¿Estás seguro de que quieres continuar?
+          {{ 'community.delete_confirm' | translate }}
         </p>
       </div>
       <div slot="footer">
         <app-button variant="primary" (buttonClick)="cancelDeleteAccount()">
-          Cancelar
+          {{ 'common.cancel' | translate }}
         </app-button>
         <app-button variant="alert-outline" (buttonClick)="confirmDeleteAccount()">
-          Eliminar Cuenta
+          {{ 'common.delete_account' | translate }}
         </app-button>
       </div>
     </app-modal>

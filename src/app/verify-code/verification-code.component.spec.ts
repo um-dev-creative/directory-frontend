@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VerificationCodeComponent } from './verification-code.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('VerificationCodeComponent', () => {
   let component: VerificationCodeComponent;
@@ -8,7 +9,7 @@ describe('VerificationCodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VerificationCodeComponent]
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), VerificationCodeComponent]
     })
     .compileComponents();
 

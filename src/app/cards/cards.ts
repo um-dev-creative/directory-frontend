@@ -6,11 +6,12 @@ import { CardsService, CardImage } from './services/cards.service';
 import { Router } from '@angular/router';
 import {environment} from '@env/environment';
 import { SkeletonComponent } from '@app/components/ui';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, SkeletonComponent],
   templateUrl: './cards.html',
   styleUrls: ['./cards.css']
 })

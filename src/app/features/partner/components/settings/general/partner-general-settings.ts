@@ -18,6 +18,7 @@ import {LoggerService} from '@app/core/services/logger.service';
 import {TimezoneClient} from '@core/services/timezone/timezone.client';
 import {environment} from '@env/environment';
 import {StorageMockService} from '@core/services/storage-mock.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 interface PartnerGeneralData {
@@ -37,11 +38,12 @@ interface PartnerGeneralData {
 @Component({
   selector: 'app-partner-general-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Button, CardComponent, Avatar, InputComponent, TextareaComponent, SelectComponent, IconComponent, ReportProblem],
+  imports: [TranslateModule, CommonModule, ReactiveFormsModule, Button, CardComponent, Avatar, InputComponent, TextareaComponent, SelectComponent, IconComponent, ReportProblem],
   templateUrl: './partner-general-settings.html',
   styleUrls: ['./partner-general-settings.css']
 })
 export class PartnerGeneralSettings implements OnInit, OnDestroy {
+  private readonly translate = inject(TranslateService);
   generalForm: FormGroup;
   isSubmitting = false;
   uploadingImage = false;
@@ -245,7 +247,7 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
     const businessId = this.getCurrentBusinessId();
     if (!businessId) {
       this.logger.error('PartnerGeneralSettings: no businessId available for image upload');
-      this.notificationService.error('No se pudo identificar el negocio para actualizar la imagen');
+      this.notificationService.error({key: 'notifications.business_not_identified'});
       return;
     }
 
@@ -267,7 +269,7 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
         this.uploadingImage = false;
       },
       error: () => {
-        this.notificationService.error('Error al actualizar la imagen del negocio');
+        this.notificationService.error({key: 'notifications.business_image_failed'});
         this.imagePreview = null;
         this.uploadingImage = false;
       }
@@ -302,7 +304,7 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
       next: (response) => {
         this.logger.info('Partner general settings updated successfully:', response?.updatedDate);
         this.generalForm.markAsPristine();
-        this.notificationService.success('User updated successfully');
+        this.notificationService.success({key: 'notifications.user_updated'});
         this.isSubmitting = false;
       },
       error: (error) => {
@@ -320,10 +322,10 @@ export class PartnerGeneralSettings implements OnInit, OnDestroy {
   getFieldError(fieldName: string): string {
     const field = this.generalForm.get(fieldName);
     if (field?.errors && (field.dirty || field.touched)) {
-      if (field.errors['required']) return 'Este campo es requerido';
-      if (field.errors['email']) return 'Ingresa un email válido';
-      if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
-      if (field.errors['maxlength']) return `Máximo ${field.errors['maxlength'].requiredLength} caracteres`;
+      if (field.errors['required']) return this.translate.instant('validation.required');
+      if (field.errors['email']) return this.translate.instant('validation.email_invalid');
+      if (field.errors['minlength']) return this.translate.instant('validation.min_length', {count: field.errors['minlength'].requiredLength});
+      if (field.errors['maxlength']) return this.translate.instant('validation.max_length', {count: field.errors['maxlength'].requiredLength});
     }
     return '';
   }

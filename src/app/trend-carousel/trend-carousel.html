@@ -19,12 +19,12 @@
 } @else {
   @if (trends.length === 0) {
     <div class="text-center py-10 text-gray-500">
-      No hay tendencias disponibles en este momento.
+      {{ 'trend_carousel.empty' | translate }}
     </div>
   } @else {
     <div class="mt-4 mb-6">
       <div>
-          <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">Tendencia</h1>
+          <h1 class="text-3xl font-bold text-center text-emerald-800 my-5">{{ 'trend_carousel.trend' | translate }}</h1>
       </div>
       <div class="relative w-full max-w-[1200px] mx-auto cursor-pointer">
         <!-- Botón Izquierdo -->
@@ -63,7 +63,7 @@
                   }
                   <!-- Etiqueta (pill) superior izquierda -->
                   <div class="absolute top-3 left-3 bg-sky-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
-                    Online
+                    {{ 'common.online' | translate }}
                   </div>
                 </div>
                 <!-- Contenido debajo de la imagen -->
@@ -110,7 +110,7 @@
           variant="outline"
           size="xxl"
           (buttonClick)="navigateToDeals()"
-        >DESCUBRIR MÁS</app-button>
+        >{{ 'trend_carousel.discover' | translate }}</app-button>
       </div>
     </div>
   }

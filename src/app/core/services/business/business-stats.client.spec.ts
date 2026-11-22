@@ -43,7 +43,9 @@ describe('BusinessStatsClient', () => {
 
   it('encodes the business id', () => {
     client.recordView('a/b').subscribe();
-    http.expectOne('/drb/api/v1/general/businesses/a%2Fb/views').flush({headers: {status: 204}, data: null});
+    const request = http.expectOne('/drb/api/v1/general/businesses/a%2Fb/views');
+    expect(request.request.url).toBe('/drb/api/v1/general/businesses/a%2Fb/views');
+    request.flush({headers: {status: 204}, data: null});
   });
 
   it('normalizes the failures (403 when the caller is not the owner)', () => {

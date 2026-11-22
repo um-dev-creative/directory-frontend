@@ -9,6 +9,7 @@ import { HeaderService } from '@app/header/header.service';
 import { VerifyCodeClient } from './verify-code-client.service';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
 import { Router } from '@angular/router';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 // Minimal stubs for injected services
 const mockLoadingService: Partial<LoadingService> = { show: jasmine.createSpy('show'), hide: jasmine.createSpy('hide') };
@@ -25,7 +26,7 @@ describe('VerificationCodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VerifyCode],
+      imports: [TranslateModule.forRoot({loader: {provide: TranslateLoader, useClass: TranslateFakeLoader}}), VerifyCode],
       providers: [
         provideMockStore({ initialState: { session: { sessionData: null } } }),
         provideLocationMocks(),

@@ -73,7 +73,7 @@ describe('RoleGuard', () => {
 
     expect(result).toBeFalse();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/unauthorized']);
-    expect(mockNotification.error).toHaveBeenCalledWith('Access denied - Insufficient permissions');
+    expect(mockNotification.error).toHaveBeenCalledWith({key: 'notifications.access_insufficient_permissions'});
   });
 
   it('should block access when user info is not found', () => {
@@ -86,7 +86,7 @@ describe('RoleGuard', () => {
 
     expect(result).toBeFalse();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/auth/login']);
-    expect(mockNotification.error).toHaveBeenCalledWith('Access denied - User information not found');
+    expect(mockNotification.error).toHaveBeenCalledWith({key: 'notifications.access_user_not_found'});
   });
 
   it('should allow access when user has required permission', () => {

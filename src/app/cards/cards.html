@@ -1,6 +1,6 @@
 <section
   role="region"
-  aria-label="Campaign cards">
+  [attr.aria-label]="'cards.campaigns' | translate">
 
   <!-- Loading State -->
   @if (loading$ | async) {
@@ -8,7 +8,7 @@
       <div
         class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6"
         role="status"
-        aria-label="Loading campaign cards">
+        [attr.aria-label]="'cards.loading' | translate">
         <div class="flex gap-4 min-w-max lg:min-w-0 lg:justify-between lg:max-w-full">
           @for (i of [1, 2, 3]; track i) {
             <div class="shrink-0 w-80 lg:w-[calc(33.333%-1rem)] lg:max-w-sm rounded-xl overflow-hidden">
@@ -30,7 +30,7 @@
         (click)="loadCards()"
         class="px-4 py-2 bg-emerald-green-600 text-white rounded-lg hover:bg-emerald-green-700 transition duration-200"
         type="button">
-        Retry
+        {{ 'common.retry' | translate }}
       </button>
     </div>
   }
@@ -40,13 +40,13 @@
     <!-- Empty State -->
     @if (cards.length === 0) {
       <div class="text-center py-8">
-        <p>No hay campañas disponibles en este momento.</p>
+        <p>{{ 'cards.empty' | translate }}</p>
       </div>
     } @else {
           <div
       class="overflow-x-auto lg:overflow-visible scrollbar-hide mt-4 pb-6 smooth-scroll"
       role="group"
-      aria-label="Campaign cards">
+      [attr.aria-label]="'cards.campaigns' | translate">
 
       <!-- Mobile: Horizontal scroll, Desktop: Grid with space-between for equilibrium -->
       <div class="flex gap-4 min-w-max lg:min-w-0 lg:justify-between lg:max-w-full">

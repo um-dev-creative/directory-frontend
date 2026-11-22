@@ -18,11 +18,11 @@
     <div class="relative max-w-[1200px] mx-auto sm:text-center">
       @if (isAuthenticated) {
         <div class="text-base sm:text-lg font-semibold mb-4 text-sky-blue-700 bg-gradient-warm rounded-xl px-4 py-2 text-left">
-          👋 Hola, {{ userFullName }}!
+          {{ 'deals.greeting' | translate: {name: userFullName} }}
         </div>
       } @else {
         <div class="text-base sm:text-lg font-semibold mb-4 text-sky-700 bg-gradient-warm rounded-lg px-4 py-2 text-left">
-          👋 Hola! Bienvenido 😊
+          {{ 'deals.greeting_anonymous' | translate }}
         </div>
       }
       <app-banner bannerType="top"></app-banner>

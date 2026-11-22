@@ -7,7 +7,7 @@
     class="fixed inset-0 bg-black/50 z-40"
     role="button"
     tabindex="0"
-    aria-label="Cerrar menú"
+    [attr.aria-label]="'menu_header.close_menu' | translate"
     (click)="closeMenu.emit()"
     onKeyDown="closeMenu.emit()"
   ></div>
@@ -35,7 +35,7 @@
       class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-green-50 text-emerald-green-600 transition-colors hover:scale-105"
       (click)="closeMenu.emit()"
     >
-      <span class="sr-only">Cerrar menú</span>
+      <span class="sr-only">{{ 'menu_header.close_menu' | translate }}</span>
       <svg
         viewBox="0 0 10 10"
         class="w-3 h-3 overflow-visible"
@@ -55,7 +55,7 @@
     @if (isOpen) {
       <!-- Menú Principal -->
       @if (isPartnerMenuOpen()) {
-        <nav class="p-3" aria-label="Menú de perfil del negocio">
+        <nav class="p-3" [attr.aria-label]="'menu_header.business_menu_label' | translate">
           <ul class="font-semibold text-emerald-700">
             <!---partner back-->
             <li><a
@@ -75,7 +75,7 @@
                   <path
                     stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
                 </svg>
-                {{ 'menu_header.user_icon.menu.partner.submenu.back.title' | translate }} (UM DEV Creative)
+                {{ 'menu_header.user_icon.menu.partner.submenu.back.title' | translate }} {{ 'menu_header.brand_suffix' | translate }}
               </div>
             </a></li>
             <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-green-200 to-transparent" />
@@ -142,7 +142,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/>
                 </svg>
 
-                {{ 'menu_header.user_icon.menu.partner.submenu.products.title' | translate }} (Proximamente)
+                {{ 'menu_header.user_icon.menu.partner.submenu.products.title' | translate }} {{ 'menu_header.coming_soon' | translate }}
               </div>
             </a></li>
           </ul>
@@ -162,7 +162,7 @@
                 size="xs"
                 [src]="userLogger.avatarUrl"
                 [initials]="userLogger.initials"
-                alt="Profile">
+                [alt]="'common.profile_alt' | translate">
               </app-avatar>
               <div class="flex flex-col gap-1 text-emerald-green-600">
                 <p>{{ 'menu_header.user_icon.menu.signed.title' | translate }}</p>
@@ -173,7 +173,7 @@
             </div>
           </div>
           <hr class="mx-[10px] my-2 h-px border-0 bg-linear-to-r from-transparent via-emerald-200 to-transparent" />
-          <nav class="p-[10px]" aria-label="Menú de acciones de usuario autenticado">
+          <nav class="p-[10px]" [attr.aria-label]="'menu_header.user_menu_label' | translate">
             <ul class="font-semibold text-emerald-green-700">
               <!---member profile settings-->
               <li><a
@@ -208,9 +208,9 @@
                       size="xs"
                       [src]="userLogger.avatarUrl"
                       [initials]="userLogger.initials"
-                      alt="Avatar XS">
+                      [alt]="'menu_header.avatar_alt' | translate">
                     </app-avatar>
-                    Mi negocio
+                    {{ 'menu_header.my_business' | translate }}
                   </div>
                   <svg
                     class="w-6 h-6 text-emerald-green-600"
@@ -270,7 +270,7 @@
                   </svg>
                   {{ 'menu_header.user_icon.menu.favorites.title' | translate }}
                   <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-sky-blue-700 text-white">
-                    ✨ Nuevo
+                    {{ 'menu_header.new' | translate }}
                   </span>
                 </div>
               </a></li>
@@ -408,7 +408,7 @@
               {{ 'menu_header.join_now_button.title' | translate }}
             </button>
           </div>
-          <nav class="p-[10px]" aria-label="Menú de navegación general">
+          <nav class="p-[10px]" [attr.aria-label]="'menu_header.general_menu_label' | translate">
             <ul class="font-semibold text-emerald-green-700">
               <!-- about -->
               <li><a
@@ -506,10 +506,10 @@
       <!-- Enlaces del footer -->
       <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-emerald-green-500">
         <a routerLink="/terms" (click)="closeMenu.emit()" class="hover:text-emerald-green-700">
-          Terms
+          {{ 'menu_header.terms' | translate }}
         </a>
         <a routerLink="/privacy" (click)="closeMenu.emit()" class="hover:text-emerald-green-700">
-          Privacy
+          {{ 'menu_header.privacy' | translate }}
         </a>
       </div>
     </div>

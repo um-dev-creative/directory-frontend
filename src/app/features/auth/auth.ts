@@ -40,13 +40,14 @@ import {DirectoryBackendJwtPipe} from '@shared/pipes/directory-backend-jwt.pipe'
 import {AlertComponent, Button, SocialLoginButton, SocialProvider} from '@app/components/ui';
 import {LoggerService} from '@app/core/services/logger.service';
 import {getInitials} from '@shared/utils/get-initials.helper';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Component for handling user authentication.
  */
 @Component({
   selector: 'app-auth',
-  imports: [CommonModule, FormsModule, Spinner, AlertComponent, SocialLoginButton, Button, ReportProblem],
+  imports: [TranslateModule, CommonModule, FormsModule, Spinner, AlertComponent, SocialLoginButton, Button, ReportProblem],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
@@ -380,13 +381,13 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
         },
         error: (error: any) => {
           this.logger.error('Error creating user:', error);
-          this.notificationService.error('Error creating user. Please try again.');
+          this.notificationService.error({key: 'notifications.user_creation_failed'});
           this.loader.hide('auth');
         },
       });
     } else {
       this.logger.error('Invalid user data:', userToRegister);
-      this.notificationService.error('Invalid registration data. Please check your inputs.');
+      this.notificationService.error({key: 'notifications.registration_invalid'});
       this.loader.hide('auth');
     }
   }
@@ -419,12 +420,12 @@ export class Auth implements OnDestroy, OnInit, AfterViewInit {
   handleSocialLogin(provider: SocialProvider): void {
     this.logger.debug(`Social login with ${provider} initiated`);
     // TODO: Implement social login logic
-    this.notificationService.info(`Social login with ${provider} coming soon!`);
+    this.notificationService.info({key: 'notifications.social_login_soon', params: {provider}});
   }
 
   onForgotPassword(): void {
     this.logger.debug('Forgot password clicked');
-    this.notificationService.info('Forgot password functionality is not implemented yet.');
+    this.notificationService.info({key: 'notifications.forgot_password_soon'});
   }
 
   /**

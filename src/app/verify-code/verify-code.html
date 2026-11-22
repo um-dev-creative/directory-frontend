@@ -2,7 +2,7 @@
   <div class="mx-auto mt-16 max-w-md sm:mtcf-10">
     <div class="text-center">
       <h2 class="text-xl font-semibold text-gray-900">
-        Introduzca el codigo de verificacion
+        {{ 'verify_code.enter' | translate }}
       </h2>
     </div>
     <div class="space-y-4 pt-6">
@@ -46,7 +46,7 @@
           type="submit" form="verification-form"
           class="font-bold h-10 text-sm shadow-lg shadow-indigo-500/40 bg-blue-500 text-white rounded-full px-4 py-2 whitespace-nowrap min-w-[100px] hover:bg-blue-600"
           (click)="confirmVerificationCode()"
-        >Validar
+        >{{ 'verify_code.validate' | translate }}
         </button>
       </div>
     </div>

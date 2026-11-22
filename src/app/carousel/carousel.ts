@@ -7,6 +7,7 @@ import { LoggerService } from '@app/core/services/logger.service';
 import { LandingStoreService } from '@app/core/store/landing/landing-store.service';
 import { SkeletonComponent } from '@app/components/ui';
 import {environment} from '@env/environment';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Slide {
   id: string;
@@ -20,7 +21,7 @@ interface Slide {
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule, SkeletonComponent],
+  imports: [TranslateModule, CommonModule, SkeletonComponent],
   templateUrl: './carousel.html',
 })
 export class Carousel implements OnInit, OnDestroy {

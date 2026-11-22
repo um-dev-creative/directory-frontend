@@ -31,6 +31,7 @@ import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FavoritesService } from './services';
 import { LoggerService } from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Types
 export interface FavoriteItem {
@@ -59,7 +60,7 @@ export enum FavoriteType {
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     RouterModule,
     FormsModule

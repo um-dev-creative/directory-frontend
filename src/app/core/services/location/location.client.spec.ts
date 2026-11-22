@@ -65,7 +65,9 @@ describe('LocationClient', () => {
 
   it('encodes the ids it puts in the URL', () => {
     client.list('a/b').subscribe();
-    http.expectOne('/drb/api/v1/general/businesses/a%2Fb/locations').flush({headers: {status: 200}, data: []});
+    const request = http.expectOne('/drb/api/v1/general/businesses/a%2Fb/locations');
+    expect(request.request.url).toBe('/drb/api/v1/general/businesses/a%2Fb/locations');
+    request.flush({headers: {status: 200}, data: []});
   });
 
   it('normalizes the failures of every operation (403 for a user who is not the owner)', () => {

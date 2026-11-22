@@ -32,11 +32,12 @@ import {Button} from '@app/components/ui/buttons/button';
 import {ReportProblem, ReportProblemOptions} from '@app/layout/report-problem/report-problem';
 import {CampaignMapper} from '@core/services';
 import {LoggerService} from '@app/core/services/logger.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-offers-settings',
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     CommonModule,
     OffersTableComponent,
     OfferEditModal,
