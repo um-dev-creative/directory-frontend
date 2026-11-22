@@ -1,0 +1,66 @@
+<div class="settings-page">
+  <div class="settings-header">
+    <button type="button" class="back-button" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+      {{ 'stats.back' | translate }}
+    </button>
+    <h1 class="page-title">{{ 'stats.title' | translate }}</h1>
+  </div>
+
+  <div class="settings-content">
+    <p class="stats-privacy">{{ 'stats.privacy' | translate }}</p>
+
+    @if (!businessId()) {
+      <p class="stats-message">{{ 'stats.no_business' | translate }}</p>
+    } @else {
+      <div class="stats-windows" role="group" [attr.aria-label]="'stats.window' | translate">
+        @for (window of windows; track window) {
+          <button type="button" class="stats-window" [class.stats-window-active]="window === days()"
+                  [attr.aria-pressed]="window === days()" (click)="selectWindow(window)">
+            {{ 'stats.last_days' | translate: { days: window } }}
+          </button>
+        }
+      </div>
+
+      @if (error()) {
+        <p class="stats-message stats-error" role="alert">{{ 'stats.error' | translate }}</p>
+      }
+
+      @if (isLoading() && !stats()) {
+        <p class="stats-message">{{ 'stats.loading' | translate }}</p>
+      }
+
+      @if (stats(); as summary) {
+        <ul class="stats-tiles">
+          <li class="stats-tile">
+            <span class="stats-tile-value">{{ summary.totalViews }}</span>
+            <span class="stats-tile-label">{{ 'stats.total' | translate: { days: days() } }}</span>
+          </li>
+          <li class="stats-tile">
+            <span class="stats-tile-value">{{ summary.viewsToday }}</span>
+            <span class="stats-tile-label">{{ 'stats.today' | translate }}</span>
+          </li>
+          <li class="stats-tile">
+            <span class="stats-tile-value">{{ summary.viewsLast7Days }}</span>
+            <span class="stats-tile-label">{{ 'stats.last_7_days' | translate }}</span>
+          </li>
+        </ul>
+
+        @if (summary.totalViews === 0) {
+          <p class="stats-message">{{ 'stats.empty' | translate }}</p>
+        }
+
+        <div class="stats-chart" role="list" [attr.aria-label]="'stats.chart' | translate">
+          @for (day of summary.daily; track day.date) {
+            <div class="stats-bar-column" role="listitem" [attr.aria-label]="day.date + ': ' + day.views">
+              <div class="stats-bar" [style.height.%]="barHeight(day)" [attr.title]="day.date + ': ' + day.views"></div>
+            </div>
+          }
+        </div>
+        <p class="stats-range">{{ summary.from }} — {{ summary.to }} (UTC)</p>
+      }
+    }
+  </div>
+</div>

@@ -7,6 +7,8 @@ import { PartnerRegistrationStepper } from '@app/features/partner/components';
 import { PartnerProfile, PartnerProfileService } from './services/partner-profile.service';
 import { LoggerService } from '@app/core/services/logger.service';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
+import { BusinessStatsClient } from '@core/services/business/business-stats.client';
+import { isUuid } from '@shared/utils/uuid.helper';
 
 // import {Modal} from '@app/modal/modal';
 
@@ -34,6 +36,7 @@ export class Partner implements OnInit, OnDestroy {
   private readonly sessionStore = inject(SessionStoreService);
   private readonly logger = inject(LoggerService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly statsClient = inject(BusinessStatsClient);
 
   ngOnInit(): void {
     // Check if this is a registration flow or viewing a partner profile
@@ -71,6 +74,20 @@ export class Partner implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  /**
+   * Counts one view of a real business (statistics). Nothing about the visitor is sent. Only a business whose id is a UUID is counted
+   * (the mock profiles use numbers), and only in the browser, so the server render does not count as a visit.
+   */
+  private recordView(businessId: string | number): void {
+    // SSR: browser-only
+    if (!isPlatformBrowser(this.platformId) || !isUuid(String(businessId))) {
+      return;
+    }
+    this.statsClient.recordView(String(businessId)).pipe(takeUntil(this.destroy$)).subscribe({
+      error: (error) => this.logger.debug('Partner: the view could not be counted', error)
+    });
+  }
+
   private loadPartnerProfile(slug: string): void {
     this.isLoading.set(true);
 
@@ -82,6 +99,7 @@ export class Partner implements OnInit, OnDestroy {
           this.isLoading.set(false);
 
           if (profile) {
+            this.recordView(profile.id);
             this.loadSimilarPartners(profile.id);
             // Re-evaluate ownership now that the profile is available
             this.sessionStore.session$.pipe(takeUntil(this.destroy$)).subscribe(sessionData => {

@@ -39,6 +39,12 @@ export const partnerRoutes: Routes = [
     data: { hideFooter: true }
   },
   {
+    path: 'settings/stats',
+    loadComponent: () => import('./components/settings/stats').then(m => m.PartnerStatsSettingsComponent),
+    canActivate: [authGuard],
+    data: { hideFooter: true }
+  },
+  {
     path: 'settings/products',
     loadComponent: () => import('./components/settings/products').then(m => m.PartnerProductsSettingsComponent),
     canActivate: [authGuard],

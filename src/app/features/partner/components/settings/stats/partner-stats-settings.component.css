@@ -1,0 +1,130 @@
+.settings-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.settings-header {
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--blue-600);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin: 0;
+}
+
+.settings-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--blue-500);
+}
+
+.stats-privacy {
+  color: #57534e;
+  margin: 0 0 1rem;
+}
+
+.stats-windows {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.stats-window {
+  border: 1px solid #d6d3d1;
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  background: white;
+  cursor: pointer;
+}
+
+.stats-window-active {
+  background: var(--blue-600);
+  border-color: var(--blue-600);
+  color: white;
+}
+
+.stats-message {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #f5f5f4;
+}
+
+.stats-error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.stats-tiles {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.stats-tile {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.75rem;
+}
+
+.stats-tile-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue-800);
+}
+
+.stats-tile-label {
+  color: #57534e;
+}
+
+.stats-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #d6d3d1;
+}
+
+.stats-bar-column {
+  flex: 1 1 0;
+  min-width: 2px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.stats-bar {
+  width: 100%;
+  background: var(--blue-500);
+  border-radius: 2px 2px 0 0;
+}
+
+.stats-range {
+  margin: 0.5rem 0 0;
+  color: #78716c;
+  font-size: 0.85rem;
+}

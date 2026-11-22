@@ -42,6 +42,14 @@ export class PartnerSettings {
       color: 'sky'
     },
     {
+      // TODO: i18n
+      title: 'Estadísticas',
+      description: 'Consulta las visitas de tu negocio',
+      icon: 'chart',
+      route: '/partner/settings/stats',
+      color: 'sky'
+    },
+    {
       title: 'Mis Productos',
       description: 'Próximamente',
       icon: 'package',

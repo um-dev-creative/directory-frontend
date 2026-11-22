@@ -83,5 +83,20 @@
       "city_required": "Select a city.",
       "address_required": "Enter the address."
     }
+  },
+  "stats": {
+    "back": "Back",
+    "title": "Statistics",
+    "privacy": "We only count visits: we store no information about who visits your page. Your own visits are not counted.",
+    "no_business": "You have no registered business yet.",
+    "window": "Period",
+    "last_days": "Last {{days}} days",
+    "total": "Views in {{days}} days",
+    "today": "Today",
+    "last_7_days": "Last 7 days",
+    "empty": "There are no views in this period yet.",
+    "chart": "Views per day",
+    "loading": "Loading statistics…",
+    "error": "The statistics could not be loaded. Please try again."
   }
 }
