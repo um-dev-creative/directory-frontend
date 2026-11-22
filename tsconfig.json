@@ -3,7 +3,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -17,19 +16,33 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
     "paths": {
-      "@app/*" : ["src/app/*"],
-      "@core/*": ["src/app/core/*"],
-      "@shared": ["src/app/shared"],
-      "@shared/*": ["src/app/shared/*"],
-      "@env/*": ["src/environments/*"],
-      "assets/*": ["src/assets/*"],
-      "assets": ["src/assets"]
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@core/*": [
+        "./src/app/core/*"
+      ],
+      "@shared": [
+        "./src/app/shared"
+      ],
+      "@shared/*": [
+        "./src/app/shared/*"
+      ],
+      "@env/*": [
+        "./src/environments/*"
+      ],
+      "assets/*": [
+        "./src/assets/*"
+      ],
+      "assets": [
+        "./src/assets"
+      ]
     }
   },
   "angularCompilerOptions": {

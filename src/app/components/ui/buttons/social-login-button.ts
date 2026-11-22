@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 
 export type SocialProvider = 'google' | 'facebook' | 'apple' | 'twitter';
 export type SocialButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -7,7 +7,7 @@ export type SocialButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 @Component({
   selector: 'app-social-login-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <button
       [class]="buttonClasses"
@@ -110,6 +110,7 @@ export type SocialButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
       <span [class]="textClasses">{{ buttonText }}</span>
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class SocialLoginButton {

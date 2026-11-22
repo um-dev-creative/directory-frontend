@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SkeletonComponent, Button, type SkeletonAnimation, type SkeletonShape } from '../../ui';
 
@@ -6,6 +6,7 @@ import { SkeletonComponent, Button, type SkeletonAnimation, type SkeletonShape }
   selector: 'app-skeletons-section',
   standalone: true,
   imports: [FormsModule, SkeletonComponent, Button],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <section class="space-y-8">
       <!-- Header -->

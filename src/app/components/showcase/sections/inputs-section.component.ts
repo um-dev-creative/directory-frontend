@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { Button, InputComponent, TextareaComponent, SelectComponent, SelectOption } from '@app/components/ui';
 import { InputExamplesComponent } from '@app/components/ui/inputs/input-examples.component';
@@ -8,7 +8,8 @@ import { SearchUsageExampleComponent } from '@app/features/search/search-usage-e
 @Component({
   selector: 'app-inputs-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, TextareaComponent, SelectComponent, Button, InputExamplesComponent, SearchUsageExampleComponent],
+  imports: [FormsModule, InputComponent, TextareaComponent, SelectComponent, Button, InputExamplesComponent, SearchUsageExampleComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Inputs</h2>

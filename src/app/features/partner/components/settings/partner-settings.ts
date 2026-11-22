@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 interface SettingsOption {
@@ -15,8 +15,9 @@ interface SettingsOption {
 @Component({
   selector: 'app-partner-settings',
   standalone: true,
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   templateUrl: './partner-settings.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./partner-settings.css']
 })
 export class PartnerSettings {

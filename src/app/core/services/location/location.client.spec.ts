@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {LocationClient} from './location.client';
 import {Location} from '@shared/models/location.model';
@@ -11,7 +11,7 @@ describe('LocationClient', () => {
   const location = {id: 'l1', businessId: 'b1', main: true, addressLine: '1 Main St'} as Location;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]});
+    TestBed.configureTestingModule({providers: [provideHttpClient(withXhr()), provideHttpClientTesting()]});
     client = TestBed.inject(LocationClient);
     http = TestBed.inject(HttpTestingController);
   });

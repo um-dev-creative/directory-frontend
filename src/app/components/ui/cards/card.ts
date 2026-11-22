@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive' | 'gradient' | 'outlined-blue';
@@ -9,7 +9,7 @@ export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
   template: `
     <div
       [class]="cardClasses"
@@ -78,6 +78,7 @@ export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class CardComponent {

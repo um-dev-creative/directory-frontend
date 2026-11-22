@@ -1,5 +1,5 @@
-import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
+
 import {Banner} from '@app/banner/banner';
 import {OfferSlider} from '@app/offer-slider/offer-slider';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
@@ -16,10 +16,11 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-deals',
   standalone: true,
-  imports: [TranslateModule, CommonModule, Banner, OfferSlider],
+  imports: [TranslateModule, Banner, OfferSlider],
   templateUrl: './deals.html',
   styleUrl: './deals.css',
   animations: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BackboneJwtPipe]
 })
 export class Deals implements OnInit, AfterViewInit {

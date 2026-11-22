@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -20,6 +20,7 @@ interface Product {
   standalone: true,
   imports: [TranslateModule, CommonModule, RouterModule, Button, SkeletonComponent],
   templateUrl: './product-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './product-list.css'
 })
 export class ProductList implements OnInit, OnDestroy {

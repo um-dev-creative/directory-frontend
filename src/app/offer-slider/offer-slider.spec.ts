@@ -5,7 +5,7 @@ import {OfferSlider} from './offer-slider';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
 import {provideLocationMocks} from '@angular/common/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('OfferSlider', () => {
@@ -19,7 +19,7 @@ describe('OfferSlider', () => {
         {provide: ActivatedRoute, useValue: {params: of({}), snapshot: {paramMap: convertToParamMap({})}}},
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()
+        provideHttpClient(withXhr())
       ]
     })
       .compileComponents();

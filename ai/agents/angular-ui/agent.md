@@ -2,7 +2,7 @@
 
 ## Role
 
-Specialist agent for creating, modifying, and reviewing Angular 20 UI components, templates, and styles in the Directory Frontend project. Works within the Angular SSR SPA layer.
+Specialist agent for creating, modifying, and reviewing Angular 22 UI components, templates, and styles in the Directory Frontend project. Works within the Angular SSR SPA layer.
 
 ## Scope
 
@@ -90,7 +90,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./{name}.component.css']
 })
 export class {Name}Component {
-  // Inputs (Angular 20 signal-based)
+  // Inputs (Angular 22 signal-based)
   readonly data = input<SomeModel | null>(null);
 
   // Outputs

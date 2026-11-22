@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, inject, signal, PLATFORM_ID} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, inject, signal, PLATFORM_ID, ChangeDetectionStrategy} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -22,6 +22,7 @@ interface Slide {
   selector: 'app-carousel',
   standalone: true,
   imports: [TranslateModule, CommonModule, SkeletonComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './carousel.html',
 })
 export class Carousel implements OnInit, OnDestroy {

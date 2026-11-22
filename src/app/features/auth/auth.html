@@ -9,152 +9,152 @@
   <div class="relative isolate p-6">
     <div class="mx-auto pt-16 max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
       <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg shadow-emerald-green-500/20 p-4 sm:p-6 lg:p-8 mb-8 border border-white/20">
-      <!-- Título -->
-      <div class="text-center">
-        <h2 class="text-xl font-semibold text-gray-900">
-          {{ isRegistering ? 'Únete y descubre lo mejor de nuestra comunidad' : 'Inicia sesión y conecta con todo lo que tenemos para ti' }}
-        </h2>
-      </div>
-    <!-- Botones sociales -->
-    @if(isRegistering){
-      <div class="space-y-4 pt-6">
-        <app-social-login-button
-          provider="google"
-          size="md"
-          mode="signup"
-          [fullWidth]="true"
-          [loading]="false"
-          (socialLogin)="handleSocialLogin($event)">
-        </app-social-login-button>
-      </div>
-    } @else {
-      <div class="space-y-4 pt-6">
-        <app-social-login-button
-          provider="google"
-          size="md"
-          mode="signin"
-          [fullWidth]="true"
-          [loading]="false"
-          (socialLogin)="handleSocialLogin($event)">
-        </app-social-login-button>
-      </div>
-    }
-    <!-- Divider -->
-    <div class="flex items-center space-x-2 mt-4 mb-4">
-      <div class="flex-1 border-t border-gray-300"></div>
-      <p class="text-sm font-semibold text-gray-500">{{ isRegistering ? 'O, crea una cuenta con email.' : 'O, inicia sesión con email.' }}</p>
-      <div class="flex-1 border-t border-gray-300"></div>
-    </div>
-    @if (isRegistering) {
-      <form (submit)="onSubmit()" #registrationForm="ngForm" class="space-y-4">
-        <!-- Nombre y Apellido -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="first-name" class="sr-only">{{ 'common.first_name' | translate }}</label>
-            <input
-              type="text"
-              id="first-name"
-              name="first-name"
-              [(ngModel)]="registerData.firstName"
-              (ngModelChange)="validateRegistrationForm()"
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="'common.first_name' | translate"
-              required
-            />
-          </div>
-          <div>
-            <label for="last-name" class="sr-only">{{ 'common.last_name' | translate }}</label>
-            <input
-              type="text"
-              id="last-name"
-              name="last-name"
-              [(ngModel)]="registerData.lastName"
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="'common.last_name' | translate"
-              (ngModelChange)="validateRegistrationForm()"
-              required
-            />
-          </div>
+        <!-- Título -->
+        <div class="text-center">
+          <h2 class="text-xl font-semibold text-gray-900">
+            {{ isRegistering ? 'Únete y descubre lo mejor de nuestra comunidad' : 'Inicia sesión y conecta con todo lo que tenemos para ti' }}
+          </h2>
         </div>
-        <!-- Correo Electrónico -->
-        <div>
-          <div>
-            <label for="email" class="sr-only">{{ 'auth.email' | translate }}</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              [(ngModel)]="registerData.email"
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="placeholders['email']"
-              (focus)="onFocus('email')"
-              (blur)="onBlur('email')"
-              (ngModelChange)="validateEmail(); validateRegistrationForm()"
-              required
-            />
+        <!-- Botones sociales -->
+        @if(isRegistering){
+          <div class="space-y-4 pt-6">
+            <app-social-login-button
+              provider="google"
+              size="md"
+              mode="signup"
+              [fullWidth]="true"
+              [loading]="false"
+              (socialLogin)="handleSocialLogin($event)">
+            </app-social-login-button>
           </div>
-          <!-- Error Message -->
-          @if (!isEmailValid) {
-            <div class="text-red-500 text-sm mt-1">
-              {{ 'auth.email_invalid' | translate }}
+        } @else {
+          <div class="space-y-4 pt-6">
+            <app-social-login-button
+              provider="google"
+              size="md"
+              mode="signin"
+              [fullWidth]="true"
+              [loading]="false"
+              (socialLogin)="handleSocialLogin($event)">
+            </app-social-login-button>
+          </div>
+        }
+        <!-- Divider -->
+        <div class="flex items-center space-x-2 mt-4 mb-4">
+          <div class="flex-1 border-t border-gray-300"></div>
+          <p class="text-sm font-semibold text-gray-500">{{ isRegistering ? 'O, crea una cuenta con email.' : 'O, inicia sesión con email.' }}</p>
+          <div class="flex-1 border-t border-gray-300"></div>
+        </div>
+        @if (isRegistering) {
+          <form (submit)="onSubmit()" #registrationForm="ngForm" class="space-y-4">
+            <!-- Nombre y Apellido -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="first-name" class="sr-only">{{ 'common.first_name' | translate }}</label>
+                <input
+                  type="text"
+                  id="first-name"
+                  name="first-name"
+                  [(ngModel)]="registerData.firstName"
+                  (ngModelChange)="validateRegistrationForm()"
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="'common.first_name' | translate"
+                  required
+                  />
+              </div>
+              <div>
+                <label for="last-name" class="sr-only">{{ 'common.last_name' | translate }}</label>
+                <input
+                  type="text"
+                  id="last-name"
+                  name="last-name"
+                  [(ngModel)]="registerData.lastName"
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="'common.last_name' | translate"
+                  (ngModelChange)="validateRegistrationForm()"
+                  required
+                  />
+              </div>
             </div>
-          }
-        </div>
-        <!-- Contraseña -->
-        <div>
-          <label for="password" class="sr-only">{{ 'common.password' | translate }}</label>
-          <div class="relative">
-            <input
-              #passwordRegInput
-              type="password"
-              id="password"
-              name="password"
-              [(ngModel)]="registerData.password"
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="'common.password' | translate"
-              (ngModelChange)="validatePassword(); validateRegistrationForm()"
-              required
-            />
-            <button
-              type="button"
-              class="absolute inset-y-0 right-3 flex items-center"
-              (click)="togglePasswordVisibility('password', passwordRegInput)"
-            >
-              @if (!showPassword) {
-              <svg
-                class="w-6 h-6 text-gray-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-              } @else {
-                <svg
-                  class="w-6 h-6 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                </svg>
+            <!-- Correo Electrónico -->
+            <div>
+              <div>
+                <label for="email" class="sr-only">{{ 'auth.email' | translate }}</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  [(ngModel)]="registerData.email"
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="placeholders['email']"
+                  (focus)="onFocus('email')"
+                  (blur)="onBlur('email')"
+                  (ngModelChange)="validateEmail(); validateRegistrationForm()"
+                  required
+                  />
+              </div>
+              <!-- Error Message -->
+              @if (!isEmailValid) {
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'auth.email_invalid' | translate }}
+                </div>
               }
-            </button>
-          </div>
-          @if (!isPasswordValid) {
-            <div class="text-red-500 text-sm mt-1">
-              {{ 'auth.password_min' | translate }}
             </div>
-          }
-        </div>
-        <!-- Numero de Telefono -->
-        <div>
-          <label for="mobile-number" class="sr-only">{{ 'auth.mobile_phone' | translate }}</label>
+            <!-- Contraseña -->
+            <div>
+              <label for="password" class="sr-only">{{ 'common.password' | translate }}</label>
+              <div class="relative">
+                <input
+                  #passwordRegInput
+                  type="password"
+                  id="password"
+                  name="password"
+                  [(ngModel)]="registerData.password"
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="'common.password' | translate"
+                  (ngModelChange)="validatePassword(); validateRegistrationForm()"
+                  required
+                  />
+                <button
+                  type="button"
+                  class="absolute inset-y-0 right-3 flex items-center"
+                  (click)="togglePasswordVisibility('password', passwordRegInput)"
+                  >
+                  @if (!showPassword) {
+                    <svg
+                      class="w-6 h-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                  } @else {
+                    <svg
+                      class="w-6 h-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    </svg>
+                  }
+                </button>
+              </div>
+              @if (!isPasswordValid) {
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'auth.password_min' | translate }}
+                </div>
+              }
+            </div>
+            <!-- Numero de Telefono -->
+            <div>
+              <label for="mobile-number" class="sr-only">{{ 'auth.mobile_phone' | translate }}</label>
           <div class="
           relative
           flex
@@ -168,352 +168,358 @@
           focus-within:ring-1
           focus-within:ring-emerald-green-600
           focus-within:hover:border-emerald-green-600"
-          >
-            <div class="relative">
-              <button
-                type="button"
-                class="h-full rounded-l-md border-0 bg-transparent pl-3 pr-8 text-gray-900 focus:ring-0 focus:outline-none"
-                aria-haspopup="listbox"
-                [attr.aria-expanded]="dropdownState.country"
-                aria-labelledby="country-label"
-                (click)="toggleDropdown('country')"
-              >
-                <span class="flex items-center gap-3 pr truncate text-gray-400">
-                  <img
-                    [src]="selectedCountry.flag"
-                    [alt]="selectedCountry.name"
-                    class="inline h-5 w-5"
-                  />
-                </span>
-                <svg
-                  class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  data-slot="icon"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
+                <div class="relative">
+                  <button
+                    type="button"
+                    class="h-full rounded-l-md border-0 bg-transparent pl-3 pr-8 text-gray-900 focus:ring-0 focus:outline-none"
+                    aria-haspopup="listbox"
+                    [attr.aria-expanded]="dropdownState.country"
+                    aria-labelledby="country-label"
+                    (click)="toggleDropdown('country')"
+                    >
+                    <span class="flex items-center gap-3 pr truncate text-gray-400">
+                      <img
+                        [src]="selectedCountry.flag"
+                        [alt]="selectedCountry.name"
+                        class="inline h-5 w-5"
+                        />
+                    </span>
+                    <svg
+                      class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      data-slot="icon"
+                      >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
+                        clip-rule="evenodd"
+                        />
+                    </svg>
+                  </button>
 
-              <!-- Dropdown menu -->
-              <ul
-                *ngIf="dropdownState.country"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
-                tabindex="-1"
-                role="listbox"
-                aria-labelledby="listbox-label"
-              >
-                <li
-                  *ngFor="let country of countries; let i = index"
-                  [id]="'listbox-option-' + i"
-                  class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
-                  role="option"
-                  (click)="selectCountry(country)"
-                >
-                  <div class="flex items-center">
-                    <img
-                      [src]="country.flag"
-                      [alt]="country.name"
-                      class="inline h-5 w-5 mr"
-                    />
-                    <span class="ml-3 block truncate">{{ country.name }}</span>
-                  </div>
-                </li>
-              </ul>
+                  <!-- Dropdown menu -->
+                  @if (dropdownState.country) {
+                    <ul
+                      class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+                      tabindex="-1"
+                      role="listbox"
+                      aria-labelledby="listbox-label"
+                      >
+                      @for (country of countries; track country; let i = $index) {
+                        <li
+                          [id]="'listbox-option-' + i"
+                          class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
+                          role="option"
+                          (click)="selectCountry(country)"
+                          >
+                          <div class="flex items-center">
+                            <img
+                              [src]="country.flag"
+                              [alt]="country.name"
+                              class="inline h-5 w-5 mr"
+                              />
+                            <span class="ml-3 block truncate">{{ country.name }}</span>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+                <!-- Divider -->
+                <div class="w-px h-full bg-gray-300"></div>
+                <!-- Phone Input -->
+                <input
+                  type="tel"
+                  id="mobile-number"
+                  name="mobile-number"
+                  [(ngModel)]="registerData.phoneNumber"
+                  class="block flex-1 border-0  rounded-r-md bg-transparent px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-hidden"
+                  [placeholder]="placeholders['mobile']"
+                  (focus)="onFocus('mobile')"
+                  (blur)="onBlur('mobile')"
+                  (ngModelChange)="validatePhoneNumber(); validateRegistrationForm()"
+                  />
+              </div>
+              <!-- Error Message -->
+              @if (!isValidPhoneNumber) {
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'auth.phone_invalid' | translate: {country: selectedCountry.name} }}
+                </div>
+              }
             </div>
-            <!-- Divider -->
-            <div class="w-px h-full bg-gray-300"></div>
-            <!-- Phone Input -->
-            <input
-              type="tel"
-              id="mobile-number"
-              name="mobile-number"
-              [(ngModel)]="registerData.phoneNumber"
-              class="block flex-1 border-0  rounded-r-md bg-transparent px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-hidden"
-              [placeholder]="placeholders['mobile']"
-              (focus)="onFocus('mobile')"
-              (blur)="onBlur('mobile')"
-              (ngModelChange)="validatePhoneNumber(); validateRegistrationForm()"
-            />
-          </div>
-          <!-- Error Message -->
-          <div *ngIf="!isValidPhoneNumber" class="text-red-500 text-sm mt-1">
-            {{ 'auth.phone_invalid' | translate: {country: selectedCountry.name} }}
-          </div>
-        </div>
-        <!-- Fecha de Nacimiento -->
-        <div>
-          <div class="grid grid-cols-3 sm:grid-cols-3 gap-4">
-            <!-- Botón Mes -->
-            <div class="relative">
-              <button
-                type="button"
-                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-none"
-                aria-haspopup="listbox"
-                [attr.aria-expanded]="dropdownState.month"
-                aria-labelledby="month-label"
-                (click)="toggleDropdown('month')"
-              >
-              <span class="flex items-center gap-3 pr-6 truncate"
+            <!-- Fecha de Nacimiento -->
+            <div>
+              <div class="grid grid-cols-3 sm:grid-cols-3 gap-4">
+                <!-- Botón Mes -->
+                <div class="relative">
+                  <button
+                    type="button"
+                    class="block w-full h-[42px] rounded-md bg-white px-3.5 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-none"
+                    aria-haspopup="listbox"
+                    [attr.aria-expanded]="dropdownState.month"
+                    aria-labelledby="month-label"
+                    (click)="toggleDropdown('month')"
+                    >
+                    <span class="flex items-center gap-3 pr-6 truncate"
                     [class]="{
               'text-gray-900': selectedMonth,
               'text-gray-400': !selectedMonth
               }">
-                <span class="ml-3 block truncate">{{ selectedMonth || 'Mes' }}</span>
-              </span>
-                <svg
-                  class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  data-slot="icon"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-              <ul
-                *ngIf="dropdownState.month"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
-                tabindex="-1"
-                role="listbox"
-                aria-labelledby="listbox-label"
-              >
-                <li
-                  *ngFor="let month of months"
-                  class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
-                  role="option"
-                  (click)="selectMonth(month)"
-                >
-                  <div class="flex items-center">
-                    <span class="ml-3 block truncate font-normal">{{ month.name }}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <!-- Input Día -->
-            <div>
-              <label for="day" class="sr-only">{{ 'auth.day' | translate }}</label>
-              <input
-                type="text"
-                id="day"
-                name="day"
-                [(ngModel)]="registerData.birthDay"
-                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-                [placeholder]="placeholders['day']"
-                (focus)="onFocus('day')"
-                (blur)="onBlur('day')"
-                (ngModelChange)="validateRegistrationForm()"
-                required
-              />
-            </div>
+                      <span class="ml-3 block truncate">{{ selectedMonth || 'Mes' }}</span>
+                    </span>
+                    <svg
+                      class="absolute right-2 top-1/2 -translate-y-1/2 size-5 text-gray-500 sm:size-4"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      data-slot="icon"
+                      >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z"
+                        clip-rule="evenodd"
+                        />
+                    </svg>
+                  </button>
+                  @if (dropdownState.month) {
+                    <ul
+                      class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+                      tabindex="-1"
+                      role="listbox"
+                      aria-labelledby="listbox-label"
+                      >
+                      @for (month of months; track month) {
+                        <li
+                          class="relative cursor-pointer select-none py-2 pl-3 pr-3 text-gray-900 hover:bg-emerald-green-600 hover:text-white"
+                          role="option"
+                          (click)="selectMonth(month)"
+                          >
+                          <div class="flex items-center">
+                            <span class="ml-3 block truncate font-normal">{{ month.name }}</span>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+                <!-- Input Día -->
+                <div>
+                  <label for="day" class="sr-only">{{ 'auth.day' | translate }}</label>
+                  <input
+                    type="text"
+                    id="day"
+                    name="day"
+                    [(ngModel)]="registerData.birthDay"
+                    class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                    [placeholder]="placeholders['day']"
+                    (focus)="onFocus('day')"
+                    (blur)="onBlur('day')"
+                    (ngModelChange)="validateRegistrationForm()"
+                    required
+                    />
+                </div>
 
-            <!-- Input Año -->
-            <div>
-              <label for="year" class="sr-only">{{ 'auth.year' | translate }}</label>
-              <input
-                type="text"
-                id="year"
-                name="year"
-                [(ngModel)]="registerData.birthYear"
-                class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-                [placeholder]="placeholders['year']"
-                (focus)="onFocus('year')"
-                (blur)="onBlur('year')"
-                (ngModelChange)="validateRegistrationForm()"
-                required
-              />
-            </div>
-          </div>
-          <!-- Error Message -->
-          @if (showFullDateError) {
-            <div class="text-red-500 text-sm mt-1">
-              {{ 'auth.date_invalid' | translate }}
-            </div>
-          }
-        </div>
-        <!-- Términos y Condiciones -->
-        <div class="mt-4 text-xs text-gray-600">
-          <p>
-            {{ 'auth.email_consent' | translate }}
-          </p>
-          <p class="mt-4">
-            {{ 'auth.register_terms_before' | translate }}
-            <a
-              routerLink="['/terms-and-conditions']"
-              class="font-semibold text-emerald-green-600 hover:underline">
-              {{ 'common.terms_and_conditions' | translate }}
-            </a>{{ 'auth.register_terms_between' | translate }}
-            <a
-              routerLink="['/privacy-policy']"
-              class="font-semibold text-emerald-green-600 hover:underline">
-              {{ 'common.privacy_policy' | translate }}
-            </a>.
-          </p>
-        </div>
-        <!-- Botón de Registro -->
-        <div>
-          <app-button
-            type="submit"
-            variant="primary"
-            size="md"
-            [fullWidth]="true"
-            [disabled]="!isRegistrationFormValid">
-            {{ 'auth.create_account_button' | translate }}
-          </app-button>
-        </div>
-      </form>
-    } @else {
-      <!-- Formulario Inicio Sesion-->
-      <form (submit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
-        <div>
-          @if (loginErrorType === 'credentials') {
-            <app-alert
-              variant="error"
-              size="md"
-              description="Usuario y/o clave incorrectos. Por favor verifica tus datos."
-              [dismissible]="true"
-              (dismiss)="loginErrorType = null">
-            </app-alert>
-          }
-          @if (loginErrorType === 'server') {
-            <app-alert
-              variant="warning"
-              size="md"
-              [title]="'auth.temporary_problem' | translate"
-              description="Ocurrió un error en el servicio. Tu sesión no fue guardada. Por favor intenta de nuevo en unos momentos."
-              [dismissible]="true"
-              (dismiss)="loginErrorType = null">
-            </app-alert>
-          }
-          <div class="mt-1">
-            <input
-              id="email_login"
-              name="email"
-              type="email"
-              [(ngModel)]="loginData.email"
-              required
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="'auth.email_placeholder' | translate"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="mt-1 relative">
-            <input
-              #passwordLogInput
-              id="password_login"
-              name="password"
-              type="password"
-              [(ngModel)]="loginData.password"
-              required
-              class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
-              [placeholder]="'auth.password_placeholder' | translate"
-            />
-            <button
-              type="button"
-              class="absolute inset-y-0 right-3 flex items-center"
-              (click)="togglePasswordVisibility('password', passwordLogInput)"
-            >
-              @if (!showPassword) {
-                <svg
-                  class="w-6 h-6 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-              } @else {
-                <svg
-                  class="w-6 h-6 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                </svg>
+                <!-- Input Año -->
+                <div>
+                  <label for="year" class="sr-only">{{ 'auth.year' | translate }}</label>
+                  <input
+                    type="text"
+                    id="year"
+                    name="year"
+                    [(ngModel)]="registerData.birthYear"
+                    class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                    [placeholder]="placeholders['year']"
+                    (focus)="onFocus('year')"
+                    (blur)="onBlur('year')"
+                    (ngModelChange)="validateRegistrationForm()"
+                    required
+                    />
+                </div>
+              </div>
+              <!-- Error Message -->
+              @if (showFullDateError) {
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'auth.date_invalid' | translate }}
+                </div>
               }
-            </button>
-          </div>
+            </div>
+            <!-- Términos y Condiciones -->
+            <div class="mt-4 text-xs text-gray-600">
+              <p>
+                {{ 'auth.email_consent' | translate }}
+              </p>
+              <p class="mt-4">
+                {{ 'auth.register_terms_before' | translate }}
+                <a
+                  routerLink="['/terms-and-conditions']"
+                  class="font-semibold text-emerald-green-600 hover:underline">
+                  {{ 'common.terms_and_conditions' | translate }}
+                </a>{{ 'auth.register_terms_between' | translate }}
+                <a
+                  routerLink="['/privacy-policy']"
+                  class="font-semibold text-emerald-green-600 hover:underline">
+                  {{ 'common.privacy_policy' | translate }}
+                </a>.
+              </p>
+            </div>
+            <!-- Botón de Registro -->
+            <div>
+              <app-button
+                type="submit"
+                variant="primary"
+                size="md"
+                [fullWidth]="true"
+                [disabled]="!isRegistrationFormValid">
+                {{ 'auth.create_account_button' | translate }}
+              </app-button>
+            </div>
+          </form>
+        } @else {
+          <!-- Formulario Inicio Sesion-->
+          <form (submit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
+            <div>
+              @if (loginErrorType === 'credentials') {
+                <app-alert
+                  variant="error"
+                  size="md"
+                  description="Usuario y/o clave incorrectos. Por favor verifica tus datos."
+                  [dismissible]="true"
+                  (dismiss)="loginErrorType = null">
+                </app-alert>
+              }
+              @if (loginErrorType === 'server') {
+                <app-alert
+                  variant="warning"
+                  size="md"
+                  [title]="'auth.temporary_problem' | translate"
+                  description="Ocurrió un error en el servicio. Tu sesión no fue guardada. Por favor intenta de nuevo en unos momentos."
+                  [dismissible]="true"
+                  (dismiss)="loginErrorType = null">
+                </app-alert>
+              }
+              <div class="mt-1">
+                <input
+                  id="email_login"
+                  name="email"
+                  type="email"
+                  [(ngModel)]="loginData.email"
+                  required
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="'auth.email_placeholder' | translate"
+                  />
+              </div>
+            </div>
+            <div>
+              <div class="mt-1 relative">
+                <input
+                  #passwordLogInput
+                  id="password_login"
+                  name="password"
+                  type="password"
+                  [(ngModel)]="loginData.password"
+                  required
+                  class="block w-full h-[42px] rounded-md bg-white px-3.5 text-gray-900 placeholder:text-gray-400 text-base border border-gray-300 hover:border-gray-400 focus:border-emerald-green-600 focus:ring-1 focus:ring-emerald-green-600 focus:outline-hidden"
+                  [placeholder]="'auth.password_placeholder' | translate"
+                  />
+                <button
+                  type="button"
+                  class="absolute inset-y-0 right-3 flex items-center"
+                  (click)="togglePasswordVisibility('password', passwordLogInput)"
+                  >
+                  @if (!showPassword) {
+                    <svg
+                      class="w-6 h-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                  } @else {
+                    <svg
+                      class="w-6 h-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    </svg>
+                  }
+                </button>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="button"
+                class="text-sm text-emerald-green-600 hover:underline"
+                (click)="onForgotPassword()">
+                {{ 'auth.forgot_password' | translate }}
+              </button>
+            </div>
+            <div class="mt-4 text-center text-xs text-gray-600">
+              <p>
+                {{ 'auth.login_terms_before' | translate }}
+                <a
+                  routerLink="['/terms-and-conditions']"
+                  class="font-semibold text-emerald-green-600 hover:underline">
+                  {{ 'common.terms_and_conditions' | translate }}
+                </a>
+                {{ 'auth.login_terms_and' | translate }}
+                <a
+                  routerLink="['/privacy-policy']"
+                  class="font-semibold text-emerald-green-600 hover:underline">
+                  {{ 'common.privacy_policy' | translate }}
+                </a>
+                {{ 'auth.login_terms_after' | translate }}
+              </p>
+            </div>
+            <div>
+              <app-button
+                type="submit"
+                variant="primary"
+                size="md"
+                [fullWidth]="true"
+                [disabled]="!loginForm.form.valid">
+                {{ 'common.sign_in' | translate }}
+              </app-button>
+            </div>
+          </form>
+        }
+        <!-- Enlace para registro -->
+        <div class="flex justify-center mt-4 text-sm text-gray-600">
+          @if (!isRegistering) { <div class="text-sm font-semibold pb-4">o</div> }
         </div>
-        <div class="flex justify-end">
-          <button
-            type="button"
-            class="text-sm text-emerald-green-600 hover:underline"
-            (click)="onForgotPassword()">
-            {{ 'auth.forgot_password' | translate }}
-          </button>
-        </div>
-        <div class="mt-4 text-center text-xs text-gray-600">
-          <p>
-            {{ 'auth.login_terms_before' | translate }}
-            <a
-              routerLink="['/terms-and-conditions']"
-              class="font-semibold text-emerald-green-600 hover:underline">
-              {{ 'common.terms_and_conditions' | translate }}
-            </a>
-            {{ 'auth.login_terms_and' | translate }}
-            <a
-              routerLink="['/privacy-policy']"
-              class="font-semibold text-emerald-green-600 hover:underline">
-              {{ 'common.privacy_policy' | translate }}
-            </a>
-            {{ 'auth.login_terms_after' | translate }}
-          </p>
-        </div>
-        <div>
-          <app-button
-            type="submit"
-            variant="primary"
-            size="md"
-            [fullWidth]="true"
-            [disabled]="!loginForm.form.valid">
-            {{ 'common.sign_in' | translate }}
-          </app-button>
-        </div>
-      </form>
-    }
-    <!-- Enlace para registro -->
-    <div class="flex justify-center mt-4 text-sm text-gray-600">
-      @if (!isRegistering) { <div class="text-sm font-semibold pb-4">o</div> }
-    </div>
-    <div class="text-center text-gray-600">
-      @if (isRegistering) {
-        {{ 'auth.have_account' | translate }} <a (click)="toggleForm()" class="font-semibold text-emerald-green-600 hover:underline">{{ 'common.sign_in' | translate }}</a>
+        <div class="text-center text-gray-600">
+          @if (isRegistering) {
+            {{ 'auth.have_account' | translate }} <a (click)="toggleForm()" class="font-semibold text-emerald-green-600 hover:underline">{{ 'common.sign_in' | translate }}</a>
           } @else {
-        <app-button
-          variant="outline"
-          size="md"
-          [fullWidth]="true"
-          (buttonClick)="toggleForm()">
-          {{ 'auth.create_account_link' | translate }}
-        </app-button>
-      }
+            <app-button
+              variant="outline"
+              size="md"
+              [fullWidth]="true"
+              (buttonClick)="toggleForm()">
+              {{ 'auth.create_account_link' | translate }}
+            </app-button>
+          }
+        </div>
+      </div>
+      <!-- Support Section -->
+      <div class="text-center pt-6 mt-8">
+        <p class="text-sm text-gray-600 mb-4">{{ 'auth.need_help' | translate }}</p>
+        <app-report-problem
+          [options]="reportProblemOptions"
+          variant="link"
+          size="sm"
+          [showIcon]="true"
+          text="Reportar un problema">
+        </app-report-problem>
+      </div>
     </div>
-  </div>
-  <!-- Support Section -->
-  <div class="text-center pt-6 mt-8">
-  <p class="text-sm text-gray-600 mb-4">{{ 'auth.need_help' | translate }}</p>
-    <app-report-problem
-      [options]="reportProblemOptions"
-      variant="link"
-      size="sm"
-      [showIcon]="true"
-      text="Reportar un problema">
-    </app-report-problem>
-  </div>
-  </div>

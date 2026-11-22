@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,6 +23,7 @@ interface Trend {
   standalone: true,
   imports: [TranslateModule, CommonModule, Button, SkeletonComponent],
   templateUrl: './trend-carousel.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './trend-carousel.css'
 })
 export class TrendCarousel implements OnInit, OnDestroy {

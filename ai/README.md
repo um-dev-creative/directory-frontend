@@ -53,14 +53,14 @@ Prompt files are in `.github/prompts/`.
 ```
 ai/
 ├── agents/
-│   ├── angular-ui/         ← Angular 20 UI Developer Agent
+│   ├── angular-ui/         ← Angular 22 UI Developer Agent
 │   │   ├── agent.md
 │   │   └── subagents/
 │   │       ├── component-builder.md
 │   │       ├── ui-library-builder.md
 │   │       └── ssr-guard-checker.md
 │   │
-│   ├── ngrx/               ← NgRx 20 State Developer Agent
+│   ├── ngrx/               ← NgRx 22 State Developer Agent
 │   │   ├── agent.md
 │   │   └── subagents/
 │   │       ├── feature-store-builder.md

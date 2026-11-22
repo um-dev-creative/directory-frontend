@@ -8,8 +8,8 @@ Guía de trabajo para Claude Code en este repositorio. Lee este archivo antes de
 
 | Categoría | Tecnología |
 |-----------|-----------|
-| Framework | Angular 20.3.3 con SSR (`@angular/ssr`) |
-| Estado global | NgRx 20 (Store, Effects, Devtools) |
+| Framework | Angular 22.2 con SSR (`@angular/ssr`) |
+| Estado global | NgRx 22 (Store, Effects, Devtools) |
 | Estado local | Signals de Angular (solo en componentes) |
 | Estilos | Tailwind CSS v4 |
 | Traducciones | `@ngx-translate/core` v16 — idioma por defecto: `es` |
@@ -17,7 +17,7 @@ Guía de trabajo para Claude Code en este repositorio. Lee este archivo antes de
 | Sesión | Redis + fallback en memoria (`server/shared/redis-session-store.js`) |
 | Autenticación | JWT + OAuth/Keycloak |
 | Testing | Karma + Jasmine + ChromeHeadlessNoSandbox |
-| TypeScript | 5.7.3 en modo `strict` |
+| TypeScript | 6.0 en modo `strict` |
 
 ---
 

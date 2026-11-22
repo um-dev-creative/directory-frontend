@@ -13,8 +13,8 @@
  * `PartnerOffersService` for local mock operations and `CampaignClient` for
  * backend campaign persistence.
  */
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, computed, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
+
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
@@ -37,14 +37,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-partner-offers-settings',
   standalone: true,
-  imports: [TranslateModule, 
-    CommonModule,
-    OffersTableComponent,
-    OfferEditModal,
-    Button,
-    ReportProblem
-  ],
+  imports: [TranslateModule, OffersTableComponent, OfferEditModal, Button, ReportProblem],
   templateUrl: './partner-offers-settings.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './partner-offers-settings.css'
 })
 /**

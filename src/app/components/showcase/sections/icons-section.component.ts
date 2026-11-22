@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import {
   Button,
   BadgeComponent,
@@ -9,7 +9,8 @@ import {
 @Component({
   selector: 'app-icons-section',
   standalone: true,
-  imports: [CommonModule, Button, IconComponent, BadgeComponent],
+  imports: [Button, IconComponent, BadgeComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Iconos</h2>

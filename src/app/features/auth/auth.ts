@@ -1,6 +1,6 @@
 // Angular Core
-import {AfterViewInit, ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit,} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AfterViewInit, ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Spinner} from '@app/shared/components/spinner/spinner';
@@ -47,9 +47,10 @@ import { TranslateModule } from '@ngx-translate/core';
  */
 @Component({
   selector: 'app-auth',
-  imports: [TranslateModule, CommonModule, FormsModule, Spinner, AlertComponent, SocialLoginButton, Button, ReportProblem],
+  imports: [TranslateModule, FormsModule, Spinner, AlertComponent, SocialLoginButton, Button, ReportProblem],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class Auth implements OnDestroy, OnInit, AfterViewInit {

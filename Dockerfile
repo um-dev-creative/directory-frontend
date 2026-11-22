@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG NODE_VERSION=22.14.0
+ARG NODE_VERSION=24
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -17,7 +17,7 @@ FROM base AS deps
 # Leverage bind mounts to package.json and package-lock.json to avoid having to copy them
 # into this layer.
 COPY package.json .
-COPY pnpm-lock.yaml .
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
 ################################################################################
@@ -27,7 +27,7 @@ FROM deps AS build
 # Download additional development dependencies before building, as some projects require
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
 COPY package.json .
-COPY pnpm-lock.yaml .
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
 # Copy the rest of the source files into the image.

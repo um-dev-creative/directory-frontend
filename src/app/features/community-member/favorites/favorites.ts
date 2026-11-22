@@ -24,8 +24,8 @@
  * - HeaderService for UI header management.
  */
 
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -60,12 +60,9 @@ export enum FavoriteType {
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [TranslateModule, 
-    CommonModule,
-    RouterModule,
-    FormsModule
-  ],
+  imports: [TranslateModule, RouterModule, FormsModule],
   templateUrl: './favorites.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./favorites.css']
 })
 export class Favorites implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslateModule, CommonModule, SkeletonComponent],
   templateUrl: './cards.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./cards.css']
 })
 export class Cards implements OnInit, OnDestroy {

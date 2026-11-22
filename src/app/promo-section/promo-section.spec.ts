@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PromoSection } from './promo-section';
 import {provideLocationMocks} from '@angular/common/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 describe('PromoSection', () => {
@@ -16,7 +16,7 @@ describe('PromoSection', () => {
       providers: [
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()
+        provideHttpClient(withXhr())
       ]
     })
     .compileComponents();

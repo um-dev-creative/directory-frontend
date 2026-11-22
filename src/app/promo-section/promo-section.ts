@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '@env/environment';
 import {LoggerService} from '@app/core/services/logger.service';
@@ -16,6 +16,7 @@ interface PromoSectionData {
   selector: 'app-promo-section',
   imports: [],
   templateUrl: './promo-section.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './promo-section.css'
 })
 export class PromoSection implements OnInit {

@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
 export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg';
@@ -8,7 +8,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
 @Component({
   selector: 'app-badge',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <span [class]="badgeClasses">
       <!-- Leading Icon -->
@@ -50,6 +50,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
       }
     </span>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class BadgeComponent {

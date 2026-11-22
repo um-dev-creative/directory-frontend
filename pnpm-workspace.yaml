@@ -1,0 +1,7 @@
+# Dependencies allowed to run install scripts (pnpm 12 blocks the rest: ERR_PNPM_IGNORED_BUILDS on a clean install)
+allowBuilds:
+  '@parcel/watcher': true
+  bcrypt: true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true

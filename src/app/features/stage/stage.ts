@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+
 import { Banner } from '@app/banner/banner';
 import { Carousel } from '@app/carousel/carousel';
 import { Cards } from '@app/cards/cards';
@@ -23,10 +23,11 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, Banner, Carousel, Cards, Marquee, ProductList, TrendCarousel, PromoSection],
+  imports: [Banner, Carousel, Cards, Marquee, ProductList, TrendCarousel, PromoSection],
   templateUrl: './stage.html',
   styleUrl: './stage.css',
   animations: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BackboneJwtPipe]
 })
 export class Stage implements OnInit, AfterViewInit {

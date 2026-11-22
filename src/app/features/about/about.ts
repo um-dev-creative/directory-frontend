@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 import { Button } from '@app/components/ui/buttons/button';
 import { CardComponent } from '@app/components/ui/cards/card';
@@ -8,9 +8,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
-  imports: [TranslateModule, CommonModule, RouterModule, Button, CardComponent, IconComponent],
+  imports: [TranslateModule, RouterModule, Button, CardComponent, IconComponent],
   templateUrl: './about.html',
   styleUrl: './about.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class About {

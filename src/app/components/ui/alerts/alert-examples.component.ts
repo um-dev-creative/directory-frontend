@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { AlertComponent } from './alert';
 
 @Component({
   selector: 'app-alert-examples',
   standalone: true,
-  imports: [CommonModule, AlertComponent],
+  imports: [AlertComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="space-y-8">
       <!-- Basic Alerts -->

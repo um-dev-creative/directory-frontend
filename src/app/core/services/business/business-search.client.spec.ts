@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {BusinessSearchClient} from './business-search.client';
 import {BusinessSearchResponse} from '@shared/models/location.model';
@@ -10,7 +10,7 @@ describe('BusinessSearchClient', () => {
   const url = '/drb/api/v1/general/businesses/search';
 
   beforeEach(() => {
-    TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]});
+    TestBed.configureTestingModule({providers: [provideHttpClient(withXhr()), provideHttpClientTesting()]});
     client = TestBed.inject(BusinessSearchClient);
     http = TestBed.inject(HttpTestingController);
   });

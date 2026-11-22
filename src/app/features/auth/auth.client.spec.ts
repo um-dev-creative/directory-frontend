@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {AuthClient} from './auth.client';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 
 describe('AuthClientService', () => {
   let service: AuthClient;
@@ -11,7 +11,7 @@ describe('AuthClientService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [AuthClient, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+      providers: [AuthClient, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
     });
     service = TestBed.inject(AuthClient);
     httpMock = TestBed.inject(HttpTestingController);

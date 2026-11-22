@@ -5,7 +5,7 @@ import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {of} from 'rxjs';
 import {provideLocationMocks} from '@angular/common/testing';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
@@ -29,7 +29,7 @@ describe('Deals', () => {
         {provide: Store, useValue: mockStore},
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()
+        provideHttpClient(withXhr())
       ]
     })
     .compileComponents();

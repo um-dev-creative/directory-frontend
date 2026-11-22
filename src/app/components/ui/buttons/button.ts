@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'solid-outline' | 'ghost' | 'ghost-alert'| 'alert' | 'success' | 'info' | 'alert-outline' | 'contrast-light' | 'contrast-outline';
@@ -8,7 +8,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   template: `
     <button
       [class]="buttonClasses"
@@ -43,6 +43,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
       <ng-content></ng-content>
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class Button {

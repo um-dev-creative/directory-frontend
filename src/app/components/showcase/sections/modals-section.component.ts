@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../ui/modals/modal';
 import { Button } from '../../ui/buttons/button';
@@ -9,7 +9,8 @@ import { BadgeComponent } from '../../ui/badges/badge';
 @Component({
   selector: 'app-modals-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent, Button, InputComponent, BadgeComponent],
+  imports: [FormsModule, ModalComponent, Button, InputComponent, BadgeComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <section class="mb-12">
       <h2 class="text-2xl font-bold text-emerald-green-700 mb-6">Modal/Dialog Components</h2>

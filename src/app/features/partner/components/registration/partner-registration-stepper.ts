@@ -1,5 +1,5 @@
-import { Component, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PartnerRegistrationService, Partner } from '@app/features/partner/services';
@@ -24,14 +24,8 @@ export interface StepTwoData {
 @Component({
   selector: 'app-partner-registration-stepper',
   standalone: true,
-  imports: [TranslateModule, 
-    CommonModule,
-    CardComponent,
-    PartnerStepOne,
-    PartnerStepTwo,
-    PartnerStepThree,
-    ReportProblem
-  ],
+  imports: [TranslateModule, CardComponent, PartnerStepOne, PartnerStepTwo, PartnerStepThree, ReportProblem],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="min-h-screen bg-gray-50 py-8">
       <div class="max-w-2xl mx-auto px-4">

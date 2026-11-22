@@ -1,4 +1,4 @@
-import {Component, effect, inject, PLATFORM_ID, signal} from '@angular/core';
+import {Component, effect, inject, PLATFORM_ID, signal, ChangeDetectionStrategy} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
@@ -17,6 +17,7 @@ import {DailyViews, STATS_DEFAULT_WINDOW, STATS_WINDOWS} from '@shared/models/bu
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './partner-stats-settings.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './partner-stats-settings.component.css'
 })
 export class PartnerStatsSettingsComponent {

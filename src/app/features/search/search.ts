@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, inject, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, inject, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { LoggerService } from '@app/core/services/logger.service';
 
@@ -9,10 +9,10 @@ import { LoggerService } from '@app/core/services/logger.service';
   standalone: true, // Use standalone components for modularity
   imports: [
     TranslateModule,
-    CommonModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './search.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./search.css'],
 })
 export class Search implements OnChanges {

@@ -1,11 +1,12 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { AlertExamplesComponent } from '../../ui/alerts/alert-examples.component';
 
 @Component({
   selector: 'app-alerts-section',
   standalone: true,
-  imports: [CommonModule, AlertExamplesComponent],
+  imports: [AlertExamplesComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-white rounded-xl shadow-soft p-6">
       <div class="mb-6">

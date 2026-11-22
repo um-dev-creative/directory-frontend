@@ -1,5 +1,5 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+
 import {Offer, OfferStatus, PaginatedResponse} from '../../services/partner-offers.service';
 import {CampaignClient} from '@app/core/services/campaign/campaign.client';
 
@@ -15,12 +15,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-offers-table',
   standalone: true,
-  imports: [TranslateModule, 
-    CommonModule,
-    Button,
-    BadgeComponent
-  ],
+  imports: [TranslateModule, Button, BadgeComponent],
   templateUrl: 'offers-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./offers-table.component.css']
 })
 export class OffersTableComponent implements OnInit {

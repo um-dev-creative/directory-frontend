@@ -35,7 +35,7 @@
  * Date: [2025-06-24]
  */
 
-import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BackboneJwtPipe} from '@shared/pipes/backbone-jwt.pipe';
 import {Store} from '@ngrx/store';
@@ -66,6 +66,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   imports: [TranslateModule, ReactiveFormsModule, Button, InputComponent, Avatar, ReportProblem, CardComponent, ModalComponent, SkeletonComponent],
   templateUrl: './community-member.html',
   animations: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BackboneJwtPipe, DirectoryBackendJwtPipe]
 })
 export class CommunityMember implements OnInit, OnDestroy {

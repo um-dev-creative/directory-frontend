@@ -2,7 +2,7 @@
 
 ## Role
 
-Specialist agent for designing, generating, and maintaining NgRx 20 feature stores in the Directory Frontend project. Operates exclusively within the state management layer (`src/app/core/store/`).
+Specialist agent for designing, generating, and maintaining NgRx 22 feature stores in the Directory Frontend project. Operates exclusively within the state management layer (`src/app/core/store/`).
 
 ## Scope
 

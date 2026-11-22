@@ -3,7 +3,7 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {OfferSliderClient} from './offer-slider.client';
 import {provideLocationMocks} from '@angular/common/testing';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 
 describe('OfferSliderService', () => {
   let service: OfferSliderClient;
@@ -13,7 +13,7 @@ describe('OfferSliderService', () => {
       providers: [
         provideLocationMocks(),
         provideHttpClientTesting(),
-        provideHttpClient()]
+        provideHttpClient(withXhr())]
     });
     service = TestBed.inject(OfferSliderClient);
   });

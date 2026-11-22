@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
@@ -22,7 +22,8 @@ interface Country {
 @Component({
   selector: 'app-partner-step-three',
   standalone: true,
-  imports: [TranslateModule, CommonModule, ReactiveFormsModule, Button, CardComponent, SelectComponent, IconComponent],  template: `
+  imports: [TranslateModule, ReactiveFormsModule, Button, CardComponent, SelectComponent, IconComponent],  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
     <form [formGroup]="locationForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <!-- Header -->
       <div class="text-center pb-4 border-b border-beige-200">

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Analyze NgRx 20 store code in the Directory Frontend project for pattern correctness, naming conventions, and architectural compliance.
+Analyze NgRx 22 store code in the Directory Frontend project for pattern correctness, naming conventions, and architectural compliance.
 
 ## Analysis Dimensions
 

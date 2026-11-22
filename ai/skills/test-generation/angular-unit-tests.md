@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Generate and validate Karma + Jasmine unit tests for Angular 20 standalone components, services, guards, and interceptors.
+Generate and validate Karma + Jasmine unit tests for Angular 22 standalone components, services, guards, and interceptors.
 
 ## Test Setup Template
 
