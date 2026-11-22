@@ -15,8 +15,7 @@ import {SessionData, SessionState} from '@core/store/session/session.state';
 import {formatDate} from '@shared/handler/date.handler';
 import {CampaignMapper} from '@core/services';
 import {LoggerService} from '@app/core/services/logger.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-offer-edit-modal',

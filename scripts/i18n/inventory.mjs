@@ -4,7 +4,7 @@
 // Run it with `pnpm run i18n:inventory`.
 import {readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {APP_DIR, ROOT, listFiles, literalTexts, rel, usedKeys} from './lib.mjs';
+import {APP_DIR, ROOT, listFiles, literalTexts, rel} from './lib.mjs';
 
 const SHOWCASE = /(components\/showcase\/|components\/ui\/.*(examples?|usage-example)|search-usage-example|button-usage-example|brand-showcase)/;
 

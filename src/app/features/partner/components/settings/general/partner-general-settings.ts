@@ -18,8 +18,7 @@ import {LoggerService} from '@app/core/services/logger.service';
 import {TimezoneClient} from '@core/services/timezone/timezone.client';
 import {environment} from '@env/environment';
 import {StorageMockService} from '@core/services/storage-mock.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 interface PartnerGeneralData {

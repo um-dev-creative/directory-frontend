@@ -13,8 +13,7 @@ import {Subject, switchMap, takeUntil} from 'rxjs';
 import {SessionStoreService} from '@core/store/session/session-store.service';
 import {NotificationService} from '@core/services/notification.service';
 import {LoggerService} from '@app/core/services/logger.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-step-one',

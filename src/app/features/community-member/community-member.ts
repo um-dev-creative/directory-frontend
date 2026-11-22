@@ -58,8 +58,7 @@ import {Router} from '@angular/router';
 import {LoggerService} from '@app/core/services/logger.service';
 import {getInitials} from '@shared/utils/get-initials.helper';
 import { environment } from '@env/environment';
-import { TranslateModule } from '@ngx-translate/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-community-member',

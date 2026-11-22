@@ -3,16 +3,16 @@
 // reviewers. Run it with `pnpm run i18n:review` after changing the translation files.
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {LANGUAGES, ROOT, loadLanguage} from './lib.mjs';
+import {LANGUAGES, ROOT, byText, loadLanguage} from './lib.mjs';
 
 const languages = Object.fromEntries(LANGUAGES.map((language) => [language, loadLanguage(language)]));
-const keys = Object.keys(languages.es).sort();
+const keys = Object.keys(languages.es).sort(byText);
 const sections = new Map();
 for (const key of keys) {
   const section = key.split('.')[0];
   sections.set(section, [...(sections.get(section) ?? []), key]);
 }
-const cell = (text) => String(text).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+const cell = (text) => String(text).replaceAll('|', String.raw`\|`).replaceAll('\n', ' ');
 
 const lines = [
   '# Translation review (es / en / fr)',

@@ -7,6 +7,9 @@ export const APP_DIR = join(ROOT, 'src/app');
 export const I18N_DIR = join(ROOT, 'src/assets/i18n');
 export const LANGUAGES = ['es', 'en', 'fr'];
 
+/** Compare function for sorting texts the same way on every machine. */
+export const byText = (a, b) => a.localeCompare(b, 'en');
+
 /** Every file under `dir` whose name ends with one of `extensions`, excluding the specs. */
 export function listFiles(dir, extensions) {
   const found = [];
@@ -18,7 +21,7 @@ export function listFiles(dir, extensions) {
       found.push(path);
     }
   }
-  return found.sort();
+  return found.sort(byText);
 }
 
 export const rel = (path) => relative(ROOT, path);
@@ -43,7 +46,7 @@ export function loadLanguage(language) {
 
 /** The `{{ name }}` interpolation parameters of a text, sorted. */
 export function placeholders(text) {
-  return [...String(text).matchAll(/\{\{\s*([\w.]+)\s*\}\}/g)].map((m) => m[1]).sort();
+  return [...String(text).matchAll(/\{\{\s*([\w.]+)\s*\}\}/g)].map((m) => m[1]).sort(byText);
 }
 
 /**
@@ -84,13 +87,13 @@ export function literalTexts(template) {
 /** Keys used by the templates and the code: `'a.b' | translate`, `translate.instant('a.b')`, `.get('a.b')`, `.stream('a.b')` and `{key: 'a.b'}` (notifications). */
 export function usedKeys(source) {
   const keys = new Set();
-  for (const match of source.matchAll(/['"]([\w]+(?:\.[\w]+)+)['"]\s*\|\s*translate/g)) {
+  for (const match of source.matchAll(/['"](\w+(?:\.\w+)+)['"]\s*\|\s*translate/g)) {
     keys.add(match[1]);
   }
-  for (const match of source.matchAll(/\.(?:instant|get|stream)\(\s*['"]([\w]+(?:\.[\w]+)+)['"]/g)) {
+  for (const match of source.matchAll(/\.(?:instant|get|stream)\(\s*['"](\w+(?:\.\w+)+)['"]/g)) {
     keys.add(match[1]);
   }
-  for (const match of source.matchAll(/\bkey:\s*['"]([\w]+(?:\.[\w]+)+)['"]/g)) {
+  for (const match of source.matchAll(/\bkey:\s*['"](\w+(?:\.\w+)+)['"]/g)) {
     keys.add(match[1]);
   }
   return keys;

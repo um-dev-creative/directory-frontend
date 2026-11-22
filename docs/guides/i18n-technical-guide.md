@@ -28,6 +28,8 @@ flowchart LR
 | `pnpm run i18n:review` | Writes `docs/guides/i18n-review.md` for the human review |
 | Karma `i18n-parity.spec.ts` | The same parity rules inside `ng test` (`resolveJsonModule` enabled in `tsconfig.spec.json`) |
 
+Every list the scripts sort (keys, files, `{{parameters}}`) uses the shared `byText` comparator of `lib.mjs` (`localeCompare` with a fixed `en` locale), so the generated sheets come out in the same order on every machine.
+
 ## Known limits
 - Spanish is the default and the only language the UI uses today: there is no language selector yet (`TranslateService.use` is not wired to the interface).
 - Sentences that contain links are split in fragments (`auth.register_terms_before / between`, `auth.login_terms_*`), so the word order of a fragment sentence must work in each language; check them in the review.
