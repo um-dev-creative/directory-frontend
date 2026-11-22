@@ -134,3 +134,21 @@ describe('NotificationService messages', () => {
     }).not.toThrow();
   });
 });
+
+describe('NotificationService and TranslateService (circular dependency)', () => {
+  it('does not create TranslateService when it is created, only when a message with a key is resolved (NG0200 while prerendering)', () => {
+    let created = 0;
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: PLATFORM_ID, useValue: 'server' },
+        { provide: TranslateService, useFactory: () => { created++; return { instant: (key: string) => `t:${key}` }; } }
+      ]
+    });
+    const service = TestBed.inject(NotificationService);
+    expect(created).toBe(0);
+    expect(service['resolve']('plain text')).toBe('plain text');
+    expect(created).toBe(0);
+    expect(service['resolve']({key: 'a.b'})).toBe('t:a.b');
+    expect(created).toBe(1);
+  });
+});

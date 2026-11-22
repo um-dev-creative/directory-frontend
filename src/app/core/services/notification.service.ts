@@ -1,4 +1,4 @@
-import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector, PLATFORM_ID, Inject, inject } from '@angular/core';
+import { Injectable, ComponentRef, ApplicationRef, createComponent, EnvironmentInjector, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Notification } from '@shared/components/notification/notification';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +40,6 @@ export class NotificationService {
   };
 
   private notifications: ComponentRef<Notification>[] = [];
-  private readonly translate = inject(TranslateService);
 
   constructor(
     private appRef: ApplicationRef,
@@ -143,7 +142,9 @@ export class NotificationService {
 
   /** The text to show: a translation of the key in the current language, or the plain string. */
   private resolve(message: NotificationMessage): string {
-    return typeof message === 'string' ? message : this.translate.instant(message.key, message.params);
+    // TranslateService is resolved on use, not injected eagerly: TranslateService -> TranslateHttpLoader -> HttpClient -> interceptors ->
+    // ErrorInterceptor -> NotificationService would be a circular dependency (NG0200) while prerendering.
+    return typeof message === 'string' ? message : this.injector.get(TranslateService).instant(message.key, message.params);
   }
 
   dismiss(): void {

@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed (build:ssr)
+- `pnpm run build:ssr` failed with `NG8002: Can't bind to 'alt' since it isn't a known property of :svg:svg` in `offer-slider.html`: an `<svg>` has no `alt`, so the translated text (`offer_slider.bookmark_alt`) is now the `title` of the bookmark button container (the icon stays `aria-hidden`).
+- Behind it, prerendering `/partner/settings` failed with `NG0200` (circular dependency `HTTP_INTERCEPTORS` / `NotificationService`): since the i18n change `NotificationService` injected `TranslateService` in its field, and `TranslateService` -> `TranslateHttpLoader` -> `HttpClient` -> interceptors -> `ErrorInterceptor` -> `NotificationService` closed a loop. `TranslateService` is now resolved on first use of a message with a key. A new spec fails without the fix.
+- Verified: `ng build` (20 prerendered routes), `ng run directory-frontend:server` and the full suite (530 tests). Whole-project function coverage: 49.71% (Istanbul).
+
 ### Translations (es / en / fr)
 - **All user-facing text is now translated.** 395 keys in `es`, `en` and `fr` (they were 95 / 72 / 0, with `fr.json` empty and invalid). About 300 literal texts of 26 templates, 9 inline templates, 30 notification messages and 13 form-validation messages moved to translation keys; Spanish stays the default language. Texts with parameters use `{{name}}` interpolation (copyright, greetings, counters, phone validation, ...).
 - **Parity guard:** `src/app/i18n/i18n-parity.spec.ts` (Karma) fails when a language misses a key, has an empty text or different `{{parameters}}`; `pnpm run i18n:check` also fails when the code uses a key that is not defined. `pnpm run i18n:inventory` lists the literal texts still untranslated (today: none) and `pnpm run i18n:review` writes the review sheet.
