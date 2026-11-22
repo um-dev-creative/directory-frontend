@@ -66,7 +66,9 @@ export class DirectoryFrontendConst {
     TIMEZONE_PATH: '/timezones',
     CITIES_PATH: '/cities',
     LOCATIONS_PATH: '/locations',
-    SEARCH_PATH: '/search'
+    SEARCH_PATH: '/search',
+    STATS_PATH: '/stats',
+    VIEWS_PATH: '/views'
   };
 
   /**

@@ -11,11 +11,13 @@ import {sessionReducer} from '@app/core/store/session/session.reducer';
 import {landingReducer} from '@app/core/store/landing/landing.reducer';
 import {businessSearchReducer} from '@app/core/store/business-search/business-search.reducer';
 import {locationsReducer} from '@app/core/store/locations/locations.reducer';
+import {businessStatsReducer} from '@app/core/store/business-stats/business-stats.reducer';
 import {provideEffects} from '@ngrx/effects';
 import {SessionEffects} from '@app/core/store/session/session-effects';
 import {LandingEffects} from '@app/core/store/landing/landing.effects';
 import {BusinessSearchEffects} from '@app/core/store/business-search/business-search.effects';
 import {LocationsEffects} from '@app/core/store/locations/locations.effects';
+import {BusinessStatsEffects} from '@app/core/store/business-stats/business-stats.effects';
 import {provideCore} from '@core/core.module';
 import {SESSION_INITIALIZER_PROVIDER} from '@app/core/initializers/session.initializer';
 
@@ -69,9 +71,10 @@ export const appConfig: ApplicationConfig = {
       session: sessionReducer,
       landing: landingReducer,
       businessSearch: businessSearchReducer,
-      locations: locationsReducer
+      locations: locationsReducer,
+      businessStats: businessStatsReducer
     }),
-    provideEffects([SessionEffects, LandingEffects, BusinessSearchEffects, LocationsEffects]),
+    provideEffects([SessionEffects, LandingEffects, BusinessSearchEffects, LocationsEffects, BusinessStatsEffects]),
 
     // Session initialization
     SESSION_INITIALIZER_PROVIDER,

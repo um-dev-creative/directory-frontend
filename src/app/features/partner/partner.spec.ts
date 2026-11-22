@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Partner } from './partner';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { PartnerProfileService } from './services/partner-profile.service';
 import { SessionStoreService } from '@app/core/store/session/session-store.service';
 import { LoggerService } from '@app/core/services/logger.service';
+import { BusinessStatsClient } from '@core/services/business/business-stats.client';
 import { PartnerProfile } from 'assets/mocks/partner-profiles.mock';
 
 const MOCK_PROFILE: PartnerProfile = {
@@ -37,11 +38,14 @@ describe('Partner', () => {
   let fixture: ComponentFixture<Partner>;
   let sessionSubject: BehaviorSubject<any>;
   let mockRouter: jasmine.SpyObj<Router>;
+  let statsClient: jasmine.SpyObj<BusinessStatsClient>;
 
   beforeEach(async () => {
     sessionSubject = new BehaviorSubject<any>(null);
     mockRouter = jasmine.createSpyObj<Router>('Router', ['navigate']);
     mockRouter.navigate.and.returnValue(Promise.resolve(true));
+    statsClient = jasmine.createSpyObj<BusinessStatsClient>('BusinessStatsClient', ['recordView']);
+    statsClient.recordView.and.returnValue(of(undefined));
 
     await TestBed.configureTestingModule({
       imports: [Partner],
@@ -67,6 +71,7 @@ describe('Partner', () => {
           useValue: { session$: sessionSubject.asObservable() }
         },
         { provide: Router, useValue: mockRouter },
+        { provide: BusinessStatsClient, useValue: statsClient },
         {
           provide: LoggerService,
           useValue: { debug: () => {}, error: () => {}, info: () => {} }
@@ -120,6 +125,22 @@ describe('Partner', () => {
     it('should navigate to /partner/edit/:id', () => {
       component['editPartner']();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/partner/edit', MOCK_PROFILE.id]);
+    });
+  });
+
+  describe('view counting (statistics)', () => {
+    it('should not count a visit to a mock profile, whose id is a number', () => {
+      expect(statsClient.recordView).not.toHaveBeenCalled();
+    });
+
+    it('should count one view of a real business (its id is a UUID)', () => {
+      component['recordView']('7a1b2c3d-1111-4222-8333-444455556666');
+      expect(statsClient.recordView).toHaveBeenCalledOnceWith('7a1b2c3d-1111-4222-8333-444455556666');
+    });
+
+    it('should ignore a failure of the counter', () => {
+      statsClient.recordView.and.returnValue(throwError(() => new Error('down')));
+      expect(() => component['recordView']('7a1b2c3d-1111-4222-8333-444455556666')).not.toThrow();
     });
   });
 });

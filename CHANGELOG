@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Business statistics (views)
+- Added the **statistics panel** of the partner settings (`/partner/settings/stats`, with a new card in the settings page): total views of a window (last 7, 30 or 90 days), views today, views in the last 7 days and a bar chart with one bar per day (zero days included). Owner only; the backend answers 403 otherwise.
+- The public partner page counts one view of a business through `POST .../businesses/{id}/views`. **Only businesses whose id is a UUID are counted and only in the browser** (SSR renders do not count): `PartnerProfileService` still serves mock profiles with numeric ids, so no view is counted from the public page until it reads real businesses.
+- No personal data is sent or shown: the request has an empty body, the backend stores only a number per day, and the owner's own visits are not counted.
+- Added `BusinessStatsClient` (unwraps the BFF envelope), the NgRx store `businessStats`, `business-stats.model.ts`, `isUuid` helper and `DFC.RelativePath.STATS_PATH` / `VIEWS_PATH`. The BFF needed no change (generic proxy).
+- i18n: `stats.*` in `es`, `en` and `fr` (English and French still need a human review); the settings card text is Spanish with a `// TODO: i18n`, like its neighbours.
+- Tests: client, store (reducer, selectors, effects, service), panel, `isUuid` and the view counting of the partner page. Full suite: 516 tests.
+- Stacked on the locations/search branch (`feature/locations-and-city-search`, PR #89): merge it first. Depends on directory-backend PR #116 (`/views` and `/stats`).
+
 ### Locations (sedes) and search by city, category and text
 - Added the **locations screen** of the partner settings (`/partner/settings/locations`), replacing the empty placeholder: list the locations of the business, add, edit, make one the main location and delete (with a two-step confirmation). City is chosen from the cities catalogue; address is required; name, postal code and phone are optional. Errors of the backend (e.g. 403 when the user is not the owner) are shown without closing the form.
 - Added the **business search page** (`/search`): filters by city, category and text, paginated, with the filters kept in the URL (`city_id`, `category_id`, `q`, `page`) so a search can be shared, reloaded and reached with the back button. The header search now opens `/search?q=`; `app-search` gained an `initialValue` input.

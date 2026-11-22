@@ -132,5 +132,20 @@
       "city_required": "Selecciona una ciudad.",
       "address_required": "Escribe la dirección."
     }
+  },
+  "stats": {
+    "back": "Volver",
+    "title": "Estadísticas",
+    "privacy": "Solo contamos visitas: no guardamos información de quienes visitan tu página. Tus propias visitas no se cuentan.",
+    "no_business": "Aún no tienes un negocio registrado.",
+    "window": "Periodo",
+    "last_days": "Últimos {{days}} días",
+    "total": "Visitas en {{days}} días",
+    "today": "Hoy",
+    "last_7_days": "Últimos 7 días",
+    "empty": "Todavía no hay visitas en este periodo.",
+    "chart": "Visitas por día",
+    "loading": "Cargando estadísticas…",
+    "error": "No se pudieron cargar las estadísticas. Inténtalo de nuevo."
   }
 }
