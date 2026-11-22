@@ -5,6 +5,7 @@ const logger = appConfig.getLoggerApp();
 const constants = require('../config/constants.util.js');
 const { getRedisClient } = require('../shared/redis-client');
 const { acquireLock, releaseLock } = require('../shared/redis-lock');
+const { getM2MClient } = require('./m2m-client');
 const LOGGER_TAG_ID = `[${constants.LOGGER_TAG_OAUTH_CLIENT}] :::`;
 const AuthenticationType = {
   OPAQUE: "OPAQUE",
@@ -259,10 +260,11 @@ class OAuthClient {
 }
 
 /**
- * Retrieves an OAuth client instance.
+ * Retrieves the service-token client: the M2M client when `M2M_*` is configured, the legacy OAuth client otherwise.
  * @param {Object} oauthClientConfig - The OAuth client configuration.
  * @returns {OAuthClient} The OAuth client instance.
  */
 module.exports.getOAuthClient = function (oauthClientConfig) {
-  return new OAuthClient(oauthClientConfig);
+  // The M2M client (Backbone managed client) wins when the environment configures it; otherwise the legacy Keycloak client is used.
+  return getM2MClient() || new OAuthClient(oauthClientConfig);
 }
