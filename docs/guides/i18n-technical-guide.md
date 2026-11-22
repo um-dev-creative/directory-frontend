@@ -30,7 +30,16 @@ flowchart LR
 
 Every list the scripts sort (keys, files, `{{parameters}}`) uses the shared `byText` comparator of `lib.mjs` (`localeCompare` with a fixed `en` locale), so the generated sheets come out in the same order on every machine.
 
+## Dependency order (NG0200)
+`NotificationService` must not inject `TranslateService` eagerly: `TranslateHttpLoader` uses `HttpClient`, whose DI interceptors include `ErrorInterceptor`, which injects `NotificationService`. It resolves `TranslateService` with `injector.get(...)` only when it shows a message with a key (see the spec "circular dependency"). Do the same in any other class an interceptor depends on.
+
+```mermaid
+flowchart LR
+  N[NotificationService] -. lazy .-> T[TranslateService] --> L[TranslateHttpLoader] --> H[HttpClient] --> I[ErrorInterceptor] --> N
+```
+
 ## Known limits
 - Spanish is the default and the only language the UI uses today: there is no language selector yet (`TranslateService.use` is not wired to the interface).
 - Sentences that contain links are split in fragments (`auth.register_terms_before / between`, `auth.login_terms_*`), so the word order of a fragment sentence must work in each language; check them in the review.
+- `<svg>` elements have no `alt`: use `aria-label`/`title` (or `aria-hidden` when decorative), never `[alt]`.
 - Text inside images, the landing/partner mock data and backend messages are not translated by this mechanism.
